@@ -21,39 +21,39 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 
 | ID | Parent | Type | Title | Status |
 |---|---|---|---|---|
-| S1 | X1 | S | Sprint 1 — Decisions, scaffold, schema, workflow docs, templates, scripts | done |
+| S1.1 | X1 | S | Sprint 1 — Decisions, scaffold, schema, workflow docs, templates, scripts | done |
 
 ## Items
 
 | ID | Parent | Type | Status | Role | Effort | Commit Group | Depends On |
 |---|---|---|---|---|---|---|---|
-| C1 | S1 | C | done | reviewer | low | cg5 | T1, T2, T3 |
-| D0 | S1 | D | done | orchestrator | low | cg0 |  |
-| D1 | S1 | D | done | orchestrator | low | cg1 |  |
-| D2 | S1 | D | done | orchestrator | low | cg6 |  |
-| M1 | S1 | M | done | implementer | medium | cg3 | Q1, Q2, Q3 |
-| M2 | S1 | M | done | implementer | medium | cg3 | Q1, Q4 |
-| M3 | S1 | M | done | implementer | medium | cg3 | Q2, M1 |
-| M4 | S1 | M | done | implementer | high | cg4 | M2, Q5 |
-| M5 | S1 | M | done | implementer | medium | cg4 | M3, Q3 |
-| M6 | S1 | M | done | implementer | medium | cg3 | Q1, Q2, Q3 |
-| Q1 | S1 | Q | done | orchestrator | low | cg2 | D1 |
-| Q2 | S1 | Q | done | orchestrator | low | cg2 | D1 |
-| Q3 | S1 | Q | done | orchestrator | low | cg2 | D1 |
-| Q4 | S1 | Q | done | orchestrator | low | cg2 | D1 |
-| Q5 | S1 | Q | done | orchestrator | low | cg2 | D1 |
-| T1 | S1 | T | done | tester | low | cg5 | M2, M4 |
-| T2 | S1 | T | done | tester | low | cg5 | M5 |
-| T3 | S1 | T | done | tester | low | cg5 | M4 |
+| C1.1.1 | S1.1 | C | done | reviewer | low | cg5 | T1.1.1, T1.1.2, T1.1.3 |
+| D1.1.1 | S1.1 | D | done | orchestrator | low | cg0 |  |
+| D1.1.2 | S1.1 | D | done | orchestrator | low | cg1 |  |
+| D1.1.3 | S1.1 | D | done | orchestrator | low | cg6 |  |
+| M1.1.1 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.2, Q1.1.3 |
+| M1.1.2 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.4 |
+| M1.1.3 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.2, M1.1.1 |
+| M1.1.4 | S1.1 | M | done | implementer | high | cg4 | M1.1.2, Q1.1.5 |
+| M1.1.5 | S1.1 | M | done | implementer | medium | cg4 | M1.1.3, Q1.1.3 |
+| M1.1.6 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.2, Q1.1.3 |
+| Q1.1.1 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
+| Q1.1.2 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
+| Q1.1.3 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
+| Q1.1.4 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
+| Q1.1.5 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
+| T1.1.1 | S1.1 | T | done | tester | low | cg5 | M1.1.2, M1.1.4 |
+| T1.1.2 | S1.1 | T | done | tester | low | cg5 | M1.1.5 |
+| T1.1.3 | S1.1 | T | done | tester | low | cg5 | M1.1.4 |
 
 ## Commit Groups
 
 | ID | Title | Items |
 |---|---|---|
-| cg0 | Repository bootstrap hygiene | D0 |
-| cg1 | Review and planning artifacts | D1 |
-| cg2 | Decision gates — Q1 through Q5 answers recorded | Q1, Q2, Q3, Q4, Q5 |
-| cg3 | Scaffold — workflow docs, schema, templates | M1, M2, M3, M6 |
-| cg4 | Scripts — render, validate, bootstrap, sync | M4, M5 |
-| cg5 | Sprint 1 closure — tests and checkpoint | T1, T2, T3, C1 |
-| cg6 | Governance hardening updates | D2 |
+| cg0 | Repository bootstrap hygiene | D1.1.1 |
+| cg1 | Review and planning artifacts | D1.1.2 |
+| cg2 | Decision gates — Q1.1.1 through Q1.1.5 answers recorded | Q1.1.1, Q1.1.2, Q1.1.3, Q1.1.4, Q1.1.5 |
+| cg3 | Scaffold — workflow docs, schema, templates | M1.1.1, M1.1.2, M1.1.3, M1.1.6 |
+| cg4 | Scripts — render, validate, bootstrap, sync | M1.1.4, M1.1.5 |
+| cg5 | Sprint 1 closure — tests and checkpoint | T1.1.1, T1.1.2, T1.1.3, C1.1.1 |
+| cg6 | Governance hardening updates | D1.1.3 |

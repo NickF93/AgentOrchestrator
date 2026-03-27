@@ -16,15 +16,15 @@ milestones:
     status: planned
 
 sprints:
-  - id: S1
+  - id: S1.1
     type: S
     parent: X1
     title: "Sprint 1"
     status: planned
 
 items:
-  - id: D1
-    parent: S1
+  - id: D1.1.1
+    parent: S1.1
     type: D
     title: "Bootstrap governance files"
     actions: [document]
@@ -42,5 +42,5 @@ items:
 commit_groups:
   - id: cg1
     title: "Initial governance bootstrap"
-    items: [D1]
+    items: [D1.1.1]
     notes: "Initial setup artifacts"

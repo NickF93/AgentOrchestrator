@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -22,6 +23,9 @@ except ImportError as exc:  # pragma: no cover
 
 
 CONTAINER_TYPES = {"X", "S"}
+MILESTONE_ID_RE = re.compile(r"^X[1-9][0-9]*$")
+SPRINT_ID_RE = re.compile(r"^S[1-9][0-9]*\.[1-9][0-9]*$")
+ITEM_ID_RE = re.compile(r"^([A-Z]+)([1-9][0-9]*)\.([1-9][0-9]*)\.([1-9][0-9]*)([a-z]?)$")
 
 
 def load_yaml(path: Path) -> dict:
@@ -54,7 +58,50 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
     warnings: list[str] = []
 
     id_to_type = collect_ids(plan)
+    milestones = plan.get("milestones", []) or []
+    sprints = plan.get("sprints", []) or []
     items = plan.get("items", []) or []
+
+    # Hard-fail: identifier grammar for milestone/sprint/item IDs.
+    for milestone in milestones:
+        mid = milestone.get("id", "")
+        if not MILESTONE_ID_RE.fullmatch(mid):
+            errors.append(
+                f"milestone id '{mid}' is invalid; expected format X<number> (e.g. X1)"
+            )
+
+    for sprint in sprints:
+        sid = sprint.get("id", "")
+        if not SPRINT_ID_RE.fullmatch(sid):
+            errors.append(
+                f"sprint id '{sid}' is invalid; expected format S<milestone>.<sprint> (e.g. S1.1)"
+            )
+
+    suffixes_by_base: dict[str, list[str]] = {}
+    for item in items:
+        iid = item.get("id", "")
+        m = ITEM_ID_RE.fullmatch(iid)
+        if not m:
+            errors.append(
+                f"item id '{iid}' is invalid; expected format <TYPE><m>.<s>.<n><optional lowercase suffix> (e.g. M1.1.1, M1.1.1a)"
+            )
+            continue
+        base = f"{m.group(1)}{m.group(2)}.{m.group(3)}.{m.group(4)}"
+        suffix = m.group(5)
+        suffixes_by_base.setdefault(base, []).append(suffix)
+
+    # Hard-fail: suffix uniqueness and chronology within same base item.
+    for base, suffixes in suffixes_by_base.items():
+        letter_suffixes = [s for s in suffixes if s]
+        if len(letter_suffixes) != len(set(letter_suffixes)):
+            errors.append(f"{base}: duplicate suffix detected; suffixes must be unique")
+        if letter_suffixes:
+            ordered_unique = sorted(set(letter_suffixes))
+            expected = [chr(c) for c in range(ord("a"), ord("a") + len(ordered_unique))]
+            if ordered_unique != expected:
+                errors.append(
+                    f"{base}: suffixes must be chronological from 'a' without gaps (found: {', '.join(ordered_unique)})"
+                )
 
     # Hard-fail: dangling depends_on and container usage in depends_on.
     for item in items:

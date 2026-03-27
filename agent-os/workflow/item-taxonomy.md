@@ -70,3 +70,23 @@ State flow:
 - triggers
 - tools_profile
 - notes
+
+## Identifier Grammar
+- Milestone IDs: `X<number>` (example: `X1`)
+- Sprint IDs: `S<milestone>.<sprint>` (example: `S1.1`)
+- Item IDs: `<TYPE><milestone>.<sprint>.<sequence><optional suffix>`
+
+Where:
+- `<TYPE>` is one or more uppercase letters, usually one of `M`, `F`, `D`, `T`, `C`, `Q`
+- `<sequence>` is the numeric item number inside the sprint
+- `<optional suffix>` is a single lowercase letter (`a`, `b`, `c`, ...)
+
+Rules:
+- Bracketed suffixes are invalid (`M1.1.1[a]` is invalid)
+- Suffixes must be unique and chronological within the same base item
+
+Valid examples:
+- `M1.1.1`
+- `M1.1.1a`
+- `T1.1.1b`
+- `D1.1.1c`
