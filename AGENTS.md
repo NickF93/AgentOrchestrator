@@ -33,6 +33,18 @@ Priority order:
 - Preserve determinism in generated outputs and script behavior.
 - Prefer additive, minimal changes with explicit checkpoints.
 
+## Commit Message Contract
+All commits MUST use this format:
+
+`<type>(<scope>): [item ID] <description>`
+
+Optional body and footer sections are allowed.
+
+Valid examples:
+- `docs(workflow): [M1] split shared workflow into canonical files`
+- `feat(scripts): [M4] add deterministic PLAN renderer`
+- `chore(repo): [D0] move startup docs under docs/design`
+
 ## Escalation and Stop Conditions
 Stop and ask the human owner when:
 - A change would alter authority boundaries,

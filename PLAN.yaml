@@ -8,7 +8,7 @@ meta:
   owner: NickF93
   version: "0.1"
   schema_version: "draft-1.0"
-  last_updated: "2026-03-27"
+  last_updated: "2026-03-28"
   note: >
     This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself.
@@ -76,6 +76,26 @@ items:
     notes: >
       Captures what is confirmed, what is ambiguous, and five open questions
       (Q1–Q5) that must be decided before schema and scripts can be written.
+
+  - id: D2
+    parent: S1
+    type: D
+    title: "Enforce commit message contract in Layer-0 governance"
+    actions: [document, checkpoint]
+    status: done
+    role: orchestrator
+    effort: low
+    commit_group: cg6
+    scope: "."
+    artifacts_out:
+      - AGENTS.md
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/workflow/git-automation-policy.md
+      - agent-os/templates/repo-AGENTS.md.template
+    notes: >
+      Added mandatory commit title contract:
+      <type>(<scope>): [item ID] <description>
+      with optional body/footer sections. This is a Layer-0 global rule.
 
   # ─── Q items: decision gates ─────────────────────────────────────────────────
   - id: Q1
@@ -367,6 +387,7 @@ items:
       - "No concern duplication detected (AGENTS vs ARCHITECTURE vs PLAN)"
       - "agent-os/ directory structure matches §15.1 of architecture doc"
       - "Each template file includes canonical source rule header"
+      - "Commit messages follow: <type>(<scope>): [item ID] <description>"
       - "validate-plan.py passes on this PLAN.yaml"
     notes: >
       After this checkpoint, the control plane is operational and able to
@@ -384,6 +405,11 @@ commit_groups:
     title: "Review and planning artifacts"
     items: [D1]
     notes: "Initial review doc plus this PLAN.yaml (self-referential first commit)"
+
+  - id: cg6
+    title: "Governance hardening updates"
+    items: [D2]
+    notes: "Introduces mandatory commit message contract across Layer-0 governance."
 
   - id: cg2
     title: "Decision gates — Q1 through Q5 answers recorded"

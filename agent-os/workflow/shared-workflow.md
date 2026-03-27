@@ -34,6 +34,10 @@ Parallel execution is allowed only when:
 - Use commit_group as natural commit boundary.
 - Close a commit_group only when its items satisfy required checks.
 - Keep traceability from item -> evidence -> commit.
+- Enforce commit message format on all repositories governed by Layer-0:
+	`<type>(<scope>): [item ID] <description>`
+
+Optional body and footer lines are allowed after the title line.
 
 ## Automation Staging
 - Phase A: branch naming, local commits, plan updates, view rendering

@@ -4,6 +4,7 @@ digraph PLAN {
   "C1" [label="C1 | C | done"];
   "D0" [label="D0 | D | done"];
   "D1" [label="D1 | D | done"];
+  "D2" [label="D2 | D | done"];
   "M1" [label="M1 | M | done"];
   "M2" [label="M2 | M | done"];
   "M3" [label="M3 | M | done"];
@@ -23,6 +24,7 @@ digraph PLAN {
   "S1" -> "C1" [style=dashed];
   "S1" -> "D0" [style=dashed];
   "S1" -> "D1" [style=dashed];
+  "S1" -> "D2" [style=dashed];
   "S1" -> "M1" [style=dashed];
   "S1" -> "M2" [style=dashed];
   "S1" -> "M3" [style=dashed];

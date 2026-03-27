@@ -33,6 +33,18 @@ Priority order:
 - Execution is dependency-driven, not globally sequential.
 - Parallel work is allowed when scope and boundaries do not conflict.
 
+## Commit Message Contract
+All commits MUST use:
+
+`<type>(<scope>): [item ID] <description>`
+
+Optional body and footer sections are allowed.
+
+Valid examples:
+- `docs(workflow): [M1] split shared workflow into canonical files`
+- `feat(scripts): [M4] add deterministic PLAN renderer`
+- `chore(repo): [D0] move startup docs under docs/design`
+
 ## Escalation
 Escalate to human when authority boundaries conflict, schema changes are needed,
 or irreversible Git automation is requested outside approved phase.

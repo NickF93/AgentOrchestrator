@@ -5,7 +5,7 @@ AUTO-GENERATED from PLAN.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-03-27
+- Last updated: 2026-03-28
 
 ## Mission
 
@@ -30,6 +30,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | C1 | S1 | C | done | reviewer | low | cg5 | T1, T2, T3 |
 | D0 | S1 | D | done | orchestrator | low | cg0 |  |
 | D1 | S1 | D | done | orchestrator | low | cg1 |  |
+| D2 | S1 | D | done | orchestrator | low | cg6 |  |
 | M1 | S1 | M | done | implementer | medium | cg3 | Q1, Q2, Q3 |
 | M2 | S1 | M | done | implementer | medium | cg3 | Q1, Q4 |
 | M3 | S1 | M | done | implementer | medium | cg3 | Q2, M1 |
@@ -55,3 +56,4 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | cg3 | Scaffold — workflow docs, schema, templates | M1, M2, M3, M6 |
 | cg4 | Scripts — render, validate, bootstrap, sync | M4, M5 |
 | cg5 | Sprint 1 closure — tests and checkpoint | T1, T2, T3, C1 |
+| cg6 | Governance hardening updates | D2 |
