@@ -1,0 +1,7 @@
+.obsidian/
+.vscode/
+__pycache__/
+*.pyc
+.env
+*.log
+.DS_Store
