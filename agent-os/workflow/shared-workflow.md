@@ -37,7 +37,7 @@ Parallel execution is allowed only when:
 - Enforce commit message format on all repositories governed by Layer-0:
 	`<type>(<scope>): [item ID] <description>`
 
-Optional body and footer lines are allowed after the title line.
+Optional body and footer sections are strongly suggested, especially for medium or large commits.
 
 ## Automation Staging
 - Phase A: branch naming, local commits, plan updates, view rendering

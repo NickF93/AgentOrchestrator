@@ -18,7 +18,7 @@ Allowed examples:
 - `feat(scripts): [M1.1.4] add deterministic PLAN renderer`
 - `chore(repo): [D1.1.1] move startup docs under docs/design`
 
-Optional body and footer sections are allowed.
+Optional body and footer sections are strongly suggested, especially for medium or large commits.
 
 ## Automation Phases
 ### Phase A: Foundation

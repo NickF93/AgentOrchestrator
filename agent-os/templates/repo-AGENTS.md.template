@@ -38,7 +38,7 @@ All commits MUST use:
 
 `<type>(<scope>): [item ID] <description>`
 
-Optional body and footer sections are allowed.
+Optional body and footer sections are strongly suggested, especially for medium or large commits.
 
 Valid examples:
 - `docs(workflow): [M1.1.1] split shared workflow into canonical files`
