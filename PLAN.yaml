@@ -450,14 +450,34 @@ items:
       detail, grouping and collision rules, deferred automation list, and Kilo
       portability mapping example.
 
+  - id: D2.1.2
+    parent: S2.1
+    type: D
+    title: "Create English translation of the Italian architectural document"
+    actions: [document]
+    status: done
+    role: orchestrator
+    effort: medium
+    commit_group: cg7
+    scope: "docs/design"
+    artifacts_out:
+      - docs/design/architectural-document-control-plane-coding-agents.md
+    notes: >
+      1:1 English translation of
+      docs/design/documento-architetturale-control-plane-coding-agents.md,
+      placed in the same directory. Structural fidelity to the original is
+      required: all sections, tables, code blocks, and math equations must
+      be preserved verbatim in structure.
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
-    items: [D2.1.1]
+    items: [D2.1.1, D2.1.2]
     notes: >
       Closes doc-vs-code gaps in authority model, DAG execution rules,
       automation policy, and portability model (§6.2–6.4, §11.3–11.4,
-      §4.2, §13.2 of the architecture document).
+      §4.2, §13.2 of the architecture document). Also adds English translation
+      of the Italian architectural document.
 
   - id: cg0
     title: "Repository bootstrap hygiene"

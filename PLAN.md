@@ -35,6 +35,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | D1.1.3 | S1.1 | D | done | orchestrator | low | cg6 |  |
 | D1.1.4 | S1.1 | D | done | orchestrator | low | cg6 |  |
 | D2.1.1 | S2.1 | D | done | orchestrator | medium | cg7 |  |
+| D2.1.2 | S2.1 | D | done | orchestrator | medium | cg7 |  |
 | M1.1.1 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.2, Q1.1.3 |
 | M1.1.2 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.4 |
 | M1.1.3 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.2, M1.1.1 |
@@ -61,4 +62,4 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | cg4 | Scripts — render, validate, bootstrap, sync | M1.1.4, M1.1.5 |
 | cg5 | Sprint 1 closure — tests and checkpoint | T1.1.1, T1.1.2, T1.1.3, C1.1.1 |
 | cg6 | Governance hardening updates | D1.1.3, D1.1.4 |
-| cg7 | Governance compliance — propagate architectural rules to workflow docs | D2.1.1 |
+| cg7 | Governance compliance — propagate architectural rules to workflow docs | D2.1.1, D2.1.2 |
