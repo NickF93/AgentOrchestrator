@@ -26,6 +26,16 @@ CONTAINER_TYPES = {"X", "S"}
 MILESTONE_ID_RE = re.compile(r"^X[1-9][0-9]*$")
 SPRINT_ID_RE = re.compile(r"^S[1-9][0-9]*\.[1-9][0-9]*$")
 ITEM_ID_RE = re.compile(r"^([A-Z]+)([1-9][0-9]*)\.([1-9][0-9]*)\.([1-9][0-9]*)([a-z]?)$")
+ALLOWED_STATE_TRANSITIONS = {
+    "planned": {"planned", "ready"},
+    "ready": {"ready", "in_progress", "blocked"},
+    "in_progress": {"in_progress", "review", "blocked"},
+    "review": {"review", "verified", "blocked"},
+    "verified": {"verified", "done"},
+    "done": {"done"},
+    "blocked": {"blocked", "ready"},
+}
+DEPENDENCY_READY_STATES = {"verified", "done"}
 
 
 def load_yaml(path: Path) -> dict:
@@ -53,11 +63,42 @@ def collect_ids(plan: dict) -> dict[str, str]:
     return id_to_type
 
 
+def collect_statuses(plan: dict) -> dict[str, str]:
+    id_to_status: dict[str, str] = {}
+    for section in ("milestones", "sprints", "items"):
+        for obj in plan.get(section, []) or []:
+            obj_id = obj.get("id")
+            obj_status = obj.get("status")
+            if obj_id and obj_status:
+                id_to_status[obj_id] = obj_status
+    return id_to_status
+
+
+def validate_transitions(current: dict, previous: dict) -> list[str]:
+    errors: list[str] = []
+    prev_status = collect_statuses(previous)
+    curr_status = collect_statuses(current)
+
+    for obj_id, now in curr_status.items():
+        before = prev_status.get(obj_id)
+        if before is None:
+            continue
+        allowed = ALLOWED_STATE_TRANSITIONS.get(before)
+        if not allowed:
+            continue
+        if now not in allowed:
+            errors.append(
+                f"{obj_id}: invalid status transition {before} -> {now}; allowed: {sorted(allowed)}"
+            )
+    return errors
+
+
 def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
 
     id_to_type = collect_ids(plan)
+    id_to_status = collect_statuses(plan)
     milestones = plan.get("milestones", []) or []
     sprints = plan.get("sprints", []) or []
     items = plan.get("items", []) or []
@@ -106,6 +147,7 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
     # Hard-fail: dangling depends_on and container usage in depends_on.
     for item in items:
         item_id = item.get("id", "<unknown>")
+        item_status = item.get("status", "")
         depends_on = item.get("depends_on", []) or []
         for dep in depends_on:
             if dep not in id_to_type:
@@ -115,6 +157,14 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
                 errors.append(
                     f"{item_id}: depends_on references container id '{dep}' of type {id_to_type[dep]}"
                 )
+                continue
+
+            if item_status in {"ready", "in_progress", "review", "verified", "done"}:
+                dep_status = id_to_status.get(dep, "")
+                if dep_status not in DEPENDENCY_READY_STATES:
+                    errors.append(
+                        f"{item_id}: dependency '{dep}' is {dep_status}, required one of {sorted(DEPENDENCY_READY_STATES)} for item status {item_status}"
+                    )
 
     # Warning-only: scope collisions among in_progress items.
     in_progress = [i for i in items if i.get("status") == "in_progress"]
@@ -143,6 +193,11 @@ def main() -> int:
         "--schema",
         default="agent-os/schemas/plan.schema.json",
         help="Path to plan schema JSON",
+    )
+    parser.add_argument(
+        "--previous-plan",
+        default="",
+        help="Optional previous PLAN.yaml to enforce lifecycle transition rules",
     )
     args = parser.parse_args()
 
@@ -175,6 +230,24 @@ def main() -> int:
         print(f"  path: {'/'.join(str(p) for p in exc.path)}", file=sys.stderr)
         print(f"  message: {exc.message}", file=sys.stderr)
         return 1
+
+    if args.previous_plan:
+        prev_path = Path(args.previous_plan)
+        if not prev_path.exists():
+            print(f"ERROR: Previous plan file not found: {prev_path}", file=sys.stderr)
+            return 2
+        try:
+            previous = load_yaml(prev_path)
+        except Exception as exc:
+            print(f"ERROR: Failed to load previous plan YAML: {exc}", file=sys.stderr)
+            return 2
+
+        transition_errors = validate_transitions(plan, previous)
+        if transition_errors:
+            print("ERROR: Lifecycle transition checks failed", file=sys.stderr)
+            for err in transition_errors:
+                print(f"  - {err}", file=sys.stderr)
+            return 1
 
     errors, warnings = validate_custom_rules(plan)
 

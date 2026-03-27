@@ -86,6 +86,12 @@ def dot_escape(text: str) -> str:
     return text.replace('"', '\\"')
 
 
+def node_dot(obj: dict) -> str:
+    node_id = obj.get("id", "")
+    label = f"{node_id} | {obj.get('type','')} | {obj.get('status','')}"
+    return f'  "{dot_escape(node_id)}" [label="{dot_escape(label)}"];'
+
+
 def render_dot(plan: dict) -> str:
     lines: list[str] = []
     lines.append("digraph PLAN {")
@@ -97,10 +103,38 @@ def render_dot(plan: dict) -> str:
     nodes.extend(plan.get("sprints", []) or [])
     nodes.extend(plan.get("items", []) or [])
 
-    for obj in sorted_by_id(nodes):
-        node_id = obj.get("id", "")
-        label = f"{node_id} | {obj.get('type','')} | {obj.get('status','')}"
-        lines.append(f'  "{dot_escape(node_id)}" [label="{dot_escape(label)}"];')
+    milestones = sorted_by_id(plan.get("milestones", []) or [])
+    sprints = sorted_by_id(plan.get("sprints", []) or [])
+    items = sorted_by_id(plan.get("items", []) or [])
+
+    # Milestones and sprints are always rendered as top-level nodes.
+    for obj in milestones:
+        lines.append(node_dot(obj))
+    for obj in sprints:
+        lines.append(node_dot(obj))
+
+    # Render items clustered by commit_group when available.
+    item_by_id = {item.get("id", ""): item for item in items}
+    rendered_item_ids: set[str] = set()
+    for cg in sorted_by_id(plan.get("commit_groups", []) or []):
+        cg_id = cg.get("id", "")
+        cg_items = [item_by_id[i] for i in sorted(cg.get("items", []) or []) if i in item_by_id]
+        if not cg_items:
+            continue
+        lines.append(f'  subgraph "cluster_{dot_escape(cg_id)}" {{')
+        lines.append('    style="rounded,dashed";')
+        lines.append(f'    label="{dot_escape(cg_id)}: {dot_escape(cg.get("title", ""))}";')
+        for item in cg_items:
+            lines.append("  " + node_dot(item).strip())
+            rendered_item_ids.add(item.get("id", ""))
+        lines.append("  }")
+
+    # Render items that are not listed in commit_groups.
+    for item in items:
+        item_id = item.get("id", "")
+        if item_id in rendered_item_ids:
+            continue
+        lines.append(node_dot(item))
 
     # Parent edges
     for obj in sorted_by_id(nodes):

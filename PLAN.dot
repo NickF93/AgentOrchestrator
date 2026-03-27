@@ -1,26 +1,54 @@
 digraph PLAN {
   rankdir=LR;
   node [shape=box, style=rounded];
-  "C1.1.1" [label="C1.1.1 | C | done"];
+  "X1" [label="X1 | X | done"];
+  "S1.1" [label="S1.1 | S | done"];
+  subgraph "cluster_cg0" {
+    style="rounded,dashed";
+    label="cg0: Repository bootstrap hygiene";
   "D1.1.1" [label="D1.1.1 | D | done"];
+  }
+  subgraph "cluster_cg1" {
+    style="rounded,dashed";
+    label="cg1: Review and planning artifacts";
   "D1.1.2" [label="D1.1.2 | D | done"];
-  "D1.1.3" [label="D1.1.3 | D | done"];
-  "M1.1.1" [label="M1.1.1 | M | done"];
-  "M1.1.2" [label="M1.1.2 | M | done"];
-  "M1.1.3" [label="M1.1.3 | M | done"];
-  "M1.1.4" [label="M1.1.4 | M | done"];
-  "M1.1.5" [label="M1.1.5 | M | done"];
-  "M1.1.6" [label="M1.1.6 | M | done"];
+  }
+  subgraph "cluster_cg2" {
+    style="rounded,dashed";
+    label="cg2: Decision gates — Q1.1.1 through Q1.1.5 answers recorded";
   "Q1.1.1" [label="Q1.1.1 | Q | done"];
   "Q1.1.2" [label="Q1.1.2 | Q | done"];
   "Q1.1.3" [label="Q1.1.3 | Q | done"];
   "Q1.1.4" [label="Q1.1.4 | Q | done"];
   "Q1.1.5" [label="Q1.1.5 | Q | done"];
-  "S1.1" [label="S1.1 | S | done"];
+  }
+  subgraph "cluster_cg3" {
+    style="rounded,dashed";
+    label="cg3: Scaffold — workflow docs, schema, templates";
+  "M1.1.1" [label="M1.1.1 | M | done"];
+  "M1.1.2" [label="M1.1.2 | M | done"];
+  "M1.1.3" [label="M1.1.3 | M | done"];
+  "M1.1.6" [label="M1.1.6 | M | done"];
+  }
+  subgraph "cluster_cg4" {
+    style="rounded,dashed";
+    label="cg4: Scripts — render, validate, bootstrap, sync";
+  "M1.1.4" [label="M1.1.4 | M | done"];
+  "M1.1.5" [label="M1.1.5 | M | done"];
+  }
+  subgraph "cluster_cg5" {
+    style="rounded,dashed";
+    label="cg5: Sprint 1 closure — tests and checkpoint";
+  "C1.1.1" [label="C1.1.1 | C | done"];
   "T1.1.1" [label="T1.1.1 | T | done"];
   "T1.1.2" [label="T1.1.2 | T | done"];
   "T1.1.3" [label="T1.1.3 | T | done"];
-  "X1" [label="X1 | X | done"];
+  }
+  subgraph "cluster_cg6" {
+    style="rounded,dashed";
+    label="cg6: Governance hardening updates";
+  "D1.1.3" [label="D1.1.3 | D | done"];
+  }
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];

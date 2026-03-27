@@ -1,7 +1,7 @@
 # PLAN.yaml — AgentOrchestrator (Level-0 Control Plane OS)
 # Source of truth for the MVP construction plan of the agent-os/ control plane.
 # PLAN.md and PLAN.dot are GENERATED views — do not edit them manually.
-# Last updated: 2026-03-27
+# Last updated: 2026-03-28
 
 meta:
   repo: AgentOrchestrator
