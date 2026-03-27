@@ -76,7 +76,7 @@ Items must NOT be grouped together if:
 - Close a commit_group only when its items satisfy required checks.
 - Keep traceability from item -> evidence -> commit.
 - Enforce commit message format on all repositories governed by Layer-0:
-	`<type>(<scope>): [item ID] <description>`
+	`<type>(<scope>): <description>`
 
 Optional body and footer sections are strongly suggested, especially for medium or large commits.
 

@@ -36,14 +36,14 @@ Priority order:
 ## Commit Message Contract
 All commits MUST use this format:
 
-`<type>(<scope>): [item ID] <description>`
+`<type>(<scope>): <description>`
 
 Optional body and footer sections are strongly suggested, especially for medium or large commits.
 
 Valid examples:
-- `docs(workflow): [M1.1.1] split shared workflow into canonical files`
-- `feat(scripts): [M1.1.4] add deterministic PLAN renderer`
-- `chore(repo): [D1.1.1] move startup docs under docs/design`
+- `docs(workflow): split shared workflow into canonical files`
+- `feat(scripts): add deterministic PLAN renderer`
+- `chore(repo): move startup docs under docs/design`
 
 ## Escalation and Stop Conditions
 Stop and ask the human owner when:

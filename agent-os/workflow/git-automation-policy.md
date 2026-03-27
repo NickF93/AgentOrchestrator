@@ -11,12 +11,12 @@ Introduce automation in phases. High-risk or irreversible operations come later.
 ## Commit Message Contract
 All commits in repositories governed by this control plane MUST use:
 
-`<type>(<scope>): [item ID] <description>`
+`<type>(<scope>): <description>`
 
 Allowed examples:
-- `docs(workflow): [M1.1.1] split shared workflow into canonical files`
-- `feat(scripts): [M1.1.4] add deterministic PLAN renderer`
-- `chore(repo): [D1.1.1] move startup docs under docs/design`
+- `docs(workflow): split shared workflow into canonical files`
+- `feat(scripts): add deterministic PLAN renderer`
+- `chore(repo): move startup docs under docs/design`
 
 Optional body and footer sections are strongly suggested, especially for medium or large commits.
 
