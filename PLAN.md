@@ -16,12 +16,14 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | ID | Type | Title | Status |
 |---|---|---|---|
 | X1 | X | Level-0 MVP — Control Plane Foundation | done |
+| X2 | X | Layer-0 Governance Hardening | done |
 
 ## Sprints
 
 | ID | Parent | Type | Title | Status |
 |---|---|---|---|---|
 | S1.1 | X1 | S | Sprint 1 — Decisions, scaffold, schema, workflow docs, templates, scripts | done |
+| S2.1 | X2 | S | Sprint 1 — Propagate missing architectural rules to governance files | done |
 
 ## Items
 
@@ -32,6 +34,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | D1.1.2 | S1.1 | D | done | orchestrator | low | cg1 |  |
 | D1.1.3 | S1.1 | D | done | orchestrator | low | cg6 |  |
 | D1.1.4 | S1.1 | D | done | orchestrator | low | cg6 |  |
+| D2.1.1 | S2.1 | D | done | orchestrator | medium | cg7 |  |
 | M1.1.1 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.2, Q1.1.3 |
 | M1.1.2 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.4 |
 | M1.1.3 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.2, M1.1.1 |
@@ -58,3 +61,4 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | cg4 | Scripts — render, validate, bootstrap, sync | M1.1.4, M1.1.5 |
 | cg5 | Sprint 1 closure — tests and checkpoint | T1.1.1, T1.1.2, T1.1.3, C1.1.1 |
 | cg6 | Governance hardening updates | D1.1.3, D1.1.4 |
+| cg7 | Governance compliance — propagate architectural rules to workflow docs | D2.1.1 |

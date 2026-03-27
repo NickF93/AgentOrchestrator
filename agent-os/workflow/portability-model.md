@@ -17,6 +17,7 @@ Examples:
 - Codex: AGENTS hierarchy, directory scoping, parallel isolated tasks
 - Claude: CLAUDE memory hierarchy, imports, subagent separation
 - Copilot: repository/path instruction precedence and nearest-file priority
+- Kilo: custom modes and specialized workflow configurations map to role/effort/triggers profile
 
 ## Non-Goals
 - Do not encode vendor-only features in shared taxonomy.

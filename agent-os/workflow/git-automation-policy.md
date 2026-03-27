@@ -51,6 +51,20 @@ Optional automation:
 - post-merge cleanup of feature branches
 - never delete develop via automation
 
+## Deferred Automation
+
+The following automations are explicitly deferred and must not be implemented
+until explicitly authorized by the human owner:
+- auto-push to remote
+- non-draft PR opening
+- final auto-merge
+- automatic feature branch cleanup
+- merge queue integration
+- real per-tool subagent definitions
+- full DAG runtime engine
+- custom skill generation per agent
+- fully autonomous end-to-end orchestration
+
 ## Safety Rules
 - Do not automate force-push.
 - Do not automate destructive branch operations in early phases.

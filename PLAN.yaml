@@ -27,6 +27,15 @@ milestones:
     type: X
     title: "Level-0 MVP — Control Plane Foundation"
     status: done
+
+  - id: X2
+    type: X
+    title: "Layer-0 Governance Hardening"
+    status: done
+    note: >
+      Close the compliance gaps between the design authority document
+      (docs/design/documento-architetturale-control-plane-coding-agents.md)
+      and the authoritative governance workflow files under agent-os/workflow/.
     note: >
       Deliver a working agent-os/ scaffold with schema, workflow docs, templates,
       and tooling. Self-validate by running validate-plan.py on this PLAN.yaml.
@@ -36,6 +45,12 @@ sprints:
     type: S
     parent: X1
     title: "Sprint 1 — Decisions, scaffold, schema, workflow docs, templates, scripts"
+    status: done
+
+  - id: S2.1
+    type: S
+    parent: X2
+    title: "Sprint 1 — Propagate missing architectural rules to governance files"
     status: done
 
 items:
@@ -413,7 +428,37 @@ items:
       After this checkpoint, the control plane is operational and able to
       bootstrap its first real target repo (Level-2) as Sprint 2 work.
 
+  # ─── S2.1 items ─────────────────────────────────────────────────────────────
+  - id: D2.1.1
+    parent: S2.1
+    type: D
+    title: "Enforce missing architectural doc rules in workflow governance files"
+    actions: [document, review]
+    status: done
+    role: orchestrator
+    effort: medium
+    commit_group: cg7
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/workflow/git-automation-policy.md
+      - agent-os/workflow/portability-model.md
+    notes: >
+      Close compliance gaps between the architecture doc (§6.2–6.4, §11.3–11.4,
+      §4.2, §13.2) and the authoritative workflow files. Adds: full authority
+      concern table, precedence rule, non-duplication rule, single-writer rule
+      detail, grouping and collision rules, deferred automation list, and Kilo
+      portability mapping example.
+
 commit_groups:
+  - id: cg7
+    title: "Governance compliance — propagate architectural rules to workflow docs"
+    items: [D2.1.1]
+    notes: >
+      Closes doc-vs-code gaps in authority model, DAG execution rules,
+      automation policy, and portability model (§6.2–6.4, §11.3–11.4,
+      §4.2, §13.2 of the architecture document).
+
   - id: cg0
     title: "Repository bootstrap hygiene"
     items: [D1.1.1]
