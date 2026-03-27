@@ -1,0 +1,27 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+
+# ARCHITECTURE.md
+
+## Repository Architecture
+Repository: {{REPO_NAME}}
+Owner: {{OWNER}}
+Date: {{DATE}}
+
+## Purpose
+Define software boundaries, module ownership, interfaces, and invariants.
+
+## Boundary Table
+| Area | Owner | Responsibility | Allowed Changes |
+|---|---|---|---|
+| src/ | team | product logic | changes with tests |
+| tests/ | team | verification and regression coverage | additive and update |
+| docs/architecture/ | architect | technical constraints | explicit review |
+
+## Invariants
+- Public contracts must remain backward-compatible unless approved.
+- Boundary-crossing changes require explicit rationale.
+- Test coverage must evolve with behavioral changes.
+
+## Non-Goals
+- This file does not track execution status (use PLAN.yaml).
+- This file does not define workflow policy (use AGENTS.md).

@@ -1,0 +1,31 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+
+# REPO_MAP.md
+
+## Repository Map
+Repository: {{REPO_NAME}}
+Owner: {{OWNER}}
+Date: {{DATE}}
+
+## Entry Points
+- Main app entry:
+- CLI entry:
+- API entry:
+
+## Main Modules
+- module_a:
+- module_b:
+- module_c:
+
+## Test Map
+- unit tests:
+- integration tests:
+- end-to-end tests:
+
+## Hot Paths
+- hot_path_1:
+- hot_path_2:
+
+## Fragile Areas
+- fragile_area_1:
+- fragile_area_2:

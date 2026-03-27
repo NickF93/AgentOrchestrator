@@ -1,0 +1,38 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+
+# AGENTS.md
+
+## Repository
+- Name: {{REPO_NAME}}
+- Owner: {{OWNER}}
+- Date: {{DATE}}
+- Control plane reference: {{CONTROL_PLANE_REF}}
+
+## Authority Map
+- Workflow authority: AGENTS.md (this file)
+- Software constraints: ARCHITECTURE.md
+- Execution tracking source: PLAN.yaml
+- Generated views: PLAN.md, PLAN.dot (non-authoritative)
+- Repo topology reference: REPO_MAP.md
+
+## Canonical Source Rule
+Each concern must have one canonical authority. Do not duplicate normative
+content across authorities.
+
+Priority order:
+1. Explicit human instructions
+2. AGENTS.md for workflow behavior
+3. ARCHITECTURE.md for software constraints
+4. PLAN.yaml for active execution tracking
+5. Code/tests/config as implementation evidence
+6. Generated plan views for readability only
+
+## Workflow Rules
+- Orchestrator is single writer for PLAN.yaml.
+- Worker agents propose changes and produce evidence.
+- Execution is dependency-driven, not globally sequential.
+- Parallel work is allowed when scope and boundaries do not conflict.
+
+## Escalation
+Escalate to human when authority boundaries conflict, schema changes are needed,
+or irreversible Git automation is requested outside approved phase.

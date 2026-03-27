@@ -1,0 +1,46 @@
+meta:
+  repo: "{{REPO_NAME}}"
+  owner: "{{OWNER}}"
+  version: "0.1"
+  schema_version: "draft-1.0"
+  last_updated: "{{DATE}}"
+  note: "Bootstrap plan generated from Level-0 template"
+
+mission: >
+  Define initial repository governance and produce a first validated execution plan.
+
+milestones:
+  - id: X1
+    type: X
+    title: "Initial Governance Foundation"
+    status: planned
+
+sprints:
+  - id: S1
+    type: S
+    parent: X1
+    title: "Sprint 1"
+    status: planned
+
+items:
+  - id: D1
+    parent: S1
+    type: D
+    title: "Bootstrap governance files"
+    actions: [document]
+    status: planned
+    role: orchestrator
+    effort: low
+    commit_group: cg1
+    scope: "."
+    artifacts_out:
+      - AGENTS.md
+      - ARCHITECTURE.md
+      - REPO_MAP.md
+      - PLAN.yaml
+
+commit_groups:
+  - id: cg1
+    title: "Initial governance bootstrap"
+    items: [D1]
+    notes: "Initial setup artifacts"
