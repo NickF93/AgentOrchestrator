@@ -25,6 +25,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X8 | X | Adapter Layer Configuration and Repo Hygiene | done |
 | X9 | X | Shared Layer-0 Asset Distribution and Two-Root Consumption | done |
 | X10 | X | Script Test Suite and Local Quality Gates | done |
+| X11 | X | Runtime Portability Expansion | done |
 
 ## Plan
 
@@ -364,6 +365,26 @@ Status: done
 | `T10.1.4` | `T` | Validate script tests and local gates in nn-2 | done |  |
 | `C10.1.5` | `C` | Script test suite and local gates checkpoint | done |  |
 
+### X11
+
+- ID: `X11`
+- Title: Runtime Portability Expansion
+- Status: done
+- Note: Formalize the runtime lifecycle model (experimental / supported / first-class), populate the Codex adapter, add Kilo as an experimental runtime, and document Copilot as deferred. Closes the gap between the agent-agnostic architecture and the actual adapter coverage.
+
+#### S11.1 Items
+
+Sprint: Sprint 1 — Runtime lifecycle, Codex adapter, Kilo experimental, Copilot deferral
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D11.1.1` | `D` | Design runtime lifecycle model and plan portability expansion | done | Adds a formal three-tier runtime lifecycle (experimental, supported, first-class) to portability-model.md. Assigns current runtimes: claude = first-class, codex = supported, kilo = experimental. Documents Copilot as recognized but deferred with rationale about its different adapter shape. |
+| `M11.1.2` | `M` | Populate Codex adapter and add lifecycle references to READMEs | done | Populates the empty .codex file following the CLAUDE.md thin adapter pattern. Same canonical authorities, same three adapter overrides. Codex-specific sandbox notes for tooling. Updates skills/README.md and prompts/README.md to reference the runtime lifecycle tiers. |
+| `M11.1.3` | `M` | Add Kilo as experimental runtime with adapter, profile, and registry | done | Creates KILO.md as a thin experimental adapter at repo root. Creates kilo profile. Adds kilo to neutral asset compatibility in the registry. Updates skill frontmatter. Adds .sixth/ to .gitignore. |
+| `T11.1.4` | `T` | Validate portability expansion and runtime artifacts | done |  |
+| `C11.1.5` | `C` | Runtime portability expansion checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -396,6 +417,10 @@ Status: done
 | cg25 | Repo hygiene — gitignore patterns for eval workspaces and caches | `F8.1.2`, `C8.1.3` |
 | cg26 | Shared assets — registry, PLAN references, two-root resolution, vendoring, and seed runtime assets | `D9.1.1`, `M9.1.2`, `M9.1.3`, `T9.1.4`, `C9.1.5` |
 | cg27 | Testing and gates — pytest coverage, tooling config, and local quality runner | `D10.1.1`, `M10.1.2`, `M10.1.3`, `T10.1.4`, `C10.1.5` |
+| cg28 | Portability model — runtime lifecycle design and Copilot deferral | `D11.1.1` |
+| cg29 | Codex adapter — populate .codex with thin adapter content | `M11.1.2` |
+| cg30 | Kilo experimental — adapter, profile, registry, and gitignore | `M11.1.3` |
+| cg31 | Verification and checkpoint — validate portability expansion and close X11 | `T11.1.4`, `C11.1.5` |
 
 ## Item Details
 
@@ -1591,4 +1616,68 @@ Status: done
   - agent-os/scripts/ has repo-owned pytest coverage for Python and Bash entrypoints
   - Local gate runner covers Ruff, mypy, compile checks, pytest, and conditional ShellCheck
   - requirements.txt remains runtime-only
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### D11.1.1: Design runtime lifecycle model and plan portability expansion
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Sprint**: `S11.1`
+- **Actions**: design, document
+- **Depends on**: `C10.1.5`
+- **Commit group**: `cg28`
+- **Artifacts**: PLAN.yaml, agent-os/workflow/portability-model.md
+- **Notes**: Adds a formal three-tier runtime lifecycle (experimental, supported, first-class) to portability-model.md. Assigns current runtimes: claude = first-class, codex = supported, kilo = experimental. Documents Copilot as recognized but deferred with rationale about its different adapter shape.
+
+### M11.1.2: Populate Codex adapter and add lifecycle references to READMEs
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S11.1`
+- **Actions**: implement, document
+- **Depends on**: `D11.1.1`
+- **Commit group**: `cg29`
+- **Artifacts**: .codex, agent-os/skills/README.md, agent-os/prompts/README.md
+- **Notes**: Populates the empty .codex file following the CLAUDE.md thin adapter pattern. Same canonical authorities, same three adapter overrides. Codex-specific sandbox notes for tooling. Updates skills/README.md and prompts/README.md to reference the runtime lifecycle tiers.
+
+### M11.1.3: Add Kilo as experimental runtime with adapter, profile, and registry
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S11.1`
+- **Actions**: implement, document
+- **Depends on**: `D11.1.1`
+- **Commit group**: `cg30`
+- **Artifacts**: KILO.md, agent-os/profiles/kilo/check-medium.yaml, agent-os/registry/shared-assets.yaml, agent-os/skills/plan-checkpoint-close/SKILL.md, .gitignore
+- **Notes**: Creates KILO.md as a thin experimental adapter at repo root. Creates kilo profile. Adds kilo to neutral asset compatibility in the registry. Updates skill frontmatter. Adds .sixth/ to .gitignore.
+
+### T11.1.4: Validate portability expansion and runtime artifacts
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S11.1`
+- **Actions**: test, verify
+- **Depends on**: `M11.1.2`, `M11.1.3`
+- **Commit group**: `cg31`
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - .codex is non-empty and follows the thin adapter pattern
+  - KILO.md exists and follows the thin adapter pattern
+  - agent-os/profiles/kilo/check-medium.yaml exists with target_runtime kilo
+  - Registry neutral assets include kilo in compatibility
+  - portability-model.md contains runtime lifecycle tiers and status table
+  - .gitignore includes .sixth/
+  - run-gates.sh passes
+
+### C11.1.5: Runtime portability expansion checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S11.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T11.1.4`
+- **Commit group**: `cg31`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=claude/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Checks**:
+  - Portability model defines explicit runtime lifecycle tiers
+  - Codex adapter is populated and follows the thin adapter pattern
+  - Kilo is registered as experimental with profile, adapter, and neutral asset compatibility
+  - Copilot is documented as deferred with rationale
+  - No normative duplication between adapters and canonical authorities
   - PLAN.md and PLAN.dot are regenerated and committed

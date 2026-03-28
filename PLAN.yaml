@@ -132,7 +132,7 @@ milestones:
   - id: X11
     type: X
     title: "Runtime Portability Expansion"
-    status: in_progress
+    status: done
     note: >
       Formalize the runtime lifecycle model (experimental / supported /
       first-class), populate the Codex adapter, add Kilo as an experimental
@@ -264,7 +264,7 @@ sprints:
     type: S
     parent: X11
     title: "Sprint 1 — Runtime lifecycle, Codex adapter, Kilo experimental, Copilot deferral"
-    status: in_progress
+    status: done
 
 items:
 
@@ -2407,7 +2407,7 @@ items:
     type: T
     title: "Validate portability expansion and runtime artifacts"
     actions: [test, verify]
-    status: planned
+    status: done
     role: tester
     effort: medium
     commit_group: cg31
@@ -2429,7 +2429,7 @@ items:
     type: C
     title: "Runtime portability expansion checkpoint"
     actions: [review, checkpoint, verify]
-    status: planned
+    status: done
     role: reviewer
     effort: low
     commit_group: cg31

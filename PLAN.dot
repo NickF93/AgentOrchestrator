@@ -11,6 +11,7 @@ digraph PLAN {
   "X8" [label="X8 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X9" [label="X9 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X10" [label="X10 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X11" [label="X11 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -31,6 +32,7 @@ digraph PLAN {
   "S8.1" [label="S8.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S9.1" [label="S9.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S10.1" [label="S10.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S11.1" [label="S11.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -250,6 +252,27 @@ digraph PLAN {
   "T10.1.4" [label="T10.1.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C10.1.5" [label="C10.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg28" {
+    style="rounded,dashed";
+    label="cg28: Portability model — runtime lifecycle design and Copilot deferral";
+  "D11.1.1" [label="D11.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg29" {
+    style="rounded,dashed";
+    label="cg29: Codex adapter — populate .codex with thin adapter content";
+  "M11.1.2" [label="M11.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg30" {
+    style="rounded,dashed";
+    label="cg30: Kilo experimental — adapter, profile, registry, and gitignore";
+  "M11.1.3" [label="M11.1.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg31" {
+    style="rounded,dashed";
+    label="cg31: Verification and checkpoint — validate portability expansion and close X11";
+  "T11.1.4" [label="T11.1.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C11.1.5" [label="C11.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -270,6 +293,7 @@ digraph PLAN {
   "X8" -> "S8.1" [style=dashed];
   "X9" -> "S9.1" [style=dashed];
   "X10" -> "S10.1" [style=dashed];
+  "X11" -> "S11.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -377,6 +401,11 @@ digraph PLAN {
   "S10.1" -> "M10.1.3" [style=dashed];
   "S10.1" -> "T10.1.4" [style=dashed];
   "S10.1" -> "C10.1.5" [style=dashed];
+  "S11.1" -> "D11.1.1" [style=dashed];
+  "S11.1" -> "M11.1.2" [style=dashed];
+  "S11.1" -> "M11.1.3" [style=dashed];
+  "S11.1" -> "T11.1.4" [style=dashed];
+  "S11.1" -> "C11.1.5" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -515,4 +544,10 @@ digraph PLAN {
   "M10.1.2" -> "T10.1.4";
   "M10.1.3" -> "T10.1.4";
   "T10.1.4" -> "C10.1.5";
+  "C10.1.5" -> "D11.1.1";
+  "D11.1.1" -> "M11.1.2";
+  "D11.1.1" -> "M11.1.3";
+  "M11.1.2" -> "T11.1.4";
+  "M11.1.3" -> "T11.1.4";
+  "T11.1.4" -> "C11.1.5";
 }
