@@ -208,6 +208,17 @@ Status: done
 | `T4.5.6` | `T` | Validate commit format, Phase B, and phase-gate changes | done |  |
 | `C4.5.7` | `C` | Milestone X4 closure checkpoint — governance baseline hardened | done |  |
 
+#### S4.6 Items
+
+Sprint: Sprint 6 — Validator enforcement for commit_group presence
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M4.6.1` | `M` | Enforce executable item commit_group presence in validate-plan.py | done | Add hard-fail validation: every executable item type (Q, D, M, F, T, C) must declare commit_group. This makes commit boundary enforcement explicit in runtime validation, in addition to existing bidirectional coherence. |
+| `T4.6.2` | `T` | Validate strict commit_group presence and coherence checks | done |  |
+| `C4.6.3` | `C` | Commit governance enforcement checkpoint — validation executable | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -230,6 +241,7 @@ Status: done
 | cg15 | Schema and taxonomy hardening — depends_on, scope, checks, decision | `M4.3.1`, `M4.3.2`, `M4.3.3`, `M4.3.4`, `T4.3.5` |
 | cg16 | Lifecycle unification and deferred field markers | `D4.4.1`, `D4.4.2`, `D4.4.3`, `T4.4.4` |
 | cg17 | Commit format, phase-gate enforcement, and milestone closure | `D4.5.1`, `M4.5.2`, `D4.5.3`, `M4.5.4`, `M4.5.5`, `T4.5.6`, `C4.5.7` |
+| cg18 | Validator hardening — enforce executable item commit_group presence | `M4.6.1`, `T4.6.2`, `C4.6.3` |
 
 ## Item Details
 
@@ -1010,3 +1022,38 @@ Status: done
   - Phase-gate enforcement is operational
   - PLAN.md and PLAN.dot are regenerated and committed
   - validate-plan.py PLAN.yaml exits 0
+
+### M4.6.1: Enforce executable item commit_group presence in validate-plan.py
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S4.6`
+- **Actions**: implement, verify
+- **Depends on**: `T4.5.6`
+- **Commit group**: `cg18`
+- **Artifacts**: agent-os/scripts/validate-plan.py
+- **Notes**: Add hard-fail validation: every executable item type (Q, D, M, F, T, C) must declare commit_group. This makes commit boundary enforcement explicit in runtime validation, in addition to existing bidirectional coherence.
+
+### T4.6.2: Validate strict commit_group presence and coherence checks
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S4.6`
+- **Actions**: test, verify
+- **Depends on**: `M4.6.1`
+- **Commit group**: `cg18`
+- **Checks**:
+  - validate-plan.py hard-fails when executable items omit commit_group
+  - validate-plan.py keeps bidirectional commit_group coherence strict
+  - validate-plan.py PLAN.yaml exits 0
+
+### C4.6.3: Commit governance enforcement checkpoint — validation executable
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S4.6`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T4.6.2`
+- **Commit group**: `cg18`
+- **Checks**:
+  - Commit-group presence is enforced in validator for executable items
+  - Commit-group/item bidirectional coherence remains strict
+  - Canonical commit policy remains in git-automation-policy.md
+  - PLAN.md and PLAN.dot are regenerated and committed

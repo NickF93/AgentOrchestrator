@@ -45,6 +45,7 @@ RECOMMENDED_ACTIONS: dict[str, set[str]] = {
     "T": {"test", "verify"},
     "C": {"review", "checkpoint", "verify"},
 }
+EXECUTABLE_ITEM_TYPES = set(RECOMMENDED_ACTIONS.keys())
 
 
 def load_yaml(path: Path) -> dict:
@@ -149,7 +150,12 @@ def validate_commit_group_coherence(plan: dict) -> list[str]:
     item_to_cg: dict[str, str] = {}
     for item in items:
         item_id = item.get("id", "")
+        item_type = item.get("type", "")
         cg = item.get("commit_group", "")
+        if item_type in EXECUTABLE_ITEM_TYPES and not cg:
+            errors.append(
+                f"item '{item_id}' is executable (type {item_type}) but has no commit_group"
+            )
         if cg:
             item_to_cg[item_id] = cg
 

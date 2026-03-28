@@ -126,6 +126,12 @@ sprints:
     title: "Sprint 5 — Commit format, Phase B, and phase-gate enforcement"
     status: done
 
+  - id: S4.6
+    type: S
+    parent: X4
+    title: "Sprint 6 — Validator enforcement for commit_group presence"
+    status: done
+
 items:
 
   # ─── D1.1.1: repository bootstrap hygiene ───────────────────────────────────────
@@ -1470,6 +1476,57 @@ items:
       - "PLAN.md and PLAN.dot are regenerated and committed"
       - "validate-plan.py PLAN.yaml exits 0"
 
+  # ─── S4.6 items: strict commit_group presence enforcement ─────────────────────
+  - id: M4.6.1
+    parent: S4.6
+    type: M
+    title: "Enforce executable item commit_group presence in validate-plan.py"
+    actions: [implement, verify]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg18
+    depends_on: [T4.5.6]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Add hard-fail validation: every executable item type (Q, D, M, F, T, C)
+      must declare commit_group. This makes commit boundary enforcement explicit
+      in runtime validation, in addition to existing bidirectional coherence.
+
+  - id: T4.6.2
+    parent: S4.6
+    type: T
+    title: "Validate strict commit_group presence and coherence checks"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg18
+    depends_on: [M4.6.1]
+    scope: "agent-os/scripts"
+    checks:
+      - "validate-plan.py hard-fails when executable items omit commit_group"
+      - "validate-plan.py keeps bidirectional commit_group coherence strict"
+      - "validate-plan.py PLAN.yaml exits 0"
+
+  - id: C4.6.3
+    parent: S4.6
+    type: C
+    title: "Commit governance enforcement checkpoint — validation executable"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg18
+    depends_on: [T4.6.2]
+    checks:
+      - "Commit-group presence is enforced in validator for executable items"
+      - "Commit-group/item bidirectional coherence remains strict"
+      - "Canonical commit policy remains in git-automation-policy.md"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -1600,3 +1657,11 @@ commit_groups:
       Findings #11, #19, #20: define recommended commit body/footer, simplify
       ARCHITECTURE.md Phase B cross-reference, add phase-gate protocol with
       schema fields and validator enforcement, close milestone X4.
+
+  - id: cg18
+    title: "Validator hardening — enforce executable item commit_group presence"
+    items: [M4.6.1, T4.6.2, C4.6.3]
+    notes: >
+      Adds explicit hard-fail check that all executable items declare
+      commit_group, validates behavior on current PLAN.yaml, and checkpoints
+      that commit governance enforcement is executable in validator logic.
