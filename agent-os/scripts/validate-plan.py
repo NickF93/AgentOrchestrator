@@ -7,6 +7,7 @@ import argparse
 import json
 import re
 import sys
+from datetime import date, datetime
 from pathlib import Path
 
 try:
@@ -36,6 +37,14 @@ ALLOWED_STATE_TRANSITIONS = {
     "blocked": {"blocked", "ready"},
 }
 DEPENDENCY_READY_STATES = {"verified", "done"}
+RECOMMENDED_ACTIONS: dict[str, set[str]] = {
+    "Q": {"review", "decide"},
+    "D": {"plan", "document", "review", "checkpoint"},
+    "M": {"design", "implement", "refactor", "migrate", "verify"},
+    "F": {"implement", "test", "verify"},
+    "T": {"test", "verify"},
+    "C": {"review", "checkpoint", "verify"},
+}
 
 
 def load_yaml(path: Path) -> dict:
@@ -91,6 +100,113 @@ def validate_transitions(current: dict, previous: dict) -> list[str]:
                 f"{obj_id}: invalid status transition {before} -> {now}; allowed: {sorted(allowed)}"
             )
     return errors
+
+
+def detect_cycles(items: list[dict]) -> list[str]:
+    """Detect cycles in depends_on using Kahn's algorithm. Returns error messages."""
+    # Build adjacency list and in-degree map for items only
+    item_ids = {item.get("id", "") for item in items}
+    adj: dict[str, list[str]] = {item.get("id", ""): [] for item in items}
+    in_degree: dict[str, int] = {item.get("id", ""): 0 for item in items}
+
+    for item in items:
+        item_id = item.get("id", "")
+        for dep in item.get("depends_on", []) or []:
+            if dep in item_ids:
+                adj[dep].append(item_id)
+                in_degree[item_id] += 1
+
+    # Kahn's algorithm
+    queue = [nid for nid, deg in in_degree.items() if deg == 0]
+    processed = 0
+    while queue:
+        node = queue.pop(0)
+        processed += 1
+        for neighbor in adj[node]:
+            in_degree[neighbor] -= 1
+            if in_degree[neighbor] == 0:
+                queue.append(neighbor)
+
+    if processed == len(item_ids):
+        return []
+
+    cycle_participants = sorted(nid for nid, deg in in_degree.items() if deg > 0)
+    return [
+        f"dependency cycle detected among items: {', '.join(cycle_participants)}"
+    ]
+
+
+def validate_commit_group_coherence(plan: dict) -> list[str]:
+    """Validate bidirectional consistency between commit_groups and items."""
+    errors: list[str] = []
+    items = plan.get("items", []) or []
+    commit_groups = plan.get("commit_groups", []) or []
+
+    item_ids = {item.get("id", "") for item in items}
+    cg_ids = {cg.get("id", "") for cg in commit_groups}
+
+    # Build maps
+    item_to_cg: dict[str, str] = {}
+    for item in items:
+        item_id = item.get("id", "")
+        cg = item.get("commit_group", "")
+        if cg:
+            item_to_cg[item_id] = cg
+
+    cg_to_items: dict[str, list[str]] = {}
+    for cg in commit_groups:
+        cg_id = cg.get("id", "")
+        cg_to_items[cg_id] = list(cg.get("items", []) or [])
+
+    # Forward check: every commit_group.items[] must resolve to an existing item
+    for cg_id, members in cg_to_items.items():
+        for member in members:
+            if member not in item_ids:
+                errors.append(
+                    f"commit_group '{cg_id}' references unknown item '{member}'"
+                )
+
+    # Reverse check: every item.commit_group must reference an existing commit_group
+    for item_id, cg in item_to_cg.items():
+        if cg not in cg_ids:
+            errors.append(
+                f"item '{item_id}' references unknown commit_group '{cg}'"
+            )
+
+    # Membership coherence: bidirectional match
+    for item_id, cg in item_to_cg.items():
+        if cg in cg_to_items and item_id not in cg_to_items[cg]:
+            errors.append(
+                f"item '{item_id}' declares commit_group '{cg}' but is not listed in that commit_group's items"
+            )
+
+    for cg_id, members in cg_to_items.items():
+        for member in members:
+            if member in item_to_cg and item_to_cg[member] != cg_id:
+                errors.append(
+                    f"commit_group '{cg_id}' lists item '{member}' but that item declares commit_group '{item_to_cg[member]}'"
+                )
+
+    return errors
+
+
+def validate_type_action_coherence(items: list[dict]) -> list[str]:
+    """Warn when item actions are outside the recommended set for its type."""
+    warnings: list[str] = []
+    for item in items:
+        item_id = item.get("id", "<unknown>")
+        item_type = item.get("type", "")
+        actions = item.get("actions", []) or []
+        recommended = RECOMMENDED_ACTIONS.get(item_type)
+        if recommended is None:
+            continue
+        for action in actions:
+            if action not in recommended:
+                warnings.append(
+                    f"{item_id}: action '{action}' is not in recommended set for type {item_type} "
+                    f"(recommended: {sorted(recommended)})"
+                )
+    return warnings
 
 
 def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
@@ -183,7 +299,70 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
                     f"{right.get('id', '<unknown>')} ({right_scope})"
                 )
 
+    # Hard-fail: DAG cycle detection in depends_on relationships.
+    errors.extend(detect_cycles(items))
+
+    # Hard-fail: bidirectional commit_group/item consistency.
+    errors.extend(validate_commit_group_coherence(plan))
+
+    # Warning-only: type/action coherence.
+    warnings.extend(validate_type_action_coherence(items))
+
     return errors, warnings
+
+
+def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
+    """Warn if REPO_MAP.md is stale when checkpoint items are active."""
+    warnings: list[str] = []
+    items = plan.get("items", []) or []
+    active_checkpoints = [
+        i for i in items
+        if i.get("type") == "C" and i.get("status") in {"review", "verified"}
+    ]
+    if not active_checkpoints:
+        return warnings
+
+    repo_map_path = plan_path.parent / "REPO_MAP.md"
+    if not repo_map_path.exists():
+        return warnings
+
+    # Parse freshness metadata from REPO_MAP.md header
+    last_validated = None
+    window_days = 30
+    for line in repo_map_path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped.startswith("last_validated_on:"):
+            val = stripped.split(":", 1)[1].strip()
+            if val:
+                try:
+                    last_validated = datetime.strptime(val, "%Y-%m-%d").date()
+                except ValueError:
+                    pass
+        elif stripped.startswith("freshness_window_days:"):
+            val = stripped.split(":", 1)[1].strip()
+            if val:
+                try:
+                    window_days = int(val)
+                except ValueError:
+                    pass
+
+    if last_validated is None:
+        checkpoint_ids = ", ".join(i.get("id", "") for i in active_checkpoints)
+        warnings.append(
+            f"REPO_MAP.md has no last_validated_on date; "
+            f"active checkpoint(s) {checkpoint_ids} may require freshness verification"
+        )
+        return warnings
+
+    age = (date.today() - last_validated).days
+    if age > window_days:
+        checkpoint_ids = ", ".join(i.get("id", "") for i in active_checkpoints)
+        warnings.append(
+            f"REPO_MAP.md is stale ({age} days old, window is {window_days} days); "
+            f"active checkpoint(s) {checkpoint_ids} may require freshness verification"
+        )
+
+    return warnings
 
 
 def main() -> int:
@@ -198,6 +377,11 @@ def main() -> int:
         "--previous-plan",
         default="",
         help="Optional previous PLAN.yaml to enforce lifecycle transition rules",
+    )
+    parser.add_argument(
+        "--check-freshness",
+        action="store_true",
+        help="Check REPO_MAP.md freshness when checkpoint items are active",
     )
     args = parser.parse_args()
 
@@ -250,6 +434,9 @@ def main() -> int:
             return 1
 
     errors, warnings = validate_custom_rules(plan)
+
+    if args.check_freshness:
+        warnings.extend(check_repo_map_freshness(plan, plan_path))
 
     for warning in warnings:
         print(f"WARNING: {warning}")
