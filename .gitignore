@@ -2,7 +2,9 @@
 .venv/
 .vscode/
 __pycache__/
+.mypy_cache/
 *.pyc
 .env
 *.log
 .DS_Store
+*-workspace/
