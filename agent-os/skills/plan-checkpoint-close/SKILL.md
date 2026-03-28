@@ -13,6 +13,7 @@ compatibility:
   - claude
   - codex
   - kilo
+  - copilot
 ---
 
 # plan-checkpoint-close
@@ -46,7 +47,8 @@ Shared asset companions for this skill:
 
 - prompt: `checkpoint-closure-review`
 - result protocol: `check-result-v1`
-- profiles: `claude/check-medium`, `codex/check-medium`
+- profiles: `claude/check-medium`, `codex/check-medium`, `kilo/check-medium`,
+  `copilot/check-medium`
 
 ## Two-Root Model
 

@@ -75,6 +75,9 @@ bash agent-os/scripts/bootstrap-repo.sh --owner <name> --ref <branch|tag> <targe
 ```
 
 The bootstrap also writes `.githooks/commit-msg` into the target repository.
+It also writes `.github/copilot-instructions.md` as a thin repo-level runtime
+entrypoint; canonical governance still lives in `AGENTS.md`,
+`ARCHITECTURE.md`, and `PLAN.yaml`.
 Enable it with:
 
 ```bash
@@ -101,6 +104,8 @@ The canonical local verification environment for this repository is `nn-2`.
 
 `sync-workspace.sh` materializes runtime files from the current local
 control-plane checkout. It does not pull from the remote automatically.
+It currently renders only the workspace-scoped runtime entrypoints
+(`AGENTS.md`, `CLAUDE.md`, `.codex`).
 If you want the latest `origin/main` first, run:
 
 ```bash
@@ -144,9 +149,15 @@ printf "docs(workflow): missing refs\n\n" > /tmp/bad-msg.txt
 - **Level 0** (this repository): central control plane — shared workflow,
   schemas, templates, scripts
 - **Level 1**: workspace runtime materialization — generated from Level-0
-  templates by `sync-workspace.sh`
+  templates by `sync-workspace.sh` for workspace-scoped runtimes
 - **Level 2**: repository-local governance — bootstrapped from Level-0
   templates by `bootstrap-repo.sh`
+
+Runtime entrypoint artifacts remain thin pointers only. In this repository:
+
+- `CLAUDE.md` and `.codex` are workspace/runtime entrypoints
+- `.github/copilot-instructions.md` is the repo-level Copilot entrypoint
+- `AGENTS.md` remains the portable repo-level entrypoint for Kilo in v1
 
 ## License
 

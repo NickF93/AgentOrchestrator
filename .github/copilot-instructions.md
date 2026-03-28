@@ -1,9 +1,6 @@
-# KILO.md — Adapter Layer for Kilo Code (Experimental)
+# GitHub Copilot Repository Instructions
 
-**Runtime tier: experimental** — see `agent-os/workflow/portability-model.md`
-for lifecycle definitions.
-
-This file is a thin adapter layer. It does not define governance rules.
+This file is a thin runtime entrypoint. It does not define governance rules.
 All normative rules live in the canonical authorities listed below.
 
 ## Canonical Authorities
@@ -22,16 +19,21 @@ Read these files before starting work. They are your operating rules:
 - `agent-os/workflow/item-taxonomy.md` — item types, actions, required fields,
   commit-group semantics
 
-## Adapter Overrides
+## Runtime Boundary
 
-The following override Kilo Code defaults that conflict with this
-repository's governance:
+- Keep this file as an entrypoint only. Do not duplicate or redefine
+  normative governance here.
+- Runtime-specific execution notes may be added only when they do not change
+  the meaning of the canonical authorities.
+- When in doubt, follow `AGENTS.md` and the workflow files above.
+
+## Adapter Overrides
 
 ### Mandatory commit rule
 
 This repository requires every `commit_group` to be committed to git
 immediately upon completion. Do not ask for permission to commit when
-closing a commit_group — the governance rules already mandate it. Stage
+closing a `commit_group` — the governance rules already mandate it. Stage
 the relevant files, build the commit message per `AGENTS.md`, and commit.
 Do not push (Phase A only) unless explicitly told to.
 
@@ -47,19 +49,3 @@ When working through `PLAN.yaml`, advance items through the lifecycle
 automatically: implement, update statuses, run checks, validate, render,
 and commit each `commit_group` as it completes. Do not stop to ask between
 commit_groups unless an escalation condition from `AGENTS.md` is triggered.
-
-## Tooling
-
-Use `conda run -n nn-2 python` to run scripts in this repository:
-
-```
-conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
-conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml
-conda run -n nn-2 python -m pytest -q
-bash agent-os/scripts/run-gates.sh
-```
-
-## Skills
-
-Operational skills are in `agent-os/skills/`. Read the relevant `SKILL.md`
-and follow its procedure when the skill's trigger conditions match.

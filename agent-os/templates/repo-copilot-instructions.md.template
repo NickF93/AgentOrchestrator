@@ -1,0 +1,29 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+
+# GitHub Copilot Repository Instructions
+
+This file is a thin runtime entrypoint. It does not define governance rules.
+All normative rules live in the canonical authorities listed below.
+
+## Canonical Authorities
+
+- `AGENTS.md` — workflow authority and operating rules
+- `ARCHITECTURE.md` — software constraints and boundaries
+- `PLAN.yaml` — active execution tracking
+- `REPO_MAP.md` — practical codebase topology reference
+
+## Runtime Boundary
+
+- Keep this file thin. Do not duplicate governance rules here.
+- Runtime-specific Copilot notes may be added only when they do not change the
+  meaning of the canonical authorities.
+- Follow `AGENTS.md` for tracking-first execution, commit-group closure, and
+  escalation rules.
+
+## Working Rules
+
+- Read `AGENTS.md` before starting work.
+- Track work in `PLAN.yaml` before editing non-generated files.
+- Do not invent commit-group boundaries at commit time.
+- Shared prompts, skills, profiles, protocols, and registry remain Level-0
+  assets and must not be copied here as new sources of truth.

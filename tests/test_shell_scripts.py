@@ -47,6 +47,11 @@ def test_bootstrap_repo_creates_expected_files(
     assert (target_repo / "AGENTS.md").exists()
     assert (target_repo / "PLAN.yaml").exists()
     assert (target_repo / ".githooks" / "commit-msg").exists()
+    copilot_instructions = target_repo / ".github" / "copilot-instructions.md"
+    assert copilot_instructions.exists()
+    copilot_text = copilot_instructions.read_text(encoding="utf-8")
+    assert "thin runtime entrypoint" in copilot_text
+    assert "AGENTS.md" in copilot_text
 
 
 def test_sync_workspace_stamps_control_plane_root(
@@ -76,6 +81,8 @@ def test_sync_workspace_stamps_control_plane_root(
     assert "CONTROL_PLANE_ROOT:" in workspace_codex
     assert str(repo_root) in workspace_codex
     assert "## Adapter Overrides" in workspace_codex
+    assert not (workspace_root / ".github").exists()
+    assert not (workspace_root / "KILO.md").exists()
 
 
 def test_materialize_shared_asset_writes_snapshot_and_provenance(

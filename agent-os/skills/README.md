@@ -14,14 +14,15 @@ Reusable skill packages for cross-repo and cross-agent workflows.
 
 ## Supported Runtimes in v1
 
-First-wave shared-asset support is defined for:
+Shared-asset support is currently defined for:
 
 - `claude`
 - `codex`
+- `kilo`
+- `copilot`
 
-Additional runtimes may be added later, but they are not part of the active
-Layer-0 shared-asset contract in v1. Runtime lifecycle tiers (experimental,
-supported, first-class) are defined in `agent-os/workflow/portability-model.md`.
+Runtime lifecycle tiers (experimental, supported, first-class) are defined in
+`agent-os/workflow/portability-model.md`.
 
 ## Required Body Sections
 

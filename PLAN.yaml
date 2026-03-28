@@ -2633,13 +2633,14 @@ items:
     type: M
     title: "Implement Copilot support and Kilo realignment across docs, templates, registry, and tooling"
     actions: [implement, document, refactor]
-    status: planned
+    status: done
     role: implementer
     effort: high
     commit_group: cg35
     depends_on: [D14.1.1]
     scope: "."
     artifacts_out:
+      - .github/copilot-instructions.md
       - agent-os/workflow/portability-model.md
       - agent-os/workflow/shared-workflow.md
       - agent-os/registry/shared-assets.yaml
@@ -2647,6 +2648,7 @@ items:
       - agent-os/profiles/kilo/check-medium.yaml
       - agent-os/skills/plan-checkpoint-close/SKILL.md
       - agent-os/templates/repo-copilot-instructions.md.template
+      - agent-os/templates/repo-README.md.template
       - agent-os/scripts/bootstrap-repo.sh
       - agent-os/scripts/resolve-shared-asset.py
       - tests/test_shell_scripts.py
@@ -2664,7 +2666,7 @@ items:
     type: T
     title: "Validate Copilot support and Kilo realignment"
     actions: [test, verify]
-    status: planned
+    status: ready
     role: tester
     effort: medium
     commit_group: cg36

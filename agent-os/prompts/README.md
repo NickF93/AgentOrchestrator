@@ -32,8 +32,8 @@ Shared prompt assets for orchestrator, reviewer, and verification flows.
 
 - Prompt assets stay tool-neutral.
 - Runtime-specific behavior belongs in Layer-0 profiles or adapter notes.
-- First-wave shared-asset consumption in v1 is defined for `claude` and `codex`.
-  Runtime lifecycle tiers (experimental, supported, first-class) are defined in
-  `agent-os/workflow/portability-model.md`.
+- Shared-asset consumption in v1 is defined for `claude`, `codex`, `kilo`,
+  and `copilot`. Runtime lifecycle tiers (experimental, supported,
+  first-class) are defined in `agent-os/workflow/portability-model.md`.
 - Prompt assets may reference canonical protocols and skills, but they must not
   redefine taxonomy, lifecycle, or authority rules.

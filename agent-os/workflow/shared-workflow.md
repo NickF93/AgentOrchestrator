@@ -31,6 +31,7 @@ workspace/                          <- Layer 1 (workspace runtime)
 │   ├── ARCHITECTURE.md
 │   ├── PLAN.yaml                   <- repo's own plan
 │   ├── REPO_MAP.md
+│   ├── .github/copilot-instructions.md <- repo-local Copilot entrypoint (thin)
 │   ├── .agent-os/vendor/           <- optional vendored shared-asset snapshots
 │   ├── src/
 │   └── tests/                      <- repo's own tests/checks
@@ -49,6 +50,7 @@ workspace/                          <- Layer 1 (workspace runtime)
 | Shared tooling (validate, render)  | Layer 0 (`agent-os/scripts/`)     | Runs against any repo's PLAN.yaml           |
 | Plan schema                        | Layer 0 (`agent-os/schemas/`)     | Shared contract                             |
 | Canonical governance rules         | Layer 0 (`agent-os/workflow/`)    | Authoritative reference for rule lookup     |
+| Runtime entrypoint artifacts       | Layer 1 or Layer 2, by runtime    | Thin runtime-specific pointers only         |
 | PLAN.yaml (execution data)         | Layer 2 (each governed repo)      | Repo-local execution tracking               |
 | AGENTS.md (commit contract)        | Layer 2 (each governed repo)      | Repo-local copy from bootstrap              |
 | REPO_MAP.md                        | Layer 2 (each governed repo)      | Repo-local topology                         |
@@ -85,9 +87,17 @@ Optional `vendored` mode is allowed only through explicit materialization:
 - never edit vendored assets as if they were the source of truth
 - do not auto-vendor during bootstrap or workspace sync in v1
 
-First-wave supported runtimes for this model are `claude` and `codex`.
-Runtime-specific behavior belongs in profiles or adapter notes. Prompts and
-skills stay tool-neutral.
+Supported runtimes for this model are `claude`, `codex`, `kilo`, and
+`copilot`.
+
+- Workspace-generated runtime entrypoints currently exist for `claude` and
+  `codex`.
+- Repo-local runtime entrypoint bootstrap currently exists for `copilot`.
+- `kilo` uses canonical `AGENTS.md` as the portable repo-level entrypoint in
+  v1.
+
+Runtime-specific behavior belongs in profiles or thin entrypoint notes.
+Prompts and skills stay tool-neutral.
 
 ## Canonical Concern Split
 

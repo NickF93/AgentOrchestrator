@@ -38,6 +38,9 @@ This repository is governed by the Level-0 control plane.
 - Each git commit closes exactly one `commit_group`.
 - Tracked commits MUST include a footer of the form:
   `Refs: <PLAN item IDs>, <commit_group ID>`
+- Runtime entrypoints such as `.github/copilot-instructions.md` are thin
+  pointers only; canonical governance remains in `AGENTS.md`,
+  `ARCHITECTURE.md`, and `PLAN.yaml`.
 
 ## Local Hook
 
