@@ -106,7 +106,7 @@ sprints:
     type: S
     parent: X4
     title: "Sprint 2 — Semantic alignment (closure and freshness)"
-    status: planned
+    status: done
 
   - id: S4.3
     type: S
@@ -1131,7 +1131,7 @@ items:
     type: M
     title: "Align commit group closure to require both status and checks"
     actions: [implement, document]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg14
@@ -1149,7 +1149,7 @@ items:
     type: M
     title: "Make REPO_MAP freshness a hard gate in docs and validator"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg14
@@ -1167,7 +1167,7 @@ items:
     type: T
     title: "Validate closure and freshness alignment"
     actions: [test, verify]
-    status: planned
+    status: done
     role: tester
     effort: low
     commit_group: cg14

@@ -40,9 +40,10 @@ If two in_progress items share a prefix, emit a warning and require explicit
 orchestrator confirmation before parallel execution.
 
 ## Commit Group Closure
-A commit group can close when:
-- all included items are review, verified, or done,
-- required checks are green,
+A commit group MUST only be closed (committed) when ALL of the following are true:
+
+- all included items are in review, verified, or done state,
+- all required checks for those items are satisfied,
 - resulting diff is semantically coherent and reviewable.
 
 ## Governance Freshness Checks
@@ -75,8 +76,8 @@ orchestrator must:
 4. Record the freshness check result in the checkpoint's notes or commit message.
 
 **Automation**: `validate-plan.py --check-freshness` MUST detect staleness
-and emit a warning when checkpoint items are in `review` or `verified`
-state.
+and hard-fail when checkpoint items are in `review` or `verified` state.
+This is a hard gate, not advisory.
 
 ## ADR State Flow
 

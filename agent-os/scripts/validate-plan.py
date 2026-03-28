@@ -312,19 +312,19 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
 
 
 def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
-    """Warn if REPO_MAP.md is stale when checkpoint items are active."""
-    warnings: list[str] = []
+    """Hard-fail if REPO_MAP.md is stale when checkpoint items are active."""
+    errors: list[str] = []
     items = plan.get("items", []) or []
     active_checkpoints = [
         i for i in items
         if i.get("type") == "C" and i.get("status") in {"review", "verified"}
     ]
     if not active_checkpoints:
-        return warnings
+        return errors
 
     repo_map_path = plan_path.parent / "REPO_MAP.md"
     if not repo_map_path.exists():
-        return warnings
+        return errors
 
     # Parse freshness metadata from REPO_MAP.md header
     last_validated = None
@@ -348,21 +348,21 @@ def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
 
     if last_validated is None:
         checkpoint_ids = ", ".join(i.get("id", "") for i in active_checkpoints)
-        warnings.append(
+        errors.append(
             f"REPO_MAP.md has no last_validated_on date; "
-            f"active checkpoint(s) {checkpoint_ids} may require freshness verification"
+            f"active checkpoint(s) {checkpoint_ids} cannot close without freshness verification"
         )
-        return warnings
+        return errors
 
     age = (date.today() - last_validated).days
     if age > window_days:
         checkpoint_ids = ", ".join(i.get("id", "") for i in active_checkpoints)
-        warnings.append(
+        errors.append(
             f"REPO_MAP.md is stale ({age} days old, window is {window_days} days); "
-            f"active checkpoint(s) {checkpoint_ids} may require freshness verification"
+            f"active checkpoint(s) {checkpoint_ids} cannot close until map is refreshed"
         )
 
-    return warnings
+    return errors
 
 
 def main() -> int:
@@ -436,7 +436,7 @@ def main() -> int:
     errors, warnings = validate_custom_rules(plan)
 
     if args.check_freshness:
-        warnings.extend(check_repo_map_freshness(plan, plan_path))
+        errors.extend(check_repo_map_freshness(plan, plan_path))
 
     for warning in warnings:
         print(f"WARNING: {warning}")

@@ -86,8 +86,9 @@ committing is a governance violation.
 ### Commit Group Closure
 
 - A commit_group is the mandatory git commit boundary.
-- A commit_group MUST only be closed (committed) when all its items satisfy
-  their required checks.
+- A commit_group MUST only be closed (committed) when (a) all its items are
+  in review, verified, or done state AND (b) all required checks for those
+  items are satisfied.
 - Each commit MUST be traceable: item -> evidence -> commit.
 - Commit message format is mandatory on all repositories governed by Layer-0:
   `<type>(<scope>): <description>`
