@@ -79,7 +79,60 @@ def render_markdown(plan: dict) -> str:
         lines.append(f"| {cg.get('id','')} | {cg.get('title','')} | {items} |")
 
     lines.append("")
+
+    lines.append("## Item Details")
+    lines.append("")
+    for obj in sorted_by_id(plan.get("items", []) or []):
+        item_id = obj.get("id", "")
+        title = obj.get("title", "")
+        lines.append(f"### {item_id}: {title}")
+        lines.append("")
+        lines.append(f"- **Type**: {obj.get('type', '')} | **Status**: {obj.get('status', '')} | **Role**: {obj.get('role', '')} | **Effort**: {obj.get('effort', '')}")
+        actions = obj.get("actions", []) or []
+        if actions:
+            lines.append(f"- **Actions**: {', '.join(actions)}")
+        deps = obj.get("depends_on", []) or []
+        if deps:
+            lines.append(f"- **Depends on**: {', '.join(deps)}")
+        artifacts = obj.get("artifacts_out", []) or []
+        if artifacts:
+            lines.append(f"- **Artifacts**: {', '.join(artifacts)}")
+        decision = obj.get("decision", "")
+        if decision:
+            lines.append(f"- **Decision**: {decision.strip()}")
+        checks = obj.get("checks", []) or []
+        if checks:
+            lines.append("- **Checks**:")
+            for check in checks:
+                lines.append(f"  - {check}")
+        notes = obj.get("notes", "")
+        if notes:
+            lines.append(f"- **Notes**: {notes.strip()}")
+        lines.append("")
+
     return "\n".join(lines)
+
+
+STATUS_COLORS: dict[str, str] = {
+    "planned": "lightgray",
+    "ready": "lightyellow",
+    "in_progress": "lightblue",
+    "blocked": "salmon",
+    "review": "orange",
+    "verified": "lightgreen",
+    "done": "darkseagreen1",
+}
+
+TYPE_SHAPES: dict[str, str] = {
+    "X": "box3d",
+    "S": "tab",
+    "Q": "diamond",
+    "D": "note",
+    "M": "box",
+    "F": "octagon",
+    "T": "ellipse",
+    "C": "doubleoctagon",
+}
 
 
 def dot_escape(text: str) -> str:
@@ -88,15 +141,19 @@ def dot_escape(text: str) -> str:
 
 def node_dot(obj: dict) -> str:
     node_id = obj.get("id", "")
-    label = f"{node_id} | {obj.get('type','')} | {obj.get('status','')}"
-    return f'  "{dot_escape(node_id)}" [label="{dot_escape(label)}"];'
+    obj_type = obj.get("type", "")
+    obj_status = obj.get("status", "")
+    label = f"{node_id} | {obj_type} | {obj_status}"
+    shape = TYPE_SHAPES.get(obj_type, "box")
+    color = STATUS_COLORS.get(obj_status, "white")
+    return f'  "{dot_escape(node_id)}" [label="{dot_escape(label)}", shape={shape}, style="filled,rounded", fillcolor={color}];'
 
 
 def render_dot(plan: dict) -> str:
     lines: list[str] = []
     lines.append("digraph PLAN {")
     lines.append("  rankdir=LR;")
-    lines.append("  node [shape=box, style=rounded];")
+    lines.append("  node [shape=box, style=\"filled,rounded\", fillcolor=white];")
 
     nodes: list[dict] = []
     nodes.extend(plan.get("milestones", []) or [])

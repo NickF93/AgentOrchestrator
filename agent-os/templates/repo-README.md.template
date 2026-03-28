@@ -1,0 +1,24 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+
+# {{REPO_NAME}}
+
+## Overview
+
+This repository is governed by the Level-0 control plane.
+
+## Governance Files
+
+| File | Purpose |
+|---|---|
+| AGENTS.md | Workflow authority and operating rules |
+| ARCHITECTURE.md | Software constraints and boundaries |
+| PLAN.yaml | Active execution tracking (source of truth) |
+| PLAN.md | Human-readable plan view (generated) |
+| PLAN.dot | Graph plan view (generated) |
+| REPO_MAP.md | Codebase topology reference |
+
+## Control Plane
+
+- Source: {{CONTROL_PLANE_REF}}
+- Owner: {{OWNER}}
+- Bootstrap date: {{DATE}}
