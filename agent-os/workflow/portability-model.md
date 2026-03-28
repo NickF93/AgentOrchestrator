@@ -42,7 +42,7 @@ upgrade path.
 | Runtime | Tier         | Adapter   | Profile | Workspace Template |
 |---------|-------------|-----------|---------|--------------------|
 | claude  | first-class | CLAUDE.md | yes     | yes                |
-| codex   | supported   | .codex    | yes     | no (deferred)      |
+| codex   | first-class | .codex    | yes     | yes                |
 | kilo    | experimental| KILO.md   | yes     | no                 |
 | copilot | deferred    | —         | no      | no                 |
 

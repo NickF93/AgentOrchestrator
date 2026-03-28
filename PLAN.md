@@ -26,6 +26,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X9 | X | Shared Layer-0 Asset Distribution and Two-Root Consumption | done |
 | X10 | X | Script Test Suite and Local Quality Gates | done |
 | X11 | X | Runtime Portability Expansion | done |
+| X12 | X | Promote Codex to First-Class Runtime | done |
 
 ## Plan
 
@@ -385,6 +386,24 @@ Status: done
 | `T11.1.4` | `T` | Validate portability expansion and runtime artifacts | done |  |
 | `C11.1.5` | `C` | Runtime portability expansion checkpoint | done |  |
 
+### X12
+
+- ID: `X12`
+- Title: Promote Codex to First-Class Runtime
+- Status: done
+- Note: Promote Codex from supported to first-class by adding a workspace template, extending sync-workspace.sh to render it, and updating the runtime status table.
+
+#### S12.1 Items
+
+Sprint: Sprint 1 — Codex workspace template, sync-workspace extension, tier promotion
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M12.1.1` | `M` | Create Codex workspace template and extend sync-workspace.sh | done | Creates workspace-CODEX.md.template following the CLAUDE template pattern with Codex-specific sandbox notes. Extends sync-workspace.sh to render the Codex template alongside AGENTS.md and CLAUDE.md. Updates portability-model.md runtime status table to mark codex as first-class. |
+| `T12.1.2` | `T` | Validate Codex first-class promotion | done |  |
+| `C12.1.3` | `C` | Codex first-class promotion checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -421,6 +440,7 @@ Status: done
 | cg29 | Codex adapter — populate .codex with thin adapter content | `M11.1.2` |
 | cg30 | Kilo experimental — adapter, profile, registry, and gitignore | `M11.1.3` |
 | cg31 | Verification and checkpoint — validate portability expansion and close X11 | `T11.1.4`, `C11.1.5` |
+| cg32 | Codex first-class — workspace template, sync extension, tier promotion | `M12.1.1`, `T12.1.2`, `C12.1.3` |
 
 ## Item Details
 
@@ -1616,6 +1636,42 @@ Status: done
   - agent-os/scripts/ has repo-owned pytest coverage for Python and Bash entrypoints
   - Local gate runner covers Ruff, mypy, compile checks, pytest, and conditional ShellCheck
   - requirements.txt remains runtime-only
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### M12.1.1: Create Codex workspace template and extend sync-workspace.sh
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S12.1`
+- **Actions**: implement
+- **Depends on**: `C11.1.5`
+- **Commit group**: `cg32`
+- **Artifacts**: agent-os/templates/workspace-CODEX.md.template, agent-os/scripts/sync-workspace.sh, agent-os/workflow/portability-model.md
+- **Notes**: Creates workspace-CODEX.md.template following the CLAUDE template pattern with Codex-specific sandbox notes. Extends sync-workspace.sh to render the Codex template alongside AGENTS.md and CLAUDE.md. Updates portability-model.md runtime status table to mark codex as first-class.
+
+### T12.1.2: Validate Codex first-class promotion
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S12.1`
+- **Actions**: test, verify
+- **Depends on**: `M12.1.1`
+- **Commit group**: `cg32`
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0
+  - workspace-CODEX.md.template exists and follows workspace template pattern
+  - sync-workspace.sh renders .codex alongside AGENTS.md and CLAUDE.md
+  - portability-model.md shows codex as first-class
+  - run-gates.sh passes
+
+### C12.1.3: Codex first-class promotion checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S12.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T12.1.2`
+- **Commit group**: `cg32`
+- **Checks**:
+  - Codex has adapter, profile, workspace template, and sync support
+  - Runtime status table is consistent with actual artifact presence
   - PLAN.md and PLAN.dot are regenerated and committed
 
 ### D11.1.1: Design runtime lifecycle model and plan portability expansion

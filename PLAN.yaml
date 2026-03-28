@@ -139,6 +139,15 @@ milestones:
       runtime, and document Copilot as deferred. Closes the gap between
       the agent-agnostic architecture and the actual adapter coverage.
 
+  - id: X12
+    type: X
+    title: "Promote Codex to First-Class Runtime"
+    status: done
+    note: >
+      Promote Codex from supported to first-class by adding a workspace
+      template, extending sync-workspace.sh to render it, and updating
+      the runtime status table.
+
 sprints:
   - id: S1.1
     type: S
@@ -264,6 +273,12 @@ sprints:
     type: S
     parent: X11
     title: "Sprint 1 — Runtime lifecycle, Codex adapter, Kilo experimental, Copilot deferral"
+    status: done
+
+  - id: S12.1
+    type: S
+    parent: X12
+    title: "Sprint 1 — Codex workspace template, sync-workspace extension, tier promotion"
     status: done
 
 items:
@@ -2337,6 +2352,64 @@ items:
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
   # ─── X11 / S11.1: Runtime portability expansion ───────────────────────────
+  # ─── X12 / S12.1: Promote Codex to first-class ────────────────────────────
+
+  - id: M12.1.1
+    parent: S12.1
+    type: M
+    title: "Create Codex workspace template and extend sync-workspace.sh"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg32
+    depends_on: [C11.1.5]
+    scope: "agent-os"
+    artifacts_out:
+      - agent-os/templates/workspace-CODEX.md.template
+      - agent-os/scripts/sync-workspace.sh
+      - agent-os/workflow/portability-model.md
+    notes: >
+      Creates workspace-CODEX.md.template following the CLAUDE template
+      pattern with Codex-specific sandbox notes. Extends sync-workspace.sh
+      to render the Codex template alongside AGENTS.md and CLAUDE.md.
+      Updates portability-model.md runtime status table to mark codex as
+      first-class.
+
+  - id: T12.1.2
+    parent: S12.1
+    type: T
+    title: "Validate Codex first-class promotion"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg32
+    depends_on: [M12.1.1]
+    scope: "."
+    checks:
+      - "validate-plan.py PLAN.yaml exits 0"
+      - "workspace-CODEX.md.template exists and follows workspace template pattern"
+      - "sync-workspace.sh renders .codex alongside AGENTS.md and CLAUDE.md"
+      - "portability-model.md shows codex as first-class"
+      - "run-gates.sh passes"
+
+  - id: C12.1.3
+    parent: S12.1
+    type: C
+    title: "Codex first-class promotion checkpoint"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg32
+    depends_on: [T12.1.2]
+    scope: "."
+    checks:
+      - "Codex has adapter, profile, workspace template, and sync support"
+      - "Runtime status table is consistent with actual artifact presence"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 
   - id: D11.1.1
     parent: S11.1
@@ -2695,3 +2768,11 @@ commit_groups:
     notes: >
       Runs validation, rendering, gates, and shared-asset resolution checks.
       Closes all X11 items and regenerates PLAN.md and PLAN.dot.
+
+  - id: cg32
+    title: "Codex first-class — workspace template, sync extension, tier promotion"
+    items: [M12.1.1, T12.1.2, C12.1.3]
+    notes: >
+      Promotes Codex to first-class by creating workspace-CODEX.md.template,
+      extending sync-workspace.sh to render it, and updating the runtime
+      status table.
