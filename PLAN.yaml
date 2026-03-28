@@ -2364,7 +2364,7 @@ items:
     type: M
     title: "Populate Codex adapter and add lifecycle references to READMEs"
     actions: [implement, document]
-    status: planned
+    status: done
     role: implementer
     effort: low
     commit_group: cg29

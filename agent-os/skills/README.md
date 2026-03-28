@@ -20,7 +20,8 @@ First-wave shared-asset support is defined for:
 - `codex`
 
 Additional runtimes may be added later, but they are not part of the active
-Layer-0 shared-asset contract in v1.
+Layer-0 shared-asset contract in v1. Runtime lifecycle tiers (experimental,
+supported, first-class) are defined in `agent-os/workflow/portability-model.md`.
 
 ## Required Body Sections
 
