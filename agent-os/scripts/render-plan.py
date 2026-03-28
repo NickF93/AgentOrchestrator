@@ -19,11 +19,32 @@ def load_yaml(path: Path) -> dict:
     return data
 
 
-def sorted_by_id(items: list[dict]) -> list[dict]:
-    return sorted(items, key=lambda x: x.get("id", ""))
+def source_order(items: list[dict] | None) -> list[dict]:
+    return list(items or [])
+
+
+def normalize_text(value: str) -> str:
+    return " ".join((value or "").strip().split())
+
+
+def markdown_inline_list(values: list[str]) -> str:
+    return ", ".join(f"`{value}`" for value in values)
 
 
 def render_markdown(plan: dict) -> str:
+    milestones = source_order(plan.get("milestones"))
+    sprints = source_order(plan.get("sprints"))
+    items = source_order(plan.get("items"))
+    commit_groups = source_order(plan.get("commit_groups"))
+
+    sprints_by_milestone: dict[str, list[dict]] = {}
+    for sprint in sprints:
+        sprints_by_milestone.setdefault(sprint.get("parent", ""), []).append(sprint)
+
+    items_by_sprint: dict[str, list[dict]] = {}
+    for item in items:
+        items_by_sprint.setdefault(item.get("parent", ""), []).append(item)
+
     lines: list[str] = []
     lines.append("# PLAN.md")
     lines.append("")
@@ -43,71 +64,90 @@ def render_markdown(plan: dict) -> str:
     lines.append("")
     lines.append("| ID | Type | Title | Status |")
     lines.append("|---|---|---|---|")
-    for obj in sorted_by_id(plan.get("milestones", []) or []):
+    for obj in milestones:
         lines.append(
             f"| {obj.get('id','')} | {obj.get('type','')} | {obj.get('title','')} | {obj.get('status','')} |"
         )
     lines.append("")
 
-    lines.append("## Sprints")
+    lines.append("## Plan")
     lines.append("")
-    lines.append("| ID | Parent | Type | Title | Status |")
-    lines.append("|---|---|---|---|---|")
-    for obj in sorted_by_id(plan.get("sprints", []) or []):
-        lines.append(
-            f"| {obj.get('id','')} | {obj.get('parent','')} | {obj.get('type','')} | {obj.get('title','')} | {obj.get('status','')} |"
-        )
-    lines.append("")
+    for milestone in milestones:
+        milestone_id = milestone.get("id", "")
+        lines.append(f"### {milestone_id}")
+        lines.append("")
+        lines.append(f"- ID: `{milestone_id}`")
+        lines.append(f"- Title: {milestone.get('title', '')}")
+        lines.append(f"- Status: {milestone.get('status', '')}")
+        milestone_note = normalize_text(milestone.get("note", ""))
+        if milestone_note:
+            lines.append(f"- Note: {milestone_note}")
+        lines.append("")
 
-    lines.append("## Items")
-    lines.append("")
-    lines.append("| ID | Parent | Type | Status | Role | Effort | Commit Group | Depends On |")
-    lines.append("|---|---|---|---|---|---|---|---|")
-    for obj in sorted_by_id(plan.get("items", []) or []):
-        deps = ", ".join(obj.get("depends_on", []) or [])
-        lines.append(
-            f"| {obj.get('id','')} | {obj.get('parent','')} | {obj.get('type','')} | {obj.get('status','')} | {obj.get('role','')} | {obj.get('effort','')} | {obj.get('commit_group','')} | {deps} |"
-        )
+        milestone_sprints = sprints_by_milestone.get(milestone_id, [])
+        if not milestone_sprints:
+            continue
 
-    lines.append("")
+        for sprint in milestone_sprints:
+            sprint_id = sprint.get("id", "")
+            sprint_items = items_by_sprint.get(sprint_id, [])
+            lines.append(f"#### {sprint_id} Items")
+            lines.append("")
+            lines.append(f"Sprint: {sprint.get('title', '')}")
+            lines.append(f"Status: {sprint.get('status', '')}")
+            lines.append("")
+            lines.append("| ID | Type | Description | Status | Notes |")
+            lines.append("| --- | --- | --- | --- | --- |")
+            for item in sprint_items:
+                notes = normalize_text(item.get("notes", ""))
+                lines.append(
+                    f"| `{item.get('id', '')}` | `{item.get('type', '')}` | {item.get('title', '')} | {item.get('status', '')} | {notes} |"
+                )
+            lines.append("")
+
     lines.append("## Commit Groups")
     lines.append("")
     lines.append("| ID | Title | Items |")
     lines.append("|---|---|---|")
-    for cg in sorted_by_id(plan.get("commit_groups", []) or []):
-        items = ", ".join(cg.get("items", []) or [])
-        lines.append(f"| {cg.get('id','')} | {cg.get('title','')} | {items} |")
+    for cg in commit_groups:
+        cg_items = markdown_inline_list(cg.get("items", []) or [])
+        lines.append(f"| {cg.get('id','')} | {cg.get('title','')} | {cg_items} |")
 
     lines.append("")
-
     lines.append("## Item Details")
     lines.append("")
-    for obj in sorted_by_id(plan.get("items", []) or []):
+    for obj in items:
         item_id = obj.get("id", "")
         title = obj.get("title", "")
         lines.append(f"### {item_id}: {title}")
         lines.append("")
         lines.append(f"- **Type**: {obj.get('type', '')} | **Status**: {obj.get('status', '')} | **Role**: {obj.get('role', '')} | **Effort**: {obj.get('effort', '')}")
+        parent = obj.get("parent", "")
+        if parent:
+            lines.append(f"- **Sprint**: `{parent}`")
         actions = obj.get("actions", []) or []
         if actions:
             lines.append(f"- **Actions**: {', '.join(actions)}")
         deps = obj.get("depends_on", []) or []
         if deps:
-            lines.append(f"- **Depends on**: {', '.join(deps)}")
+            lines.append(f"- **Depends on**: {markdown_inline_list(deps)}")
+        commit_group = obj.get("commit_group", "")
+        if commit_group:
+            lines.append(f"- **Commit group**: `{commit_group}`")
         artifacts = obj.get("artifacts_out", []) or []
         if artifacts:
             lines.append(f"- **Artifacts**: {', '.join(artifacts)}")
-        decision = obj.get("decision", "")
+        decision = normalize_text(obj.get("decision", ""))
         if decision:
-            lines.append(f"- **Decision**: {decision.strip()}")
+            lines.append(f"- **Decision**: {decision}")
         checks = obj.get("checks", []) or []
         if checks:
             lines.append("- **Checks**:")
             for check in checks:
                 lines.append(f"  - {check}")
-        notes = obj.get("notes", "")
+        notes = normalize_text(obj.get("notes", ""))
         if notes:
-            lines.append(f"- **Notes**: {notes.strip()}")
+            lines.append(f"- **Notes**: {notes}")
         lines.append("")
 
     return "\n".join(lines)
@@ -156,13 +196,13 @@ def render_dot(plan: dict) -> str:
     lines.append("  node [shape=box, style=\"filled,rounded\", fillcolor=white];")
 
     nodes: list[dict] = []
-    nodes.extend(plan.get("milestones", []) or [])
-    nodes.extend(plan.get("sprints", []) or [])
-    nodes.extend(plan.get("items", []) or [])
+    nodes.extend(source_order(plan.get("milestones")))
+    nodes.extend(source_order(plan.get("sprints")))
+    nodes.extend(source_order(plan.get("items")))
 
-    milestones = sorted_by_id(plan.get("milestones", []) or [])
-    sprints = sorted_by_id(plan.get("sprints", []) or [])
-    items = sorted_by_id(plan.get("items", []) or [])
+    milestones = source_order(plan.get("milestones"))
+    sprints = source_order(plan.get("sprints"))
+    items = source_order(plan.get("items"))
 
     # Milestones and sprints are always rendered as top-level nodes.
     for obj in milestones:
@@ -173,9 +213,9 @@ def render_dot(plan: dict) -> str:
     # Render items clustered by commit_group when available.
     item_by_id = {item.get("id", ""): item for item in items}
     rendered_item_ids: set[str] = set()
-    for cg in sorted_by_id(plan.get("commit_groups", []) or []):
+    for cg in source_order(plan.get("commit_groups")):
         cg_id = cg.get("id", "")
-        cg_items = [item_by_id[i] for i in sorted(cg.get("items", []) or []) if i in item_by_id]
+        cg_items = [item_by_id[i] for i in cg.get("items", []) or [] if i in item_by_id]
         if not cg_items:
             continue
         lines.append(f'  subgraph "cluster_{dot_escape(cg_id)}" {{')
@@ -194,15 +234,15 @@ def render_dot(plan: dict) -> str:
         lines.append(node_dot(item))
 
     # Parent edges
-    for obj in sorted_by_id(nodes):
+    for obj in nodes:
         parent = obj.get("parent")
         if parent:
             lines.append(f'  "{dot_escape(parent)}" -> "{dot_escape(obj.get("id", ""))}" [style=dashed];')
 
     # Dependency edges
-    for item in sorted_by_id(plan.get("items", []) or []):
+    for item in items:
         item_id = item.get("id", "")
-        for dep in sorted(item.get("depends_on", []) or []):
+        for dep in item.get("depends_on", []) or []:
             lines.append(f'  "{dot_escape(dep)}" -> "{dot_escape(item_id)}";')
 
     lines.append("}")
