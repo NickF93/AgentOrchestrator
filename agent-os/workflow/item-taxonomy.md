@@ -89,8 +89,13 @@ Every executable item (Q, D, M, F, T, C) must declare:
   scripted outside the schema.
 - decision (Q items only — schema enforces this restriction; non-Q items MUST NOT
   declare a decision field)
-- triggers
-- tools_profile
+- triggers — **DEFERRED**: adapter-level invocation hints; semantics TBD;
+  non-normative in MVP. Reserved for future adapter mappings; MUST NOT drive
+  execution semantics or be required by validation logic until the adapter
+  model is implemented.
+- tools_profile — **DEFERRED**: adapter-level capability/profile label;
+  semantics TBD; non-normative in MVP. Reserved for future adapter mappings;
+  same restrictions as triggers.
 - notes
 
 ## Identifier Grammar

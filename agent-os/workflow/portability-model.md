@@ -5,10 +5,14 @@ Keep the shared model tool-neutral so it can map to multiple agent ecosystems.
 
 ## Neutral Core Fields
 Use these abstract fields in planning/execution metadata:
+
 - role
 - effort
-- triggers
-- tools_profile
+- triggers — **DEFERRED**: adapter-level invocation hints; semantics TBD;
+  non-normative in MVP. Included as a vocabulary placeholder for future
+  adapter mappings. MUST NOT drive execution semantics until defined.
+- tools_profile — **DEFERRED**: adapter-level capability/profile label;
+  semantics TBD; non-normative in MVP. Same restrictions as triggers.
 
 ## Mapping Strategy
 Shared model remains stable; adapters map it to vendor-specific primitives.

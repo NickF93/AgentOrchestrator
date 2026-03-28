@@ -118,7 +118,7 @@ sprints:
     type: S
     parent: X4
     title: "Sprint 4 — Lifecycle unification and deferred fields"
-    status: planned
+    status: done
 
   - id: S4.5
     type: S
@@ -1272,7 +1272,7 @@ items:
     type: D
     title: "Unify governance asset states to draft/active/deprecated/superseded"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: medium
     commit_group: cg16
@@ -1290,7 +1290,7 @@ items:
     type: D
     title: "Add DEFERRED notes for triggers and tools_profile fields"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: low
     commit_group: cg16
@@ -1308,7 +1308,7 @@ items:
     type: D
     title: "Clarify single-writer rule as documentation/review-enforced"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: low
     commit_group: cg16
@@ -1325,7 +1325,7 @@ items:
     type: T
     title: "Validate lifecycle and field documentation changes"
     actions: [verify]
-    status: planned
+    status: done
     role: tester
     effort: low
     commit_group: cg16

@@ -79,11 +79,19 @@ orchestrator must:
 and hard-fail when checkpoint items are in `review` or `verified` state.
 This is a hard gate, not advisory.
 
-## ADR State Flow
+## Governance Asset Lifecycle
 
-Recommended ADR transitions:
-- proposed -> accepted
-- accepted -> superseded
-- accepted -> deprecated
+All governance assets (prompts, ADRs, skills) share one unified lifecycle:
 
-Each ADR transition should reference the PLAN item that triggered it.
+- draft: asset exists but is not yet reviewed or approved
+- active: asset has been reviewed and is in operational use
+- deprecated: asset is intentionally retired
+- superseded: asset is replaced by a newer version
+
+Primary transitions:
+
+- draft -> active
+- active -> deprecated
+- active -> superseded
+
+Each transition should reference the PLAN item or decision that triggered it.

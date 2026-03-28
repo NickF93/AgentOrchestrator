@@ -45,7 +45,9 @@ Priority order for conflict resolution:
 - Human planning model: milestone -> sprint -> item
 - Runtime execution model: dependency-driven and scope-aware
 - Single-writer rule: one orchestrator agent owns and writes the canonical PLAN source;
-  other agents may propose changes or produce evidence but must not write directly to the canonical PLAN.
+  other agents may propose changes or produce evidence but must not write directly
+  to the canonical PLAN. Enforcement is governance-based (code review and escalation),
+  not automated. No validator check exists for single-writer compliance.
 
 Execution predicate:
 - Item is executable when all dependencies are in verified or done state
@@ -124,7 +126,8 @@ Optional body and footer sections are strongly suggested, especially for medium 
 
 ### ADR lifecycle
 - Numbering: `ADR-0001`, `ADR-0002`, ... (zero-padded incremental sequence).
-- States: `proposed`, `accepted`, `superseded`, `deprecated`.
+- States: `draft`, `active`, `superseded`, `deprecated` (unified governance
+  asset lifecycle — see `lifecycle.md`).
 - ADRs must link to relevant PLAN decision or implementation items.
 
 ## Design Document Governance
