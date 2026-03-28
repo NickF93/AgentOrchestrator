@@ -15,16 +15,36 @@ Use these abstract fields in planning/execution metadata:
 - tools_profile — **DEFERRED**: adapter-level capability/profile label;
   semantics TBD; non-normative in MVP. Same restrictions as triggers.
 
-## First-Wave Runtime Support
+## Runtime Lifecycle
 
-Shared-asset consumption in v1 is supported for:
+Runtimes progress through three tiers before reaching full integration:
 
-- `claude`
-- `codex`
+- **experimental** — adapter file exists (may be minimal), profile exists in
+  `agent-os/profiles/<runtime>/`, runtime listed in the status table below.
+  Registry entries for genuinely runtime-neutral assets MAY include the
+  runtime. No workspace template or `sync-workspace.sh` support required.
 
-Other runtimes remain future adapter work. They MUST NOT be treated as active
-shared-asset targets until their profiles and consumption rules are added to
-Layer 0.
+- **supported** — adapter file is populated with canonical authorities and
+  overrides, profile is active, all genuinely runtime-neutral registry assets
+  include the runtime in their compatibility arrays. Workspace template and
+  sync support are recommended but not required.
+
+- **first-class** — all of supported, plus workspace template exists,
+  `sync-workspace.sh` generates runtime-specific files, and the runtime has
+  been validated end-to-end with the full governance stack.
+
+Runtimes below experimental tier are not tracked in the portability model.
+Runtimes at experimental or above have an explicit lifecycle position and
+upgrade path.
+
+## Runtime Status
+
+| Runtime | Tier         | Adapter   | Profile | Workspace Template |
+|---------|-------------|-----------|---------|--------------------|
+| claude  | first-class | CLAUDE.md | yes     | yes                |
+| codex   | supported   | .codex    | yes     | no (deferred)      |
+| kilo    | experimental| KILO.md   | yes     | no                 |
+| copilot | deferred    | —         | no      | no                 |
 
 ## Canonical Shared Asset Families
 
@@ -85,6 +105,15 @@ In v1:
 - runtime-specific behavior belongs in profiles or adapter notes
 - PLAN items reference shared assets by registry ID, not by runtime-specific
   knobs
+
+## Deferred Runtimes
+
+GitHub Copilot orchestration is recognized as a future target but requires a
+different adapter shape from the markdown adapter file model used by Claude,
+Codex, and Kilo. Copilot may need a combination of repository-level custom
+instructions, Copilot task presets, CI-assisted checks, and extension-specific
+conventions. No implementation work is planned until the adapter shape is
+designed and validated.
 
 ## Non-Goals
 
