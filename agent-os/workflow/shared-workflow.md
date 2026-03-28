@@ -85,3 +85,51 @@ Optional body and footer sections are strongly suggested, especially for medium 
 - Phase B: push, draft PR, develop alignment
 - Phase C: controlled merge automation
 - Phase D: hygiene automation
+
+## Governance Asset Lifecycles
+
+### prompts/
+- Canonical format: Markdown with YAML frontmatter.
+- Required frontmatter fields: `id`, `role`, `purpose`, `owner`, `version`, `status`.
+- Allowed `status` values: `draft`, `active`, `deprecated`, `superseded`.
+- Versioning: semantic (`major.minor.patch`) and incremented on normative behavior changes.
+- Update triggers: workflow policy change, taxonomy/lifecycle change, or tool-adapter contract change.
+
+### skills/
+- Canonical package format: `SKILL.md` with YAML frontmatter + markdown body.
+- Required frontmatter fields: `id`, `description`, `owner`, `version`, `compatibility`.
+- `compatibility` must declare neutral-core support and optional adapter notes.
+- Skills must not redefine canonical taxonomy or authority boundaries.
+
+### REPO_MAP.md freshness
+- Ownership: orchestrator maintains freshness; implementers/reviewers may propose deltas.
+- Required metadata: `last_validated_on`, `validated_by`, `freshness_window_days`.
+- Refresh triggers: module/entry-point changes, boundary changes, test topology changes,
+  and each release checkpoint.
+
+### ADR lifecycle
+- Numbering: `ADR-0001`, `ADR-0002`, ... (zero-padded incremental sequence).
+- States: `proposed`, `accepted`, `superseded`, `deprecated`.
+- ADRs must link to relevant PLAN decision or implementation items.
+
+## Canonical-Authority Conflict Recovery
+
+Conflict examples:
+- non-canonical edits made to generated files (`PLAN.md`, `PLAN.dot`),
+- workflow policy edits made outside canonical authority,
+- divergent duplicated normative rules across authorities.
+
+Required recovery procedure:
+1. Detect conflict (validator checks, render drift, or review finding).
+2. Quarantine non-canonical edits (do not merge; preserve for inspection only).
+3. Restore canonical state from source authority and regenerate derived artifacts.
+4. Record incident in PLAN notes/checkpoint context.
+5. Escalate to human owner if authority boundaries are ambiguous.
+
+## Phase B Safety Gate
+
+Before enabling Phase B automation, all conditions below MUST be true:
+- canonical-authority conflict recovery procedure is documented and active,
+- no unresolved authority conflicts exist in working state,
+- generated artifacts are fully reproducible from canonical sources,
+- escalation path for boundary conflicts is tested.

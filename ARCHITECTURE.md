@@ -35,3 +35,21 @@ in workspaces and reused by multiple repositories.
 This repository has no parent control plane. Therefore, root governance files are
 maintained locally by design. This does not violate the generation strategy used
 for downstream Level-1 and Level-2 targets.
+
+## Finalized Deferred Specifications
+
+The following formerly deferred specifications are now governed in Layer-0:
+
+- prompts contract and lifecycle: defined in `agent-os/prompts/README.md`
+- skills packaging and compatibility model: defined in `agent-os/skills/README.md`
+- REPO_MAP freshness policy: defined in `agent-os/workflow/shared-workflow.md`
+  and `agent-os/templates/repo-REPO_MAP.md.template`
+- ADR numbering/template/lifecycle: defined in
+  `agent-os/templates/repo-ADR.md.template` and referenced by workflow rules
+- canonical-authority conflict recovery procedure: defined in
+  `agent-os/workflow/shared-workflow.md`
+
+## Phase B Safety Prerequisite
+
+Before enabling Phase B automation, authority-conflict recovery MUST be active,
+tested, and used as a hard gate for push/PR automation readiness.

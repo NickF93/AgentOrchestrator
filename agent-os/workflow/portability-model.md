@@ -26,3 +26,25 @@ Examples:
 ## Compatibility Principle
 If a feature cannot be represented neutrally, keep it in adapter layer
 (workspace materialization or tool-specific profile), not in canonical taxonomy.
+
+## Skill Packaging Contract
+
+- Canonical skill package file: `SKILL.md`.
+- Required frontmatter:
+	- `id`: stable identifier for cross-repo reuse.
+	- `description`: concise scope statement.
+	- `owner`: accountable maintainer.
+	- `version`: semantic version.
+	- `compatibility`: list of runtime adapters (`codex`, `claude`, `copilot`, `kilo`).
+- Body sections:
+	- purpose,
+	- required inputs,
+	- expected outputs,
+	- constraints,
+	- failure handling.
+
+## Adapter Boundary Rule
+
+- Canonical skills define neutral behavior only.
+- Runtime-specific tool calls live in adapter notes or adapter files.
+- Adapters may extend execution details but must not change normative meaning.

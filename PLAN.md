@@ -30,6 +30,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | ID | Parent | Type | Status | Role | Effort | Commit Group | Depends On |
 |---|---|---|---|---|---|---|---|
 | C1.1.1 | S1.1 | C | done | reviewer | low | cg5 | T1.1.1, T1.1.2, T1.1.3 |
+| C2.1.1 | S2.1 | C | done | reviewer | low | cg8 | D2.1.4, D2.1.5, D2.1.6, D2.1.7, D2.1.8 |
 | D1.1.1 | S1.1 | D | done | orchestrator | low | cg0 |  |
 | D1.1.2 | S1.1 | D | done | orchestrator | low | cg1 |  |
 | D1.1.3 | S1.1 | D | done | orchestrator | low | cg6 |  |
@@ -37,6 +38,11 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | D2.1.1 | S2.1 | D | done | orchestrator | medium | cg7 |  |
 | D2.1.2 | S2.1 | D | done | orchestrator | medium | cg7 |  |
 | D2.1.3 | S2.1 | D | done | orchestrator | low | cg7 |  |
+| D2.1.4 | S2.1 | D | done | orchestrator | medium | cg8 |  |
+| D2.1.5 | S2.1 | D | done | orchestrator | medium | cg8 |  |
+| D2.1.6 | S2.1 | D | done | orchestrator | low | cg8 |  |
+| D2.1.7 | S2.1 | D | done | orchestrator | medium | cg8 |  |
+| D2.1.8 | S2.1 | D | done | orchestrator | high | cg8 |  |
 | M1.1.1 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.2, Q1.1.3 |
 | M1.1.2 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.4 |
 | M1.1.3 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.2, M1.1.1 |
@@ -64,3 +70,4 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | cg5 | Sprint 1 closure — tests and checkpoint | T1.1.1, T1.1.2, T1.1.3, C1.1.1 |
 | cg6 | Governance hardening updates | D1.1.3, D1.1.4 |
 | cg7 | Governance compliance — propagate architectural rules to workflow docs | D2.1.1, D2.1.2, D2.1.3 |
+| cg8 | Architecture finalization — close specification gaps G1-G5 | D2.1.4, D2.1.5, D2.1.6, D2.1.7, D2.1.8, C2.1.1 |

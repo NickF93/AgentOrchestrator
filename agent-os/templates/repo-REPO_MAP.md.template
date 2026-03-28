@@ -6,6 +6,15 @@
 Repository: {{REPO_NAME}}
 Owner: {{OWNER}}
 Date: {{DATE}}
+last_validated_on:
+validated_by:
+freshness_window_days: 30
+
+## Refresh Triggers
+- Any change to entry points, module boundaries, or critical interfaces
+- Any test topology change (unit/integration/e2e layout)
+- Release and checkpoint closure
+- Major refactor impacting hot paths or fragile areas
 
 ## Entry Points
 - Main app entry:

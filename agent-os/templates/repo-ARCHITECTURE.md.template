@@ -22,6 +22,11 @@ Define software boundaries, module ownership, interfaces, and invariants.
 - Boundary-crossing changes require explicit rationale.
 - Test coverage must evolve with behavioral changes.
 
+## ADR Policy
+- Store ADRs in `docs/adr/` using `ADR-0001` incremental numbering.
+- Allowed ADR states: proposed, accepted, superseded, deprecated.
+- Every accepted/superseded/deprecated ADR must reference related PLAN items.
+
 ## Non-Goals
 - This file does not track execution status (use PLAN.yaml).
 - This file does not define workflow policy (use AGENTS.md).

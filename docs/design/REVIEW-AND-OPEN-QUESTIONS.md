@@ -4,7 +4,33 @@
 **Based on:** `documento-architetturale-control-plane-coding-agents.md` v1.0  
 **Review date:** 2026-03-27  
 **Reviewer:** GitHub Copilot (claude-sonnet-4.6)  
-**Status:** working document — answers to open questions become decisions in PLAN.yaml
+**Status:** closed document — decisions are recorded in PLAN.yaml and governance authorities
+
+---
+
+## 0. Closure Ledger (2026-03-28)
+
+### Q Decision Gates
+
+| Item | Status | Authority |
+|---|---|---|
+| Q1 (schema contract) | CLOSED | `PLAN.yaml`, `agent-os/schemas/plan.schema.json`, `agent-os/scripts/validate-plan.py` |
+| Q2 (Level-1 materialization) | CLOSED | `PLAN.yaml`, `agent-os/scripts/sync-workspace.sh`, template headers |
+| Q3 (release model) | CLOSED | `PLAN.yaml`, `agent-os/scripts/sync-workspace.sh` |
+| Q4 (scope collision semantics) | CLOSED | `PLAN.yaml`, `agent-os/workflow/lifecycle.md`, `agent-os/scripts/validate-plan.py` |
+| Q5 (tooling failure semantics) | CLOSED | `PLAN.yaml`, `agent-os/scripts/validate-plan.py`, `agent-os/scripts/render-plan.py` |
+
+### Former Gaps
+
+| Gap | Status | Governing authority |
+|---|---|---|
+| G1 prompts format/lifecycle | CLOSED | `agent-os/prompts/README.md`, `agent-os/workflow/shared-workflow.md` |
+| G2 skills packaging model | CLOSED | `agent-os/skills/README.md`, `agent-os/workflow/portability-model.md` |
+| G3 REPO_MAP freshness policy | CLOSED | `agent-os/templates/repo-REPO_MAP.md.template`, `agent-os/workflow/shared-workflow.md`, `agent-os/workflow/lifecycle.md` |
+| G4 ADR lifecycle/template | CLOSED | `agent-os/templates/repo-ADR.md.template`, `agent-os/templates/repo-ARCHITECTURE.md.template`, `agent-os/workflow/shared-workflow.md` |
+| G5 authority-conflict recovery | CLOSED | `agent-os/workflow/shared-workflow.md`, `AGENTS.md`, `ARCHITECTURE.md` |
+
+This file is retained as historical review evidence and should not be used as runtime authority.
 
 ---
 
@@ -28,9 +54,9 @@ These parts of the architecture are coherent and should be locked as-is:
 
 ---
 
-## 2. Open questions — decisions required before implementation
+## 2. Historical Snapshot: Original Open Questions (pre-closure)
 
-These must be answered (items `Q1`–`Q5` in `PLAN.yaml`) before writing the schema, templates, and scripts.
+This section is preserved as historical context from the initial review. Its items are now closed and governed by canonical authorities listed in the closure ledger above.
 
 ### Q1 — PLAN.yaml schema contract (HARD BLOCKER for M2, M4)
 
@@ -100,9 +126,9 @@ These must be answered (items `Q1`–`Q5` in `PLAN.yaml`) before writing the sch
 
 ---
 
-## 3. Specification gaps — not blockers but should be resolved before Phase B
+## 3. Historical Snapshot: Original Specification Gaps (pre-closure)
 
-These are not blockers for the Level-0 MVP but will become problems at Phase B (push / draft PR automation) or when a second person/machine joins.
+These entries are retained as historical baseline findings. Current governing status is CLOSED as documented in the closure ledger.
 
 ### G1 — `prompts/` directory is mentioned but not specified
 §15.1 lists `prompts/orchestrator.md` and `prompts/reviewer.md`. No format, no required fields, no lifecycle for these is defined.
@@ -121,7 +147,7 @@ The canonical source rule says "one concern, one authority." But in practice age
 
 ---
 
-## 4. Priority order for next actions
+## 4. Historical Snapshot: Original Priority Order
 
 ```
 Q1 → M2 (schema) → M4 (scripts: validate + render)
@@ -143,7 +169,7 @@ D1 (this doc) ──► Q1 ──► M2 ──► M4 ──► T1 ──► C1
 
 ---
 
-## 5. Suggested answers (proposals — not decisions until the user confirms)
+## 5. Historical Snapshot: Suggested Answers (archived proposals)
 
 | Q# | Proposed answer |
 |---|---|

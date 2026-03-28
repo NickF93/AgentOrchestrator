@@ -49,6 +49,7 @@ Valid examples:
 Stop and ask the human owner when:
 - A change would alter authority boundaries,
 - A conflict exists between `ARCHITECTURE.md` and `PLAN.yaml`,
+- A canonical-authority conflict cannot be resolved by regeneration from source,
 - A schema change would invalidate existing plan data,
 - A workflow policy implies irreversible Git automation beyond current phase.
 

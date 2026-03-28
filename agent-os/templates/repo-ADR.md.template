@@ -1,0 +1,27 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+
+# ADR-{{ADR_NUMBER}}: {{ADR_TITLE}}
+
+## Metadata
+- Repository: {{REPO_NAME}}
+- Owner: {{OWNER}}
+- Date: {{DATE}}
+- Status: proposed
+- Linked PLAN items:
+
+## Context
+Describe the problem, constraints, and relevant boundaries.
+
+## Decision
+Describe the chosen option precisely.
+
+## Consequences
+List expected benefits, trade-offs, and migration impacts.
+
+## Alternatives Considered
+- Option A:
+- Option B:
+
+## State Transitions
+Allowed states: proposed -> accepted -> superseded/deprecated.
+When changing state, record the triggering PLAN item.
