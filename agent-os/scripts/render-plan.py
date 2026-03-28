@@ -92,7 +92,7 @@ def render_markdown(plan: dict) -> str:
     lines.append("|---|---|---|---|")
     for obj in milestones:
         lines.append(
-            f"| {obj.get('id','')} | {obj.get('type','')} | {obj.get('title','')} | {obj.get('status','')} |"
+            f"| {obj.get('id', '')} | {obj.get('type', '')} | {obj.get('title', '')} | {obj.get('status', '')} |"
         )
     lines.append("")
 
@@ -137,7 +137,7 @@ def render_markdown(plan: dict) -> str:
     lines.append("|---|---|---|")
     for cg in commit_groups:
         cg_items = markdown_inline_list(cg.get("items", []) or [])
-        lines.append(f"| {cg.get('id','')} | {cg.get('title','')} | {cg_items} |")
+        lines.append(f"| {cg.get('id', '')} | {cg.get('title', '')} | {cg_items} |")
 
     lines.append("")
     lines.append("## Item Details")
@@ -147,7 +147,9 @@ def render_markdown(plan: dict) -> str:
         title = obj.get("title", "")
         lines.append(f"### {item_id}: {title}")
         lines.append("")
-        lines.append(f"- **Type**: {obj.get('type', '')} | **Status**: {obj.get('status', '')} | **Role**: {obj.get('role', '')} | **Effort**: {obj.get('effort', '')}")
+        lines.append(
+            f"- **Type**: {obj.get('type', '')} | **Status**: {obj.get('status', '')} | **Role**: {obj.get('role', '')} | **Effort**: {obj.get('effort', '')}"
+        )
         parent = obj.get("parent", "")
         if parent:
             lines.append(f"- **Sprint**: `{parent}`")
@@ -222,7 +224,7 @@ def render_dot(plan: dict) -> str:
     lines: list[str] = []
     lines.append("digraph PLAN {")
     lines.append("  rankdir=LR;")
-    lines.append("  node [shape=box, style=\"filled,rounded\", fillcolor=white];")
+    lines.append('  node [shape=box, style="filled,rounded", fillcolor=white];')
 
     nodes: list[dict] = []
     nodes.extend(source_order(plan.get("milestones")))
@@ -266,7 +268,9 @@ def render_dot(plan: dict) -> str:
     for obj in nodes:
         parent = obj.get("parent")
         if parent:
-            lines.append(f'  "{dot_escape(parent)}" -> "{dot_escape(obj.get("id", ""))}" [style=dashed];')
+            lines.append(
+                f'  "{dot_escape(parent)}" -> "{dot_escape(obj.get("id", ""))}" [style=dashed];'
+            )
 
     # Dependency edges
     for item in items:

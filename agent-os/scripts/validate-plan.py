@@ -87,7 +87,9 @@ def load_shared_asset_registry(path: Path) -> dict:
     return data
 
 
-def validate_shared_asset_registry(registry: dict, registry_path: Path) -> tuple[dict[str, dict], list[str]]:
+def validate_shared_asset_registry(
+    registry: dict, registry_path: Path
+) -> tuple[dict[str, dict], list[str]]:
     errors: list[str] = []
     assets = registry.get("assets")
     if not isinstance(assets, list):
@@ -125,16 +127,14 @@ def validate_shared_asset_registry(registry: dict, registry_path: Path) -> tuple
             errors.append(f"shared asset '{asset_id}' has no non-empty version")
         if not isinstance(path_text, str) or not path_text:
             errors.append(f"shared asset '{asset_id}' has no non-empty path")
-        if not isinstance(compatibility, list) or not compatibility or not all(
-            isinstance(entry, str) and entry for entry in compatibility
+        if (
+            not isinstance(compatibility, list)
+            or not compatibility
+            or not all(isinstance(entry, str) and entry for entry in compatibility)
         ):
-            errors.append(
-                f"shared asset '{asset_id}' must declare a non-empty compatibility list"
-            )
+            errors.append(f"shared asset '{asset_id}' must declare a non-empty compatibility list")
         if not isinstance(materializable, bool):
-            errors.append(
-                f"shared asset '{asset_id}' must declare materializable as true or false"
-            )
+            errors.append(f"shared asset '{asset_id}' must declare materializable as true or false")
 
         asset_map[asset_id] = asset
 
@@ -147,15 +147,11 @@ def validate_shared_asset_registry(registry: dict, registry_path: Path) -> tuple
                 )
             asset_path = control_plane_root / path_text
             if not asset_path.exists():
-                errors.append(
-                    f"shared asset '{asset_id}' path does not exist: {asset_path}"
-                )
+                errors.append(f"shared asset '{asset_id}' path does not exist: {asset_path}")
 
         depends_on_assets = asset.get("depends_on_assets", []) or []
         if not isinstance(depends_on_assets, list):
-            errors.append(
-                f"shared asset '{asset_id}' has non-list depends_on_assets"
-            )
+            errors.append(f"shared asset '{asset_id}' has non-list depends_on_assets")
             continue
         for dep in depends_on_assets:
             if not isinstance(dep, str) or not dep:
@@ -245,7 +241,9 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
         milestone_map = ensure_mapping(milestone, context, errors)
         if milestone_map is None:
             continue
-        if not isinstance(milestone_map.get("id"), str) or not MILESTONE_ID_RE.fullmatch(milestone_map["id"]):
+        if not isinstance(milestone_map.get("id"), str) or not MILESTONE_ID_RE.fullmatch(
+            milestone_map["id"]
+        ):
             errors.append(f"{context}.id: expected milestone id like X1")
         if milestone_map.get("type") != "X":
             errors.append(f"{context}.type: expected 'X'")
@@ -260,11 +258,15 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
         sprint_map = ensure_mapping(sprint, context, errors)
         if sprint_map is None:
             continue
-        if not isinstance(sprint_map.get("id"), str) or not SPRINT_ID_RE.fullmatch(sprint_map["id"]):
+        if not isinstance(sprint_map.get("id"), str) or not SPRINT_ID_RE.fullmatch(
+            sprint_map["id"]
+        ):
             errors.append(f"{context}.id: expected sprint id like S1.1")
         if sprint_map.get("type") != "S":
             errors.append(f"{context}.type: expected 'S'")
-        if not isinstance(sprint_map.get("parent"), str) or not MILESTONE_ID_RE.fullmatch(sprint_map["parent"]):
+        if not isinstance(sprint_map.get("parent"), str) or not MILESTONE_ID_RE.fullmatch(
+            sprint_map["parent"]
+        ):
             errors.append(f"{context}.parent: expected milestone id like X1")
         if not isinstance(sprint_map.get("title"), str) or not sprint_map.get("title"):
             errors.append(f"{context}.title: expected non-empty string")
@@ -273,12 +275,29 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
 
     items = ensure_list(plan.get("items"), "items", errors) or []
     action_enum = {
-        "audit", "plan", "design", "implement", "refactor", "test", "verify",
-        "document", "review", "checkpoint", "decide", "migrate",
+        "audit",
+        "plan",
+        "design",
+        "implement",
+        "refactor",
+        "test",
+        "verify",
+        "document",
+        "review",
+        "checkpoint",
+        "decide",
+        "migrate",
     }
     role_enum = {"orchestrator", "implementer", "tester", "reviewer", "documenter", "researcher"}
     effort_enum = {"low", "medium", "high"}
-    shared_asset_fields = {"skill", "prompt", "profile", "result_protocol", "context_policy", "resolution_mode"}
+    shared_asset_fields = {
+        "skill",
+        "prompt",
+        "profile",
+        "result_protocol",
+        "context_policy",
+        "resolution_mode",
+    }
 
     for idx, item in enumerate(items):
         context = f"items[{idx}]"
@@ -286,7 +305,17 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
         if item_map is None:
             continue
 
-        for field in ("id", "parent", "type", "title", "status", "role", "effort", "actions", "commit_group"):
+        for field in (
+            "id",
+            "parent",
+            "type",
+            "title",
+            "status",
+            "role",
+            "effort",
+            "actions",
+            "commit_group",
+        ):
             if field not in item_map:
                 errors.append(f"{context}: missing required field '{field}'")
 
@@ -325,7 +354,9 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
             errors.append(f"{context}.depends_on: expected list")
 
         scope = item_map.get("scope")
-        if scope is not None and (not isinstance(scope, str) or not re.fullmatch(r"^(\.|[A-Za-z0-9._/-]+)$", scope)):
+        if scope is not None and (
+            not isinstance(scope, str) or not re.fullmatch(r"^(\.|[A-Za-z0-9._/-]+)$", scope)
+        ):
             errors.append(f"{context}.scope: invalid scope '{scope}'")
 
         checks = item_map.get("checks")
@@ -336,13 +367,15 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
 
         artifacts_in = item_map.get("artifacts_in")
         if artifacts_in is not None and (
-            not isinstance(artifacts_in, list) or any(not isinstance(path, str) for path in artifacts_in)
+            not isinstance(artifacts_in, list)
+            or any(not isinstance(path, str) for path in artifacts_in)
         ):
             errors.append(f"{context}.artifacts_in: expected list of strings")
 
         artifacts_out = item_map.get("artifacts_out")
         if artifacts_out is not None and (
-            not isinstance(artifacts_out, list) or any(not isinstance(path, str) for path in artifacts_out)
+            not isinstance(artifacts_out, list)
+            or any(not isinstance(path, str) for path in artifacts_out)
         ):
             errors.append(f"{context}.artifacts_out: expected list of strings")
 
@@ -389,7 +422,11 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
                             f"{context}.shared_assets.{field}: invalid asset id '{value}'"
                         )
                 context_policy = shared_assets_map.get("context_policy")
-                if context_policy is not None and context_policy not in {"focused", "diff_only", "repo_full"}:
+                if context_policy is not None and context_policy not in {
+                    "focused",
+                    "diff_only",
+                    "repo_full",
+                }:
                     errors.append(
                         f"{context}.shared_assets.context_policy: invalid value '{context_policy}'"
                     )
@@ -412,7 +449,10 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
         cg_items = cg_map.get("items")
         if not isinstance(cg_items, list) or not cg_items:
             errors.append(f"{context}.items: expected non-empty list")
-        elif any(not isinstance(item_id, str) or not ITEM_ID_RE.fullmatch(item_id) for item_id in cg_items):
+        elif any(
+            not isinstance(item_id, str) or not ITEM_ID_RE.fullmatch(item_id)
+            for item_id in cg_items
+        ):
             errors.append(f"{context}.items: expected item IDs")
 
     return errors
@@ -488,9 +528,7 @@ def detect_cycles(items: list[dict]) -> list[str]:
         return []
 
     cycle_participants = sorted(nid for nid, deg in in_degree.items() if deg > 0)
-    return [
-        f"dependency cycle detected among items: {', '.join(cycle_participants)}"
-    ]
+    return [f"dependency cycle detected among items: {', '.join(cycle_participants)}"]
 
 
 def validate_commit_group_coherence(plan: dict) -> list[str]:
@@ -524,16 +562,12 @@ def validate_commit_group_coherence(plan: dict) -> list[str]:
     for cg_id, members in cg_to_items.items():
         for member in members:
             if member not in item_ids:
-                errors.append(
-                    f"commit_group '{cg_id}' references unknown item '{member}'"
-                )
+                errors.append(f"commit_group '{cg_id}' references unknown item '{member}'")
 
     # Reverse check: every item.commit_group must reference an existing commit_group
     for item_id, cg in item_to_cg.items():
         if cg not in cg_ids:
-            errors.append(
-                f"item '{item_id}' references unknown commit_group '{cg}'"
-            )
+            errors.append(f"item '{item_id}' references unknown commit_group '{cg}'")
 
     # Membership coherence: bidirectional match
     for item_id, cg in item_to_cg.items():
@@ -585,9 +619,7 @@ def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[
     for milestone in milestones:
         mid = milestone.get("id", "")
         if not MILESTONE_ID_RE.fullmatch(mid):
-            errors.append(
-                f"milestone id '{mid}' is invalid; expected format X<number> (e.g. X1)"
-            )
+            errors.append(f"milestone id '{mid}' is invalid; expected format X<number> (e.g. X1)")
 
     for sprint in sprints:
         sid = sprint.get("id", "")
@@ -654,7 +686,11 @@ def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[
             right_scope = (right.get("scope") or "").strip()
             if not right_scope:
                 continue
-            if left_scope == right_scope or left_scope.startswith(right_scope) or right_scope.startswith(left_scope):
+            if (
+                left_scope == right_scope
+                or left_scope.startswith(right_scope)
+                or right_scope.startswith(left_scope)
+            ):
                 warnings.append(
                     "scope collision warning: "
                     f"{left.get('id', '<unknown>')} ({left_scope}) <-> "
@@ -708,8 +744,7 @@ def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
     errors: list[str] = []
     items = plan.get("items", []) or []
     active_checkpoints = [
-        i for i in items
-        if i.get("type") == "C" and i.get("status") in {"review", "verified"}
+        i for i in items if i.get("type") == "C" and i.get("status") in {"review", "verified"}
     ]
     if not active_checkpoints:
         return errors

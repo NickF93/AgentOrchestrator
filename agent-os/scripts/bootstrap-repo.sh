@@ -43,6 +43,7 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONTROL_PLANE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TEMPLATES_DIR="$(cd "$SCRIPT_DIR/../templates" && pwd)"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 REPO_NAME="$(basename "$TARGET")"
 DATE_UTC="$(date -u +%F)"
@@ -109,7 +110,7 @@ if [[ "$DRY_RUN" -eq 0 ]]; then
   SCHEMA="$SCRIPT_DIR/../schemas/plan.schema.json"
   if [[ -f "$VALIDATE_SCRIPT" && -f "$SCHEMA" && -f "$TARGET/PLAN.yaml" ]]; then
     echo "INFO: Running post-bootstrap validation..."
-    if python3 "$VALIDATE_SCRIPT" "$TARGET/PLAN.yaml" --schema "$SCHEMA"; then
+    if "$PYTHON_BIN" "$VALIDATE_SCRIPT" "$TARGET/PLAN.yaml" --schema "$SCHEMA"; then
       echo "OK: Post-bootstrap validation passed"
     else
       echo "ERROR: Post-bootstrap validation failed" >&2

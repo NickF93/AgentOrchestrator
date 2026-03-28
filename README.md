@@ -32,24 +32,40 @@ repositories. It does not host product code.
 
 ## Quick Start
 
-### Install tooling dependencies
+### Install runtime dependencies in `nn-2`
 
 ```bash
-python3 -m venv .venv
-. .venv/bin/activate
-python3 -m pip install -r requirements.txt
+conda run -n nn-2 python -m pip install -r requirements.txt
+```
+
+### Install development and test tooling in `nn-2`
+
+```bash
+conda run -n nn-2 python -m pip install -r requirements-dev.txt
 ```
 
 ### Validate a plan
 
 ```bash
-python agent-os/scripts/validate-plan.py PLAN.yaml
+conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
 ```
 
 ### Render plan views
 
 ```bash
-python agent-os/scripts/render-plan.py PLAN.yaml
+conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml
+```
+
+### Run script tests
+
+```bash
+conda run -n nn-2 python -m pytest -q
+```
+
+### Run local quality gates
+
+```bash
+bash agent-os/scripts/run-gates.sh
 ```
 
 ### Bootstrap a new repository
@@ -71,6 +87,17 @@ chmod +x <target-path>/.githooks/commit-msg
 ```bash
 bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
 ```
+
+## Testing and Gates
+
+The canonical local verification environment for this repository is `nn-2`.
+
+- Python tests: `conda run -n nn-2 python -m pytest -q`
+- Gate runner: `bash agent-os/scripts/run-gates.sh`
+- The gate runs Ruff, mypy, Python compile checks, pytest, and ShellCheck when
+  ShellCheck is available on the local machine.
+- `requirements.txt` stays runtime-only; development/test tooling lives in
+  `requirements-dev.txt`.
 
 `sync-workspace.sh` materializes runtime files from the current local
 control-plane checkout. It does not pull from the remote automatically.

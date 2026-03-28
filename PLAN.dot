@@ -10,6 +10,7 @@ digraph PLAN {
   "X7" [label="X7 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X8" [label="X8 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X9" [label="X9 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X10" [label="X10 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -29,6 +30,7 @@ digraph PLAN {
   "S7.1" [label="S7.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S8.1" [label="S8.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S9.1" [label="S9.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S10.1" [label="S10.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -239,6 +241,15 @@ digraph PLAN {
   "T9.1.4" [label="T9.1.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C9.1.5" [label="C9.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg27" {
+    style="rounded,dashed";
+    label="cg27: Testing and gates — pytest coverage, tooling config, and local quality runner";
+  "D10.1.1" [label="D10.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "M10.1.2" [label="M10.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M10.1.3" [label="M10.1.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T10.1.4" [label="T10.1.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C10.1.5" [label="C10.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -258,6 +269,7 @@ digraph PLAN {
   "X7" -> "S7.1" [style=dashed];
   "X8" -> "S8.1" [style=dashed];
   "X9" -> "S9.1" [style=dashed];
+  "X10" -> "S10.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -360,6 +372,11 @@ digraph PLAN {
   "S9.1" -> "M9.1.3" [style=dashed];
   "S9.1" -> "T9.1.4" [style=dashed];
   "S9.1" -> "C9.1.5" [style=dashed];
+  "S10.1" -> "D10.1.1" [style=dashed];
+  "S10.1" -> "M10.1.2" [style=dashed];
+  "S10.1" -> "M10.1.3" [style=dashed];
+  "S10.1" -> "T10.1.4" [style=dashed];
+  "S10.1" -> "C10.1.5" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -492,4 +509,10 @@ digraph PLAN {
   "M9.1.2" -> "T9.1.4";
   "M9.1.3" -> "T9.1.4";
   "T9.1.4" -> "C9.1.5";
+  "C9.1.5" -> "D10.1.1";
+  "D10.1.1" -> "M10.1.2";
+  "D10.1.1" -> "M10.1.3";
+  "M10.1.2" -> "T10.1.4";
+  "M10.1.3" -> "T10.1.4";
+  "T10.1.4" -> "C10.1.5";
 }

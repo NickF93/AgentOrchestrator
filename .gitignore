@@ -3,6 +3,8 @@
 .vscode/
 __pycache__/
 .mypy_cache/
+.pytest_cache/
+.ruff_cache/
 *.pyc
 .env
 *.log

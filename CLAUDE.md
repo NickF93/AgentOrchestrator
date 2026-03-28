@@ -52,6 +52,8 @@ Use `conda run -n nn-2 python` to run scripts in this repository:
 ```
 conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
 conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml
+conda run -n nn-2 python -m pytest -q
+bash agent-os/scripts/run-gates.sh
 ```
 
 ## Skills

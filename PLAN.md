@@ -24,6 +24,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X7 | X | Skill Packaging and Cross-Layer Execution | done |
 | X8 | X | Adapter Layer Configuration and Repo Hygiene | done |
 | X9 | X | Shared Layer-0 Asset Distribution and Two-Root Consumption | done |
+| X10 | X | Script Test Suite and Local Quality Gates | done |
 
 ## Plan
 
@@ -343,6 +344,26 @@ Status: done
 | `T9.1.4` | `T` | Validate shared asset consistency, resolver behavior, and plan rendering | done |  |
 | `C9.1.5` | `C` | Shared asset distribution and two-root consumption checkpoint | done |  |
 
+### X10
+
+- ID: `X10`
+- Title: Script Test Suite and Local Quality Gates
+- Status: done
+- Note: Add a repo-owned pytest suite for agent-os/scripts/, a deterministic local gate runner for Ruff, mypy, compile checks, pytest, and conditional ShellCheck, plus the required tooling configuration and documentation for the nn-2 environment.
+
+#### S10.1 Items
+
+Sprint: Sprint 1 — Script tests, tooling config, and local gates
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D10.1.1` | `D` | Define script test/gate scope and tooling surface | done | Establishes the repo-local test and gate contract for agent-os/scripts/, keeps requirements.txt runtime-only, and documents nn-2 as the canonical execution environment for tests and local gates. |
+| `M10.1.2` | `M` | Implement pytest suite for Python and Bash scripts | done | Adds behavior-focused pytest coverage for the Python scripts and subprocess smoke tests for bootstrap, sync-workspace, and materialize-shared-asset using temporary directories only. |
+| `M10.1.3` | `M` | Add deterministic local gate runner and tooling config | done | Adds one local gate entrypoint that runs Ruff, mypy, Python compile checks, pytest, and conditional ShellCheck in a fixed order with readable output and deterministic failure behavior. |
+| `T10.1.4` | `T` | Validate script tests and local gates in nn-2 | done |  |
+| `C10.1.5` | `C` | Script test suite and local gates checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -374,6 +395,7 @@ Status: done
 | cg24 | Adapter layer — CLAUDE.md as thin governance pointer | `D8.1.1` |
 | cg25 | Repo hygiene — gitignore patterns for eval workspaces and caches | `F8.1.2`, `C8.1.3` |
 | cg26 | Shared assets — registry, PLAN references, two-root resolution, vendoring, and seed runtime assets | `D9.1.1`, `M9.1.2`, `M9.1.3`, `T9.1.4`, `C9.1.5` |
+| cg27 | Testing and gates — pytest coverage, tooling config, and local quality runner | `D10.1.1`, `M10.1.2`, `M10.1.3`, `T10.1.4`, `C10.1.5` |
 
 ## Item Details
 
@@ -1513,4 +1535,60 @@ Status: done
   - Seed skill, prompt, profiles, and protocol are internally consistent
   - Layer-2 workspace mode consumes shared assets without copying
   - Vendored mode consumes explicit snapshots without creating a new authority
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### D10.1.1: Define script test/gate scope and tooling surface
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Sprint**: `S10.1`
+- **Actions**: plan, document
+- **Depends on**: `C9.1.5`
+- **Commit group**: `cg27`
+- **Artifacts**: PLAN.yaml, README.md, CLAUDE.md, pyproject.toml, requirements-dev.txt, .gitignore
+- **Notes**: Establishes the repo-local test and gate contract for agent-os/scripts/, keeps requirements.txt runtime-only, and documents nn-2 as the canonical execution environment for tests and local gates.
+
+### M10.1.2: Implement pytest suite for Python and Bash scripts
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S10.1`
+- **Actions**: design, implement, verify
+- **Depends on**: `D10.1.1`
+- **Commit group**: `cg27`
+- **Artifacts**: tests/conftest.py, tests/test_validate_plan.py, tests/test_render_plan.py, tests/test_resolve_shared_asset.py, tests/test_shell_scripts.py
+- **Notes**: Adds behavior-focused pytest coverage for the Python scripts and subprocess smoke tests for bootstrap, sync-workspace, and materialize-shared-asset using temporary directories only.
+
+### M10.1.3: Add deterministic local gate runner and tooling config
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S10.1`
+- **Actions**: design, implement, verify
+- **Depends on**: `D10.1.1`
+- **Commit group**: `cg27`
+- **Artifacts**: agent-os/scripts/bootstrap-repo.sh, agent-os/scripts/materialize-shared-asset.sh, agent-os/scripts/render-plan.py, agent-os/scripts/resolve-shared-asset.py, agent-os/scripts/run-gates.sh, agent-os/scripts/validate-plan.py, pyproject.toml, requirements-dev.txt
+- **Notes**: Adds one local gate entrypoint that runs Ruff, mypy, Python compile checks, pytest, and conditional ShellCheck in a fixed order with readable output and deterministic failure behavior.
+
+### T10.1.4: Validate script tests and local gates in nn-2
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S10.1`
+- **Actions**: test, verify
+- **Depends on**: `M10.1.2`, `M10.1.3`
+- **Commit group**: `cg27`
+- **Checks**:
+  - conda run -n nn-2 python -m pytest -q exits 0
+  - bash agent-os/scripts/run-gates.sh exits 0 in nn-2
+  - README and CLAUDE document nn-2 test/gate commands consistently
+  - Gate help/output is explicit about conditional ShellCheck behavior
+
+### C10.1.5: Script test suite and local gates checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S10.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T10.1.4`
+- **Commit group**: `cg27`
+- **Checks**:
+  - agent-os/scripts/ has repo-owned pytest coverage for Python and Bash entrypoints
+  - Local gate runner covers Ruff, mypy, compile checks, pytest, and conditional ShellCheck
+  - requirements.txt remains runtime-only
   - PLAN.md and PLAN.dot are regenerated and committed

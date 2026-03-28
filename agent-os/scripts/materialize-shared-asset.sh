@@ -7,6 +7,7 @@ usage() {
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RESOLVER="$SCRIPT_DIR/resolve-shared-asset.py"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 CONTROL_PLANE_ROOT=""
 REPO_ROOT="."
@@ -45,7 +46,7 @@ fi
 
 REPO_ROOT="$(cd "$REPO_ROOT" && pwd)"
 
-RESOLVER_ARGS=(python3 "$RESOLVER" "$ASSET_ID" --repo-root "$REPO_ROOT" --resolution-mode workspace --format shell)
+RESOLVER_ARGS=("$PYTHON_BIN" "$RESOLVER" "$ASSET_ID" --repo-root "$REPO_ROOT" --resolution-mode workspace --format shell)
 if [[ -n "$CONTROL_PLANE_ROOT" ]]; then
   RESOLVER_ARGS+=(--control-plane-root "$CONTROL_PLANE_ROOT")
 fi

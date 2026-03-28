@@ -85,7 +85,9 @@ def find_registry_asset(asset_id: str, control_plane_root: Path) -> dict:
     raise KeyError(f"Unknown shared asset id: {asset_id}")
 
 
-def resolve_workspace_asset(asset_id: str, repo_root: Path, control_plane_root_arg: str | None) -> dict:
+def resolve_workspace_asset(
+    asset_id: str, repo_root: Path, control_plane_root_arg: str | None
+) -> dict:
     control_plane_root = discover_control_plane_root(repo_root, control_plane_root_arg)
     asset = find_registry_asset(asset_id, control_plane_root)
     registry_relative_path = asset.get("path", "")
@@ -134,9 +136,7 @@ def resolve_vendored_asset(asset_id: str, repo_root: Path, kind: str | None) -> 
             continue
         vendored_file = manifest.get("vendored_file")
         if not isinstance(vendored_file, str) or not vendored_file:
-            raise ValueError(
-                f"Vendored asset manifest missing vendored_file: {manifest_path}"
-            )
+            raise ValueError(f"Vendored asset manifest missing vendored_file: {manifest_path}")
         asset_path = (manifest_path.parent / vendored_file).resolve()
         if not asset_path.exists():
             raise FileNotFoundError(f"Vendored asset path does not exist: {asset_path}")
@@ -155,9 +155,7 @@ def resolve_vendored_asset(asset_id: str, repo_root: Path, kind: str | None) -> 
             "resolution_mode": "vendored",
         }
 
-    raise FileNotFoundError(
-        f"Vendored asset '{asset_id}' was not found under {vendor_root}"
-    )
+    raise FileNotFoundError(f"Vendored asset '{asset_id}' was not found under {vendor_root}")
 
 
 def emit(result: dict, output_format: str) -> None:
