@@ -74,9 +74,9 @@ orchestrator must:
    the map is refreshed and `last_validated_on` is updated to the current date.
 4. Record the freshness check result in the checkpoint's notes or commit message.
 
-**Automation**: `validate-plan.py --check-freshness` can optionally detect
-staleness and emit a warning when checkpoint items are in `review` or
-`verified` state. This is advisory, not a hard gate.
+**Automation**: `validate-plan.py --check-freshness` MUST detect staleness
+and emit a warning when checkpoint items are in `review` or `verified`
+state.
 
 ## ADR State Flow
 

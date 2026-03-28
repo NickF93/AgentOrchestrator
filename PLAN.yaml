@@ -49,6 +49,16 @@ milestones:
       and bootstrap, enrich workspace materialization, add documentation and
       operational guardrails.
 
+  - id: X4
+    type: X
+    title: "Governance Baseline Hardening"
+    status: in_progress
+    note: >
+      Remediate 19 findings from the post-X3 governance review: contradictions
+      between canonical authorities, soft language where hard gates are intended,
+      undefined field semantics, and missing enforcement mechanisms. All
+      architectural decisions resolved interactively with the human owner.
+
 sprints:
   - id: S1.1
     type: S
@@ -85,6 +95,36 @@ sprints:
     parent: X3
     title: "Sprint 4 — Documentation, operational guardrails, and closure"
     status: done
+
+  - id: S4.1
+    type: S
+    parent: X4
+    title: "Sprint 1 — Language enforcement and clarity"
+    status: done
+
+  - id: S4.2
+    type: S
+    parent: X4
+    title: "Sprint 2 — Semantic alignment (closure and freshness)"
+    status: planned
+
+  - id: S4.3
+    type: S
+    parent: X4
+    title: "Sprint 3 — Schema and taxonomy hardening"
+    status: planned
+
+  - id: S4.4
+    type: S
+    parent: X4
+    title: "Sprint 4 — Lifecycle unification and deferred fields"
+    status: planned
+
+  - id: S4.5
+    type: S
+    parent: X4
+    title: "Sprint 5 — Commit format, Phase B, and phase-gate enforcement"
+    status: planned
 
 items:
 
@@ -1031,6 +1071,405 @@ items:
     notes: >
       Marks the control plane as hardened per the 149-point review findings.
 
+  # ─── S4.1 items: language enforcement and clarity ────────────────────────────
+  - id: M4.1.1
+    parent: S4.1
+    type: M
+    title: "Tighten soft language to hard gates in governance files"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg13
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/workflow/lifecycle.md
+    notes: >
+      Findings #2, #6, #12, #13: "may only" → "MUST only" in shared-workflow.md,
+      "should not" → "MUST NOT" for design doc rule, "can optionally detect" →
+      prescriptive in lifecycle.md, add explicit parallelism prohibition.
+
+  - id: M4.1.2
+    parent: S4.1
+    type: M
+    title: "Document type/action coherence as warning-only"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg13
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/item-taxonomy.md
+    notes: >
+      Finding #3: add note to type/action coherence table clarifying it is
+      advisory — violations produce warnings, not hard failures.
+
+  - id: T4.1.3
+    parent: S4.1
+    type: T
+    title: "Validate language fixes are consistent across governance docs"
+    actions: [verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg13
+    depends_on: [M4.1.1, M4.1.2]
+    scope: "."
+    checks:
+      - "shared-workflow.md uses MUST only for commit group closure"
+      - "shared-workflow.md uses MUST NOT for design doc rule"
+      - "shared-workflow.md has explicit parallelism prohibition"
+      - "lifecycle.md uses prescriptive language for freshness detection"
+      - "item-taxonomy.md type/action table marked as advisory"
+      - "validate-plan.py PLAN.yaml exits 0"
+
+  # ─── S4.2 items: semantic alignment ─────────────────────────────────────────
+  - id: M4.2.1
+    parent: S4.2
+    type: M
+    title: "Align commit group closure to require both status and checks"
+    actions: [implement, document]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg14
+    depends_on: [T4.1.3]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/lifecycle.md
+      - agent-os/workflow/shared-workflow.md
+    notes: >
+      Finding #1: state both predicates together in both files — items must be
+      in review/verified/done AND required checks must be satisfied.
+
+  - id: M4.2.2
+    parent: S4.2
+    type: M
+    title: "Make REPO_MAP freshness a hard gate in docs and validator"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg14
+    depends_on: [T4.1.3]
+    scope: "agent-os"
+    artifacts_out:
+      - agent-os/workflow/lifecycle.md
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Finding #5: remove "advisory" language from lifecycle.md, change
+      validate-plan.py check_repo_map_freshness() from warning to hard-fail.
+
+  - id: T4.2.3
+    parent: S4.2
+    type: T
+    title: "Validate closure and freshness alignment"
+    actions: [test, verify]
+    status: planned
+    role: tester
+    effort: low
+    commit_group: cg14
+    depends_on: [M4.2.1, M4.2.2]
+    scope: "."
+    checks:
+      - "lifecycle.md and shared-workflow.md have consistent closure predicates"
+      - "lifecycle.md freshness is documented as hard gate"
+      - "validate-plan.py --check-freshness hard-fails on stale REPO_MAP"
+      - "validate-plan.py PLAN.yaml exits 0"
+
+  # ─── S4.3 items: schema and taxonomy hardening ──────────────────────────────
+  - id: M4.3.1
+    parent: S4.3
+    type: M
+    title: "Restrict depends_on to exclude milestoneId in schema"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg15
+    depends_on: [T4.2.3]
+    scope: "agent-os/schemas"
+    artifacts_out:
+      - agent-os/schemas/plan.schema.json
+    notes: >
+      Finding #4: create dependencyTarget definition as oneOf [sprintId, itemId].
+      Update depends_on items ref to use dependencyTarget instead of planId.
+
+  - id: M4.3.2
+    parent: S4.3
+    type: M
+    title: "Define scope, checks, and suffix semantics in item-taxonomy"
+    actions: [document]
+    status: planned
+    role: documenter
+    effort: medium
+    commit_group: cg15
+    depends_on: [T4.2.3]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/item-taxonomy.md
+    notes: >
+      Findings #8, #9, #17: scope is path prefix for collision detection,
+      checks is array of human-readable descriptions, suffixes are contiguous
+      lowercase sequence in derivation order with no gaps.
+
+  - id: M4.3.3
+    parent: S4.3
+    type: M
+    title: "Add decision if/then Q-only constraint in schema"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg15
+    depends_on: [T4.2.3]
+    scope: "agent-os/schemas"
+    artifacts_out:
+      - agent-os/schemas/plan.schema.json
+    notes: >
+      Finding #18: add JSON Schema if/then to forbid decision property on
+      non-Q-type items.
+
+  - id: M4.3.4
+    parent: S4.3
+    type: M
+    title: "Add scope pattern constraint to schema"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: low
+    commit_group: cg15
+    depends_on: [T4.2.3]
+    scope: "agent-os/schemas"
+    artifacts_out:
+      - agent-os/schemas/plan.schema.json
+    notes: >
+      Finding #8 (schema side): add pattern for scope field to restrict to
+      path-like characters.
+
+  - id: T4.3.5
+    parent: S4.3
+    type: T
+    title: "Validate PLAN.yaml against hardened schema"
+    actions: [test, verify]
+    status: planned
+    role: tester
+    effort: low
+    commit_group: cg15
+    depends_on: [M4.3.1, M4.3.2, M4.3.3, M4.3.4]
+    scope: "."
+    checks:
+      - "validate-plan.py PLAN.yaml exits 0 with hardened schema"
+      - "depends_on rejects milestone IDs"
+      - "decision field rejected on non-Q items"
+      - "scope pattern validates existing scopes"
+
+  # ─── S4.4 items: lifecycle unification and deferred fields ──────────────────
+  - id: D4.4.1
+    parent: S4.4
+    type: D
+    title: "Unify governance asset states to draft/active/deprecated/superseded"
+    actions: [document]
+    status: planned
+    role: documenter
+    effort: medium
+    commit_group: cg16
+    depends_on: [T4.2.3]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/lifecycle.md
+    notes: >
+      Finding #7: change ADR states from proposed/accepted to draft/active.
+      Add unified Governance Asset Lifecycle section applicable to prompts,
+      ADRs, and skills.
+
+  - id: D4.4.2
+    parent: S4.4
+    type: D
+    title: "Add DEFERRED notes for triggers and tools_profile fields"
+    actions: [document]
+    status: planned
+    role: documenter
+    effort: low
+    commit_group: cg16
+    depends_on: [T4.2.3]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/item-taxonomy.md
+      - agent-os/workflow/portability-model.md
+    notes: >
+      Findings #15, #16: mark triggers and tools_profile as DEFERRED adapter-level
+      fields with semantics TBD, optional and non-normative in MVP.
+
+  - id: D4.4.3
+    parent: S4.4
+    type: D
+    title: "Clarify single-writer rule as documentation/review-enforced"
+    actions: [document]
+    status: planned
+    role: documenter
+    effort: low
+    commit_group: cg16
+    depends_on: [T4.2.3]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/shared-workflow.md
+    notes: >
+      Finding #10: add note that enforcement is governance-based (code review
+      and escalation), not automated. No validator check for single-writer.
+
+  - id: T4.4.4
+    parent: S4.4
+    type: T
+    title: "Validate lifecycle and field documentation changes"
+    actions: [verify]
+    status: planned
+    role: tester
+    effort: low
+    commit_group: cg16
+    depends_on: [D4.4.1, D4.4.2, D4.4.3]
+    scope: "."
+    checks:
+      - "lifecycle.md has unified governance asset states"
+      - "ADR states use draft/active not proposed/accepted"
+      - "item-taxonomy.md has DEFERRED notes for triggers and tools_profile"
+      - "portability-model.md has DEFERRED notes"
+      - "shared-workflow.md single-writer section has enforcement note"
+      - "validate-plan.py PLAN.yaml exits 0"
+
+  # ─── S4.5 items: commit format, Phase B, and phase-gate enforcement ─────────
+  - id: D4.5.1
+    parent: S4.5
+    type: D
+    title: "Define recommended commit body/footer format"
+    actions: [document]
+    status: planned
+    role: documenter
+    effort: medium
+    commit_group: cg17
+    depends_on: [T4.3.5, T4.4.4]
+    scope: "."
+    artifacts_out:
+      - AGENTS.md
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/workflow/git-automation-policy.md
+      - agent-os/templates/repo-AGENTS.md.template
+    notes: >
+      Finding #19: define recommended (SHOULD) body/footer structure including
+      summary, scope, items, validation, refs, ADR, and follow-up sections.
+
+  - id: M4.5.2
+    parent: S4.5
+    type: M
+    title: "Simplify ARCHITECTURE.md Phase B to cross-reference"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: low
+    commit_group: cg17
+    depends_on: [T4.3.5, T4.4.4]
+    scope: "."
+    artifacts_out:
+      - ARCHITECTURE.md
+    notes: >
+      Finding #11: replace single-condition Phase B statement with cross-reference
+      to shared-workflow.md Phase B Safety Gate for the full prerequisite list.
+
+  - id: D4.5.3
+    parent: S4.5
+    type: D
+    title: "Add phase-gate protocol for deferred automations"
+    actions: [design, document]
+    status: planned
+    role: orchestrator
+    effort: medium
+    commit_group: cg17
+    depends_on: [T4.3.5, T4.4.4]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/git-automation-policy.md
+    notes: >
+      Finding #20 (part 1): add Phase Gate Protocol section requiring dedicated
+      decision item, human sign-off, and ADR for each deferred automation.
+
+  - id: M4.5.4
+    parent: S4.5
+    type: M
+    title: "Add phase-gate schema fields (requires_phase, approval_ref)"
+    actions: [implement, document]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg17
+    depends_on: [T4.3.5, T4.4.4]
+    scope: "agent-os"
+    artifacts_out:
+      - agent-os/schemas/plan.schema.json
+      - agent-os/workflow/item-taxonomy.md
+    notes: >
+      Finding #20 (part 2): add requires_phase enum [A,B,C,D] and approval_ref
+      string as optional item fields in schema and document in taxonomy.
+
+  - id: M4.5.5
+    parent: S4.5
+    type: M
+    title: "Add phase-gate validator enforcement"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg17
+    depends_on: [M4.5.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Finding #20 (part 3): add validate_phase_gates() — hard-fail if item
+      has requires_phase and is ready/in_progress/review without approval_ref.
+      Soft warning for deferred automation keywords without requires_phase.
+
+  - id: T4.5.6
+    parent: S4.5
+    type: T
+    title: "Validate commit format, Phase B, and phase-gate changes"
+    actions: [test, verify]
+    status: planned
+    role: tester
+    effort: low
+    commit_group: cg17
+    depends_on: [D4.5.1, M4.5.2, D4.5.3, M4.5.4, M4.5.5]
+    scope: "."
+    checks:
+      - "Commit body/footer format defined in AGENTS.md, shared-workflow.md, git-automation-policy.md"
+      - "ARCHITECTURE.md Phase B cross-references shared-workflow.md"
+      - "git-automation-policy.md has Phase Gate Protocol section"
+      - "plan.schema.json has requires_phase and approval_ref fields"
+      - "validate-plan.py phase-gate enforcement works"
+      - "validate-plan.py PLAN.yaml exits 0"
+      - "render-plan.py regenerates views deterministically"
+
+  - id: C4.5.7
+    parent: S4.5
+    type: C
+    title: "Milestone X4 closure checkpoint — governance baseline hardened"
+    actions: [review, checkpoint, verify]
+    status: planned
+    role: reviewer
+    effort: low
+    commit_group: cg17
+    depends_on: [T4.5.6]
+    checks:
+      - "All S4.1-S4.5 items are verified or done"
+      - "All 19 findings are resolved"
+      - "No soft language remains for hard gates"
+      - "Schema enforces depends_on, decision, scope constraints"
+      - "Governance asset lifecycle is unified"
+      - "Phase-gate enforcement is operational"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+      - "validate-plan.py PLAN.yaml exits 0"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -1123,3 +1562,41 @@ commit_groups:
     notes: >
       Add root README.md, define REPO_MAP freshness mechanism, add design-doc
       discipline guardrail, implement staleness warning, close milestone X3.
+
+  - id: cg13
+    title: "Language enforcement — tighten soft language to hard gates"
+    items: [M4.1.1, M4.1.2, T4.1.3]
+    notes: >
+      Findings #2, #3, #6, #12, #13: replace may/should/can with MUST/MUST NOT
+      in governance files, add parallelism prohibition, document type/action
+      coherence as advisory.
+
+  - id: cg14
+    title: "Closure criteria and freshness hard gate alignment"
+    items: [M4.2.1, M4.2.2, T4.2.3]
+    notes: >
+      Findings #1, #5: align closure predicate to require both status and checks,
+      make REPO_MAP freshness a hard gate in docs and validator.
+
+  - id: cg15
+    title: "Schema and taxonomy hardening — depends_on, scope, checks, decision"
+    items: [M4.3.1, M4.3.2, M4.3.3, M4.3.4, T4.3.5]
+    notes: >
+      Findings #4, #8, #9, #17, #18: restrict depends_on to exclude milestones,
+      define scope/checks/suffix semantics, add decision Q-only schema constraint.
+
+  - id: cg16
+    title: "Lifecycle unification and deferred field markers"
+    items: [D4.4.1, D4.4.2, D4.4.3, T4.4.4]
+    notes: >
+      Findings #7, #10, #15, #16: unify governance asset states to
+      draft/active/deprecated/superseded, add DEFERRED notes for triggers and
+      tools_profile, clarify single-writer enforcement.
+
+  - id: cg17
+    title: "Commit format, phase-gate enforcement, and milestone closure"
+    items: [D4.5.1, M4.5.2, D4.5.3, M4.5.4, M4.5.5, T4.5.6, C4.5.7]
+    notes: >
+      Findings #11, #19, #20: define recommended commit body/footer, simplify
+      ARCHITECTURE.md Phase B cross-reference, add phase-gate protocol with
+      schema fields and validator enforcement, close milestone X4.

@@ -25,6 +25,9 @@
 - migrate
 
 ## Recommended Type/Action Coherence
+
+This table is advisory. Violations produce warnings, not hard failures.
+
 - Q: review, decide
 - D: plan, document, review, checkpoint
 - M: design, implement, refactor, migrate, verify

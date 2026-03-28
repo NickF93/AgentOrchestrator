@@ -57,6 +57,8 @@ Parallel execution is allowed only when:
 - there is no boundary conflict,
 - resulting commit groups remain reviewable.
 
+Parallel execution MUST NOT proceed when any condition above is unmet.
+
 ## Grouping Rule
 
 An agent may group compatible items into a shared commit_group if:
@@ -84,7 +86,7 @@ committing is a governance violation.
 ### Commit Group Closure
 
 - A commit_group is the mandatory git commit boundary.
-- A commit_group may only be closed (committed) when all its items satisfy
+- A commit_group MUST only be closed (committed) when all its items satisfy
   their required checks.
 - Each commit MUST be traceable: item -> evidence -> commit.
 - Commit message format is mandatory on all repositories governed by Layer-0:
@@ -134,7 +136,7 @@ Optional body and footer sections are strongly suggested, especially for medium 
   `agent-os/workflow/*`, or `agent-os/schemas/*`) before it is considered
   binding.
 - A design document that has not been migrated carries no governance weight.
-  Agents should not treat design docs as executable instructions.
+  Agents MUST NOT treat design docs as executable instructions.
 - When migrating a rule, add a note in the design doc indicating the rule
   has been superseded by the canonical authority reference.
 
