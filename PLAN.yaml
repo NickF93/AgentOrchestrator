@@ -160,7 +160,7 @@ milestones:
   - id: X14
     type: X
     title: "Portability Milestone Completion — Copilot Support and Kilo Realignment"
-    status: in_progress
+    status: done
     note: >
       Complete the runtime portability milestone without splitting authority.
       Add GitHub Copilot as a supported runtime through a thin repo-level
@@ -312,7 +312,7 @@ sprints:
     type: S
     parent: X14
     title: "Sprint 1 — Copilot support and Kilo entrypoint realignment"
-    status: in_progress
+    status: done
 
 items:
 
@@ -2666,7 +2666,7 @@ items:
     type: T
     title: "Validate Copilot support and Kilo realignment"
     actions: [test, verify]
-    status: ready
+    status: done
     role: tester
     effort: medium
     commit_group: cg36
@@ -2688,7 +2688,7 @@ items:
     type: C
     title: "Portability completion checkpoint"
     actions: [review, checkpoint, verify]
-    status: planned
+    status: done
     role: reviewer
     effort: low
     commit_group: cg36
@@ -2697,7 +2697,7 @@ items:
     shared_assets:
       skill: plan-checkpoint-close
       prompt: checkpoint-closure-review
-      profile: codex/check-medium
+      profile: copilot/check-medium
       result_protocol: check-result-v1
     checks:
       - "All runtime entrypoint artifacts remain thin pointers to canonical authorities"
