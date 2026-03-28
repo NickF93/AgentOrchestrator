@@ -26,7 +26,8 @@ Allowed examples:
 - `feat(scripts): add deterministic PLAN renderer`
 - `chore(repo): move startup docs under docs/design`
 
-Optional body and footer sections are strongly suggested, especially for medium or large commits.
+Body and footer sections SHOULD be included, especially for medium or large
+commits. See `AGENTS.md` § Commit Message Contract for recommended structure.
 
 ## Automation Phases
 ### Phase A: Foundation
@@ -72,6 +73,22 @@ until explicitly authorized by the human owner:
 - full DAG runtime engine
 - custom skill generation per agent
 - fully autonomous end-to-end orchestration
+
+## Phase Gate Protocol
+
+Each deferred automation listed above MUST NOT be implemented unless ALL of the
+following conditions are met:
+
+1. A dedicated decision item (Q-type) exists in PLAN.yaml requesting the
+   phase transition.
+2. The human owner has explicitly approved the transition with documented
+   sign-off.
+3. An ADR or equivalent approval reference is recorded (the item's
+   `approval_ref` field MUST be populated).
+
+Items that touch deferred automation SHOULD declare a `requires_phase` field
+in PLAN.yaml. The validator enforces that items with `requires_phase` in
+ready/in_progress/review status have a valid `approval_ref`.
 
 ## Safety Rules
 - Do not automate force-push.

@@ -95,7 +95,21 @@ committing is a governance violation.
 - Commit message format is mandatory on all repositories governed by Layer-0:
   `<type>(<scope>): <description>`
 
-Optional body and footer sections are strongly suggested, especially for medium or large commits.
+Body and footer sections SHOULD be included, especially for medium or large
+commits. Recommended structure:
+
+Body (SHOULD):
+
+- Summary: what changed and why
+- Scope: affected canonical areas/files
+- Items: referenced PLAN item IDs
+- Validation: checks run / outcomes
+
+Footer (SHOULD):
+
+- Refs: PLAN item IDs and/or commit_group ID
+- ADR: linked ADR if relevant
+- Follow-up: deferred work if applicable
 
 ## Automation Staging
 - Phase A: branch naming, local commits, plan updates, view rendering

@@ -52,7 +52,7 @@ milestones:
   - id: X4
     type: X
     title: "Governance Baseline Hardening"
-    status: in_progress
+    status: done
     note: >
       Remediate 19 findings from the post-X3 governance review: contradictions
       between canonical authorities, soft language where hard gates are intended,
@@ -124,7 +124,7 @@ sprints:
     type: S
     parent: X4
     title: "Sprint 5 — Commit format, Phase B, and phase-gate enforcement"
-    status: planned
+    status: done
 
 items:
 
@@ -1345,7 +1345,7 @@ items:
     type: D
     title: "Define recommended commit body/footer format"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: medium
     commit_group: cg17
@@ -1365,7 +1365,7 @@ items:
     type: M
     title: "Simplify ARCHITECTURE.md Phase B to cross-reference"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: low
     commit_group: cg17
@@ -1382,7 +1382,7 @@ items:
     type: D
     title: "Add phase-gate protocol for deferred automations"
     actions: [design, document]
-    status: planned
+    status: done
     role: orchestrator
     effort: medium
     commit_group: cg17
@@ -1399,7 +1399,7 @@ items:
     type: M
     title: "Add phase-gate schema fields (requires_phase, approval_ref)"
     actions: [implement, document]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg17
@@ -1417,7 +1417,7 @@ items:
     type: M
     title: "Add phase-gate validator enforcement"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg17
@@ -1435,7 +1435,7 @@ items:
     type: T
     title: "Validate commit format, Phase B, and phase-gate changes"
     actions: [test, verify]
-    status: planned
+    status: done
     role: tester
     effort: low
     commit_group: cg17
@@ -1455,7 +1455,7 @@ items:
     type: C
     title: "Milestone X4 closure checkpoint — governance baseline hardened"
     actions: [review, checkpoint, verify]
-    status: planned
+    status: done
     role: reviewer
     effort: low
     commit_group: cg17

@@ -97,6 +97,13 @@ Every executable item (Q, D, M, F, T, C) must declare:
   semantics TBD; non-normative in MVP. Reserved for future adapter mappings;
   same restrictions as triggers.
 - notes
+- requires_phase — automation phase gate (enum: `A`, `B`, `C`, `D`). When set,
+  the item is declaring that it touches deferred automation and requires the
+  specified phase to be unlocked. Validator enforces that `approval_ref` is
+  present when this item is in ready/in_progress/review.
+- approval_ref — human sign-off reference (e.g. ADR ID, decision item ID).
+  Required when `requires_phase` is set and item is active. Documents the
+  authorization for implementing deferred automation.
 
 ## Identifier Grammar
 - Milestone IDs: `X<number>` (example: `X1`)

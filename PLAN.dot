@@ -4,12 +4,18 @@ digraph PLAN {
   "X1" [label="X1 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X2" [label="X2 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X3" [label="X3 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X4" [label="X4 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.2" [label="S3.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.3" [label="S3.3 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.4" [label="S3.4 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S4.1" [label="S4.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S4.2" [label="S4.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S4.3" [label="S4.3 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S4.4" [label="S4.4 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S4.5" [label="S4.5 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -48,6 +54,48 @@ digraph PLAN {
   "D3.4.3" [label="D3.4.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   "M3.4.4" [label="M3.4.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   "T3.4.5" [label="T3.4.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg13" {
+    style="rounded,dashed";
+    label="cg13: Language enforcement — tighten soft language to hard gates";
+  "M4.1.1" [label="M4.1.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.1.2" [label="M4.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T4.1.3" [label="T4.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg14" {
+    style="rounded,dashed";
+    label="cg14: Closure criteria and freshness hard gate alignment";
+  "M4.2.1" [label="M4.2.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.2.2" [label="M4.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T4.2.3" [label="T4.2.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg15" {
+    style="rounded,dashed";
+    label="cg15: Schema and taxonomy hardening — depends_on, scope, checks, decision";
+  "M4.3.1" [label="M4.3.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.3.2" [label="M4.3.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.3.3" [label="M4.3.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.3.4" [label="M4.3.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T4.3.5" [label="T4.3.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg16" {
+    style="rounded,dashed";
+    label="cg16: Lifecycle unification and deferred field markers";
+  "D4.4.1" [label="D4.4.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D4.4.2" [label="D4.4.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D4.4.3" [label="D4.4.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "T4.4.4" [label="T4.4.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg17" {
+    style="rounded,dashed";
+    label="cg17: Commit format, phase-gate enforcement, and milestone closure";
+  "C4.5.7" [label="C4.5.7 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "D4.5.1" [label="D4.5.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D4.5.3" [label="D4.5.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.5.2" [label="M4.5.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.5.4" [label="M4.5.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M4.5.5" [label="M4.5.5 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T4.5.6" [label="T4.5.6 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg2" {
     style="rounded,dashed";
@@ -115,6 +163,7 @@ digraph PLAN {
   "S2.1" -> "C2.1.1" [style=dashed];
   "S3.2" -> "C3.2.5" [style=dashed];
   "S3.4" -> "C3.4.6" [style=dashed];
+  "S4.5" -> "C4.5.7" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -131,6 +180,11 @@ digraph PLAN {
   "S3.4" -> "D3.4.1" [style=dashed];
   "S3.4" -> "D3.4.2" [style=dashed];
   "S3.4" -> "D3.4.3" [style=dashed];
+  "S4.4" -> "D4.4.1" [style=dashed];
+  "S4.4" -> "D4.4.2" [style=dashed];
+  "S4.4" -> "D4.4.3" [style=dashed];
+  "S4.5" -> "D4.5.1" [style=dashed];
+  "S4.5" -> "D4.5.3" [style=dashed];
   "S3.1" -> "F3.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
   "S1.1" -> "M1.1.2" [style=dashed];
@@ -148,6 +202,17 @@ digraph PLAN {
   "S3.3" -> "M3.3.4" [style=dashed];
   "S3.3" -> "M3.3.5" [style=dashed];
   "S3.4" -> "M3.4.4" [style=dashed];
+  "S4.1" -> "M4.1.1" [style=dashed];
+  "S4.1" -> "M4.1.2" [style=dashed];
+  "S4.2" -> "M4.2.1" [style=dashed];
+  "S4.2" -> "M4.2.2" [style=dashed];
+  "S4.3" -> "M4.3.1" [style=dashed];
+  "S4.3" -> "M4.3.2" [style=dashed];
+  "S4.3" -> "M4.3.3" [style=dashed];
+  "S4.3" -> "M4.3.4" [style=dashed];
+  "S4.5" -> "M4.5.2" [style=dashed];
+  "S4.5" -> "M4.5.4" [style=dashed];
+  "S4.5" -> "M4.5.5" [style=dashed];
   "S1.1" -> "Q1.1.1" [style=dashed];
   "S1.1" -> "Q1.1.2" [style=dashed];
   "S1.1" -> "Q1.1.3" [style=dashed];
@@ -159,6 +224,11 @@ digraph PLAN {
   "X3" -> "S3.2" [style=dashed];
   "X3" -> "S3.3" [style=dashed];
   "X3" -> "S3.4" [style=dashed];
+  "X4" -> "S4.1" [style=dashed];
+  "X4" -> "S4.2" [style=dashed];
+  "X4" -> "S4.3" [style=dashed];
+  "X4" -> "S4.4" [style=dashed];
+  "X4" -> "S4.5" [style=dashed];
   "S1.1" -> "T1.1.1" [style=dashed];
   "S1.1" -> "T1.1.2" [style=dashed];
   "S1.1" -> "T1.1.3" [style=dashed];
@@ -166,6 +236,11 @@ digraph PLAN {
   "S3.2" -> "T3.2.4" [style=dashed];
   "S3.3" -> "T3.3.6" [style=dashed];
   "S3.4" -> "T3.4.5" [style=dashed];
+  "S4.1" -> "T4.1.3" [style=dashed];
+  "S4.2" -> "T4.2.3" [style=dashed];
+  "S4.3" -> "T4.3.5" [style=dashed];
+  "S4.4" -> "T4.4.4" [style=dashed];
+  "S4.5" -> "T4.5.6" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -177,8 +252,16 @@ digraph PLAN {
   "T3.2.4" -> "C3.2.5";
   "T3.3.6" -> "C3.4.6";
   "T3.4.5" -> "C3.4.6";
+  "T4.5.6" -> "C4.5.7";
   "M3.1.2" -> "D3.1.3";
   "C3.2.5" -> "D3.4.2";
+  "T4.2.3" -> "D4.4.1";
+  "T4.2.3" -> "D4.4.2";
+  "T4.2.3" -> "D4.4.3";
+  "T4.3.5" -> "D4.5.1";
+  "T4.4.4" -> "D4.5.1";
+  "T4.3.5" -> "D4.5.3";
+  "T4.4.4" -> "D4.5.3";
   "Q1.1.1" -> "M1.1.1";
   "Q1.1.2" -> "M1.1.1";
   "Q1.1.3" -> "M1.1.1";
@@ -204,6 +287,17 @@ digraph PLAN {
   "T3.1.4" -> "M3.3.5";
   "C3.2.5" -> "M3.4.4";
   "D3.4.2" -> "M3.4.4";
+  "T4.1.3" -> "M4.2.1";
+  "T4.1.3" -> "M4.2.2";
+  "T4.2.3" -> "M4.3.1";
+  "T4.2.3" -> "M4.3.2";
+  "T4.2.3" -> "M4.3.3";
+  "T4.2.3" -> "M4.3.4";
+  "T4.3.5" -> "M4.5.2";
+  "T4.4.4" -> "M4.5.2";
+  "T4.3.5" -> "M4.5.4";
+  "T4.4.4" -> "M4.5.4";
+  "M4.5.4" -> "M4.5.5";
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -227,4 +321,20 @@ digraph PLAN {
   "D3.4.2" -> "T3.4.5";
   "D3.4.3" -> "T3.4.5";
   "M3.4.4" -> "T3.4.5";
+  "M4.1.1" -> "T4.1.3";
+  "M4.1.2" -> "T4.1.3";
+  "M4.2.1" -> "T4.2.3";
+  "M4.2.2" -> "T4.2.3";
+  "M4.3.1" -> "T4.3.5";
+  "M4.3.2" -> "T4.3.5";
+  "M4.3.3" -> "T4.3.5";
+  "M4.3.4" -> "T4.3.5";
+  "D4.4.1" -> "T4.4.4";
+  "D4.4.2" -> "T4.4.4";
+  "D4.4.3" -> "T4.4.4";
+  "D4.5.1" -> "T4.5.6";
+  "D4.5.3" -> "T4.5.6";
+  "M4.5.2" -> "T4.5.6";
+  "M4.5.4" -> "T4.5.6";
+  "M4.5.5" -> "T4.5.6";
 }

@@ -18,6 +18,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X1 | X | Level-0 MVP — Control Plane Foundation | done |
 | X2 | X | Layer-0 Governance Hardening | done |
 | X3 | X | Control-Plane Hardening | done |
+| X4 | X | Governance Baseline Hardening | done |
 
 ## Sprints
 
@@ -29,6 +30,11 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | S3.2 | X3 | S | Sprint 2 — Validation tooling hardening | done |
 | S3.3 | X3 | S | Sprint 3 — Rendering, bootstrap, and workspace improvements | done |
 | S3.4 | X3 | S | Sprint 4 — Documentation, operational guardrails, and closure | done |
+| S4.1 | X4 | S | Sprint 1 — Language enforcement and clarity | done |
+| S4.2 | X4 | S | Sprint 2 — Semantic alignment (closure and freshness) | done |
+| S4.3 | X4 | S | Sprint 3 — Schema and taxonomy hardening | done |
+| S4.4 | X4 | S | Sprint 4 — Lifecycle unification and deferred fields | done |
+| S4.5 | X4 | S | Sprint 5 — Commit format, Phase B, and phase-gate enforcement | done |
 
 ## Items
 
@@ -38,6 +44,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | C2.1.1 | S2.1 | C | done | reviewer | low | cg8 | D2.1.4, D2.1.5, D2.1.6, D2.1.7, D2.1.8 |
 | C3.2.5 | S3.2 | C | done | reviewer | low | cg10 | T3.2.4 |
 | C3.4.6 | S3.4 | C | done | reviewer | low | cg12 | T3.3.6, T3.4.5 |
+| C4.5.7 | S4.5 | C | done | reviewer | low | cg17 | T4.5.6 |
 | D1.1.1 | S1.1 | D | done | orchestrator | low | cg0 |  |
 | D1.1.2 | S1.1 | D | done | orchestrator | low | cg1 |  |
 | D1.1.3 | S1.1 | D | done | orchestrator | low | cg6 |  |
@@ -54,6 +61,11 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | D3.4.1 | S3.4 | D | done | documenter | medium | cg12 |  |
 | D3.4.2 | S3.4 | D | done | orchestrator | medium | cg12 | C3.2.5 |
 | D3.4.3 | S3.4 | D | done | orchestrator | low | cg12 |  |
+| D4.4.1 | S4.4 | D | done | documenter | medium | cg16 | T4.2.3 |
+| D4.4.2 | S4.4 | D | done | documenter | low | cg16 | T4.2.3 |
+| D4.4.3 | S4.4 | D | done | documenter | low | cg16 | T4.2.3 |
+| D4.5.1 | S4.5 | D | done | documenter | medium | cg17 | T4.3.5, T4.4.4 |
+| D4.5.3 | S4.5 | D | done | orchestrator | medium | cg17 | T4.3.5, T4.4.4 |
 | F3.1.1 | S3.1 | F | done | implementer | low | cg9 |  |
 | M1.1.1 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.2, Q1.1.3 |
 | M1.1.2 | S1.1 | M | done | implementer | medium | cg3 | Q1.1.1, Q1.1.4 |
@@ -71,6 +83,17 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | M3.3.4 | S3.3 | M | done | implementer | low | cg11 |  |
 | M3.3.5 | S3.3 | M | done | implementer | medium | cg11 | T3.1.4 |
 | M3.4.4 | S3.4 | M | done | implementer | medium | cg12 | D3.4.2, C3.2.5 |
+| M4.1.1 | S4.1 | M | done | implementer | low | cg13 |  |
+| M4.1.2 | S4.1 | M | done | documenter | low | cg13 |  |
+| M4.2.1 | S4.2 | M | done | implementer | medium | cg14 | T4.1.3 |
+| M4.2.2 | S4.2 | M | done | implementer | medium | cg14 | T4.1.3 |
+| M4.3.1 | S4.3 | M | done | implementer | medium | cg15 | T4.2.3 |
+| M4.3.2 | S4.3 | M | done | documenter | medium | cg15 | T4.2.3 |
+| M4.3.3 | S4.3 | M | done | implementer | medium | cg15 | T4.2.3 |
+| M4.3.4 | S4.3 | M | done | implementer | low | cg15 | T4.2.3 |
+| M4.5.2 | S4.5 | M | done | implementer | low | cg17 | T4.3.5, T4.4.4 |
+| M4.5.4 | S4.5 | M | done | implementer | medium | cg17 | T4.3.5, T4.4.4 |
+| M4.5.5 | S4.5 | M | done | implementer | medium | cg17 | M4.5.4 |
 | Q1.1.1 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
 | Q1.1.2 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
 | Q1.1.3 | S1.1 | Q | done | orchestrator | low | cg2 | D1.1.2 |
@@ -83,6 +106,11 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | T3.2.4 | S3.2 | T | done | tester | low | cg10 | M3.2.1, M3.2.2, M3.2.3 |
 | T3.3.6 | S3.3 | T | done | tester | low | cg11 | M3.3.1, M3.3.2, M3.3.3, M3.3.4, M3.3.5 |
 | T3.4.5 | S3.4 | T | done | tester | low | cg12 | D3.4.1, D3.4.2, D3.4.3, M3.4.4 |
+| T4.1.3 | S4.1 | T | done | tester | low | cg13 | M4.1.1, M4.1.2 |
+| T4.2.3 | S4.2 | T | done | tester | low | cg14 | M4.2.1, M4.2.2 |
+| T4.3.5 | S4.3 | T | done | tester | low | cg15 | M4.3.1, M4.3.2, M4.3.3, M4.3.4 |
+| T4.4.4 | S4.4 | T | done | tester | low | cg16 | D4.4.1, D4.4.2, D4.4.3 |
+| T4.5.6 | S4.5 | T | done | tester | low | cg17 | D4.5.1, M4.5.2, D4.5.3, M4.5.4, M4.5.5 |
 
 ## Commit Groups
 
@@ -93,6 +121,11 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | cg10 | Validation tooling hardening — cycle detection, commit group coherence, type/action warnings | M3.2.1, M3.2.2, M3.2.3, T3.2.4, C3.2.5 |
 | cg11 | Rendering, bootstrap, and workspace template improvements | M3.3.1, M3.3.2, M3.3.3, M3.3.4, M3.3.5, T3.3.6 |
 | cg12 | Documentation, operational guardrails, and milestone closure | D3.4.1, D3.4.2, D3.4.3, M3.4.4, T3.4.5, C3.4.6 |
+| cg13 | Language enforcement — tighten soft language to hard gates | M4.1.1, M4.1.2, T4.1.3 |
+| cg14 | Closure criteria and freshness hard gate alignment | M4.2.1, M4.2.2, T4.2.3 |
+| cg15 | Schema and taxonomy hardening — depends_on, scope, checks, decision | M4.3.1, M4.3.2, M4.3.3, M4.3.4, T4.3.5 |
+| cg16 | Lifecycle unification and deferred field markers | D4.4.1, D4.4.2, D4.4.3, T4.4.4 |
+| cg17 | Commit format, phase-gate enforcement, and milestone closure | D4.5.1, M4.5.2, D4.5.3, M4.5.4, M4.5.5, T4.5.6, C4.5.7 |
 | cg2 | Decision gates — Q1.1.1 through Q1.1.5 answers recorded | Q1.1.1, Q1.1.2, Q1.1.3, Q1.1.4, Q1.1.5 |
 | cg3 | Scaffold — workflow docs, schema, templates | M1.1.1, M1.1.2, M1.1.3, M1.1.6 |
 | cg4 | Scripts — render, validate, bootstrap, sync | M1.1.4, M1.1.5 |
@@ -166,6 +199,21 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
   - Design-doc discipline guardrail is documented
   - PLAN.md and PLAN.dot are regenerated and committed
 - **Notes**: Marks the control plane as hardened per the 149-point review findings.
+
+### C4.5.7: Milestone X4 closure checkpoint — governance baseline hardened
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Actions**: review, checkpoint, verify
+- **Depends on**: T4.5.6
+- **Checks**:
+  - All S4.1-S4.5 items are verified or done
+  - All 19 findings are resolved
+  - No soft language remains for hard gates
+  - Schema enforces depends_on, decision, scope constraints
+  - Governance asset lifecycle is unified
+  - Phase-gate enforcement is operational
+  - PLAN.md and PLAN.dot are regenerated and committed
+  - validate-plan.py PLAN.yaml exits 0
 
 ### D1.1.1: Create non-authoritative docs directory and initialize .gitignore
 
@@ -280,6 +328,46 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 - **Actions**: design, document, review
 - **Artifacts**: agent-os/workflow/shared-workflow.md, ARCHITECTURE.md
 - **Notes**: Add Design Document Governance section to shared-workflow.md: docs/design is non-authoritative, normative rules must migrate to canonical authority. Reinforce in ARCHITECTURE.md invariants.
+
+### D4.4.1: Unify governance asset states to draft/active/deprecated/superseded
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Actions**: document
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/workflow/lifecycle.md
+- **Notes**: Finding #7: change ADR states from proposed/accepted to draft/active. Add unified Governance Asset Lifecycle section applicable to prompts, ADRs, and skills.
+
+### D4.4.2: Add DEFERRED notes for triggers and tools_profile fields
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Actions**: document
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/workflow/item-taxonomy.md, agent-os/workflow/portability-model.md
+- **Notes**: Findings #15, #16: mark triggers and tools_profile as DEFERRED adapter-level fields with semantics TBD, optional and non-normative in MVP.
+
+### D4.4.3: Clarify single-writer rule as documentation/review-enforced
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Actions**: document
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/workflow/shared-workflow.md
+- **Notes**: Finding #10: add note that enforcement is governance-based (code review and escalation), not automated. No validator check for single-writer.
+
+### D4.5.1: Define recommended commit body/footer format
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Actions**: document
+- **Depends on**: T4.3.5, T4.4.4
+- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md, agent-os/templates/repo-AGENTS.md.template
+- **Notes**: Finding #19: define recommended (SHOULD) body/footer structure including summary, scope, items, validation, refs, ADR, and follow-up sections.
+
+### D4.5.3: Add phase-gate protocol for deferred automations
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Actions**: design, document
+- **Depends on**: T4.3.5, T4.4.4
+- **Artifacts**: agent-os/workflow/git-automation-policy.md
+- **Notes**: Finding #20 (part 1): add Phase Gate Protocol section requiring dedicated decision item, human sign-off, and ADR for each deferred automation.
 
 ### F3.1.1: Fix duplicate note key in PLAN.yaml X2 milestone
 
@@ -415,6 +503,92 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 - **Artifacts**: agent-os/scripts/validate-plan.py
 - **Notes**: Add --check-freshness flag. Parse REPO_MAP.md metadata, warn if stale when checkpoint items exist in review/verified state. Warning-only.
 
+### M4.1.1: Tighten soft language to hard gates in governance files
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Actions**: implement
+- **Artifacts**: agent-os/workflow/shared-workflow.md, agent-os/workflow/lifecycle.md
+- **Notes**: Findings #2, #6, #12, #13: "may only" → "MUST only" in shared-workflow.md, "should not" → "MUST NOT" for design doc rule, "can optionally detect" → prescriptive in lifecycle.md, add explicit parallelism prohibition.
+
+### M4.1.2: Document type/action coherence as warning-only
+
+- **Type**: M | **Status**: done | **Role**: documenter | **Effort**: low
+- **Actions**: document
+- **Artifacts**: agent-os/workflow/item-taxonomy.md
+- **Notes**: Finding #3: add note to type/action coherence table clarifying it is advisory — violations produce warnings, not hard failures.
+
+### M4.2.1: Align commit group closure to require both status and checks
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Actions**: implement, document
+- **Depends on**: T4.1.3
+- **Artifacts**: agent-os/workflow/lifecycle.md, agent-os/workflow/shared-workflow.md
+- **Notes**: Finding #1: state both predicates together in both files — items must be in review/verified/done AND required checks must be satisfied.
+
+### M4.2.2: Make REPO_MAP freshness a hard gate in docs and validator
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Actions**: implement
+- **Depends on**: T4.1.3
+- **Artifacts**: agent-os/workflow/lifecycle.md, agent-os/scripts/validate-plan.py
+- **Notes**: Finding #5: remove "advisory" language from lifecycle.md, change validate-plan.py check_repo_map_freshness() from warning to hard-fail.
+
+### M4.3.1: Restrict depends_on to exclude milestoneId in schema
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Actions**: implement
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/schemas/plan.schema.json
+- **Notes**: Finding #4: create dependencyTarget definition as oneOf [sprintId, itemId]. Update depends_on items ref to use dependencyTarget instead of planId.
+
+### M4.3.2: Define scope, checks, and suffix semantics in item-taxonomy
+
+- **Type**: M | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Actions**: document
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/workflow/item-taxonomy.md
+- **Notes**: Findings #8, #9, #17: scope is path prefix for collision detection, checks is array of human-readable descriptions, suffixes are contiguous lowercase sequence in derivation order with no gaps.
+
+### M4.3.3: Add decision if/then Q-only constraint in schema
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Actions**: implement
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/schemas/plan.schema.json
+- **Notes**: Finding #18: add JSON Schema if/then to forbid decision property on non-Q-type items.
+
+### M4.3.4: Add scope pattern constraint to schema
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Actions**: implement
+- **Depends on**: T4.2.3
+- **Artifacts**: agent-os/schemas/plan.schema.json
+- **Notes**: Finding #8 (schema side): add pattern for scope field to restrict to path-like characters.
+
+### M4.5.2: Simplify ARCHITECTURE.md Phase B to cross-reference
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Actions**: implement
+- **Depends on**: T4.3.5, T4.4.4
+- **Artifacts**: ARCHITECTURE.md
+- **Notes**: Finding #11: replace single-condition Phase B statement with cross-reference to shared-workflow.md Phase B Safety Gate for the full prerequisite list.
+
+### M4.5.4: Add phase-gate schema fields (requires_phase, approval_ref)
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Actions**: implement, document
+- **Depends on**: T4.3.5, T4.4.4
+- **Artifacts**: agent-os/schemas/plan.schema.json, agent-os/workflow/item-taxonomy.md
+- **Notes**: Finding #20 (part 2): add requires_phase enum [A,B,C,D] and approval_ref string as optional item fields in schema and document in taxonomy.
+
+### M4.5.5: Add phase-gate validator enforcement
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Actions**: implement
+- **Depends on**: M4.5.4
+- **Artifacts**: agent-os/scripts/validate-plan.py
+- **Notes**: Finding #20 (part 3): add validate_phase_gates() — hard-fail if item has requires_phase and is ready/in_progress/review without approval_ref. Soft warning for deferred automation keywords without requires_phase.
+
 ### Q1.1.1: Decide: PLAN.yaml required fields and state transition rules
 
 - **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
@@ -536,3 +710,65 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
   - Full validate-plan.py run passes on PLAN.yaml
   - render-plan.py regenerates views deterministically
 - **Notes**: Gate for Sprint S3.4: all documentation, guardrails, and operational mechanisms must be in place.
+
+### T4.1.3: Validate language fixes are consistent across governance docs
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Actions**: verify
+- **Depends on**: M4.1.1, M4.1.2
+- **Checks**:
+  - shared-workflow.md uses MUST only for commit group closure
+  - shared-workflow.md uses MUST NOT for design doc rule
+  - shared-workflow.md has explicit parallelism prohibition
+  - lifecycle.md uses prescriptive language for freshness detection
+  - item-taxonomy.md type/action table marked as advisory
+  - validate-plan.py PLAN.yaml exits 0
+
+### T4.2.3: Validate closure and freshness alignment
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Actions**: test, verify
+- **Depends on**: M4.2.1, M4.2.2
+- **Checks**:
+  - lifecycle.md and shared-workflow.md have consistent closure predicates
+  - lifecycle.md freshness is documented as hard gate
+  - validate-plan.py --check-freshness hard-fails on stale REPO_MAP
+  - validate-plan.py PLAN.yaml exits 0
+
+### T4.3.5: Validate PLAN.yaml against hardened schema
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Actions**: test, verify
+- **Depends on**: M4.3.1, M4.3.2, M4.3.3, M4.3.4
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0 with hardened schema
+  - depends_on rejects milestone IDs
+  - decision field rejected on non-Q items
+  - scope pattern validates existing scopes
+
+### T4.4.4: Validate lifecycle and field documentation changes
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Actions**: verify
+- **Depends on**: D4.4.1, D4.4.2, D4.4.3
+- **Checks**:
+  - lifecycle.md has unified governance asset states
+  - ADR states use draft/active not proposed/accepted
+  - item-taxonomy.md has DEFERRED notes for triggers and tools_profile
+  - portability-model.md has DEFERRED notes
+  - shared-workflow.md single-writer section has enforcement note
+  - validate-plan.py PLAN.yaml exits 0
+
+### T4.5.6: Validate commit format, Phase B, and phase-gate changes
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Actions**: test, verify
+- **Depends on**: D4.5.1, M4.5.2, D4.5.3, M4.5.4, M4.5.5
+- **Checks**:
+  - Commit body/footer format defined in AGENTS.md, shared-workflow.md, git-automation-policy.md
+  - ARCHITECTURE.md Phase B cross-references shared-workflow.md
+  - git-automation-policy.md has Phase Gate Protocol section
+  - plan.schema.json has requires_phase and approval_ref fields
+  - validate-plan.py phase-gate enforcement works
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py regenerates views deterministically

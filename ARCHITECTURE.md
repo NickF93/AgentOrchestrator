@@ -53,5 +53,5 @@ The following formerly deferred specifications are now governed in Layer-0:
 
 ## Phase B Safety Prerequisite
 
-Before enabling Phase B automation, authority-conflict recovery MUST be active,
-tested, and used as a hard gate for push/PR automation readiness.
+Before enabling Phase B automation, all prerequisites defined in
+`agent-os/workflow/shared-workflow.md` § Phase B Safety Gate MUST be satisfied.

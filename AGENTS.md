@@ -41,7 +41,21 @@ All commits MUST use this format:
 
 `<type>(<scope>): <description>`
 
-Optional body and footer sections are strongly suggested, especially for medium or large commits.
+Body and footer sections SHOULD be included, especially for medium or large
+commits. Recommended structure:
+
+Body (SHOULD):
+
+- Summary: what changed and why
+- Scope: affected canonical areas/files
+- Items: referenced PLAN item IDs
+- Validation: checks run / outcomes
+
+Footer (SHOULD):
+
+- Refs: PLAN item IDs and/or commit_group ID
+- ADR: linked ADR if relevant
+- Follow-up: deferred work if applicable
 
 Valid examples:
 - `docs(workflow): split shared workflow into canonical files`

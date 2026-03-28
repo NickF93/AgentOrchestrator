@@ -178,7 +178,15 @@
           "type": "array",
           "items": { "type": "string" }
         },
-        "tools_profile": { "type": "string" }
+        "tools_profile": { "type": "string" },
+        "requires_phase": {
+          "type": "string",
+          "enum": ["A", "B", "C", "D"]
+        },
+        "approval_ref": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "if": {
         "properties": { "type": { "not": { "const": "Q" } } },

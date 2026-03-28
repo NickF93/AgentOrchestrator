@@ -308,6 +308,33 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
     # Warning-only: type/action coherence.
     warnings.extend(validate_type_action_coherence(items))
 
+    # Phase-gate enforcement: requires_phase items need approval_ref.
+    pg_errors, pg_warnings = validate_phase_gates(items)
+    errors.extend(pg_errors)
+    warnings.extend(pg_warnings)
+
+    return errors, warnings
+
+
+def validate_phase_gates(items: list[dict]) -> tuple[list[str], list[str]]:
+    """Enforce phase-gate rules for items with requires_phase."""
+    errors: list[str] = []
+    warnings: list[str] = []
+    active_statuses = {"ready", "in_progress", "review"}
+
+    for item in items:
+        item_id = item.get("id", "<unknown>")
+        requires_phase = item.get("requires_phase")
+        approval_ref = item.get("approval_ref")
+        status = item.get("status", "")
+
+        if requires_phase and status in active_statuses and not approval_ref:
+            errors.append(
+                f"{item_id}: has requires_phase={requires_phase} and status={status} "
+                f"but no approval_ref — phase-gate items MUST have approval_ref "
+                f"before entering active status"
+            )
+
     return errors, warnings
 
 

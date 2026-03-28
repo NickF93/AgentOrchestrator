@@ -41,7 +41,8 @@ All commits MUST use:
 
 `<type>(<scope>): <description>`
 
-Optional body and footer sections are strongly suggested, especially for medium or large commits.
+Body and footer sections SHOULD be included, especially for medium or large
+commits. See control plane documentation for recommended body/footer structure.
 
 Valid examples:
 - `docs(workflow): split shared workflow into canonical files`
