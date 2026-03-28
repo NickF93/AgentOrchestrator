@@ -22,3 +22,22 @@ This repository is governed by the Level-0 control plane.
 - Source: {{CONTROL_PLANE_REF}}
 - Owner: {{OWNER}}
 - Bootstrap date: {{DATE}}
+
+## Working Discipline
+
+- Track work in `PLAN.yaml` before editing files.
+- Each git commit closes exactly one `commit_group`.
+- Tracked commits MUST include a footer of the form:
+  `Refs: <PLAN item IDs>, <commit_group ID>`
+
+## Local Hook
+
+This bootstrap includes `.githooks/commit-msg` to enforce the commit title and
+`Refs:` footer contract locally.
+
+Enable it with:
+
+```bash
+git config core.hooksPath .githooks
+chmod +x .githooks/commit-msg
+```

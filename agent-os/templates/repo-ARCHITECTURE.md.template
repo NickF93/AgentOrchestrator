@@ -24,8 +24,8 @@ Define software boundaries, module ownership, interfaces, and invariants.
 
 ## ADR Policy
 - Store ADRs in `docs/adr/` using `ADR-0001` incremental numbering.
-- Allowed ADR states: proposed, accepted, superseded, deprecated.
-- Every accepted/superseded/deprecated ADR must reference related PLAN items.
+- Allowed ADR states: draft, active, superseded, deprecated.
+- Every active/superseded/deprecated ADR must reference related PLAN items.
 
 ## Non-Goals
 - This file does not track execution status (use PLAN.yaml).

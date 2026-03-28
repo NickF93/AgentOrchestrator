@@ -62,7 +62,7 @@ milestones:
   - id: X5
     type: X
     title: "Tracking Discipline and Canonical Consistency Hardening"
-    status: in_progress
+    status: done
     note: >
       Strengthen plan-first execution discipline and repair the remaining
       authority/template drift after the architecture review. This milestone
@@ -162,7 +162,7 @@ sprints:
     type: S
     parent: X5
     title: "Sprint 2 — Cross-layer propagation, tooling enforcement, and operator flow"
-    status: planned
+    status: done
 
 items:
 
@@ -1712,7 +1712,7 @@ items:
     type: D
     title: "Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates"
     actions: [document, review]
-    status: planned
+    status: done
     role: documenter
     effort: medium
     commit_group: cg21
@@ -1732,7 +1732,7 @@ items:
     type: M
     title: "Enforce commit title and Refs footer contract in repo-local tooling"
     actions: [implement, verify]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg21
@@ -1752,7 +1752,7 @@ items:
     type: M
     title: "Repair template drift, local provenance, and fresh-checkout operator flow"
     actions: [implement, refactor, verify]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg21
@@ -1768,8 +1768,6 @@ items:
       - agent-os/templates/repo-ADR.md.template
       - agent-os/templates/repo-ARCHITECTURE.md.template
       - agent-os/templates/repo-REPO_MAP.md.template
-      - agent-os/templates/workspace-AGENTS.md.template
-      - agent-os/templates/workspace-CLAUDE.md.template
       - requirements.txt
     notes: >
       Aligns ADR and REPO_MAP templates with canonical lifecycle policy,
@@ -1782,7 +1780,7 @@ items:
     type: T
     title: "Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement"
     actions: [test, verify]
-    status: planned
+    status: done
     role: tester
     effort: low
     commit_group: cg21
@@ -1801,7 +1799,7 @@ items:
     type: C
     title: "Consistency repair checkpoint — cross-layer rules and operator flow aligned"
     actions: [review, checkpoint, verify]
-    status: planned
+    status: done
     role: reviewer
     effort: low
     commit_group: cg21

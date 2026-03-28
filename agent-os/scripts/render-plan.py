@@ -9,7 +9,10 @@ from pathlib import Path
 try:
     import yaml
 except ImportError as exc:  # pragma: no cover
-    raise SystemExit("Missing dependency: pyyaml. Install with: pip install pyyaml") from exc
+    raise SystemExit(
+        "Missing dependency: pyyaml. Install tooling deps with: "
+        "python3 -m pip install -r requirements.txt"
+    ) from exc
 
 
 def load_yaml(path: Path) -> dict:

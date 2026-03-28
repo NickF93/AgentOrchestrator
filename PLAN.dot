@@ -5,7 +5,7 @@ digraph PLAN {
   "X2" [label="X2 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X3" [label="X3 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X4" [label="X4 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X5" [label="X5 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X5" [label="X5 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -20,7 +20,7 @@ digraph PLAN {
   "S4.6" [label="S4.6 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S4.7" [label="S4.7 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S5.1" [label="S5.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S5.2" [label="S5.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
+  "S5.2" [label="S5.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -190,11 +190,11 @@ digraph PLAN {
   subgraph "cluster_cg21" {
     style="rounded,dashed";
     label="cg21: Cross-layer consistency repairs — templates, hook/bootstrap enforcement, local provenance, and tooling bootstrap";
-  "D5.2.1" [label="D5.2.1 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
-  "M5.2.2" [label="M5.2.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "M5.2.3" [label="M5.2.3 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "T5.2.4" [label="T5.2.4 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
-  "C5.2.5" [label="C5.2.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  "D5.2.1" [label="D5.2.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "M5.2.2" [label="M5.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M5.2.3" [label="M5.2.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T5.2.4" [label="T5.2.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C5.2.5" [label="C5.2.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];

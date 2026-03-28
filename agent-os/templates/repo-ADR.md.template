@@ -6,7 +6,7 @@
 - Repository: {{REPO_NAME}}
 - Owner: {{OWNER}}
 - Date: {{DATE}}
-- Status: proposed
+- Status: draft
 - Linked PLAN items:
 
 ## Context
@@ -23,5 +23,5 @@ List expected benefits, trade-offs, and migration impacts.
 - Option B:
 
 ## State Transitions
-Allowed states: proposed -> accepted -> superseded/deprecated.
+Allowed states: draft -> active -> superseded/deprecated.
 When changing state, record the triggering PLAN item.

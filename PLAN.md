@@ -19,7 +19,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X2 | X | Layer-0 Governance Hardening | done |
 | X3 | X | Control-Plane Hardening | done |
 | X4 | X | Governance Baseline Hardening | done |
-| X5 | X | Tracking Discipline and Canonical Consistency Hardening | in_progress |
+| X5 | X | Tracking Discipline and Canonical Consistency Hardening | done |
 
 ## Plan
 
@@ -237,7 +237,7 @@ Status: done
 
 - ID: `X5`
 - Title: Tracking Discipline and Canonical Consistency Hardening
-- Status: in_progress
+- Status: done
 - Note: Strengthen plan-first execution discipline and repair the remaining authority/template drift after the architecture review. This milestone makes commit_group boundaries explicit and non-ad-hoc, propagates the tracking and commit traceability rule across Level-0/1/2 artifacts, aligns ADR and REPO_MAP template semantics with canonical workflow rules, makes workspace sync materialize from local state without implicit remote mutation, and packages Python tooling dependencies for fresh checkouts.
 
 #### S5.1 Items
@@ -254,15 +254,15 @@ Status: done
 #### S5.2 Items
 
 Sprint: Sprint 2 — Cross-layer propagation, tooling enforcement, and operator flow
-Status: planned
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D5.2.1` | `D` | Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates | planned | Makes the rule visible beyond Level-0 so workspace runtime files and bootstrapped repo-local governance files carry the same hard gate. |
-| `M5.2.2` | `M` | Enforce commit title and Refs footer contract in repo-local tooling | planned | Extends the local commit hook to require both the canonical title contract and a Refs footer with PLAN item IDs plus exactly one commit_group, and bootstraps the same guard into downstream repos. |
-| `M5.2.3` | `M` | Repair template drift, local provenance, and fresh-checkout operator flow | planned | Aligns ADR and REPO_MAP templates with canonical lifecycle policy, removes implicit remote mutation from workspace sync, stamps workspace files with local provenance, and makes the repo self-hosted with an explicit dependency manifest and runnable operator documentation. |
-| `T5.2.4` | `T` | Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement | planned |  |
-| `C5.2.5` | `C` | Consistency repair checkpoint — cross-layer rules and operator flow aligned | planned |  |
+| `D5.2.1` | `D` | Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates | done | Makes the rule visible beyond Level-0 so workspace runtime files and bootstrapped repo-local governance files carry the same hard gate. |
+| `M5.2.2` | `M` | Enforce commit title and Refs footer contract in repo-local tooling | done | Extends the local commit hook to require both the canonical title contract and a Refs footer with PLAN item IDs plus exactly one commit_group, and bootstraps the same guard into downstream repos. |
+| `M5.2.3` | `M` | Repair template drift, local provenance, and fresh-checkout operator flow | done | Aligns ADR and REPO_MAP templates with canonical lifecycle policy, removes implicit remote mutation from workspace sync, stamps workspace files with local provenance, and makes the repo self-hosted with an explicit dependency manifest and runnable operator documentation. |
+| `T5.2.4` | `T` | Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement | done |  |
+| `C5.2.5` | `C` | Consistency repair checkpoint — cross-layer rules and operator flow aligned | done |  |
 
 ## Commit Groups
 
@@ -1198,7 +1198,7 @@ Status: planned
 
 ### D5.2.1: Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
 - **Sprint**: `S5.2`
 - **Actions**: document, review
 - **Depends on**: `C5.1.3`
@@ -1208,7 +1208,7 @@ Status: planned
 
 ### M5.2.2: Enforce commit title and Refs footer contract in repo-local tooling
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S5.2`
 - **Actions**: implement, verify
 - **Depends on**: `C5.1.3`
@@ -1218,17 +1218,17 @@ Status: planned
 
 ### M5.2.3: Repair template drift, local provenance, and fresh-checkout operator flow
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S5.2`
 - **Actions**: implement, refactor, verify
 - **Depends on**: `C5.1.3`
 - **Commit group**: `cg21`
-- **Artifacts**: .gitignore, ARCHITECTURE.md, README.md, agent-os/scripts/render-plan.py, agent-os/scripts/sync-workspace.sh, agent-os/scripts/validate-plan.py, agent-os/templates/repo-ADR.md.template, agent-os/templates/repo-ARCHITECTURE.md.template, agent-os/templates/repo-REPO_MAP.md.template, agent-os/templates/workspace-AGENTS.md.template, agent-os/templates/workspace-CLAUDE.md.template, requirements.txt
+- **Artifacts**: .gitignore, ARCHITECTURE.md, README.md, agent-os/scripts/render-plan.py, agent-os/scripts/sync-workspace.sh, agent-os/scripts/validate-plan.py, agent-os/templates/repo-ADR.md.template, agent-os/templates/repo-ARCHITECTURE.md.template, agent-os/templates/repo-REPO_MAP.md.template, requirements.txt
 - **Notes**: Aligns ADR and REPO_MAP templates with canonical lifecycle policy, removes implicit remote mutation from workspace sync, stamps workspace files with local provenance, and makes the repo self-hosted with an explicit dependency manifest and runnable operator documentation.
 
 ### T5.2.4: Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S5.2`
 - **Actions**: test, verify
 - **Depends on**: `D5.2.1`, `M5.2.2`, `M5.2.3`
@@ -1243,7 +1243,7 @@ Status: planned
 
 ### C5.2.5: Consistency repair checkpoint — cross-layer rules and operator flow aligned
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S5.2`
 - **Actions**: review, checkpoint, verify
 - **Depends on**: `T5.2.4`

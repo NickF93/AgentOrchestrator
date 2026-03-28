@@ -17,10 +17,6 @@ ERROR: Invalid commit title format.
 Expected: <type>(<scope>): <description>
 Example: feat(scripts): enforce commit footer hook
 Regex: ^([a-z]+)\(([a-z0-9._/-]+)\): .+$
-
-Canonical policy:
-- agent-os/workflow/git-automation-policy.md
-- AGENTS.md (Commit Message Contract)
 EOF
   exit 1
 fi
@@ -30,10 +26,6 @@ if [ "$refs_count" -ne 1 ]; then
 ERROR: Expected exactly one Refs footer line.
 Format: Refs: <PLAN item IDs>, <commit_group ID>
 Example: Refs: D1.1.1, cg1
-
-Canonical policy:
-- agent-os/workflow/git-automation-policy.md
-- AGENTS.md (Commit Message Contract)
 EOF
   exit 1
 fi
@@ -47,10 +39,6 @@ if [ "${item_count:-0}" -lt 1 ] || [ "${cg_count:-0}" -ne 1 ]; then
 ERROR: Refs footer must include at least one PLAN item ID and exactly one commit_group ID.
 Format: Refs: <PLAN item IDs>, <commit_group ID>
 Example: Refs: D1.1.1, cg1
-
-Canonical policy:
-- agent-os/workflow/git-automation-policy.md
-- AGENTS.md (Commit Message Contract)
 EOF
   exit 1
 fi

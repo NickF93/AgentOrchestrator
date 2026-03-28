@@ -12,8 +12,8 @@ in workspaces and reused by multiple repositories.
 - `agent-os/templates/`: canonical templates for repo-local governance files.
 - `agent-os/scripts/`: deterministic tooling for validation, rendering,
   bootstrap, and sync.
-- `agent-os/prompts/`: placeholder area for future prompt assets.
-- `agent-os/skills/`: placeholder area for future skill packaging.
+- `agent-os/prompts/`: prompt asset contracts and lifecycle guidance.
+- `agent-os/skills/`: skill packaging contracts and compatibility guidance.
 - `docs/design/`: non-authoritative brainstorming and source material.
 
 ## Invariants

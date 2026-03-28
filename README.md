@@ -16,8 +16,8 @@ repositories. It does not host product code.
 | `agent-os/schemas/` | Machine-readable contracts (PLAN schema) |
 | `agent-os/templates/` | Canonical templates for repo-local and workspace governance files |
 | `agent-os/scripts/` | Deterministic tooling: validation, rendering, bootstrap, sync |
-| `agent-os/prompts/` | Shared prompt assets (placeholder) |
-| `agent-os/skills/` | Reusable skill packages (placeholder) |
+| `agent-os/prompts/` | Shared prompt asset contracts and lifecycle guidance |
+| `agent-os/skills/` | Reusable skill packaging contracts and compatibility guidance |
 | `docs/design/` | Non-authoritative design and reference material |
 
 ## Governance Files
@@ -31,6 +31,14 @@ repositories. It does not host product code.
 | `PLAN.dot` | Graph plan view (generated) |
 
 ## Quick Start
+
+### Install tooling dependencies
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install -r requirements.txt
+```
 
 ### Validate a plan
 
@@ -50,9 +58,26 @@ python agent-os/scripts/render-plan.py PLAN.yaml
 bash agent-os/scripts/bootstrap-repo.sh --owner <name> --ref <branch|tag> <target-path>
 ```
 
+The bootstrap also writes `.githooks/commit-msg` into the target repository.
+Enable it with:
+
+```bash
+git -C <target-path> config core.hooksPath .githooks
+chmod +x <target-path>/.githooks/commit-msg
+```
+
 ### Sync workspace runtime files
 
 ```bash
+bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
+```
+
+`sync-workspace.sh` materializes runtime files from the current local
+control-plane checkout. It does not pull from the remote automatically.
+If you want the latest `origin/main` first, run:
+
+```bash
+git -C /path/to/AgentOrchestrator pull --ff-only origin main
 bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
 ```
 
@@ -63,16 +88,28 @@ git config core.hooksPath .githooks
 chmod +x .githooks/commit-msg
 ```
 
-The local `commit-msg` hook enforces the commit title contract:
+The local `commit-msg` hook enforces:
 
 `<type>(<scope>): <description>`
 
-Regex: `^([a-z]+)\(([a-z0-9._/-]+)\): .+$`
+and exactly one footer line of the form:
+
+`Refs: <PLAN item IDs>, <commit_group ID>`
+
+Regexes:
+
+- `^([a-z]+)\(([a-z0-9._/-]+)\): .+$`
+- item IDs: `[A-Z]+[1-9][0-9]*\.[1-9][0-9]*\.[1-9][0-9]*[a-z]?`
+- commit groups: `cg[1-9][0-9]*`
 
 You can test it quickly with:
 
 ```bash
-printf "bad title\n\n" > /tmp/bad-msg.txt && .githooks/commit-msg /tmp/bad-msg.txt
+printf "docs(workflow): valid title\n\nRefs: D1.1.1, cg1\n" > /tmp/good-msg.txt
+.githooks/commit-msg /tmp/good-msg.txt
+
+printf "docs(workflow): missing refs\n\n" > /tmp/bad-msg.txt
+.githooks/commit-msg /tmp/bad-msg.txt
 ```
 
 ## Three-Layer Model

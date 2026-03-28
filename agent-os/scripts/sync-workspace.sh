@@ -14,16 +14,17 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONTROL_PLANE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TEMPLATES_DIR="$(cd "$SCRIPT_DIR/../templates" && pwd)"
-CONTROL_PLANE_REF="main"
-
-if git -C "$CONTROL_PLANE_ROOT" remote get-url origin >/dev/null 2>&1; then
-  echo "INFO: pulling latest control plane from main"
-  git -C "$CONTROL_PLANE_ROOT" pull --ff-only origin main || {
-    echo "WARN: pull failed, continuing with local control plane state"
-  }
-else
-  echo "INFO: no origin remote configured, using local control plane state"
+CONTROL_PLANE_REF="$(git -C "$CONTROL_PLANE_ROOT" symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
+if [[ -z "$CONTROL_PLANE_REF" ]]; then
+  CONTROL_PLANE_REF="detached"
 fi
+
+CONTROL_PLANE_COMMIT="$(git -C "$CONTROL_PLANE_ROOT" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
+
+echo "INFO: using local control plane state"
+echo "INFO:   root: $CONTROL_PLANE_ROOT"
+echo "INFO:   ref: $CONTROL_PLANE_REF"
+echo "INFO:   commit: $CONTROL_PLANE_COMMIT"
 
 mkdir -p "$WORKSPACE_ROOT"
 
@@ -37,6 +38,7 @@ render_workspace_template() {
     -e "s|{{DATE}}|$DATE_UTC|g" \
     -e "s|{{CONTROL_PLANE_ROOT}}|$CONTROL_PLANE_ROOT|g" \
     -e "s|{{CONTROL_PLANE_REF}}|$CONTROL_PLANE_REF|g" \
+    -e "s|{{CONTROL_PLANE_COMMIT}}|$CONTROL_PLANE_COMMIT|g" \
     "$src" > "$dst"
 }
 

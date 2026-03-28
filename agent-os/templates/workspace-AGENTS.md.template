@@ -3,10 +3,13 @@
 # Workspace AGENTS
 
 Generated on: {{DATE}}
-Control plane: {{CONTROL_PLANE_ROOT}} ({{CONTROL_PLANE_REF}})
+Control plane: {{CONTROL_PLANE_ROOT}}
+Control plane ref: {{CONTROL_PLANE_REF}}
+Control plane commit: {{CONTROL_PLANE_COMMIT}}
 
 This workspace-level file is a runtime materialization layer.
-Canonical governance lives in the Level-0 control plane repository.
+Canonical governance lives in the Level-0 control plane repository and is
+materialized from the current local checkout recorded above.
 
 ## Authority Precedence
 
@@ -36,12 +39,21 @@ One orchestrator agent owns and writes the canonical PLAN source.
 Other agents may propose changes or produce evidence but must not write
 directly to the canonical PLAN.
 
+## Tracking-First Hard Gate
+
+Before modifying any non-generated file, create or update the owning
+`PLAN.yaml` item first. The item MUST already declare its `commit_group`.
+Commit-group boundaries are plan-time decisions, not something agents may
+invent during commit creation.
+
 ## Commit Message Contract
 
 All commits MUST use: `<type>(<scope>): <description>`
 
-Optional body and footer sections are strongly suggested, especially for
-medium or large commits.
+Tracked work MUST include: `Refs: <PLAN item IDs>, <commit_group ID>`
+
+Optional body sections are strongly suggested, especially for medium or large
+commits.
 
 ## Mandatory Commit Group Hard Gate
 

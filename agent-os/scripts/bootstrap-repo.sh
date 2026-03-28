@@ -41,6 +41,7 @@ if [[ -z "$TARGET" ]]; then
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CONTROL_PLANE_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 TEMPLATES_DIR="$(cd "$SCRIPT_DIR/../templates" && pwd)"
 
 REPO_NAME="$(basename "$TARGET")"
@@ -56,7 +57,10 @@ fi
 if [[ -n "$REF_ARG" ]]; then
   CONTROL_PLANE_REF="$REF_ARG"
 else
-  CONTROL_PLANE_REF="main"
+  CONTROL_PLANE_REF="$(git -C "$CONTROL_PLANE_ROOT" symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
+  if [[ -z "$CONTROL_PLANE_REF" ]]; then
+    CONTROL_PLANE_REF="$(git -C "$CONTROL_PLANE_ROOT" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
+  fi
 fi
 
 render_template() {
@@ -92,6 +96,12 @@ render_template "$TEMPLATES_DIR/repo-REPO_MAP.md.template" "$TARGET/REPO_MAP.md"
 render_template "$TEMPLATES_DIR/PLAN.yaml.template" "$TARGET/PLAN.yaml"
 render_template "$TEMPLATES_DIR/repo-README.md.template" "$TARGET/README.md"
 render_template "$TEMPLATES_DIR/repo-ADR.md.template" "$TARGET/docs/adr/ADR-0001.md"
+render_template "$TEMPLATES_DIR/repo-commit-msg.template" "$TARGET/.githooks/commit-msg"
+
+if [[ "$DRY_RUN" -eq 0 && -f "$TARGET/.githooks/commit-msg" ]]; then
+  chmod +x "$TARGET/.githooks/commit-msg"
+  echo "OK: marked executable $TARGET/.githooks/commit-msg"
+fi
 
 # Post-bootstrap validation (skip in dry-run mode)
 if [[ "$DRY_RUN" -eq 0 ]]; then
@@ -106,6 +116,10 @@ if [[ "$DRY_RUN" -eq 0 ]]; then
       exit 1
     fi
   fi
+fi
+
+if [[ "$DRY_RUN" -eq 0 ]]; then
+  echo "INFO: Enable repo-local hooks with: git -C \"$TARGET\" config core.hooksPath .githooks"
 fi
 
 echo "Done."

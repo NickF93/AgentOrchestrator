@@ -3,9 +3,12 @@
 # Workspace CLAUDE
 
 Generated on: {{DATE}}
-Control plane: {{CONTROL_PLANE_ROOT}} ({{CONTROL_PLANE_REF}})
+Control plane: {{CONTROL_PLANE_ROOT}}
+Control plane ref: {{CONTROL_PLANE_REF}}
+Control plane commit: {{CONTROL_PLANE_COMMIT}}
 
-This is a workspace runtime file. Update Level-0 templates and re-run sync.
+This is a workspace runtime file generated from the current local control-plane
+checkout. Update Level-0 templates and re-run sync.
 
 ## Governance Context
 
@@ -16,6 +19,8 @@ This workspace is governed by a Level-0 control plane. Key rules:
 - **PLAN.yaml** is the source of truth for execution tracking.
 - Generated views (`PLAN.md`, `PLAN.dot`) are informative only — never edit them.
 - One orchestrator owns the canonical PLAN; other agents propose, not write.
+- Track work in `PLAN.yaml` before editing non-generated files.
+- Commit-group boundaries come from `PLAN.yaml`; do not invent them at commit time.
 
 ## Authority Precedence
 
@@ -30,8 +35,10 @@ This workspace is governed by a Level-0 control plane. Key rules:
 
 All commits MUST use: `<type>(<scope>): <description>`
 
-Optional body and footer sections are strongly suggested, especially for
-medium or large commits.
+Tracked work MUST include: `Refs: <PLAN item IDs>, <commit_group ID>`
+
+Optional body sections are strongly suggested, especially for medium or large
+commits.
 
 ## Escalation Triggers
 

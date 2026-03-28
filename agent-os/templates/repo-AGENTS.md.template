@@ -30,6 +30,10 @@ Priority order:
 ## Workflow Rules
 - Orchestrator is single writer for PLAN.yaml.
 - Worker agents propose changes and produce evidence.
+- Before modifying any non-generated file, create or update the owning
+  PLAN.yaml item first. The item MUST already declare its `commit_group`.
+- Commit-group boundaries are declared in PLAN.yaml before implementation and
+  MUST NOT be invented ad hoc during commit creation.
 - Execution is dependency-driven, not globally sequential.
 - Parallel work is allowed when scope and boundaries do not conflict.
 - **Mandatory commit rule**: every `commit_group` MUST be committed to git
@@ -41,8 +45,16 @@ All commits MUST use:
 
 `<type>(<scope>): <description>`
 
-Body and footer sections SHOULD be included, especially for medium or large
-commits. See control plane documentation for recommended body/footer structure.
+Tracked work MUST include:
+
+`Refs: <PLAN item IDs>, <commit_group ID>`
+
+Example:
+
+`Refs: D1.1.1, cg1`
+
+Body sections SHOULD be included, especially for medium or large commits. See
+control plane documentation for recommended body/footer structure.
 
 Valid examples:
 - `docs(workflow): split shared workflow into canonical files`
