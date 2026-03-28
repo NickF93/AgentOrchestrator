@@ -66,6 +66,6 @@
 - [ ] Delegation contract between checker/reviewer agents
 - [ ] Sub-agent orchestration model
 
-## NFC — Normative / Future Considerations
+## RFC — Request for Comments / Future Considerations
 
-- [ ] NFC normative review pass (ensure no stale or conflicting normative content)
+- [ ] RFC normative review pass (ensure no stale or conflicting normative content)

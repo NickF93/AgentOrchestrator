@@ -319,6 +319,11 @@ digraph PLAN {
     label="cg38: Add non-normative TODO.md checklist";
   "D16.1.1" [label="D16.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg39" {
+    style="rounded,dashed";
+    label="cg39: TODO wording fix — NFC to RFC";
+  "D16.1.2" [label="D16.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   subgraph "cluster_cg36" {
     style="rounded,dashed";
     label="cg36: Portability verification and closure — validate X14 end to end";
@@ -474,6 +479,7 @@ digraph PLAN {
   "S14.1" -> "T14.1.3" [style=dashed];
   "S14.1" -> "C14.1.4" [style=dashed];
   "S16.1" -> "D16.1.1" [style=dashed];
+  "S16.1" -> "D16.1.2" [style=dashed];
   "S15.1" -> "M15.1.1" [style=dashed];
   "S15.1" -> "T15.1.2" [style=dashed];
   "S15.1" -> "C15.1.3" [style=dashed];
@@ -631,6 +637,7 @@ digraph PLAN {
   "D14.1.1" -> "M14.1.2";
   "M14.1.2" -> "T14.1.3";
   "T14.1.3" -> "C14.1.4";
+  "D16.1.1" -> "D16.1.2";
   "C14.1.4" -> "M15.1.1";
   "M15.1.1" -> "T15.1.2";
   "T15.1.2" -> "C15.1.3";

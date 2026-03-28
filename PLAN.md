@@ -5,7 +5,7 @@ AUTO-GENERATED from PLAN.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-03-28
+- Last updated: 2026-03-29
 
 ## Mission
 
@@ -459,6 +459,7 @@ Status: done
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D16.1.1` | `D` | Create non-normative TODO.md checklist | done | Human-readable checklist of macro-features done and pending. Not governance, not read by agents. |
+| `D16.1.2` | `D` | Fix TODO typo from NFC to RFC for normative review section | done | Corrects the TODO heading/checkbox label typo from NFC to RFC in the non-normative future-considerations section. |
 
 ### X14
 
@@ -521,6 +522,7 @@ Status: done
 | cg35 | Portability implementation — Copilot support and Kilo realignment | `M14.1.2` |
 | cg37 | Environment portability — AGENT_PYTHON env var and .env.example | `M15.1.1`, `T15.1.2`, `C15.1.3` |
 | cg38 | Add non-normative TODO.md checklist | `D16.1.1` |
+| cg39 | TODO wording fix — NFC to RFC | `D16.1.2` |
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 
 ## Item Details
@@ -1913,6 +1915,16 @@ Status: done
 - **Commit group**: `cg38`
 - **Artifacts**: TODO.md
 - **Notes**: Human-readable checklist of macro-features done and pending. Not governance, not read by agents.
+
+### D16.1.2: Fix TODO typo from NFC to RFC for normative review section
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S16.1`
+- **Actions**: document
+- **Depends on**: `D16.1.1`
+- **Commit group**: `cg39`
+- **Artifacts**: PLAN.yaml, TODO.md
+- **Notes**: Corrects the TODO heading/checkbox label typo from NFC to RFC in the non-normative future-considerations section.
 
 ### M15.1.1: Replace hardcoded nn-2 with AGENT_PYTHON env var across scripts and docs
 

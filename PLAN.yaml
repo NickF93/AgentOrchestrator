@@ -1,14 +1,14 @@
 # PLAN.yaml — AgentOrchestrator (Level-0 Control Plane OS)
 # Source of truth for the MVP construction plan of the agent-os/ control plane.
 # PLAN.md and PLAN.dot are GENERATED views — do not edit them manually.
-# Last updated: 2026-03-28
+# Last updated: 2026-03-29
 
 meta:
   repo: AgentOrchestrator
   owner: NickF93
   version: "0.1"
   schema_version: "draft-1.0"
-  last_updated: "2026-03-28"
+  last_updated: "2026-03-29"
   note: >
     This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself.
@@ -2753,6 +2753,24 @@ items:
       Human-readable checklist of macro-features done and pending.
       Not governance, not read by agents.
 
+  - id: D16.1.2
+    parent: S16.1
+    type: D
+    title: "Fix TODO typo from NFC to RFC for normative review section"
+    actions: [document]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg39
+    depends_on: [D16.1.1]
+    scope: "."
+    artifacts_out:
+      - PLAN.yaml
+      - TODO.md
+    notes: >
+      Corrects the TODO heading/checkbox label typo from NFC to RFC in the
+      non-normative future-considerations section.
+
   # ─── X15 / S15.1: Environment portability ─────────────────────────────────
 
   - id: M15.1.1
@@ -3107,6 +3125,13 @@ commit_groups:
     notes: >
       Human-readable macro-feature checklist for the operator.
       Not normative, not governance, not consumed by agents.
+
+  - id: cg39
+    title: "TODO wording fix — NFC to RFC"
+    items: [D16.1.2]
+    notes: >
+      Tracks and closes the TODO typo correction from NFC to RFC while
+      preserving TODO.md as a non-authoritative operator checklist.
 
   - id: cg36
     title: "Portability verification and closure — validate X14 end to end"
