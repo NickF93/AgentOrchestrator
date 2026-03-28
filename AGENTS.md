@@ -43,6 +43,13 @@ Priority order:
   immediately upon completion. Do NOT proceed to the next commit_group
   without committing the current one. This is a hard gate.
 
+## Skills
+
+Operational skills are in `agent-os/skills/`. When a skill's trigger
+conditions match the current task, read the relevant `SKILL.md` and follow
+its procedure. Skills are procedural — they apply existing governance rules
+and must not override or redefine them.
+
 ## Commit Message Contract
 All commits MUST use this format:
 

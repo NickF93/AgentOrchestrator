@@ -49,6 +49,13 @@ Priority order:
 - Optional vendored mode is allowed only through explicit materialization into
   `.agent-os/vendor/`; vendored assets are read-only snapshots with provenance.
 
+## Skills
+
+Operational skills are resolved as shared assets per the rules above. When a
+skill's trigger conditions match the current task, read its `SKILL.md` and
+follow the procedure. Skills are procedural — they apply existing governance
+rules and must not override or redefine them.
+
 ## Commit Message Contract
 All commits MUST use:
 

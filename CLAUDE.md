@@ -59,8 +59,3 @@ bash agent-os/scripts/run-gates.sh
 
 `run-gates.sh` sources `.env` automatically. For manual commands, either
 source `.env` first or substitute the value directly.
-
-## Skills
-
-Operational skills are in `agent-os/skills/`. Read the relevant `SKILL.md`
-and follow its procedure when the skill's trigger conditions match.

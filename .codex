@@ -57,8 +57,3 @@ python agent-os/scripts/render-plan.py PLAN.yaml
 python -m pytest -q
 bash agent-os/scripts/run-gates.sh
 ```
-
-## Skills
-
-Operational skills are in `agent-os/skills/`. Read the relevant `SKILL.md`
-and follow its procedure when the skill's trigger conditions match.
