@@ -58,15 +58,28 @@ State flow:
 - medium
 - high
 
-## Metadata Fields
-- depends_on
+## Required Item Fields
+
+Every executable item (Q, D, M, F, T, C) must declare:
+
+- id
+- type
+- title
+- status
 - role
 - effort
-- commit_group
+- actions (at least one action verb from the action taxonomy)
+- parent (sprint ID under which the item belongs)
+- commit_group (commit group ID for commit boundary)
+
+## Optional Metadata Fields
+
+- depends_on
 - scope
 - artifacts_in
 - artifacts_out
 - checks
+- decision (Q items)
 - triggers
 - tools_profile
 - notes

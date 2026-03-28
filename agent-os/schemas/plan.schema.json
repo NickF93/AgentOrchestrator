@@ -128,7 +128,7 @@
     },
     "item": {
       "type": "object",
-      "required": ["id", "type", "title", "status", "role", "effort"],
+      "required": ["id", "type", "title", "status", "role", "effort", "actions", "parent", "commit_group"],
       "properties": {
         "id": { "$ref": "#/$defs/itemId" },
         "parent": { "$ref": "#/$defs/sprintId" },

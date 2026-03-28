@@ -36,9 +36,18 @@ milestones:
       Close the compliance gaps between the design authority document
       (docs/design/documento-architetturale-control-plane-coding-agents.md)
       and the authoritative governance workflow files under agent-os/workflow/.
-    note: >
       Deliver a working agent-os/ scaffold with schema, workflow docs, templates,
       and tooling. Self-validate by running validate-plan.py on this PLAN.yaml.
+
+  - id: X3
+    type: X
+    title: "Control-Plane Hardening"
+    status: done
+    note: >
+      Address the 149-point review findings: fix source-of-truth integrity issues,
+      harden schema enforcement, strengthen validation tooling, improve rendering
+      and bootstrap, enrich workspace materialization, add documentation and
+      operational guardrails.
 
 sprints:
   - id: S1.1
@@ -51,6 +60,30 @@ sprints:
     type: S
     parent: X2
     title: "Sprint 1 — Propagate missing architectural rules to governance files"
+    status: done
+
+  - id: S3.1
+    type: S
+    parent: X3
+    title: "Sprint 1 — Source-of-truth integrity and schema hardening"
+    status: done
+
+  - id: S3.2
+    type: S
+    parent: X3
+    title: "Sprint 2 — Validation tooling hardening"
+    status: done
+
+  - id: S3.3
+    type: S
+    parent: X3
+    title: "Sprint 3 — Rendering, bootstrap, and workspace improvements"
+    status: done
+
+  - id: S3.4
+    type: S
+    parent: X3
+    title: "Sprint 4 — Documentation, operational guardrails, and closure"
     status: done
 
 items:
@@ -601,6 +634,403 @@ items:
       Marks architecture baseline as finalized for Level-0 governance, with
       unresolved work shifted from open questions into explicit governed policy.
 
+  # ─── S3.1 items: source-of-truth integrity and schema hardening ────────────
+  - id: F3.1.1
+    parent: S3.1
+    type: F
+    title: "Fix duplicate note key in PLAN.yaml X2 milestone"
+    actions: [implement, verify]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg9
+    scope: "."
+    artifacts_out:
+      - PLAN.yaml
+    notes: >
+      PLAN.yaml had two note: keys on milestone X2 (lines 35-41). YAML parsers
+      silently override earlier values; PyYAML keeps the last. Merged both notes
+      into a single field to preserve all content.
+
+  - id: M3.1.2
+    parent: S3.1
+    type: M
+    title: "Add actions, parent, commit_group to schema required fields for items"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg9
+    depends_on: [F3.1.1]
+    scope: "agent-os/schemas"
+    artifacts_out:
+      - agent-os/schemas/plan.schema.json
+    notes: >
+      Changed item required from [id, type, title, status, role, effort] to
+      [id, type, title, status, role, effort, actions, parent, commit_group].
+      Safe: all 28 existing items already have these fields.
+
+  - id: D3.1.3
+    parent: S3.1
+    type: D
+    title: "Document new required fields in item-taxonomy.md"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg9
+    depends_on: [M3.1.2]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/item-taxonomy.md
+    notes: >
+      Split Metadata Fields section into Required Item Fields and Optional
+      Metadata Fields. Documents that actions, parent, and commit_group are
+      now mandatory for all executable items.
+
+  - id: T3.1.4
+    parent: S3.1
+    type: T
+    title: "Validate PLAN.yaml against hardened schema"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg9
+    depends_on: [M3.1.2, F3.1.1]
+    scope: "."
+    checks:
+      - "python agent-os/scripts/validate-plan.py PLAN.yaml exits 0"
+      - "No schema validation errors for any existing item"
+      - "Duplicate note key is resolved"
+    notes: >
+      Gate for Sprint S3.1: the hardened schema must validate the current
+      PLAN.yaml without errors.
+
+  # ─── S3.2 items: validation tooling hardening ─────────────────────────────
+  - id: M3.2.1
+    parent: S3.2
+    type: M
+    title: "Implement DAG cycle detection in validate-plan.py"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: high
+    commit_group: cg10
+    depends_on: [T3.1.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Add detect_cycles() using Kahn's algorithm (topological sort). If
+      remaining nodes after BFS, report cycle. Hard-fail on any cycle in
+      depends_on relationships.
+
+  - id: M3.2.2
+    parent: S3.2
+    type: M
+    title: "Implement bidirectional commit_group/item consistency check"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg10
+    depends_on: [T3.1.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Three checks: (1) every commit_group.items[] resolves to existing item,
+      (2) every item.commit_group references existing commit_group,
+      (3) bidirectional membership is coherent. All hard-fail.
+
+  - id: M3.2.3
+    parent: S3.2
+    type: M
+    title: "Implement type/action coherence warnings"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg10
+    depends_on: [T3.1.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Encode recommended type/action coherence table from item-taxonomy.md.
+      Warning-only, not hard-fail, since taxonomy says "recommended" not
+      "mandatory".
+
+  - id: T3.2.4
+    parent: S3.2
+    type: T
+    title: "Validate all new validation checks against current PLAN.yaml"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg10
+    depends_on: [M3.2.1, M3.2.2, M3.2.3]
+    scope: "."
+    checks:
+      - "python agent-os/scripts/validate-plan.py PLAN.yaml exits 0"
+      - "No false-positive warnings from type/action coherence"
+      - "No cycle detection false positives on the existing acyclic plan"
+      - "Commit group coherence passes for all existing commit groups"
+    notes: >
+      Gate for Sprint S3.2: all new validation checks must pass on the
+      current PLAN.yaml without false positives.
+
+  - id: C3.2.5
+    parent: S3.2
+    type: C
+    title: "Sprint S3.2 checkpoint — validation hardening complete"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg10
+    depends_on: [T3.2.4]
+    checks:
+      - "All S3.2 items are verified or done"
+      - "Cycle detection produces hard-fail on circular depends_on"
+      - "Commit group coherence produces hard-fail on mismatches"
+      - "Type/action coherence produces warnings on non-recommended combinations"
+      - "validate-plan.py passes on current PLAN.yaml"
+      - "render-plan.py regenerates PLAN.md and PLAN.dot deterministically"
+    notes: >
+      Marks validation tooling as hardened for control-plane-grade enforcement.
+
+  # ─── S3.3 items: rendering, bootstrap, and workspace improvements ──────────
+  - id: M3.3.1
+    parent: S3.3
+    type: M
+    title: "Add status/type visual styling to DOT rendering"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg11
+    depends_on: [T3.1.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/render-plan.py
+    notes: >
+      Color nodes by status (done=green, blocked=red, in_progress=blue, etc.)
+      and shape by type (Q=diamond, C=doubleoctagon, T=ellipse, etc.).
+
+  - id: M3.3.2
+    parent: S3.3
+    type: M
+    title: "Add per-item detail sections to markdown rendering"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg11
+    depends_on: [T3.1.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/render-plan.py
+    notes: >
+      After items table, add Item Details section with per-item subsections
+      showing notes, checks, decision, artifacts_out, and depends_on.
+
+  - id: M3.3.3
+    parent: S3.3
+    type: M
+    title: "Harden bootstrap-repo.sh with --owner, --ref, post-validation, ADR/README scaffolds"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg11
+    depends_on: [T3.1.4, M3.3.4]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/bootstrap-repo.sh
+    notes: >
+      Add --owner/--ref flags, run validate-plan.py post-bootstrap, create
+      docs/adr/ADR-0001.md and README.md scaffolds from templates.
+
+  - id: M3.3.4
+    parent: S3.3
+    type: M
+    title: "Create repo-README.md.template"
+    actions: [design, implement]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg11
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/repo-README.md.template
+    notes: >
+      New template for bootstrap-generated README.md in target repos.
+      Uses existing {{REPO_NAME}}, {{OWNER}}, {{DATE}}, {{CONTROL_PLANE_REF}}
+      placeholders.
+
+  - id: M3.3.5
+    parent: S3.3
+    type: M
+    title: "Enrich workspace templates with operational content"
+    actions: [design, implement, document]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg11
+    depends_on: [T3.1.4]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/workspace-AGENTS.md.template
+      - agent-os/templates/workspace-CLAUDE.md.template
+    notes: >
+      Add precedence rules, workflow summary, authority split reminder,
+      commit contract, and links to runtime-relevant files. Workspace
+      templates must be useful runtime references, not just stubs.
+
+  - id: T3.3.6
+    parent: S3.3
+    type: T
+    title: "Validate rendering and bootstrap improvements"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg11
+    depends_on: [M3.3.1, M3.3.2, M3.3.3, M3.3.4, M3.3.5]
+    scope: "."
+    checks:
+      - "render-plan.py produces enriched PLAN.md with item details"
+      - "render-plan.py produces DOT with color/shape styling"
+      - "Rendering is idempotent (second run produces identical output)"
+      - "bootstrap-repo.sh --dry-run /tmp/test-X3 exits 0 and lists ADR + README"
+      - "Workspace templates contain operational content"
+    notes: >
+      Gate for Sprint S3.3: rendering, bootstrap, and workspace improvements
+      must all work correctly.
+
+  # ─── S3.4 items: documentation, guardrails, and closure ────────────────────
+  - id: D3.4.1
+    parent: S3.4
+    type: D
+    title: "Create root README.md for this repository"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: medium
+    commit_group: cg12
+    scope: "."
+    artifacts_out:
+      - README.md
+    notes: >
+      Hand-maintained README (not template-generated) for the AgentOrchestrator
+      repo itself. Contains: purpose, directory structure, quickstart, governance
+      file links, license reference.
+
+  - id: D3.4.2
+    parent: S3.4
+    type: D
+    title: "Define REPO_MAP freshness operational mechanism"
+    actions: [design, document]
+    status: done
+    role: orchestrator
+    effort: medium
+    commit_group: cg12
+    depends_on: [C3.2.5]
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/lifecycle.md
+      - agent-os/templates/repo-REPO_MAP.md.template
+    notes: >
+      Define freshness computation (today - last_validated_on >
+      freshness_window_days), update triggers, and checkpoint consumption
+      rules. Close the gap between concept and operational mechanism.
+
+  - id: D3.4.3
+    parent: S3.4
+    type: D
+    title: "Add design-doc discipline guardrail"
+    actions: [design, document, review]
+    status: done
+    role: orchestrator
+    effort: low
+    commit_group: cg12
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/shared-workflow.md
+      - ARCHITECTURE.md
+    notes: >
+      Add Design Document Governance section to shared-workflow.md: docs/design
+      is non-authoritative, normative rules must migrate to canonical authority.
+      Reinforce in ARCHITECTURE.md invariants.
+
+  - id: M3.4.4
+    parent: S3.4
+    type: M
+    title: "Add REPO_MAP staleness warning to validate-plan.py"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg12
+    depends_on: [D3.4.2, C3.2.5]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+    notes: >
+      Add --check-freshness flag. Parse REPO_MAP.md metadata, warn if stale
+      when checkpoint items exist in review/verified state. Warning-only.
+
+  - id: T3.4.5
+    parent: S3.4
+    type: T
+    title: "Validate S3.4 documentation and operational mechanisms"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg12
+    depends_on: [D3.4.1, D3.4.2, D3.4.3, M3.4.4]
+    scope: "."
+    checks:
+      - "README.md exists and renders correctly"
+      - "lifecycle.md freshness mechanism is fully specified"
+      - "shared-workflow.md contains design-doc guardrail"
+      - "validate-plan.py REPO_MAP staleness warning works"
+      - "Full validate-plan.py run passes on PLAN.yaml"
+      - "render-plan.py regenerates views deterministically"
+    notes: >
+      Gate for Sprint S3.4: all documentation, guardrails, and operational
+      mechanisms must be in place.
+
+  - id: C3.4.6
+    parent: S3.4
+    type: C
+    title: "Milestone X3 closure checkpoint — control-plane hardening complete"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg12
+    depends_on: [T3.3.6, T3.4.5]
+    checks:
+      - "All S3.1, S3.2, S3.3, S3.4 items are verified or done"
+      - "PLAN.yaml has no duplicate keys"
+      - "Schema requires actions/parent/commit_group"
+      - "validate-plan.py has cycle detection, commit group coherence, type/action warnings"
+      - "DOT rendering uses visual differentiation"
+      - "Markdown rendering has per-item detail sections"
+      - "bootstrap-repo.sh accepts --owner/--ref, runs post-validation, creates ADR/README"
+      - "Workspace templates contain operational content"
+      - "README.md exists at repo root"
+      - "REPO_MAP freshness mechanism is specified and partially implemented"
+      - "Design-doc discipline guardrail is documented"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+    notes: >
+      Marks the control plane as hardened per the 149-point review findings.
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -663,3 +1093,33 @@ commit_groups:
     notes: >
       T1.1.1, T1.1.2, T1.1.3 can run in parallel. C1.1.1 gates the sprint closure.
       PLAN.md and PLAN.dot are committed here alongside PLAN.yaml update.
+
+  - id: cg9
+    title: "Source-of-truth integrity and schema hardening"
+    items: [F3.1.1, M3.1.2, D3.1.3, T3.1.4]
+    notes: >
+      Fix duplicate YAML key in PLAN.yaml and tighten schema by making actions,
+      parent, and commit_group required fields for all executable items.
+
+  - id: cg10
+    title: "Validation tooling hardening — cycle detection, commit group coherence, type/action warnings"
+    items: [M3.2.1, M3.2.2, M3.2.3, T3.2.4, C3.2.5]
+    notes: >
+      Three new validation functions in validate-plan.py: DAG cycle detection
+      (hard-fail), bidirectional commit_group/item consistency (hard-fail),
+      and type/action coherence (warning-only).
+
+  - id: cg11
+    title: "Rendering, bootstrap, and workspace template improvements"
+    items: [M3.3.1, M3.3.2, M3.3.3, M3.3.4, M3.3.5, T3.3.6]
+    notes: >
+      Enrich DOT with color/shape, enrich markdown with item details, harden
+      bootstrap with --owner/--ref/post-validation/ADR/README, create README
+      template, expand workspace templates with operational content.
+
+  - id: cg12
+    title: "Documentation, operational guardrails, and milestone closure"
+    items: [D3.4.1, D3.4.2, D3.4.3, M3.4.4, T3.4.5, C3.4.6]
+    notes: >
+      Add root README.md, define REPO_MAP freshness mechanism, add design-doc
+      discipline guardrail, implement staleness warning, close milestone X3.
