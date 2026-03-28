@@ -8,7 +8,15 @@ Introduce automation in phases. High-risk or irreversible operations come later.
 - Prefer merge flow over rebase for integration in this model.
 - Preserve branch history for reviewability.
 
+## Mandatory Commit Rule
+
+Every `commit_group` MUST be committed to git immediately upon completion of
+its items. An agent MUST NOT begin work on the next commit_group until the
+current one has been staged and committed. Accumulating uncommitted changes
+across multiple commit_groups is a governance violation.
+
 ## Commit Message Contract
+
 All commits in repositories governed by this control plane MUST use:
 
 `<type>(<scope>): <description>`

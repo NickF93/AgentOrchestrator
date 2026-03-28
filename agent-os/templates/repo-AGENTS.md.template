@@ -32,6 +32,9 @@ Priority order:
 - Worker agents propose changes and produce evidence.
 - Execution is dependency-driven, not globally sequential.
 - Parallel work is allowed when scope and boundaries do not conflict.
+- **Mandatory commit rule**: every `commit_group` MUST be committed to git
+  immediately upon completion. Do NOT proceed to the next commit_group
+  without committing the current one. This is a hard gate.
 
 ## Commit Message Contract
 All commits MUST use:

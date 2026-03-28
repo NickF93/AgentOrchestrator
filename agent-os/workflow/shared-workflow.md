@@ -72,11 +72,23 @@ Items must NOT be grouped together if:
 - they produce incompatible evidence.
 
 ## Commit and Checkpoint Policy
-- Use commit_group as natural commit boundary.
-- Close a commit_group only when its items satisfy required checks.
-- Keep traceability from item -> evidence -> commit.
-- Enforce commit message format on all repositories governed by Layer-0:
-	`<type>(<scope>): <description>`
+
+### Mandatory Commit Rule
+
+Every commit_group MUST be committed to git immediately upon completion of
+its items. An agent MUST NOT proceed to work on the next commit_group until
+the current one has been staged and committed. This is a hard gate, not a
+suggestion. Accumulating changes across multiple commit_groups without
+committing is a governance violation.
+
+### Commit Group Closure
+
+- A commit_group is the mandatory git commit boundary.
+- A commit_group may only be closed (committed) when all its items satisfy
+  their required checks.
+- Each commit MUST be traceable: item -> evidence -> commit.
+- Commit message format is mandatory on all repositories governed by Layer-0:
+  `<type>(<scope>): <description>`
 
 Optional body and footer sections are strongly suggested, especially for medium or large commits.
 
