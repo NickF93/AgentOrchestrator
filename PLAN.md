@@ -29,6 +29,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X12 | X | Promote Codex to First-Class Runtime | done |
 | X13 | X | Workspace Template Parity and Test Coverage Repair | done |
 | X15 | X | Environment Portability — Remove Hardcoded Conda Environment | done |
+| X16 | X | Human-Readable TODO Checklist | done |
 | X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 
 ## Plan
@@ -443,6 +444,22 @@ Status: done
 | `T15.1.2` | `T` | Validate environment portability | done |  |
 | `C15.1.3` | `C` | Environment portability checkpoint | done |  |
 
+### X16
+
+- ID: `X16`
+- Title: Human-Readable TODO Checklist
+- Status: done
+- Note: Add a non-normative TODO.md checklist for the human operator to track macro-features across the project. Not governance, not read by agents.
+
+#### S16.1 Items
+
+Sprint: Sprint 1 — Create TODO.md
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D16.1.1` | `D` | Create non-normative TODO.md checklist | done | Human-readable checklist of macro-features done and pending. Not governance, not read by agents. |
+
 ### X14
 
 - ID: `X14`
@@ -503,6 +520,7 @@ Status: done
 | cg34 | Portability completion tracking — milestone, runtime contract, and commit boundaries | `D14.1.1` |
 | cg35 | Portability implementation — Copilot support and Kilo realignment | `M14.1.2` |
 | cg37 | Environment portability — AGENT_PYTHON env var and .env.example | `M15.1.1`, `T15.1.2`, `C15.1.3` |
+| cg38 | Add non-normative TODO.md checklist | `D16.1.1` |
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 
 ## Item Details
@@ -1886,6 +1904,15 @@ Status: done
   - Kilo support no longer depends on KILO.md
   - Workspace sync remains limited to workspace-scoped runtimes
   - PLAN.md and PLAN.dot are regenerated and committed
+
+### D16.1.1: Create non-normative TODO.md checklist
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S16.1`
+- **Actions**: document
+- **Commit group**: `cg38`
+- **Artifacts**: TODO.md
+- **Notes**: Human-readable checklist of macro-features done and pending. Not governance, not read by agents.
 
 ### M15.1.1: Replace hardcoded nn-2 with AGENT_PYTHON env var across scripts and docs
 

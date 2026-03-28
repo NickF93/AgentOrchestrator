@@ -166,6 +166,14 @@ milestones:
       and documentation. Replace with AGENT_PYTHON environment variable
       loaded from .env per workstation. Ship .env.example as reference.
 
+  - id: X16
+    type: X
+    title: "Human-Readable TODO Checklist"
+    status: done
+    note: >
+      Add a non-normative TODO.md checklist for the human operator to track
+      macro-features across the project. Not governance, not read by agents.
+
   - id: X14
     type: X
     title: "Portability Milestone Completion — Copilot Support and Kilo Realignment"
@@ -315,6 +323,12 @@ sprints:
     type: S
     parent: X13
     title: "Sprint 1 — Template parity fix and test expansion"
+    status: done
+
+  - id: S16.1
+    type: S
+    parent: X16
+    title: "Sprint 1 — Create TODO.md"
     status: done
 
   - id: S15.1
@@ -2721,6 +2735,24 @@ items:
       - "Workspace sync remains limited to workspace-scoped runtimes"
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
+  # ─── X16 / S16.1: Human-readable TODO checklist ────────────────────────────
+
+  - id: D16.1.1
+    parent: S16.1
+    type: D
+    title: "Create non-normative TODO.md checklist"
+    actions: [document]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg38
+    scope: "."
+    artifacts_out:
+      - TODO.md
+    notes: >
+      Human-readable checklist of macro-features done and pending.
+      Not governance, not read by agents.
+
   # ─── X15 / S15.1: Environment portability ─────────────────────────────────
 
   - id: M15.1.1
@@ -3068,6 +3100,13 @@ commit_groups:
       Removes hardcoded nn-2 conda environment from run-gates.sh and
       documentation. Introduces AGENT_PYTHON env var loaded from .env
       per workstation. Ships .env.example as committed reference.
+
+  - id: cg38
+    title: "Add non-normative TODO.md checklist"
+    items: [D16.1.1]
+    notes: >
+      Human-readable macro-feature checklist for the operator.
+      Not normative, not governance, not consumed by agents.
 
   - id: cg36
     title: "Portability verification and closure — validate X14 end to end"
