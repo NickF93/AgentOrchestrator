@@ -112,7 +112,7 @@ sprints:
     type: S
     parent: X4
     title: "Sprint 3 — Schema and taxonomy hardening"
-    status: planned
+    status: done
 
   - id: S4.4
     type: S
@@ -1185,7 +1185,7 @@ items:
     type: M
     title: "Restrict depends_on to exclude milestoneId in schema"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg15
@@ -1202,7 +1202,7 @@ items:
     type: M
     title: "Define scope, checks, and suffix semantics in item-taxonomy"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: medium
     commit_group: cg15
@@ -1220,7 +1220,7 @@ items:
     type: M
     title: "Add decision if/then Q-only constraint in schema"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg15
@@ -1237,7 +1237,7 @@ items:
     type: M
     title: "Add scope pattern constraint to schema"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: low
     commit_group: cg15
@@ -1254,7 +1254,7 @@ items:
     type: T
     title: "Validate PLAN.yaml against hardened schema"
     actions: [test, verify]
-    status: planned
+    status: done
     role: tester
     effort: low
     commit_group: cg15

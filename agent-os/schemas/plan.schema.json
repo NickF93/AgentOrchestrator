@@ -57,6 +57,12 @@
         { "$ref": "#/$defs/itemId" }
       ]
     },
+    "dependencyTarget": {
+      "oneOf": [
+        { "$ref": "#/$defs/sprintId" },
+        { "$ref": "#/$defs/itemId" }
+      ]
+    },
     "status": {
       "type": "string",
       "enum": [
@@ -148,7 +154,7 @@
         },
         "depends_on": {
           "type": "array",
-          "items": { "$ref": "#/$defs/planId" }
+          "items": { "$ref": "#/$defs/dependencyTarget" }
         },
         "scope": {
           "type": "string",
@@ -173,6 +179,15 @@
           "items": { "type": "string" }
         },
         "tools_profile": { "type": "string" }
+      },
+      "if": {
+        "properties": { "type": { "not": { "const": "Q" } } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "decision": false
+        }
       },
       "additionalProperties": true
     },

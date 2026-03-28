@@ -77,12 +77,18 @@ Every executable item (Q, D, M, F, T, C) must declare:
 
 ## Optional Metadata Fields
 
-- depends_on
-- scope
+- depends_on — list of dependency target IDs (sprint or item IDs; milestone IDs
+  are not valid dependency targets)
+- scope — a file or directory path prefix (e.g. `agent-os/scripts/`, `AGENTS.md`).
+  Used for collision detection between concurrent items. Must match
+  `^(\.|[A-Za-z0-9._/-]+)$`.
 - artifacts_in
 - artifacts_out
-- checks
-- decision (Q items)
+- checks — an array of human-readable check descriptions (e.g.
+  `validate-plan.py exits 0`, `render idempotent`). Verification is manual or
+  scripted outside the schema.
+- decision (Q items only — schema enforces this restriction; non-Q items MUST NOT
+  declare a decision field)
 - triggers
 - tools_profile
 - notes
@@ -99,7 +105,10 @@ Where:
 
 Rules:
 - Bracketed suffixes are invalid (`M1.1.1[a]` is invalid)
-- Suffixes must be unique and chronological within the same base item
+- Suffixes are variant/continuation labels assigned in derivation/plan order.
+  They MUST form a contiguous lowercase sequence (`a`, `b`, `c`, ...) with no
+  gaps. `a` is the first derived variant, `b` the next, etc. Execution order
+  is represented by `depends_on`, not suffixes.
 
 Valid examples:
 - `M1.1.1`
