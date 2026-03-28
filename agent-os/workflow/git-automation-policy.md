@@ -15,6 +15,13 @@ its items. An agent MUST NOT begin work on the next commit_group until the
 current one has been staged and committed. Accumulating uncommitted changes
 across multiple commit_groups is a governance violation.
 
+## Tracking-First Rule
+
+Before modifying any non-generated file, the owning item MUST already be
+tracked in `PLAN.yaml` with a declared `commit_group`. Commit-group boundaries
+are plan-time decisions, not something agents may invent during commit
+creation.
+
 ## Commit Message Contract
 
 All commits in repositories governed by this control plane MUST use:
@@ -26,8 +33,13 @@ Allowed examples:
 - `feat(scripts): add deterministic PLAN renderer`
 - `chore(repo): move startup docs under docs/design`
 
-Body and footer sections SHOULD be included, especially for medium or large
-commits. See `AGENTS.md` § Commit Message Contract for recommended structure.
+Tracked work MUST include a `Refs:` footer that names the closed PLAN item IDs
+and exactly one commit_group ID. Example:
+
+`Refs: D5.1.1, D5.1.2, C5.1.3, cg20`
+
+Body sections SHOULD be included, especially for medium or large commits. See
+`AGENTS.md` § Commit Message Contract for recommended structure.
 
 ## Automation Phases
 ### Phase A: Foundation

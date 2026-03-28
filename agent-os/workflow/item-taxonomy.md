@@ -75,6 +75,16 @@ Every executable item (Q, D, M, F, T, C) must declare:
 - parent (sprint ID under which the item belongs)
 - commit_group (commit group ID for commit boundary)
 
+## Commit Group Semantics
+
+- `commit_group` is a plan-time declaration, not an ad-hoc commit label.
+- All items in the same `commit_group` are intended to land in one git commit.
+- A git commit closes exactly one `commit_group`.
+- The commit message footer MUST reference the closed item IDs and exactly one
+  `commit_group` ID.
+- File modifications are expected to be attributable to the item's declared
+  `scope` and/or explicit artifact list.
+
 ## Optional Metadata Fields
 
 - depends_on — list of dependency target IDs (sprint or item IDs; milestone IDs

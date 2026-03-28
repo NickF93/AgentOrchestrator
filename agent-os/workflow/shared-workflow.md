@@ -44,6 +44,9 @@ Priority order for conflict resolution:
 ## Planning and Execution
 - Human planning model: milestone -> sprint -> item
 - Runtime execution model: dependency-driven and scope-aware
+- Tracking-first hard gate: before modifying any non-generated file, the owning
+  PLAN item MUST already exist in `PLAN.yaml` with a declared `commit_group`.
+  Untracked edits are forbidden.
 - Single-writer rule: one orchestrator agent owns and writes the canonical PLAN source;
   other agents may propose changes or produce evidence but must not write directly
   to the canonical PLAN. Enforcement is governance-based (code review and escalation),
@@ -68,6 +71,10 @@ An agent may group compatible items into a shared commit_group if:
 - required checks for all items are compatible,
 - a reviewer can evaluate the group without losing item-level traceability.
 
+Commit-group boundaries are declared in `PLAN.yaml` before implementation
+starts. Agents MUST NOT invent, merge, or split commit groups ad hoc while
+creating a commit.
+
 ## Collision Rule
 
 Items must NOT be grouped together if:
@@ -88,14 +95,20 @@ committing is a governance violation.
 ### Commit Group Closure
 
 - A commit_group is the mandatory git commit boundary.
+- Each git commit closes exactly one commit_group.
 - A commit_group MUST only be closed (committed) when (a) all its items are
   in review, verified, or done state AND (b) all required checks for those
   items are satisfied.
 - Each commit MUST be traceable: item -> evidence -> commit.
+- The commit message footer MUST include `Refs:` with all PLAN item IDs closed
+  by that commit and exactly one commit_group ID.
+- The item IDs named in `Refs:` MUST belong to the referenced commit_group;
+  commit-group closure is not allowed to be random or implicit.
 - Commit message format is mandatory on all repositories governed by Layer-0:
   `<type>(<scope>): <description>`
 
-Body and footer sections SHOULD be included, especially for medium or large
+Tracked work MUST include a `Refs:` footer. Body sections SHOULD be included,
+especially for medium or large
 commits. Recommended structure:
 
 Body (SHOULD):
@@ -107,7 +120,7 @@ Body (SHOULD):
 
 Footer (SHOULD):
 
-- Refs: PLAN item IDs and/or commit_group ID
+- Refs: PLAN item IDs and exactly one commit_group ID
 - ADR: linked ADR if relevant
 - Follow-up: deferred work if applicable
 

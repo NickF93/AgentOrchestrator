@@ -19,6 +19,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X2 | X | Layer-0 Governance Hardening | done |
 | X3 | X | Control-Plane Hardening | done |
 | X4 | X | Governance Baseline Hardening | done |
+| X5 | X | Tracking Discipline and Canonical Consistency Hardening | in_progress |
 
 ## Plan
 
@@ -232,6 +233,37 @@ Status: done
 | `T4.7.4` | `T` | Validate commit hook pattern and documentation alignment | done |  |
 | `C4.7.5` | `C` | Commit tooling checkpoint — local enforcement and runtime clarity complete | done |  |
 
+### X5
+
+- ID: `X5`
+- Title: Tracking Discipline and Canonical Consistency Hardening
+- Status: in_progress
+- Note: Strengthen plan-first execution discipline and repair the remaining authority/template drift after the architecture review. This milestone makes commit_group boundaries explicit and non-ad-hoc, propagates the tracking and commit traceability rule across Level-0/1/2 artifacts, aligns ADR and REPO_MAP template semantics with canonical workflow rules, makes workspace sync materialize from local state without implicit remote mutation, and packages Python tooling dependencies for fresh checkouts.
+
+#### S5.1 Items
+
+Sprint: Sprint 1 — Tracking-first governance hardening
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D5.1.1` | `D` | Codify tracking-first execution in Level-0 authorities | done | Makes PLAN-first execution explicit: work must be tracked in PLAN.yaml before file edits begin, and untracked modifications are a governance violation. |
+| `D5.1.2` | `D` | Define exact commit_group traceability and non-ad-hoc commit closure | done | Makes commit_group boundaries a plan-time decision, requires each git commit to close exactly one commit_group, and requires explicit item and commit_group references in the commit footer. |
+| `C5.1.3` | `C` | Governance checkpoint — tracking-first hard gate is canonical | done |  |
+
+#### S5.2 Items
+
+Sprint: Sprint 2 — Cross-layer propagation, tooling enforcement, and operator flow
+Status: planned
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D5.2.1` | `D` | Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates | planned | Makes the rule visible beyond Level-0 so workspace runtime files and bootstrapped repo-local governance files carry the same hard gate. |
+| `M5.2.2` | `M` | Enforce commit title and Refs footer contract in repo-local tooling | planned | Extends the local commit hook to require both the canonical title contract and a Refs footer with PLAN item IDs plus exactly one commit_group, and bootstraps the same guard into downstream repos. |
+| `M5.2.3` | `M` | Repair template drift, local provenance, and fresh-checkout operator flow | planned | Aligns ADR and REPO_MAP templates with canonical lifecycle policy, removes implicit remote mutation from workspace sync, stamps workspace files with local provenance, and makes the repo self-hosted with an explicit dependency manifest and runnable operator documentation. |
+| `T5.2.4` | `T` | Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement | planned |  |
+| `C5.2.5` | `C` | Consistency repair checkpoint — cross-layer rules and operator flow aligned | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -256,6 +288,8 @@ Status: done
 | cg17 | Commit format, phase-gate enforcement, and milestone closure | `D4.5.1`, `M4.5.2`, `D4.5.3`, `M4.5.4`, `M4.5.5`, `T4.5.6`, `C4.5.7` |
 | cg18 | Validator hardening — enforce executable item commit_group presence | `M4.6.1`, `T4.6.2`, `C4.6.3` |
 | cg19 | Commit tooling hardening — hook enforcement and runtime wording alignment | `M4.7.1`, `D4.7.2`, `D4.7.3`, `T4.7.4`, `C4.7.5` |
+| cg20 | Governance hardening — tracking-first execution and exact commit_group traceability | `D5.1.1`, `D5.1.2`, `C5.1.3` |
+| cg21 | Cross-layer consistency repairs — templates, hook/bootstrap enforcement, local provenance, and tooling bootstrap | `D5.2.1`, `M5.2.2`, `M5.2.3`, `T5.2.4`, `C5.2.5` |
 
 ## Item Details
 
@@ -1126,4 +1160,98 @@ Status: done
   - Commit title guard exists in repo tooling
   - README setup enables consistent local enforcement
   - Runtime template wording is unambiguous about hard gate authority
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### D5.1.1: Codify tracking-first execution in Level-0 authorities
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S5.1`
+- **Actions**: document, review
+- **Depends on**: `C4.7.5`
+- **Commit group**: `cg20`
+- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md
+- **Notes**: Makes PLAN-first execution explicit: work must be tracked in PLAN.yaml before file edits begin, and untracked modifications are a governance violation.
+
+### D5.1.2: Define exact commit_group traceability and non-ad-hoc commit closure
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S5.1`
+- **Actions**: document, review
+- **Depends on**: `D5.1.1`
+- **Commit group**: `cg20`
+- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md, agent-os/workflow/item-taxonomy.md
+- **Notes**: Makes commit_group boundaries a plan-time decision, requires each git commit to close exactly one commit_group, and requires explicit item and commit_group references in the commit footer.
+
+### C5.1.3: Governance checkpoint — tracking-first hard gate is canonical
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S5.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `D5.1.2`
+- **Commit group**: `cg20`
+- **Artifacts**: PLAN.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - Level-0 authorities state that PLAN.yaml tracking must exist before edits
+  - Level-0 authorities state that each commit closes exactly one commit_group
+  - Commit footer contract requires PLAN item IDs plus exactly one commit_group ID
+  - PLAN.md and PLAN.dot are regenerated from the updated PLAN.yaml
+
+### D5.2.1: Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S5.2`
+- **Actions**: document, review
+- **Depends on**: `C5.1.3`
+- **Commit group**: `cg21`
+- **Artifacts**: agent-os/templates/repo-AGENTS.md.template, agent-os/templates/repo-README.md.template, agent-os/templates/workspace-AGENTS.md.template, agent-os/templates/workspace-CLAUDE.md.template
+- **Notes**: Makes the rule visible beyond Level-0 so workspace runtime files and bootstrapped repo-local governance files carry the same hard gate.
+
+### M5.2.2: Enforce commit title and Refs footer contract in repo-local tooling
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S5.2`
+- **Actions**: implement, verify
+- **Depends on**: `C5.1.3`
+- **Commit group**: `cg21`
+- **Artifacts**: .githooks/commit-msg, agent-os/scripts/bootstrap-repo.sh, agent-os/templates/repo-commit-msg.template
+- **Notes**: Extends the local commit hook to require both the canonical title contract and a Refs footer with PLAN item IDs plus exactly one commit_group, and bootstraps the same guard into downstream repos.
+
+### M5.2.3: Repair template drift, local provenance, and fresh-checkout operator flow
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S5.2`
+- **Actions**: implement, refactor, verify
+- **Depends on**: `C5.1.3`
+- **Commit group**: `cg21`
+- **Artifacts**: .gitignore, ARCHITECTURE.md, README.md, agent-os/scripts/render-plan.py, agent-os/scripts/sync-workspace.sh, agent-os/scripts/validate-plan.py, agent-os/templates/repo-ADR.md.template, agent-os/templates/repo-ARCHITECTURE.md.template, agent-os/templates/repo-REPO_MAP.md.template, agent-os/templates/workspace-AGENTS.md.template, agent-os/templates/workspace-CLAUDE.md.template, requirements.txt
+- **Notes**: Aligns ADR and REPO_MAP templates with canonical lifecycle policy, removes implicit remote mutation from workspace sync, stamps workspace files with local provenance, and makes the repo self-hosted with an explicit dependency manifest and runnable operator documentation.
+
+### T5.2.4: Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Sprint**: `S5.2`
+- **Actions**: test, verify
+- **Depends on**: `D5.2.1`, `M5.2.2`, `M5.2.3`
+- **Commit group**: `cg21`
+- **Checks**:
+  - conda run -n nn-2 python -m pip install -r requirements.txt succeeds
+  - conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml exits 0
+  - conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - .githooks/commit-msg accepts a valid title plus Refs footer and rejects missing Refs
+  - bootstrap-repo.sh --dry-run derives current local control-plane ref when --ref is omitted and renders .githooks/commit-msg
+  - sync-workspace.sh writes branch or detached state plus commit SHA without pulling from remote
+
+### C5.2.5: Consistency repair checkpoint — cross-layer rules and operator flow aligned
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S5.2`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T5.2.4`
+- **Commit group**: `cg21`
+- **Checks**:
+  - Level-1 and Level-2 artifacts carry the tracking-first and commit_group hard gate clearly
+  - Repo-local hook/bootstrap path enforces title plus Refs footer contract
+  - Templates no longer contradict canonical ADR or REPO_MAP lifecycle rules
+  - Workspace sync is non-mutating and provenance-stamped
+  - Fresh checkout README path is executable with requirements.txt
   - PLAN.md and PLAN.dot are regenerated and committed

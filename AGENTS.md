@@ -28,6 +28,13 @@ Priority order:
 
 ## Working Rules
 - Treat `PLAN.yaml` as source of truth for planning status and dependencies.
+- Before modifying any non-generated repository file, create or update the
+  owning `PLAN.yaml` item first. The item MUST already declare the intended
+  `commit_group`, relevant `scope`, and expected artifacts. Untracked edits are
+  forbidden.
+- Do not invent or reshuffle `commit_group` boundaries during commit creation.
+  `commit_group` membership is declared in `PLAN.yaml` before implementation
+  starts and is the mandatory git commit boundary.
 - Keep startup/design documents in `docs/design/`; do not use them as runtime authority.
 - Do not hand-edit generated artifacts (`PLAN.md`, `PLAN.dot`) once render scripts exist.
 - Preserve determinism in generated outputs and script behavior.
@@ -41,7 +48,14 @@ All commits MUST use this format:
 
 `<type>(<scope>): <description>`
 
-Body and footer sections SHOULD be included, especially for medium or large
+Tracked work MUST include a `Refs:` footer that lists the PLAN item IDs closed
+by the commit and exactly one `commit_group` ID.
+
+Canonical format:
+
+`Refs: D5.1.1, D5.1.2, C5.1.3, cg20`
+
+Body sections SHOULD be included, especially for medium or large
 commits. Recommended structure:
 
 Body (SHOULD):
@@ -53,7 +67,7 @@ Body (SHOULD):
 
 Footer (SHOULD):
 
-- Refs: PLAN item IDs and/or commit_group ID
+- Refs: PLAN item IDs and exactly one commit_group ID
 - ADR: linked ADR if relevant
 - Follow-up: deferred work if applicable
 
@@ -76,4 +90,4 @@ Current implementation focus is Layer-0 foundation:
 - `agent-os/schemas/`
 - `agent-os/templates/`
 - `agent-os/scripts/`
-- `agent-os/prompts/` and `agent-os/skills/` placeholders
+- `agent-os/prompts/` and `agent-os/skills/` contracts/scaffolds

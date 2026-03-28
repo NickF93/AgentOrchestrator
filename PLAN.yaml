@@ -59,6 +59,20 @@ milestones:
       undefined field semantics, and missing enforcement mechanisms. All
       architectural decisions resolved interactively with the human owner.
 
+  - id: X5
+    type: X
+    title: "Tracking Discipline and Canonical Consistency Hardening"
+    status: in_progress
+    note: >
+      Strengthen plan-first execution discipline and repair the remaining
+      authority/template drift after the architecture review. This milestone
+      makes commit_group boundaries explicit and non-ad-hoc, propagates the
+      tracking and commit traceability rule across Level-0/1/2 artifacts,
+      aligns ADR and REPO_MAP template semantics with canonical workflow
+      rules, makes workspace sync materialize from local state without
+      implicit remote mutation, and packages Python tooling dependencies for
+      fresh checkouts.
+
 sprints:
   - id: S1.1
     type: S
@@ -137,6 +151,18 @@ sprints:
     parent: X4
     title: "Sprint 7 — Commit hook enforcement and runtime wording alignment"
     status: done
+
+  - id: S5.1
+    type: S
+    parent: X5
+    title: "Sprint 1 — Tracking-first governance hardening"
+    status: done
+
+  - id: S5.2
+    type: S
+    parent: X5
+    title: "Sprint 2 — Cross-layer propagation, tooling enforcement, and operator flow"
+    status: planned
 
 items:
 
@@ -1619,6 +1645,176 @@ items:
       - "Runtime template wording is unambiguous about hard gate authority"
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
+  - id: D5.1.1
+    parent: S5.1
+    type: D
+    title: "Codify tracking-first execution in Level-0 authorities"
+    actions: [document, review]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg20
+    depends_on: [C4.7.5]
+    scope: "."
+    artifacts_out:
+      - AGENTS.md
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/workflow/git-automation-policy.md
+    notes: >
+      Makes PLAN-first execution explicit: work must be tracked in PLAN.yaml
+      before file edits begin, and untracked modifications are a governance
+      violation.
+
+  - id: D5.1.2
+    parent: S5.1
+    type: D
+    title: "Define exact commit_group traceability and non-ad-hoc commit closure"
+    actions: [document, review]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg20
+    depends_on: [D5.1.1]
+    scope: "."
+    artifacts_out:
+      - AGENTS.md
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/workflow/git-automation-policy.md
+      - agent-os/workflow/item-taxonomy.md
+    notes: >
+      Makes commit_group boundaries a plan-time decision, requires each git
+      commit to close exactly one commit_group, and requires explicit item and
+      commit_group references in the commit footer.
+
+  - id: C5.1.3
+    parent: S5.1
+    type: C
+    title: "Governance checkpoint — tracking-first hard gate is canonical"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg20
+    depends_on: [D5.1.2]
+    scope: "."
+    artifacts_out:
+      - PLAN.yaml
+      - PLAN.md
+      - PLAN.dot
+    checks:
+      - "Level-0 authorities state that PLAN.yaml tracking must exist before edits"
+      - "Level-0 authorities state that each commit closes exactly one commit_group"
+      - "Commit footer contract requires PLAN item IDs plus exactly one commit_group ID"
+      - "PLAN.md and PLAN.dot are regenerated from the updated PLAN.yaml"
+
+  - id: D5.2.1
+    parent: S5.2
+    type: D
+    title: "Propagate tracking-first and commit traceability rules into Level-1 and Level-2 templates"
+    actions: [document, review]
+    status: planned
+    role: documenter
+    effort: medium
+    commit_group: cg21
+    depends_on: [C5.1.3]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/repo-AGENTS.md.template
+      - agent-os/templates/repo-README.md.template
+      - agent-os/templates/workspace-AGENTS.md.template
+      - agent-os/templates/workspace-CLAUDE.md.template
+    notes: >
+      Makes the rule visible beyond Level-0 so workspace runtime files and
+      bootstrapped repo-local governance files carry the same hard gate.
+
+  - id: M5.2.2
+    parent: S5.2
+    type: M
+    title: "Enforce commit title and Refs footer contract in repo-local tooling"
+    actions: [implement, verify]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg21
+    depends_on: [C5.1.3]
+    scope: "."
+    artifacts_out:
+      - .githooks/commit-msg
+      - agent-os/scripts/bootstrap-repo.sh
+      - agent-os/templates/repo-commit-msg.template
+    notes: >
+      Extends the local commit hook to require both the canonical title
+      contract and a Refs footer with PLAN item IDs plus exactly one
+      commit_group, and bootstraps the same guard into downstream repos.
+
+  - id: M5.2.3
+    parent: S5.2
+    type: M
+    title: "Repair template drift, local provenance, and fresh-checkout operator flow"
+    actions: [implement, refactor, verify]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg21
+    depends_on: [C5.1.3]
+    scope: "."
+    artifacts_out:
+      - .gitignore
+      - ARCHITECTURE.md
+      - README.md
+      - agent-os/scripts/render-plan.py
+      - agent-os/scripts/sync-workspace.sh
+      - agent-os/scripts/validate-plan.py
+      - agent-os/templates/repo-ADR.md.template
+      - agent-os/templates/repo-ARCHITECTURE.md.template
+      - agent-os/templates/repo-REPO_MAP.md.template
+      - agent-os/templates/workspace-AGENTS.md.template
+      - agent-os/templates/workspace-CLAUDE.md.template
+      - requirements.txt
+    notes: >
+      Aligns ADR and REPO_MAP templates with canonical lifecycle policy,
+      removes implicit remote mutation from workspace sync, stamps workspace
+      files with local provenance, and makes the repo self-hosted with an
+      explicit dependency manifest and runnable operator documentation.
+
+  - id: T5.2.4
+    parent: S5.2
+    type: T
+    title: "Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement"
+    actions: [test, verify]
+    status: planned
+    role: tester
+    effort: low
+    commit_group: cg21
+    depends_on: [D5.2.1, M5.2.2, M5.2.3]
+    scope: "."
+    checks:
+      - "conda run -n nn-2 python -m pip install -r requirements.txt succeeds"
+      - "conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml exits 0"
+      - "conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically"
+      - ".githooks/commit-msg accepts a valid title plus Refs footer and rejects missing Refs"
+      - "bootstrap-repo.sh --dry-run derives current local control-plane ref when --ref is omitted and renders .githooks/commit-msg"
+      - "sync-workspace.sh writes branch or detached state plus commit SHA without pulling from remote"
+
+  - id: C5.2.5
+    parent: S5.2
+    type: C
+    title: "Consistency repair checkpoint — cross-layer rules and operator flow aligned"
+    actions: [review, checkpoint, verify]
+    status: planned
+    role: reviewer
+    effort: low
+    commit_group: cg21
+    depends_on: [T5.2.4]
+    scope: "."
+    checks:
+      - "Level-1 and Level-2 artifacts carry the tracking-first and commit_group hard gate clearly"
+      - "Repo-local hook/bootstrap path enforces title plus Refs footer contract"
+      - "Templates no longer contradict canonical ADR or REPO_MAP lifecycle rules"
+      - "Workspace sync is non-mutating and provenance-stamped"
+      - "Fresh checkout README path is executable with requirements.txt"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -1765,3 +1961,22 @@ commit_groups:
       Adds a local commit-msg hook for contract enforcement, documents enablement
       in README, aligns workspace template wording to the canonical hard gate,
       and validates consistency.
+
+  - id: cg20
+    title: "Governance hardening — tracking-first execution and exact commit_group traceability"
+    items: [D5.1.1, D5.1.2, C5.1.3]
+    notes: >
+      Re-establishes PLAN.yaml as the first-class execution ledger by making
+      tracking-before-editing mandatory, making commit_group boundaries
+      non-ad-hoc, and defining the exact commit footer traceability contract.
+
+  - id: cg21
+    title: "Cross-layer consistency repairs — templates, hook/bootstrap enforcement, local provenance, and tooling bootstrap"
+    items: [D5.2.1, M5.2.2, M5.2.3, T5.2.4, C5.2.5]
+    notes: >
+      Propagates the tracking and commit traceability rule into Level-1 and
+      Level-2 artifacts, enforces the commit title plus Refs footer contract
+      in repo-local tooling, aligns ADR and REPO_MAP template semantics with
+      canonical workflow, removes implicit remote mutation from workspace
+      sync, packages Python dependencies, and re-validates the control plane
+      from a fresh nn-2 environment.
