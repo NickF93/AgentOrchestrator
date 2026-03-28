@@ -98,6 +98,16 @@ milestones:
       document the workspace topology and artifact placement model that
       enables shared skills and tooling to operate on Layer-2 repos.
 
+  - id: X8
+    type: X
+    title: "Adapter Layer Configuration"
+    status: done
+    note: >
+      Create thin adapter-layer files (CLAUDE.md, and future equivalents
+      for Codex/Copilot/Kilo) that point agents to canonical governance
+      authorities and override adapter-specific defaults that conflict
+      with governance rules.
+
 sprints:
   - id: S1.1
     type: S
@@ -199,6 +209,12 @@ sprints:
     type: S
     parent: X7
     title: "Sprint 1 — Checkpoint closure skill and workspace topology documentation"
+    status: done
+
+  - id: S8.1
+    type: S
+    parent: X8
+    title: "Sprint 1 — Claude Code adapter CLAUDE.md"
     status: done
 
 items:
@@ -1983,6 +1999,46 @@ items:
       - "No normative duplication introduced across authorities"
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
+  # ─── X8 / S8.1: Adapter layer configuration ───────────────────────────────────
+
+  - id: D8.1.1
+    parent: S8.1
+    type: D
+    title: "Create CLAUDE.md as thin adapter layer pointing to canonical governance"
+    actions: [document, implement]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg24
+    depends_on: [C7.1.4]
+    scope: "."
+    artifacts_out:
+      - CLAUDE.md
+    notes: >
+      Thin adapter-layer file for Claude Code. Points to AGENTS.md and
+      canonical workflow authorities. Overrides Claude Code's default
+      ask-before-committing behavior to align with the mandatory commit
+      rule. Does not duplicate normative content — adapter boundary rule
+      preserved.
+
+  - id: C8.1.2
+    parent: S8.1
+    type: C
+    title: "Adapter layer checkpoint"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg24
+    depends_on: [D8.1.1]
+    scope: "."
+    checks:
+      - "CLAUDE.md exists and points to canonical authorities"
+      - "CLAUDE.md does not duplicate normative rules"
+      - "CLAUDE.md overrides adapter defaults that conflict with governance"
+      - "validate-plan.py exits 0"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -2166,3 +2222,12 @@ commit_groups:
       Documents the workspace topology and artifact placement model in the
       canonical workflow authority. Skill uses a two-root model to operate
       on Layer-2 repos using shared Layer-0 tooling.
+
+  - id: cg24
+    title: "Adapter layer — CLAUDE.md as thin governance pointer"
+    items: [D8.1.1, C8.1.2]
+    notes: >
+      Creates CLAUDE.md as a thin adapter-layer file for Claude Code.
+      Points to canonical governance authorities without duplicating
+      normative content. Overrides Claude Code's default ask-before-commit
+      behavior to align with the mandatory commit rule.

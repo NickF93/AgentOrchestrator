@@ -22,6 +22,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X5 | X | Tracking Discipline and Canonical Consistency Hardening | done |
 | X6 | X | Planning Model Execution Optimization Clarification | done |
 | X7 | X | Skill Packaging and Cross-Layer Execution | done |
+| X8 | X | Adapter Layer Configuration | done |
 
 ## Plan
 
@@ -303,6 +304,23 @@ Status: done
 | `T7.1.3` | `T` | Validate skill contract compliance and plan consistency | done |  |
 | `C7.1.4` | `C` | Skill packaging and cross-layer execution checkpoint | done |  |
 
+### X8
+
+- ID: `X8`
+- Title: Adapter Layer Configuration
+- Status: done
+- Note: Create thin adapter-layer files (CLAUDE.md, and future equivalents for Codex/Copilot/Kilo) that point agents to canonical governance authorities and override adapter-specific defaults that conflict with governance rules.
+
+#### S8.1 Items
+
+Sprint: Sprint 1 — Claude Code adapter CLAUDE.md
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D8.1.1` | `D` | Create CLAUDE.md as thin adapter layer pointing to canonical governance | done | Thin adapter-layer file for Claude Code. Points to AGENTS.md and canonical workflow authorities. Overrides Claude Code's default ask-before-committing behavior to align with the mandatory commit rule. Does not duplicate normative content — adapter boundary rule preserved. |
+| `C8.1.2` | `C` | Adapter layer checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -331,6 +349,7 @@ Status: done
 | cg21 | Cross-layer consistency repairs — templates, hook/bootstrap enforcement, local provenance, and tooling bootstrap | `D5.2.1`, `M5.2.2`, `M5.2.3`, `T5.2.4`, `C5.2.5` |
 | cg22 | Planning model clarification — execution optimization, aggregation, and controlled parallelization | `D6.1.1`, `T6.1.2`, `C6.1.3` |
 | cg23 | Skill packaging — checkpoint closure skill and workspace topology documentation | `D7.1.1`, `D7.1.2`, `T7.1.3`, `C7.1.4` |
+| cg24 | Adapter layer — CLAUDE.md as thin governance pointer | `D8.1.1`, `C8.1.2` |
 
 ## Item Details
 
@@ -1377,4 +1396,28 @@ Status: done
   - First operational skill exists and satisfies packaging contract
   - Workspace topology is documented in canonical workflow authority
   - No normative duplication introduced across authorities
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### D8.1.1: Create CLAUDE.md as thin adapter layer pointing to canonical governance
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S8.1`
+- **Actions**: document, implement
+- **Depends on**: `C7.1.4`
+- **Commit group**: `cg24`
+- **Artifacts**: CLAUDE.md
+- **Notes**: Thin adapter-layer file for Claude Code. Points to AGENTS.md and canonical workflow authorities. Overrides Claude Code's default ask-before-committing behavior to align with the mandatory commit rule. Does not duplicate normative content — adapter boundary rule preserved.
+
+### C8.1.2: Adapter layer checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S8.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `D8.1.1`
+- **Commit group**: `cg24`
+- **Checks**:
+  - CLAUDE.md exists and points to canonical authorities
+  - CLAUDE.md does not duplicate normative rules
+  - CLAUDE.md overrides adapter defaults that conflict with governance
+  - validate-plan.py exits 0
   - PLAN.md and PLAN.dot are regenerated and committed
