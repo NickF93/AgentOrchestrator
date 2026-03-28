@@ -10,7 +10,19 @@ last_validated_on:
 validated_by:
 freshness_window_days: 30
 
+## Freshness Contract
+
+This map is subject to the Level-0 freshness policy (see lifecycle.md).
+
+- **Staleness check**: `today - last_validated_on > freshness_window_days`.
+- **Checkpoint gate**: stale REPO_MAP blocks `verified -> done` for checkpoint items.
+- **Update duty**: after any refresh trigger, update `last_validated_on` to
+  the current date and `validated_by` to your identifier.
+- **Automation**: `validate-plan.py --check-freshness` emits a warning when
+  checkpoint items exist and the map is stale.
+
 ## Refresh Triggers
+
 - Any change to entry points, module boundaries, or critical interfaces
 - Any test topology change (unit/integration/e2e layout)
 - Release and checkpoint closure

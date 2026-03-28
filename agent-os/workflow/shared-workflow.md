@@ -112,6 +112,20 @@ Optional body and footer sections are strongly suggested, especially for medium 
 - States: `proposed`, `accepted`, `superseded`, `deprecated`.
 - ADRs must link to relevant PLAN decision or implementation items.
 
+## Design Document Governance
+
+- `docs/design/` is non-authoritative reference material. Files in this
+  directory capture brainstorming, reviews, and background reasoning.
+- If a design document introduces a normative rule (a constraint, policy,
+  or procedure that agents must follow), that rule MUST be migrated to the
+  appropriate canonical authority (`AGENTS.md`, `ARCHITECTURE.md`,
+  `agent-os/workflow/*`, or `agent-os/schemas/*`) before it is considered
+  binding.
+- A design document that has not been migrated carries no governance weight.
+  Agents should not treat design docs as executable instructions.
+- When migrating a rule, add a note in the design doc indicating the rule
+  has been superseded by the canonical authority reference.
+
 ## Canonical-Authority Conflict Recovery
 
 Conflict examples:

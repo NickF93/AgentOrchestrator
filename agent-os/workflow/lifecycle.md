@@ -47,9 +47,36 @@ A commit group can close when:
 
 ## Governance Freshness Checks
 
-- REPO_MAP freshness must be checked at release/checkpoint closure.
-- Freshness fails when `last_validated_on` exceeds `freshness_window_days`.
-- Stale REPO_MAP status blocks `verified -> done` for related checkpoint items.
+### REPO_MAP Freshness Mechanism
+
+REPO_MAP.md includes three metadata fields for freshness tracking:
+
+- `last_validated_on`: ISO date when the map was last confirmed accurate.
+- `validated_by`: identifier of the agent or person who validated.
+- `freshness_window_days`: maximum allowed age in days before the map is stale.
+
+**Freshness computation**: the map is stale when
+`today - last_validated_on > freshness_window_days`.
+
+**Refresh triggers** (any of these requires a freshness update):
+
+- Any change to entry points, module boundaries, or critical interfaces.
+- Any test topology change (unit/integration/e2e layout).
+- Release and checkpoint closure.
+- Major refactor impacting hot paths or fragile areas.
+
+**Checkpoint consumption**: when closing a C-type (checkpoint) item, the
+orchestrator must:
+
+1. Check whether `REPO_MAP.md` exists in the target repository.
+2. If it exists, verify that `last_validated_on` is within `freshness_window_days`.
+3. If stale, the checkpoint cannot transition from `verified` to `done` until
+   the map is refreshed and `last_validated_on` is updated to the current date.
+4. Record the freshness check result in the checkpoint's notes or commit message.
+
+**Automation**: `validate-plan.py --check-freshness` can optionally detect
+staleness and emit a warning when checkpoint items are in `review` or
+`verified` state. This is advisory, not a hard gate.
 
 ## ADR State Flow
 

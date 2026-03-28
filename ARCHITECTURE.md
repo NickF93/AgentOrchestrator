@@ -21,6 +21,8 @@ in workspaces and reused by multiple repositories.
 - Templates must include canonical source and authority guidance where relevant.
 - Workflow documents must be split by concern and avoid cross-duplication.
 - `docs/design/` is reference-only and must not become runtime authority.
+  Normative rules discovered in design docs must be migrated to canonical
+  authorities before they carry governance weight.
 - `PLAN.yaml` is the only authoritative execution-tracking file for this repo.
 
 ## Boundary Rules

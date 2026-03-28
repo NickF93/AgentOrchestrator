@@ -1,76 +1,120 @@
 digraph PLAN {
   rankdir=LR;
-  node [shape=box, style=rounded];
-  "X1" [label="X1 | X | done"];
-  "X2" [label="X2 | X | done"];
-  "S1.1" [label="S1.1 | S | done"];
-  "S2.1" [label="S2.1 | S | done"];
+  node [shape=box, style="filled,rounded", fillcolor=white];
+  "X1" [label="X1 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X2" [label="X2 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X3" [label="X3 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S3.2" [label="S3.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S3.3" [label="S3.3 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S3.4" [label="S3.4 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
-  "D1.1.1" [label="D1.1.1 | D | done"];
+  "D1.1.1" [label="D1.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg1" {
     style="rounded,dashed";
     label="cg1: Review and planning artifacts";
-  "D1.1.2" [label="D1.1.2 | D | done"];
+  "D1.1.2" [label="D1.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg10" {
+    style="rounded,dashed";
+    label="cg10: Validation tooling hardening — cycle detection, commit group coherence, type/action warnings";
+  "C3.2.5" [label="C3.2.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.2.1" [label="M3.2.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.2.2" [label="M3.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.2.3" [label="M3.2.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T3.2.4" [label="T3.2.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg11" {
+    style="rounded,dashed";
+    label="cg11: Rendering, bootstrap, and workspace template improvements";
+  "M3.3.1" [label="M3.3.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.3.2" [label="M3.3.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.3.3" [label="M3.3.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.3.4" [label="M3.3.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.3.5" [label="M3.3.5 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T3.3.6" [label="T3.3.6 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg12" {
+    style="rounded,dashed";
+    label="cg12: Documentation, operational guardrails, and milestone closure";
+  "C3.4.6" [label="C3.4.6 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "D3.4.1" [label="D3.4.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D3.4.2" [label="D3.4.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D3.4.3" [label="D3.4.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.4.4" [label="M3.4.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T3.4.5" [label="T3.4.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg2" {
     style="rounded,dashed";
     label="cg2: Decision gates — Q1.1.1 through Q1.1.5 answers recorded";
-  "Q1.1.1" [label="Q1.1.1 | Q | done"];
-  "Q1.1.2" [label="Q1.1.2 | Q | done"];
-  "Q1.1.3" [label="Q1.1.3 | Q | done"];
-  "Q1.1.4" [label="Q1.1.4 | Q | done"];
-  "Q1.1.5" [label="Q1.1.5 | Q | done"];
+  "Q1.1.1" [label="Q1.1.1 | Q | done", shape=diamond, style="filled,rounded", fillcolor=darkseagreen1];
+  "Q1.1.2" [label="Q1.1.2 | Q | done", shape=diamond, style="filled,rounded", fillcolor=darkseagreen1];
+  "Q1.1.3" [label="Q1.1.3 | Q | done", shape=diamond, style="filled,rounded", fillcolor=darkseagreen1];
+  "Q1.1.4" [label="Q1.1.4 | Q | done", shape=diamond, style="filled,rounded", fillcolor=darkseagreen1];
+  "Q1.1.5" [label="Q1.1.5 | Q | done", shape=diamond, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg3" {
     style="rounded,dashed";
     label="cg3: Scaffold — workflow docs, schema, templates";
-  "M1.1.1" [label="M1.1.1 | M | done"];
-  "M1.1.2" [label="M1.1.2 | M | done"];
-  "M1.1.3" [label="M1.1.3 | M | done"];
-  "M1.1.6" [label="M1.1.6 | M | done"];
+  "M1.1.1" [label="M1.1.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M1.1.2" [label="M1.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M1.1.3" [label="M1.1.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M1.1.6" [label="M1.1.6 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg4" {
     style="rounded,dashed";
     label="cg4: Scripts — render, validate, bootstrap, sync";
-  "M1.1.4" [label="M1.1.4 | M | done"];
-  "M1.1.5" [label="M1.1.5 | M | done"];
+  "M1.1.4" [label="M1.1.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M1.1.5" [label="M1.1.5 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg5" {
     style="rounded,dashed";
     label="cg5: Sprint 1 closure — tests and checkpoint";
-  "C1.1.1" [label="C1.1.1 | C | done"];
-  "T1.1.1" [label="T1.1.1 | T | done"];
-  "T1.1.2" [label="T1.1.2 | T | done"];
-  "T1.1.3" [label="T1.1.3 | T | done"];
+  "C1.1.1" [label="C1.1.1 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "T1.1.1" [label="T1.1.1 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "T1.1.2" [label="T1.1.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "T1.1.3" [label="T1.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg6" {
     style="rounded,dashed";
     label="cg6: Governance hardening updates";
-  "D1.1.3" [label="D1.1.3 | D | done"];
-  "D1.1.4" [label="D1.1.4 | D | done"];
+  "D1.1.3" [label="D1.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D1.1.4" [label="D1.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
-  "D2.1.1" [label="D2.1.1 | D | done"];
-  "D2.1.2" [label="D2.1.2 | D | done"];
-  "D2.1.3" [label="D2.1.3 | D | done"];
+  "D2.1.1" [label="D2.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.2" [label="D2.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.3" [label="D2.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg8" {
     style="rounded,dashed";
     label="cg8: Architecture finalization — close specification gaps G1-G5";
-  "C2.1.1" [label="C2.1.1 | C | done"];
-  "D2.1.4" [label="D2.1.4 | D | done"];
-  "D2.1.5" [label="D2.1.5 | D | done"];
-  "D2.1.6" [label="D2.1.6 | D | done"];
-  "D2.1.7" [label="D2.1.7 | D | done"];
-  "D2.1.8" [label="D2.1.8 | D | done"];
+  "C2.1.1" [label="C2.1.1 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.4" [label="D2.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.5" [label="D2.1.5 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.6" [label="D2.1.6 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.7" [label="D2.1.7 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.8" [label="D2.1.8 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg9" {
+    style="rounded,dashed";
+    label="cg9: Source-of-truth integrity and schema hardening";
+  "D3.1.3" [label="D3.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "F3.1.1" [label="F3.1.1 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "M3.1.2" [label="M3.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T3.1.4" [label="T3.1.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "S1.1" -> "C1.1.1" [style=dashed];
   "S2.1" -> "C2.1.1" [style=dashed];
+  "S3.2" -> "C3.2.5" [style=dashed];
+  "S3.4" -> "C3.4.6" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -83,12 +127,27 @@ digraph PLAN {
   "S2.1" -> "D2.1.6" [style=dashed];
   "S2.1" -> "D2.1.7" [style=dashed];
   "S2.1" -> "D2.1.8" [style=dashed];
+  "S3.1" -> "D3.1.3" [style=dashed];
+  "S3.4" -> "D3.4.1" [style=dashed];
+  "S3.4" -> "D3.4.2" [style=dashed];
+  "S3.4" -> "D3.4.3" [style=dashed];
+  "S3.1" -> "F3.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
   "S1.1" -> "M1.1.2" [style=dashed];
   "S1.1" -> "M1.1.3" [style=dashed];
   "S1.1" -> "M1.1.4" [style=dashed];
   "S1.1" -> "M1.1.5" [style=dashed];
   "S1.1" -> "M1.1.6" [style=dashed];
+  "S3.1" -> "M3.1.2" [style=dashed];
+  "S3.2" -> "M3.2.1" [style=dashed];
+  "S3.2" -> "M3.2.2" [style=dashed];
+  "S3.2" -> "M3.2.3" [style=dashed];
+  "S3.3" -> "M3.3.1" [style=dashed];
+  "S3.3" -> "M3.3.2" [style=dashed];
+  "S3.3" -> "M3.3.3" [style=dashed];
+  "S3.3" -> "M3.3.4" [style=dashed];
+  "S3.3" -> "M3.3.5" [style=dashed];
+  "S3.4" -> "M3.4.4" [style=dashed];
   "S1.1" -> "Q1.1.1" [style=dashed];
   "S1.1" -> "Q1.1.2" [style=dashed];
   "S1.1" -> "Q1.1.3" [style=dashed];
@@ -96,9 +155,17 @@ digraph PLAN {
   "S1.1" -> "Q1.1.5" [style=dashed];
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
+  "X3" -> "S3.1" [style=dashed];
+  "X3" -> "S3.2" [style=dashed];
+  "X3" -> "S3.3" [style=dashed];
+  "X3" -> "S3.4" [style=dashed];
   "S1.1" -> "T1.1.1" [style=dashed];
   "S1.1" -> "T1.1.2" [style=dashed];
   "S1.1" -> "T1.1.3" [style=dashed];
+  "S3.1" -> "T3.1.4" [style=dashed];
+  "S3.2" -> "T3.2.4" [style=dashed];
+  "S3.3" -> "T3.3.6" [style=dashed];
+  "S3.4" -> "T3.4.5" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -107,6 +174,11 @@ digraph PLAN {
   "D2.1.6" -> "C2.1.1";
   "D2.1.7" -> "C2.1.1";
   "D2.1.8" -> "C2.1.1";
+  "T3.2.4" -> "C3.2.5";
+  "T3.3.6" -> "C3.4.6";
+  "T3.4.5" -> "C3.4.6";
+  "M3.1.2" -> "D3.1.3";
+  "C3.2.5" -> "D3.4.2";
   "Q1.1.1" -> "M1.1.1";
   "Q1.1.2" -> "M1.1.1";
   "Q1.1.3" -> "M1.1.1";
@@ -121,6 +193,17 @@ digraph PLAN {
   "Q1.1.1" -> "M1.1.6";
   "Q1.1.2" -> "M1.1.6";
   "Q1.1.3" -> "M1.1.6";
+  "F3.1.1" -> "M3.1.2";
+  "T3.1.4" -> "M3.2.1";
+  "T3.1.4" -> "M3.2.2";
+  "T3.1.4" -> "M3.2.3";
+  "T3.1.4" -> "M3.3.1";
+  "T3.1.4" -> "M3.3.2";
+  "M3.3.4" -> "M3.3.3";
+  "T3.1.4" -> "M3.3.3";
+  "T3.1.4" -> "M3.3.5";
+  "C3.2.5" -> "M3.4.4";
+  "D3.4.2" -> "M3.4.4";
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -130,4 +213,18 @@ digraph PLAN {
   "M1.1.4" -> "T1.1.1";
   "M1.1.5" -> "T1.1.2";
   "M1.1.4" -> "T1.1.3";
+  "F3.1.1" -> "T3.1.4";
+  "M3.1.2" -> "T3.1.4";
+  "M3.2.1" -> "T3.2.4";
+  "M3.2.2" -> "T3.2.4";
+  "M3.2.3" -> "T3.2.4";
+  "M3.3.1" -> "T3.3.6";
+  "M3.3.2" -> "T3.3.6";
+  "M3.3.3" -> "T3.3.6";
+  "M3.3.4" -> "T3.3.6";
+  "M3.3.5" -> "T3.3.6";
+  "D3.4.1" -> "T3.4.5";
+  "D3.4.2" -> "T3.4.5";
+  "D3.4.3" -> "T3.4.5";
+  "M3.4.4" -> "T3.4.5";
 }
