@@ -2385,7 +2385,7 @@ items:
     type: M
     title: "Add Kilo as experimental runtime with adapter, profile, and registry"
     actions: [implement, document]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg30

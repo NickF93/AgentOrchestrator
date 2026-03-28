@@ -4,7 +4,7 @@ assets:
     kind: skill
     version: "0.3.0"
     path: agent-os/skills/plan-checkpoint-close/SKILL.md
-    compatibility: [claude, codex]
+    compatibility: [claude, codex, kilo]
     materializable: true
     depends_on_assets:
       - checkpoint-closure-review
@@ -14,7 +14,7 @@ assets:
     kind: prompt
     version: "1.0.0"
     path: agent-os/prompts/checkpoint-closure-review.md
-    compatibility: [claude, codex]
+    compatibility: [claude, codex, kilo]
     materializable: true
     depends_on_assets:
       - check-result-v1
@@ -43,5 +43,15 @@ assets:
     kind: protocol
     version: "1.0.0"
     path: agent-os/protocols/check-result-v1.yaml
-    compatibility: [claude, codex]
+    compatibility: [claude, codex, kilo]
     materializable: true
+
+  - id: kilo/check-medium
+    kind: profile
+    version: "1.0.0"
+    path: agent-os/profiles/kilo/check-medium.yaml
+    compatibility: [kilo]
+    materializable: true
+    depends_on_assets:
+      - checkpoint-closure-review
+      - check-result-v1

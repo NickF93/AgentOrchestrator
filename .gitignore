@@ -9,4 +9,5 @@ __pycache__/
 .env
 *.log
 .DS_Store
+.sixth/
 *-workspace/
