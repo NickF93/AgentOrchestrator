@@ -32,34 +32,49 @@ repositories. It does not host product code.
 
 ## Quick Start
 
-### Install runtime dependencies in `nn-2`
+### Configure the Python environment
+
+Copy `.env.example` to `.env` and set `AGENT_PYTHON` for your workstation:
 
 ```bash
-conda run -n nn-2 python -m pip install -r requirements.txt
+cp .env.example .env
+# Edit .env — set AGENT_PYTHON to your local Python command, e.g.:
+#   AGENT_PYTHON="conda run -n nn-2 python"
+#   AGENT_PYTHON="python3"
+#   AGENT_PYTHON="/path/to/venv/bin/python"
 ```
 
-### Install development and test tooling in `nn-2`
+`.env` is gitignored and never committed. Scripts source it automatically.
+For manual commands, source it first: `source .env`
+
+### Install runtime dependencies
 
 ```bash
-conda run -n nn-2 python -m pip install -r requirements-dev.txt
+$AGENT_PYTHON -m pip install -r requirements.txt
+```
+
+### Install development and test tooling
+
+```bash
+$AGENT_PYTHON -m pip install -r requirements-dev.txt
 ```
 
 ### Validate a plan
 
 ```bash
-conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
+$AGENT_PYTHON agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
 ```
 
 ### Render plan views
 
 ```bash
-conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml
+$AGENT_PYTHON agent-os/scripts/render-plan.py PLAN.yaml
 ```
 
 ### Run script tests
 
 ```bash
-conda run -n nn-2 python -m pytest -q
+$AGENT_PYTHON -m pytest -q
 ```
 
 ### Run local quality gates
@@ -93,10 +108,10 @@ bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
 
 ## Testing and Gates
 
-The canonical local verification environment for this repository is `nn-2`.
+The Python environment is configured per workstation via `AGENT_PYTHON` in `.env`.
 
-- Python tests: `conda run -n nn-2 python -m pytest -q`
-- Gate runner: `bash agent-os/scripts/run-gates.sh`
+- Python tests: `$AGENT_PYTHON -m pytest -q`
+- Gate runner: `bash agent-os/scripts/run-gates.sh` (sources `.env` automatically)
 - The gate runs Ruff, mypy, Python compile checks, pytest, and ShellCheck when
   ShellCheck is available on the local machine.
 - `requirements.txt` stays runtime-only; development/test tooling lives in

@@ -157,6 +157,15 @@ milestones:
       found during governance audit. Expand sync-workspace.sh test to
       verify all three rendered files.
 
+  - id: X15
+    type: X
+    title: "Environment Portability — Remove Hardcoded Conda Environment"
+    status: done
+    note: >
+      Remove hardcoded nn-2 conda environment from all scripts, adapters,
+      and documentation. Replace with AGENT_PYTHON environment variable
+      loaded from .env per workstation. Ship .env.example as reference.
+
   - id: X14
     type: X
     title: "Portability Milestone Completion — Copilot Support and Kilo Realignment"
@@ -306,6 +315,12 @@ sprints:
     type: S
     parent: X13
     title: "Sprint 1 — Template parity fix and test expansion"
+    status: done
+
+  - id: S15.1
+    type: S
+    parent: X15
+    title: "Sprint 1 — AGENT_PYTHON env var, .env.example, script and docs portability"
     status: done
 
   - id: S14.1
@@ -2706,6 +2721,66 @@ items:
       - "Workspace sync remains limited to workspace-scoped runtimes"
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
+  # ─── X15 / S15.1: Environment portability ─────────────────────────────────
+
+  - id: M15.1.1
+    parent: S15.1
+    type: M
+    title: "Replace hardcoded nn-2 with AGENT_PYTHON env var across scripts and docs"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg37
+    depends_on: [C14.1.4]
+    scope: "."
+    artifacts_out:
+      - .env.example
+      - agent-os/scripts/run-gates.sh
+      - CLAUDE.md
+      - README.md
+    notes: >
+      Creates .env.example with AGENT_PYTHON variable. Refactors
+      run-gates.sh to source .env and use AGENT_PYTHON instead of
+      hardcoded nn-2 discovery. Updates CLAUDE.md and README.md to
+      reference the env var pattern.
+
+  - id: T15.1.2
+    parent: S15.1
+    type: T
+    title: "Validate environment portability"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg37
+    depends_on: [M15.1.1]
+    scope: "."
+    checks:
+      - "validate-plan.py PLAN.yaml exits 0"
+      - "run-gates.sh passes with AGENT_PYTHON set"
+      - ".env.example exists and documents AGENT_PYTHON"
+      - "No hardcoded nn-2 in run-gates.sh"
+      - "CLAUDE.md references AGENT_PYTHON pattern"
+      - "README.md references AGENT_PYTHON pattern"
+
+  - id: C15.1.3
+    parent: S15.1
+    type: C
+    title: "Environment portability checkpoint"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg37
+    depends_on: [T15.1.2]
+    scope: "."
+    checks:
+      - "No hardcoded conda environment names in executable scripts"
+      - "AGENT_PYTHON env var is the canonical override mechanism"
+      - ".env is gitignored, .env.example is committed"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -2985,6 +3060,14 @@ commit_groups:
       Implements the portability contract update across workflow docs,
       bootstrap templates, shared-asset registry, runtime profiles, and
       supporting tooling/tests without splitting canonical authority.
+
+  - id: cg37
+    title: "Environment portability — AGENT_PYTHON env var and .env.example"
+    items: [M15.1.1, T15.1.2, C15.1.3]
+    notes: >
+      Removes hardcoded nn-2 conda environment from run-gates.sh and
+      documentation. Introduces AGENT_PYTHON env var loaded from .env
+      per workstation. Ships .env.example as committed reference.
 
   - id: cg36
     title: "Portability verification and closure — validate X14 end to end"

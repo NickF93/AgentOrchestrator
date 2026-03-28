@@ -47,14 +47,18 @@ commit_groups unless an escalation condition from `AGENTS.md` is triggered.
 
 ## Tooling
 
-Use `conda run -n nn-2 python` to run scripts in this repository:
+The Python command is configured per workstation via `AGENT_PYTHON` in `.env`
+(see `.env.example`). Use `$AGENT_PYTHON` to run scripts:
 
 ```
-conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
-conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml
-conda run -n nn-2 python -m pytest -q
+$AGENT_PYTHON agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
+$AGENT_PYTHON agent-os/scripts/render-plan.py PLAN.yaml
+$AGENT_PYTHON -m pytest -q
 bash agent-os/scripts/run-gates.sh
 ```
+
+`run-gates.sh` sources `.env` automatically. For manual commands, either
+source `.env` first or substitute the value directly.
 
 ## Skills
 

@@ -28,6 +28,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X11 | X | Runtime Portability Expansion | done |
 | X12 | X | Promote Codex to First-Class Runtime | done |
 | X13 | X | Workspace Template Parity and Test Coverage Repair | done |
+| X15 | X | Environment Portability — Remove Hardcoded Conda Environment | done |
 | X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 
 ## Plan
@@ -424,6 +425,24 @@ Status: done
 | `F13.1.2` | `F` | Expand sync-workspace.sh test to verify all rendered files | done | Test only checks AGENTS.md existence and content. Must also verify CLAUDE.md and .codex are generated with correct CONTROL_PLANE_ROOT stamping. |
 | `C13.1.3` | `C` | Workspace template parity and test coverage checkpoint | done |  |
 
+### X15
+
+- ID: `X15`
+- Title: Environment Portability — Remove Hardcoded Conda Environment
+- Status: done
+- Note: Remove hardcoded nn-2 conda environment from all scripts, adapters, and documentation. Replace with AGENT_PYTHON environment variable loaded from .env per workstation. Ship .env.example as reference.
+
+#### S15.1 Items
+
+Sprint: Sprint 1 — AGENT_PYTHON env var, .env.example, script and docs portability
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M15.1.1` | `M` | Replace hardcoded nn-2 with AGENT_PYTHON env var across scripts and docs | done | Creates .env.example with AGENT_PYTHON variable. Refactors run-gates.sh to source .env and use AGENT_PYTHON instead of hardcoded nn-2 discovery. Updates CLAUDE.md and README.md to reference the env var pattern. |
+| `T15.1.2` | `T` | Validate environment portability | done |  |
+| `C15.1.3` | `C` | Environment portability checkpoint | done |  |
+
 ### X14
 
 - ID: `X14`
@@ -483,6 +502,7 @@ Status: done
 | cg33 | Template parity fix — CLAUDE workspace adapter overrides and test expansion | `F13.1.1`, `F13.1.2`, `C13.1.3` |
 | cg34 | Portability completion tracking — milestone, runtime contract, and commit boundaries | `D14.1.1` |
 | cg35 | Portability implementation — Copilot support and Kilo realignment | `M14.1.2` |
+| cg37 | Environment portability — AGENT_PYTHON env var and .env.example | `M15.1.1`, `T15.1.2`, `C15.1.3` |
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 
 ## Item Details
@@ -1865,4 +1885,42 @@ Status: done
   - Copilot is supported through repo-level bootstrap entrypoints without authority duplication
   - Kilo support no longer depends on KILO.md
   - Workspace sync remains limited to workspace-scoped runtimes
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### M15.1.1: Replace hardcoded nn-2 with AGENT_PYTHON env var across scripts and docs
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S15.1`
+- **Actions**: implement
+- **Depends on**: `C14.1.4`
+- **Commit group**: `cg37`
+- **Artifacts**: .env.example, agent-os/scripts/run-gates.sh, CLAUDE.md, README.md
+- **Notes**: Creates .env.example with AGENT_PYTHON variable. Refactors run-gates.sh to source .env and use AGENT_PYTHON instead of hardcoded nn-2 discovery. Updates CLAUDE.md and README.md to reference the env var pattern.
+
+### T15.1.2: Validate environment portability
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S15.1`
+- **Actions**: test, verify
+- **Depends on**: `M15.1.1`
+- **Commit group**: `cg37`
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0
+  - run-gates.sh passes with AGENT_PYTHON set
+  - .env.example exists and documents AGENT_PYTHON
+  - No hardcoded nn-2 in run-gates.sh
+  - CLAUDE.md references AGENT_PYTHON pattern
+  - README.md references AGENT_PYTHON pattern
+
+### C15.1.3: Environment portability checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S15.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T15.1.2`
+- **Commit group**: `cg37`
+- **Checks**:
+  - No hardcoded conda environment names in executable scripts
+  - AGENT_PYTHON env var is the canonical override mechanism
+  - .env is gitignored, .env.example is committed
   - PLAN.md and PLAN.dot are regenerated and committed
