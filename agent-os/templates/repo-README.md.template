@@ -23,6 +23,15 @@ This repository is governed by the Level-0 control plane.
 - Owner: {{OWNER}}
 - Bootstrap date: {{DATE}}
 
+## Shared Assets
+
+- Default consumption mode is `workspace`: resolve shared prompts, skills,
+  profiles, protocols, and registry from `CONTROL_PLANE_ROOT`.
+- Do not manually duplicate or edit Layer-0 shared assets in this repository.
+- Optional vendored mode is available through explicit materialization into
+  `.agent-os/vendor/`. Vendored assets are snapshots for portability, not
+  authoritative sources.
+
 ## Working Discipline
 
 - Track work in `PLAN.yaml` before editing files.

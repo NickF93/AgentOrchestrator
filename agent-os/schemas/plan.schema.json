@@ -63,6 +63,10 @@
         { "$ref": "#/$defs/itemId" }
       ]
     },
+    "sharedAssetId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
     "status": {
       "type": "string",
       "enum": [
@@ -106,6 +110,24 @@
         "decide",
         "migrate"
       ]
+    },
+    "sharedAssets": {
+      "type": "object",
+      "properties": {
+        "skill": { "$ref": "#/$defs/sharedAssetId" },
+        "prompt": { "$ref": "#/$defs/sharedAssetId" },
+        "profile": { "$ref": "#/$defs/sharedAssetId" },
+        "result_protocol": { "$ref": "#/$defs/sharedAssetId" },
+        "context_policy": {
+          "type": "string",
+          "enum": ["focused", "diff_only", "repo_full"]
+        },
+        "resolution_mode": {
+          "type": "string",
+          "enum": ["workspace", "vendored"]
+        }
+      },
+      "additionalProperties": false
     },
     "milestone": {
       "type": "object",
@@ -165,6 +187,7 @@
           "type": "array",
           "items": { "type": "string" }
         },
+        "shared_assets": { "$ref": "#/$defs/sharedAssets" },
         "artifacts_in": {
           "type": "array",
           "items": { "type": "string" }

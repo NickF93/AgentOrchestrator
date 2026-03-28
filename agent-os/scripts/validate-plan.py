@@ -20,11 +20,8 @@ except ImportError as exc:  # pragma: no cover
 
 try:
     import jsonschema
-except ImportError as exc:  # pragma: no cover
-    raise SystemExit(
-        "Missing dependency: jsonschema. Install tooling deps with: "
-        "python3 -m pip install -r requirements.txt"
-    ) from exc
+except ImportError:  # pragma: no cover
+    jsonschema = None
 
 
 CONTAINER_TYPES = {"X", "S"}
@@ -50,6 +47,23 @@ RECOMMENDED_ACTIONS: dict[str, set[str]] = {
     "C": {"review", "checkpoint", "verify"},
 }
 EXECUTABLE_ITEM_TYPES = set(RECOMMENDED_ACTIONS.keys())
+SHARED_ASSET_KINDS = {"skill", "prompt", "profile", "protocol"}
+SHARED_ASSET_FIELD_KIND = {
+    "skill": "skill",
+    "prompt": "prompt",
+    "profile": "profile",
+    "result_protocol": "protocol",
+}
+SHARED_ASSET_PATH_PREFIX = {
+    "skill": "agent-os/skills/",
+    "prompt": "agent-os/prompts/",
+    "profile": "agent-os/profiles/",
+    "protocol": "agent-os/protocols/",
+}
+
+
+def default_shared_asset_registry_path() -> Path:
+    return Path(__file__).resolve().parents[2] / "agent-os" / "registry" / "shared-assets.yaml"
 
 
 def load_yaml(path: Path) -> dict:
@@ -64,6 +78,344 @@ def load_schema(path: Path) -> dict:
     if not isinstance(data, dict):
         raise ValueError("Schema must be a JSON object")
     return data
+
+
+def load_shared_asset_registry(path: Path) -> dict:
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("Shared asset registry must be a mapping")
+    return data
+
+
+def validate_shared_asset_registry(registry: dict, registry_path: Path) -> tuple[dict[str, dict], list[str]]:
+    errors: list[str] = []
+    assets = registry.get("assets")
+    if not isinstance(assets, list):
+        return {}, ["shared asset registry must define an 'assets' list"]
+
+    control_plane_root = registry_path.parent.parent.parent
+    asset_map: dict[str, dict] = {}
+    referenced_dependencies: list[tuple[str, str]] = []
+
+    for idx, asset in enumerate(assets):
+        prefix = f"shared asset registry entry #{idx + 1}"
+        if not isinstance(asset, dict):
+            errors.append(f"{prefix}: entry must be a mapping")
+            continue
+
+        asset_id = asset.get("id")
+        kind = asset.get("kind")
+        version = asset.get("version")
+        path_text = asset.get("path")
+        compatibility = asset.get("compatibility")
+        materializable = asset.get("materializable")
+
+        if not isinstance(asset_id, str) or not asset_id:
+            errors.append(f"{prefix}: missing non-empty id")
+            continue
+        if asset_id in asset_map:
+            errors.append(f"shared asset registry has duplicate id '{asset_id}'")
+            continue
+        if kind not in SHARED_ASSET_KINDS:
+            errors.append(
+                f"shared asset '{asset_id}' has invalid kind '{kind}' "
+                f"(expected one of {sorted(SHARED_ASSET_KINDS)})"
+            )
+        if not isinstance(version, str) or not version:
+            errors.append(f"shared asset '{asset_id}' has no non-empty version")
+        if not isinstance(path_text, str) or not path_text:
+            errors.append(f"shared asset '{asset_id}' has no non-empty path")
+        if not isinstance(compatibility, list) or not compatibility or not all(
+            isinstance(entry, str) and entry for entry in compatibility
+        ):
+            errors.append(
+                f"shared asset '{asset_id}' must declare a non-empty compatibility list"
+            )
+        if not isinstance(materializable, bool):
+            errors.append(
+                f"shared asset '{asset_id}' must declare materializable as true or false"
+            )
+
+        asset_map[asset_id] = asset
+
+        if isinstance(path_text, str) and isinstance(kind, str):
+            expected_prefix = SHARED_ASSET_PATH_PREFIX.get(kind)
+            if expected_prefix and not path_text.startswith(expected_prefix):
+                errors.append(
+                    f"shared asset '{asset_id}' kind '{kind}' must live under '{expected_prefix}' "
+                    f"(got '{path_text}')"
+                )
+            asset_path = control_plane_root / path_text
+            if not asset_path.exists():
+                errors.append(
+                    f"shared asset '{asset_id}' path does not exist: {asset_path}"
+                )
+
+        depends_on_assets = asset.get("depends_on_assets", []) or []
+        if not isinstance(depends_on_assets, list):
+            errors.append(
+                f"shared asset '{asset_id}' has non-list depends_on_assets"
+            )
+            continue
+        for dep in depends_on_assets:
+            if not isinstance(dep, str) or not dep:
+                errors.append(
+                    f"shared asset '{asset_id}' has invalid depends_on_assets entry '{dep}'"
+                )
+                continue
+            referenced_dependencies.append((asset_id, dep))
+
+    for asset_id, dep in referenced_dependencies:
+        if dep not in asset_map:
+            errors.append(
+                f"shared asset '{asset_id}' depends_on_assets references unknown asset '{dep}'"
+            )
+
+    return asset_map, errors
+
+
+def validate_shared_asset_refs(items: list[dict], asset_map: dict[str, dict]) -> list[str]:
+    errors: list[str] = []
+
+    for item in items:
+        item_id = item.get("id", "<unknown>")
+        shared_assets = item.get("shared_assets")
+        if shared_assets is None:
+            continue
+        if not isinstance(shared_assets, dict):
+            errors.append(f"{item_id}: shared_assets must be a mapping")
+            continue
+
+        for field, expected_kind in SHARED_ASSET_FIELD_KIND.items():
+            asset_id = shared_assets.get(field)
+            if asset_id is None:
+                continue
+            asset = asset_map.get(asset_id)
+            if asset is None:
+                errors.append(
+                    f"{item_id}: shared_assets.{field} references unknown asset id '{asset_id}'"
+                )
+                continue
+            actual_kind = asset.get("kind")
+            if actual_kind != expected_kind:
+                errors.append(
+                    f"{item_id}: shared_assets.{field} references '{asset_id}' of kind "
+                    f"'{actual_kind}', expected '{expected_kind}'"
+                )
+
+    return errors
+
+
+def ensure_mapping(value: object, context: str, errors: list[str]) -> dict | None:
+    if not isinstance(value, dict):
+        errors.append(f"{context}: expected mapping")
+        return None
+    return value
+
+
+def ensure_list(value: object, context: str, errors: list[str]) -> list | None:
+    if not isinstance(value, list):
+        errors.append(f"{context}: expected list")
+        return None
+    return value
+
+
+def validate_plan_schema_subset(plan: dict) -> list[str]:
+    """Fallback schema validation when jsonschema is unavailable."""
+    errors: list[str] = []
+
+    required_top_level = ["meta", "mission", "milestones", "sprints", "items", "commit_groups"]
+    for field in required_top_level:
+        if field not in plan:
+            errors.append(f"missing required top-level field '{field}'")
+
+    meta = ensure_mapping(plan.get("meta"), "meta", errors)
+    if meta is not None:
+        for field in ("repo", "owner", "version", "schema_version", "last_updated"):
+            if not isinstance(meta.get(field), str) or not meta.get(field):
+                errors.append(f"meta.{field}: expected non-empty string")
+
+    mission = plan.get("mission")
+    if not isinstance(mission, str) or not mission.strip():
+        errors.append("mission: expected non-empty string")
+
+    milestones = ensure_list(plan.get("milestones"), "milestones", errors) or []
+    for idx, milestone in enumerate(milestones):
+        context = f"milestones[{idx}]"
+        milestone_map = ensure_mapping(milestone, context, errors)
+        if milestone_map is None:
+            continue
+        if not isinstance(milestone_map.get("id"), str) or not MILESTONE_ID_RE.fullmatch(milestone_map["id"]):
+            errors.append(f"{context}.id: expected milestone id like X1")
+        if milestone_map.get("type") != "X":
+            errors.append(f"{context}.type: expected 'X'")
+        if not isinstance(milestone_map.get("title"), str) or not milestone_map.get("title"):
+            errors.append(f"{context}.title: expected non-empty string")
+        if milestone_map.get("status") not in ALLOWED_STATE_TRANSITIONS:
+            errors.append(f"{context}.status: invalid status '{milestone_map.get('status')}'")
+
+    sprints = ensure_list(plan.get("sprints"), "sprints", errors) or []
+    for idx, sprint in enumerate(sprints):
+        context = f"sprints[{idx}]"
+        sprint_map = ensure_mapping(sprint, context, errors)
+        if sprint_map is None:
+            continue
+        if not isinstance(sprint_map.get("id"), str) or not SPRINT_ID_RE.fullmatch(sprint_map["id"]):
+            errors.append(f"{context}.id: expected sprint id like S1.1")
+        if sprint_map.get("type") != "S":
+            errors.append(f"{context}.type: expected 'S'")
+        if not isinstance(sprint_map.get("parent"), str) or not MILESTONE_ID_RE.fullmatch(sprint_map["parent"]):
+            errors.append(f"{context}.parent: expected milestone id like X1")
+        if not isinstance(sprint_map.get("title"), str) or not sprint_map.get("title"):
+            errors.append(f"{context}.title: expected non-empty string")
+        if sprint_map.get("status") not in ALLOWED_STATE_TRANSITIONS:
+            errors.append(f"{context}.status: invalid status '{sprint_map.get('status')}'")
+
+    items = ensure_list(plan.get("items"), "items", errors) or []
+    action_enum = {
+        "audit", "plan", "design", "implement", "refactor", "test", "verify",
+        "document", "review", "checkpoint", "decide", "migrate",
+    }
+    role_enum = {"orchestrator", "implementer", "tester", "reviewer", "documenter", "researcher"}
+    effort_enum = {"low", "medium", "high"}
+    shared_asset_fields = {"skill", "prompt", "profile", "result_protocol", "context_policy", "resolution_mode"}
+
+    for idx, item in enumerate(items):
+        context = f"items[{idx}]"
+        item_map = ensure_mapping(item, context, errors)
+        if item_map is None:
+            continue
+
+        for field in ("id", "parent", "type", "title", "status", "role", "effort", "actions", "commit_group"):
+            if field not in item_map:
+                errors.append(f"{context}: missing required field '{field}'")
+
+        item_id = item_map.get("id")
+        if not isinstance(item_id, str) or not ITEM_ID_RE.fullmatch(item_id):
+            errors.append(f"{context}.id: expected item id like M1.1.1")
+        parent = item_map.get("parent")
+        if not isinstance(parent, str) or not SPRINT_ID_RE.fullmatch(parent):
+            errors.append(f"{context}.parent: expected sprint id like S1.1")
+        item_type = item_map.get("type")
+        if item_type not in EXECUTABLE_ITEM_TYPES:
+            errors.append(f"{context}.type: invalid item type '{item_type}'")
+        if not isinstance(item_map.get("title"), str) or not item_map.get("title"):
+            errors.append(f"{context}.title: expected non-empty string")
+        if item_map.get("status") not in ALLOWED_STATE_TRANSITIONS:
+            errors.append(f"{context}.status: invalid status '{item_map.get('status')}'")
+        if item_map.get("role") not in role_enum:
+            errors.append(f"{context}.role: invalid role '{item_map.get('role')}'")
+        if item_map.get("effort") not in effort_enum:
+            errors.append(f"{context}.effort: invalid effort '{item_map.get('effort')}'")
+
+        actions = item_map.get("actions")
+        if not isinstance(actions, list) or not actions:
+            errors.append(f"{context}.actions: expected non-empty list")
+        else:
+            for action in actions:
+                if action not in action_enum:
+                    errors.append(f"{context}.actions: invalid action '{action}'")
+
+        commit_group = item_map.get("commit_group")
+        if not isinstance(commit_group, str) or not re.fullmatch(r"^cg[0-9]+$", commit_group):
+            errors.append(f"{context}.commit_group: expected value like cg1")
+
+        depends_on = item_map.get("depends_on")
+        if depends_on is not None and not isinstance(depends_on, list):
+            errors.append(f"{context}.depends_on: expected list")
+
+        scope = item_map.get("scope")
+        if scope is not None and (not isinstance(scope, str) or not re.fullmatch(r"^(\.|[A-Za-z0-9._/-]+)$", scope)):
+            errors.append(f"{context}.scope: invalid scope '{scope}'")
+
+        checks = item_map.get("checks")
+        if checks is not None and (
+            not isinstance(checks, list) or any(not isinstance(check, str) for check in checks)
+        ):
+            errors.append(f"{context}.checks: expected list of strings")
+
+        artifacts_in = item_map.get("artifacts_in")
+        if artifacts_in is not None and (
+            not isinstance(artifacts_in, list) or any(not isinstance(path, str) for path in artifacts_in)
+        ):
+            errors.append(f"{context}.artifacts_in: expected list of strings")
+
+        artifacts_out = item_map.get("artifacts_out")
+        if artifacts_out is not None and (
+            not isinstance(artifacts_out, list) or any(not isinstance(path, str) for path in artifacts_out)
+        ):
+            errors.append(f"{context}.artifacts_out: expected list of strings")
+
+        decision = item_map.get("decision")
+        if decision is not None and not isinstance(decision, str):
+            errors.append(f"{context}.decision: expected string")
+        if item_type != "Q" and "decision" in item_map:
+            errors.append(f"{context}.decision: non-Q items must not declare decision")
+
+        triggers = item_map.get("triggers")
+        if triggers is not None and (
+            not isinstance(triggers, list) or any(not isinstance(entry, str) for entry in triggers)
+        ):
+            errors.append(f"{context}.triggers: expected list of strings")
+
+        tools_profile = item_map.get("tools_profile")
+        if tools_profile is not None and not isinstance(tools_profile, str):
+            errors.append(f"{context}.tools_profile: expected string")
+
+        requires_phase = item_map.get("requires_phase")
+        if requires_phase is not None and requires_phase not in {"A", "B", "C", "D"}:
+            errors.append(f"{context}.requires_phase: invalid value '{requires_phase}'")
+
+        approval_ref = item_map.get("approval_ref")
+        if approval_ref is not None and (not isinstance(approval_ref, str) or not approval_ref):
+            errors.append(f"{context}.approval_ref: expected non-empty string")
+
+        shared_assets = item_map.get("shared_assets")
+        if shared_assets is not None:
+            shared_assets_map = ensure_mapping(shared_assets, f"{context}.shared_assets", errors)
+            if shared_assets_map is not None:
+                unexpected = sorted(set(shared_assets_map.keys()) - shared_asset_fields)
+                if unexpected:
+                    errors.append(
+                        f"{context}.shared_assets: unexpected field(s): {', '.join(unexpected)}"
+                    )
+                for field in ("skill", "prompt", "profile", "result_protocol"):
+                    value = shared_assets_map.get(field)
+                    if value is not None and (
+                        not isinstance(value, str)
+                        or not re.fullmatch(r"^[A-Za-z0-9][A-Za-z0-9._/-]*$", value)
+                    ):
+                        errors.append(
+                            f"{context}.shared_assets.{field}: invalid asset id '{value}'"
+                        )
+                context_policy = shared_assets_map.get("context_policy")
+                if context_policy is not None and context_policy not in {"focused", "diff_only", "repo_full"}:
+                    errors.append(
+                        f"{context}.shared_assets.context_policy: invalid value '{context_policy}'"
+                    )
+                resolution_mode = shared_assets_map.get("resolution_mode")
+                if resolution_mode is not None and resolution_mode not in {"workspace", "vendored"}:
+                    errors.append(
+                        f"{context}.shared_assets.resolution_mode: invalid value '{resolution_mode}'"
+                    )
+
+    commit_groups = ensure_list(plan.get("commit_groups"), "commit_groups", errors) or []
+    for idx, commit_group in enumerate(commit_groups):
+        context = f"commit_groups[{idx}]"
+        cg_map = ensure_mapping(commit_group, context, errors)
+        if cg_map is None:
+            continue
+        if not isinstance(cg_map.get("id"), str) or not re.fullmatch(r"^cg[0-9]+$", cg_map["id"]):
+            errors.append(f"{context}.id: expected commit group id like cg1")
+        if not isinstance(cg_map.get("title"), str) or not cg_map.get("title"):
+            errors.append(f"{context}.title: expected non-empty string")
+        cg_items = cg_map.get("items")
+        if not isinstance(cg_items, list) or not cg_items:
+            errors.append(f"{context}.items: expected non-empty list")
+        elif any(not isinstance(item_id, str) or not ITEM_ID_RE.fullmatch(item_id) for item_id in cg_items):
+            errors.append(f"{context}.items: expected item IDs")
+
+    return errors
 
 
 def collect_ids(plan: dict) -> dict[str, str]:
@@ -219,7 +571,7 @@ def validate_type_action_coherence(items: list[dict]) -> list[str]:
     return warnings
 
 
-def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
+def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
 
@@ -317,6 +669,9 @@ def validate_custom_rules(plan: dict) -> tuple[list[str], list[str]]:
 
     # Warning-only: type/action coherence.
     warnings.extend(validate_type_action_coherence(items))
+
+    # Hard-fail: shared_assets references must resolve through the canonical registry.
+    errors.extend(validate_shared_asset_refs(items, asset_map))
 
     # Phase-gate enforcement: requires_phase items need approval_ref.
     pg_errors, pg_warnings = validate_phase_gates(items)
@@ -420,16 +775,25 @@ def main() -> int:
         action="store_true",
         help="Check REPO_MAP.md freshness when checkpoint items are active",
     )
+    parser.add_argument(
+        "--shared-asset-registry",
+        default=str(default_shared_asset_registry_path()),
+        help="Path to the shared asset registry YAML",
+    )
     args = parser.parse_args()
 
     plan_path = Path(args.plan)
     schema_path = Path(args.schema)
+    registry_path = Path(args.shared_asset_registry)
 
     if not plan_path.exists():
         print(f"ERROR: Plan file not found: {plan_path}", file=sys.stderr)
         return 2
     if not schema_path.exists():
         print(f"ERROR: Schema file not found: {schema_path}", file=sys.stderr)
+        return 2
+    if not registry_path.exists():
+        print(f"ERROR: Shared asset registry not found: {registry_path}", file=sys.stderr)
         return 2
 
     try:
@@ -442,6 +806,12 @@ def main() -> int:
         schema = load_schema(schema_path)
     except Exception as exc:
         print(f"ERROR: Failed to load schema JSON: {exc}", file=sys.stderr)
+        return 2
+
+    try:
+        registry = load_shared_asset_registry(registry_path)
+    except Exception as exc:
+        print(f"ERROR: Failed to load shared asset registry YAML: {exc}", file=sys.stderr)
         return 2
 
     try:
@@ -470,7 +840,9 @@ def main() -> int:
                 print(f"  - {err}", file=sys.stderr)
             return 1
 
-    errors, warnings = validate_custom_rules(plan)
+    asset_map, registry_errors = validate_shared_asset_registry(registry, registry_path)
+    errors, warnings = validate_custom_rules(plan, asset_map)
+    errors.extend(registry_errors)
 
     if args.check_freshness:
         errors.extend(check_repo_map_freshness(plan, plan_path))

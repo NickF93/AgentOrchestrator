@@ -6,16 +6,21 @@ Reusable skill packages for cross-repo and cross-agent workflows.
 
 - Primary file: `SKILL.md`.
 - Required YAML frontmatter fields:
-	- `id`
-	- `description`
-	- `owner`
-	- `version`
-	- `compatibility`
-- `compatibility` lists supported adapters from:
-	- `codex`
-	- `claude`
-	- `copilot`
-	- `kilo`
+  - `id`
+  - `description`
+  - `owner`
+  - `version`
+  - `compatibility`
+
+## Supported Runtimes in v1
+
+First-wave shared-asset support is defined for:
+
+- `claude`
+- `codex`
+
+Additional runtimes may be added later, but they are not part of the active
+Layer-0 shared-asset contract in v1.
 
 ## Required Body Sections
 
@@ -28,5 +33,7 @@ Reusable skill packages for cross-repo and cross-agent workflows.
 ## Compatibility Boundary
 
 - Skill semantics must stay tool-neutral in the canonical package.
-- Tool-specific execution details belong to adapter notes/files.
+- Runtime-specific execution details belong to profiles or adapter notes.
+- Skills may reference shared prompt and protocol IDs, but they must not embed
+  runtime-specific tool behavior directly.
 - Adapters may extend execution strategy but must not alter normative intent.

@@ -120,6 +120,8 @@ fi
 
 if [[ "$DRY_RUN" -eq 0 ]]; then
   echo "INFO: Enable repo-local hooks with: git -C \"$TARGET\" config core.hooksPath .githooks"
+  echo "INFO: Shared assets resolve from CONTROL_PLANE_ROOT in workspace mode"
+  echo "INFO: Optional vendoring is explicit via materialize-shared-asset.sh; bootstrap does not auto-vendor"
 fi
 
 echo "Done."

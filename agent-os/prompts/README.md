@@ -1,17 +1,17 @@
 # prompts/
 
-Shared prompt assets for orchestrator/reviewer flows.
+Shared prompt assets for orchestrator, reviewer, and verification flows.
 
 ## Canonical Format
 
 - File format: Markdown (`.md`) with YAML frontmatter.
 - Required frontmatter fields:
-	- `id`
-	- `role`
-	- `purpose`
-	- `owner`
-	- `version`
-	- `status`
+  - `id`
+  - `role`
+  - `purpose`
+  - `owner`
+  - `version`
+  - `status`
 - Allowed `status` values: `draft`, `active`, `deprecated`, `superseded`.
 
 ## Lifecycle
@@ -28,7 +28,10 @@ Shared prompt assets for orchestrator/reviewer flows.
 - Increment `minor` for additive guidance.
 - Increment `patch` for clarifications without behavior changes.
 
-## Boundaries
+## Runtime Boundary
 
-- Prompt assets may not redefine canonical taxonomy, lifecycle, or authority rules.
-- Prompt assets must reference canonical governance docs for normative rules.
+- Prompt assets stay tool-neutral.
+- Runtime-specific behavior belongs in Layer-0 profiles or adapter notes.
+- First-wave shared-asset consumption in v1 is defined for `claude` and `codex`.
+- Prompt assets may reference canonical protocols and skills, but they must not
+  redefine taxonomy, lifecycle, or authority rules.

@@ -97,6 +97,18 @@ Every executable item (Q, D, M, F, T, C) must declare:
 - checks — an array of human-readable check descriptions (e.g.
   `validate-plan.py exits 0`, `render idempotent`). Verification is manual or
   scripted outside the schema.
+- shared_assets — optional object for executable items that consume Layer-0
+  shared assets. Supported fields:
+  - `skill`
+  - `prompt`
+  - `profile`
+  - `result_protocol`
+  - `context_policy` (`focused`, `diff_only`, `repo_full`)
+  - `resolution_mode` (`workspace`, `vendored`)
+  Referenced asset IDs MUST exist in `agent-os/registry/shared-assets.yaml`.
+  Default `resolution_mode` is `workspace`. Default `context_policy` for
+  checker/reviewer/test tasks is `focused`. Runtime-specific knobs MUST NOT be
+  added directly to PLAN items; they belong in profiles.
 - decision (Q items only — schema enforces this restriction; non-Q items MUST NOT
   declare a decision field)
 - triggers — **DEFERRED**: adapter-level invocation hints; semantics TBD;

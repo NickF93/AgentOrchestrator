@@ -40,6 +40,15 @@ Priority order:
   immediately upon completion. Do NOT proceed to the next commit_group
   without committing the current one. This is a hard gate.
 
+## Shared Asset Consumption
+
+- Default shared-asset resolution mode is `workspace`.
+- Shared prompts, skills, profiles, protocols, and the asset registry are
+  resolved from `CONTROL_PLANE_ROOT` provided by the workspace runtime files.
+- Layer-2 copies of shared assets are never authoritative.
+- Optional vendored mode is allowed only through explicit materialization into
+  `.agent-os/vendor/`; vendored assets are read-only snapshots with provenance.
+
 ## Commit Message Contract
 All commits MUST use:
 

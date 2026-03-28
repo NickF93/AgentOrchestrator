@@ -1,0 +1,47 @@
+version: "1.0"
+assets:
+  - id: plan-checkpoint-close
+    kind: skill
+    version: "0.3.0"
+    path: agent-os/skills/plan-checkpoint-close/SKILL.md
+    compatibility: [claude, codex]
+    materializable: true
+    depends_on_assets:
+      - checkpoint-closure-review
+      - check-result-v1
+
+  - id: checkpoint-closure-review
+    kind: prompt
+    version: "1.0.0"
+    path: agent-os/prompts/checkpoint-closure-review.md
+    compatibility: [claude, codex]
+    materializable: true
+    depends_on_assets:
+      - check-result-v1
+
+  - id: claude/check-medium
+    kind: profile
+    version: "1.0.0"
+    path: agent-os/profiles/claude/check-medium.yaml
+    compatibility: [claude]
+    materializable: true
+    depends_on_assets:
+      - checkpoint-closure-review
+      - check-result-v1
+
+  - id: codex/check-medium
+    kind: profile
+    version: "1.0.0"
+    path: agent-os/profiles/codex/check-medium.yaml
+    compatibility: [codex]
+    materializable: true
+    depends_on_assets:
+      - checkpoint-closure-review
+      - check-result-v1
+
+  - id: check-result-v1
+    kind: protocol
+    version: "1.0.0"
+    path: agent-os/protocols/check-result-v1.yaml
+    compatibility: [claude, codex]
+    materializable: true

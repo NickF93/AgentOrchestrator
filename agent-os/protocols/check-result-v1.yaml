@@ -1,0 +1,30 @@
+id: check-result-v1
+owner: NickF93
+version: "1.0.0"
+status: active
+purpose: Compact shared result protocol for verification, check, and review tasks.
+required_fields:
+  verdict:
+    type: string
+    description: Overall outcome such as pass, fail, or blocked.
+  findings:
+    type: array
+    description: Ordered list of concrete issues, risks, or explicit none.
+  evidence:
+    type: array
+    description: Supporting file paths, observations, or validation notes.
+  commands_run:
+    type: array
+    description: Commands executed during verification, with enough detail to reproduce.
+  ready_to_close:
+    type: boolean
+    description: Whether the reviewed item or commit_group is ready for closure.
+optional_fields:
+  proposed_commit_message:
+    type: string
+    description: Suggested commit message when closure is ready or nearly ready.
+  follow_up:
+    type: array
+    description: Deferred actions or missing checks that should happen next.
+notes:
+  - Protocol stays tool-neutral and can be emitted by any supported runtime profile.

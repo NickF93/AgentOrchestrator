@@ -12,8 +12,11 @@ in workspaces and reused by multiple repositories.
 - `agent-os/templates/`: canonical templates for repo-local governance files.
 - `agent-os/scripts/`: deterministic tooling for validation, rendering,
   bootstrap, and sync.
+- `agent-os/registry/`: canonical registry for Layer-0 shared assets.
 - `agent-os/prompts/`: prompt asset contracts and lifecycle guidance.
 - `agent-os/skills/`: skill packaging contracts and compatibility guidance.
+- `agent-os/profiles/`: runtime-specific adapter profiles bound to shared assets.
+- `agent-os/protocols/`: shared result/output protocol definitions.
 - `docs/design/`: non-authoritative brainstorming and source material.
 
 ## Invariants

@@ -33,6 +33,13 @@ items:
     effort: low
     commit_group: cg1
     scope: "."
+    # shared_assets:
+    #   skill: plan-checkpoint-close
+    #   prompt: checkpoint-closure-review
+    #   profile: codex/check-medium
+    #   result_protocol: check-result-v1
+    #   context_policy: focused
+    #   resolution_mode: workspace
     artifacts_out:
       - AGENTS.md
       - ARCHITECTURE.md

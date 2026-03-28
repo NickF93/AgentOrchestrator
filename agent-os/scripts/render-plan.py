@@ -34,6 +34,29 @@ def markdown_inline_list(values: list[str]) -> str:
     return ", ".join(f"`{value}`" for value in values)
 
 
+def format_shared_assets(item: dict) -> str:
+    shared_assets = item.get("shared_assets")
+    if not isinstance(shared_assets, dict) or not shared_assets:
+        return ""
+
+    item_type = item.get("type", "")
+    context_policy = shared_assets.get("context_policy")
+    if not context_policy and item_type in {"T", "C"}:
+        context_policy = "focused"
+    resolution_mode = shared_assets.get("resolution_mode") or "workspace"
+
+    ordered_fields = [
+        ("skill", shared_assets.get("skill")),
+        ("prompt", shared_assets.get("prompt")),
+        ("profile", shared_assets.get("profile")),
+        ("result_protocol", shared_assets.get("result_protocol")),
+        ("context_policy", context_policy),
+        ("resolution_mode", resolution_mode),
+    ]
+    present = [f"{name}={value}" for name, value in ordered_fields if value]
+    return ", ".join(present)
+
+
 def render_markdown(plan: dict) -> str:
     milestones = source_order(plan.get("milestones"))
     sprints = source_order(plan.get("sprints"))
@@ -137,6 +160,9 @@ def render_markdown(plan: dict) -> str:
         commit_group = obj.get("commit_group", "")
         if commit_group:
             lines.append(f"- **Commit group**: `{commit_group}`")
+        shared_assets = format_shared_assets(obj)
+        if shared_assets:
+            lines.append(f"- **Shared assets**: {shared_assets}")
         artifacts = obj.get("artifacts_out", []) or []
         if artifacts:
             lines.append(f"- **Artifacts**: {', '.join(artifacts)}")
