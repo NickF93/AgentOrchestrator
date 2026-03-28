@@ -42,6 +42,29 @@ This workspace is governed by a Level-0 control plane. Key rules:
 5. Code and tests — implementation evidence
 6. Generated views — non-authoritative
 
+## Adapter Overrides
+
+### Mandatory commit rule
+
+This repository requires every `commit_group` to be committed to git
+immediately upon completion. Do not ask for permission to commit when
+closing a commit_group — the governance rules already mandate it. Stage
+the relevant files, build the commit message per `AGENTS.md`, and commit.
+Do not push (Phase A only) unless explicitly told to.
+
+### Tracking-first execution
+
+Before modifying any non-generated file, the owning `PLAN.yaml` item must
+exist with a declared `commit_group`. If no item exists, create one first.
+Do not start implementation without tracking.
+
+### Autonomous plan execution
+
+When working through `PLAN.yaml`, advance items through the lifecycle
+automatically: implement, update statuses, run checks, validate, render,
+and commit each `commit_group` as it completes. Do not stop to ask between
+commit_groups unless an escalation condition from `AGENTS.md` is triggered.
+
 ## Commit Message Contract
 
 All commits MUST use: `<type>(<scope>): <description>`

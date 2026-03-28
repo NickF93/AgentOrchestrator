@@ -62,9 +62,20 @@ def test_sync_workspace_stamps_control_plane_root(
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
+
     workspace_agents = (workspace_root / "AGENTS.md").read_text(encoding="utf-8")
     assert "CONTROL_PLANE_ROOT:" in workspace_agents
     assert str(repo_root) in workspace_agents
+
+    workspace_claude = (workspace_root / "CLAUDE.md").read_text(encoding="utf-8")
+    assert "CONTROL_PLANE_ROOT:" in workspace_claude
+    assert str(repo_root) in workspace_claude
+    assert "## Adapter Overrides" in workspace_claude
+
+    workspace_codex = (workspace_root / ".codex").read_text(encoding="utf-8")
+    assert "CONTROL_PLANE_ROOT:" in workspace_codex
+    assert str(repo_root) in workspace_codex
+    assert "## Adapter Overrides" in workspace_codex
 
 
 def test_materialize_shared_asset_writes_snapshot_and_provenance(

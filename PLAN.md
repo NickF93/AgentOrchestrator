@@ -27,6 +27,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X10 | X | Script Test Suite and Local Quality Gates | done |
 | X11 | X | Runtime Portability Expansion | done |
 | X12 | X | Promote Codex to First-Class Runtime | done |
+| X13 | X | Workspace Template Parity and Test Coverage Repair | done |
 
 ## Plan
 
@@ -404,6 +405,24 @@ Status: done
 | `T12.1.2` | `T` | Validate Codex first-class promotion | done |  |
 | `C12.1.3` | `C` | Codex first-class promotion checkpoint | done |  |
 
+### X13
+
+- ID: `X13`
+- Title: Workspace Template Parity and Test Coverage Repair
+- Status: done
+- Note: Fix workspace-CLAUDE.md.template missing adapter overrides section found during governance audit. Expand sync-workspace.sh test to verify all three rendered files.
+
+#### S13.1 Items
+
+Sprint: Sprint 1 — Template parity fix and test expansion
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `F13.1.1` | `F` | Add adapter overrides to workspace-CLAUDE.md.template | done | Governance audit found workspace-CLAUDE.md.template is missing the adapter overrides section that workspace-CODEX.md.template has. Layer 2 Claude agents would not receive the mandatory commit override. |
+| `F13.1.2` | `F` | Expand sync-workspace.sh test to verify all rendered files | done | Test only checks AGENTS.md existence and content. Must also verify CLAUDE.md and .codex are generated with correct CONTROL_PLANE_ROOT stamping. |
+| `C13.1.3` | `C` | Workspace template parity and test coverage checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -441,6 +460,7 @@ Status: done
 | cg30 | Kilo experimental — adapter, profile, registry, and gitignore | `M11.1.3` |
 | cg31 | Verification and checkpoint — validate portability expansion and close X11 | `T11.1.4`, `C11.1.5` |
 | cg32 | Codex first-class — workspace template, sync extension, tier promotion | `M12.1.1`, `T12.1.2`, `C12.1.3` |
+| cg33 | Template parity fix — CLAUDE workspace adapter overrides and test expansion | `F13.1.1`, `F13.1.2`, `C13.1.3` |
 
 ## Item Details
 
@@ -1672,6 +1692,39 @@ Status: done
 - **Checks**:
   - Codex has adapter, profile, workspace template, and sync support
   - Runtime status table is consistent with actual artifact presence
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### F13.1.1: Add adapter overrides to workspace-CLAUDE.md.template
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S13.1`
+- **Actions**: implement
+- **Depends on**: `C12.1.3`
+- **Commit group**: `cg33`
+- **Artifacts**: agent-os/templates/workspace-CLAUDE.md.template
+- **Notes**: Governance audit found workspace-CLAUDE.md.template is missing the adapter overrides section that workspace-CODEX.md.template has. Layer 2 Claude agents would not receive the mandatory commit override.
+
+### F13.1.2: Expand sync-workspace.sh test to verify all rendered files
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S13.1`
+- **Actions**: implement
+- **Depends on**: `F13.1.1`
+- **Commit group**: `cg33`
+- **Artifacts**: tests/test_shell_scripts.py
+- **Notes**: Test only checks AGENTS.md existence and content. Must also verify CLAUDE.md and .codex are generated with correct CONTROL_PLANE_ROOT stamping.
+
+### C13.1.3: Workspace template parity and test coverage checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S13.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `F13.1.2`
+- **Commit group**: `cg33`
+- **Checks**:
+  - workspace-CLAUDE.md.template has adapter overrides matching workspace-CODEX.md.template
+  - sync-workspace.sh test verifies AGENTS.md, CLAUDE.md, and .codex
+  - run-gates.sh and pytest pass
   - PLAN.md and PLAN.dot are regenerated and committed
 
 ### D11.1.1: Design runtime lifecycle model and plan portability expansion
