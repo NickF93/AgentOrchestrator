@@ -52,6 +52,40 @@ Priority order for conflict resolution:
   to the canonical PLAN. Enforcement is governance-based (code review and escalation),
   not automated. No validator check exists for single-writer compliance.
 
+## Planning Model Optimization
+
+The planning model is not only a tracking artifact. It is the canonical
+execution graph for coding-agent coordination.
+
+It is explicitly optimized for:
+- decomposition into independently executable items,
+- safe aggregation of compatible items into reviewable commit groups,
+- controlled parallel execution under explicit dependency, scope, boundary, and policy constraints.
+
+Planning MUST prefer the smallest unit of work that remains:
+- semantically coherent,
+- independently verifiable,
+- schedulable without hidden coupling.
+
+Execution ordering MUST be driven by actual dependency relationships and
+boundary constraints, not by narrative or document order alone.
+
+Aggregation MUST maximize reviewability and traceability:
+- compatible items MAY be grouped into the same `commit_group`,
+- incompatible items MUST remain separated,
+- each `commit_group` MUST preserve item-level traceability from item -> evidence -> commit.
+
+Parallelization is a first-class optimization goal, but it is allowed only when:
+- all dependencies are satisfied,
+- scopes do not collide,
+- no architectural or policy boundary is violated,
+- resulting commit groups remain semantically coherent and reviewable.
+
+When these conditions are not met, execution MUST remain serialized.
+
+In summary, the planning model is optimized for safe agent aggregation and
+controlled parallelization, not merely for human-readable task listing.
+
 Execution predicate:
 - Item is executable when all dependencies are in verified or done state
 

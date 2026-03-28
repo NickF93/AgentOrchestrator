@@ -25,6 +25,28 @@ in workspaces and reused by multiple repositories.
   authorities before they carry governance weight.
 - `PLAN.yaml` is the only authoritative execution-tracking file for this repo.
 
+## Planning Architecture Principle
+
+The repository planning model is designed as an execution-oriented control
+artifact, not as a passive project-management document.
+
+`PLAN.yaml` is the canonical machine-readable execution graph. Its primary
+architectural purpose is to support:
+- deterministic decomposition of work,
+- safe aggregation into commit and review units,
+- controlled parallel execution,
+- enforceable policy gating before irreversible actions.
+
+Human-readable ordering is secondary to execution semantics. The authoritative
+execution structure is defined by dependencies, scope boundaries, commit-group
+rules, and validation policy.
+
+Any future extension of the planning model MUST preserve these optimization goals:
+1. maximize independent executability of items,
+2. maximize safe aggregation of related work,
+3. maximize parallelism only within validated safety constraints,
+4. preserve auditability, reproducibility, and reviewability.
+
 ## Boundary Rules
 - Changes that alter item taxonomy, lifecycle states, or dependency semantics
   require corresponding updates in both schema and validation logic.

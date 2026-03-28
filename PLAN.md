@@ -9,7 +9,7 @@ AUTO-GENERATED from PLAN.yaml. Do not edit manually.
 
 ## Mission
 
-Build the minimal viable Level-0 central control plane (agent-os/) inside this repository. Level-0 provides: shared workflow documentation, plan schema, templates for repo-local files, and render/validate scripts. This repository IS the control-plane OS (Level-0). Level-1 (workspace runtime) and Level-2 (repo-local bootstrap) come after.
+Build the minimal viable Level-0 central control plane (agent-os/) inside this repository. Level-0 provides: shared workflow documentation, plan schema, templates for repo-local files, and render/validate scripts. This repository IS the control-plane OS (Level-0). Level-1 (workspace runtime) and Level-2 (repo-local bootstrap) come after. The plan is not only a progress tracker. It is the canonical execution graph for agent orchestration, optimized for decomposition into independently executable items, safe aggregation into reviewable commit groups, and controlled parallel execution under explicit dependency, scope, and policy constraints.
 
 ## Milestones
 
@@ -20,6 +20,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X3 | X | Control-Plane Hardening | done |
 | X4 | X | Governance Baseline Hardening | done |
 | X5 | X | Tracking Discipline and Canonical Consistency Hardening | done |
+| X6 | X | Planning Model Execution Optimization Clarification | done |
 
 ## Plan
 
@@ -264,6 +265,24 @@ Status: done
 | `T5.2.4` | `T` | Validate nn-2 flow for plan tooling, bootstrap, sync, and hook enforcement | done |  |
 | `C5.2.5` | `C` | Consistency repair checkpoint — cross-layer rules and operator flow aligned | done |  |
 
+### X6
+
+- ID: `X6`
+- Title: Planning Model Execution Optimization Clarification
+- Status: done
+- Note: Clarify in canonical authorities that the planning model is an execution-oriented control artifact optimized for independently executable decomposition, safe aggregation into reviewable commit groups, and controlled parallel execution under explicit dependency, boundary, and policy constraints.
+
+#### S6.1 Items
+
+Sprint: Sprint 1 — Planning model optimization principle
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D6.1.1` | `D` | Codify the planning model as an execution-optimization artifact | done | Adds the planning-model optimization principle to the canonical workflow authority, reflects it as an architectural principle, and records the repository-level execution intent in PLAN.yaml without creating a second conflicting workflow authority. |
+| `T6.1.2` | `T` | Validate planning-model principle wording and regenerated plan views | done |  |
+| `C6.1.3` | `C` | Planning-model optimization checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -290,6 +309,7 @@ Status: done
 | cg19 | Commit tooling hardening — hook enforcement and runtime wording alignment | `M4.7.1`, `D4.7.2`, `D4.7.3`, `T4.7.4`, `C4.7.5` |
 | cg20 | Governance hardening — tracking-first execution and exact commit_group traceability | `D5.1.1`, `D5.1.2`, `C5.1.3` |
 | cg21 | Cross-layer consistency repairs — templates, hook/bootstrap enforcement, local provenance, and tooling bootstrap | `D5.2.1`, `M5.2.2`, `M5.2.3`, `T5.2.4`, `C5.2.5` |
+| cg22 | Planning model clarification — execution optimization, aggregation, and controlled parallelization | `D6.1.1`, `T6.1.2`, `C6.1.3` |
 
 ## Item Details
 
@@ -1254,4 +1274,40 @@ Status: done
   - Templates no longer contradict canonical ADR or REPO_MAP lifecycle rules
   - Workspace sync is non-mutating and provenance-stamped
   - Fresh checkout README path is executable with requirements.txt
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### D6.1.1: Codify the planning model as an execution-optimization artifact
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S6.1`
+- **Actions**: document, review
+- **Depends on**: `C5.2.5`
+- **Commit group**: `cg22`
+- **Artifacts**: ARCHITECTURE.md, PLAN.yaml, agent-os/workflow/shared-workflow.md
+- **Notes**: Adds the planning-model optimization principle to the canonical workflow authority, reflects it as an architectural principle, and records the repository-level execution intent in PLAN.yaml without creating a second conflicting workflow authority.
+
+### T6.1.2: Validate planning-model principle wording and regenerated plan views
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S6.1`
+- **Actions**: test, verify
+- **Depends on**: `D6.1.1`
+- **Commit group**: `cg22`
+- **Checks**:
+  - conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml exits 0
+  - conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - shared-workflow.md carries the canonical execution-optimization wording
+  - ARCHITECTURE.md states the execution-oriented planning principle without conflicting with workflow authority
+  - PLAN.yaml mission/meta text records the repository-level intent without becoming a second workflow specification
+
+### C6.1.3: Planning-model optimization checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S6.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T6.1.2`
+- **Commit group**: `cg22`
+- **Checks**:
+  - Planning model is explicitly framed as execution-oriented in canonical workflow authority
+  - Architectural principle is recorded without authority duplication
   - PLAN.md and PLAN.dot are regenerated and committed
