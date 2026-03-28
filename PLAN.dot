@@ -7,6 +7,7 @@ digraph PLAN {
   "X4" [label="X4 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X5" [label="X5 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X6" [label="X6 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X7" [label="X7 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -23,6 +24,7 @@ digraph PLAN {
   "S5.1" [label="S5.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S5.2" [label="S5.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S6.1" [label="S6.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S7.1" [label="S7.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -205,6 +207,14 @@ digraph PLAN {
   "T6.1.2" [label="T6.1.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C6.1.3" [label="C6.1.3 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg23" {
+    style="rounded,dashed";
+    label="cg23: Skill packaging — checkpoint closure skill and workspace topology documentation";
+  "D7.1.1" [label="D7.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D7.1.2" [label="D7.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "T7.1.3" [label="T7.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C7.1.4" [label="C7.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -221,6 +231,7 @@ digraph PLAN {
   "X5" -> "S5.1" [style=dashed];
   "X5" -> "S5.2" [style=dashed];
   "X6" -> "S6.1" [style=dashed];
+  "X7" -> "S7.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -311,6 +322,10 @@ digraph PLAN {
   "S6.1" -> "D6.1.1" [style=dashed];
   "S6.1" -> "T6.1.2" [style=dashed];
   "S6.1" -> "C6.1.3" [style=dashed];
+  "S7.1" -> "D7.1.1" [style=dashed];
+  "S7.1" -> "D7.1.2" [style=dashed];
+  "S7.1" -> "T7.1.3" [style=dashed];
+  "S7.1" -> "C7.1.4" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -430,4 +445,8 @@ digraph PLAN {
   "C5.2.5" -> "D6.1.1";
   "D6.1.1" -> "T6.1.2";
   "T6.1.2" -> "C6.1.3";
+  "C6.1.3" -> "D7.1.1";
+  "D7.1.1" -> "T7.1.3";
+  "D7.1.2" -> "T7.1.3";
+  "T7.1.3" -> "C7.1.4";
 }

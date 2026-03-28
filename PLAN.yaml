@@ -89,6 +89,15 @@ milestones:
       groups, and controlled parallel execution under explicit dependency,
       boundary, and policy constraints.
 
+  - id: X7
+    type: X
+    title: "Skill Packaging and Cross-Layer Execution"
+    status: done
+    note: >
+      Deliver the first operational skill under agent-os/skills/ and
+      document the workspace topology and artifact placement model that
+      enables shared skills and tooling to operate on Layer-2 repos.
+
 sprints:
   - id: S1.1
     type: S
@@ -184,6 +193,12 @@ sprints:
     type: S
     parent: X6
     title: "Sprint 1 — Planning model optimization principle"
+    status: done
+
+  - id: S7.1
+    type: S
+    parent: X7
+    title: "Sprint 1 — Checkpoint closure skill and workspace topology documentation"
     status: done
 
 items:
@@ -1890,6 +1905,84 @@ items:
       - "Architectural principle is recorded without authority duplication"
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
+  # ─── X7 / S7.1: Skill packaging and cross-layer execution ──────────────────
+
+  - id: D7.1.1
+    parent: S7.1
+    type: D
+    title: "Create plan-checkpoint-close skill"
+    actions: [design, implement, document]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg23
+    depends_on: [C6.1.3]
+    scope: "agent-os/skills"
+    artifacts_out:
+      - agent-os/skills/plan-checkpoint-close/SKILL.md
+    notes: >
+      First operational skill under agent-os/skills/. Implements a
+      procedural, tool-neutral checkpoint closure workflow that operates
+      at both Layer 0 and Layer 2 using a two-root model
+      (control_plane_root for shared tooling, repo_root for target data).
+      Satisfies the skill packaging contract defined in
+      agent-os/skills/README.md and agent-os/workflow/portability-model.md.
+
+  - id: D7.1.2
+    parent: S7.1
+    type: D
+    title: "Document workspace topology and artifact placement in shared workflow"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg23
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/shared-workflow.md
+    notes: >
+      Adds Workspace Topology diagram and Artifact Placement Across Layers
+      table to the Three-Layer Model section of shared-workflow.md.
+      Documents the two-root resolution model (control_plane_root vs
+      repo_root) and how sync-workspace.sh stamps CONTROL_PLANE_ROOT
+      for discovery. Content is additive — no duplication with existing
+      canonical authorities.
+
+  - id: T7.1.3
+    parent: S7.1
+    type: T
+    title: "Validate skill contract compliance and plan consistency"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg23
+    depends_on: [D7.1.1, D7.1.2]
+    scope: "."
+    checks:
+      - "validate-plan.py PLAN.yaml exits 0"
+      - "render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically"
+      - "SKILL.md frontmatter has all required fields (id, description, owner, version, compatibility)"
+      - "SKILL.md body has all required sections (purpose, required inputs, expected outputs, constraints, failure handling)"
+      - "shared-workflow.md carries workspace topology without duplicating other authorities"
+
+  - id: C7.1.4
+    parent: S7.1
+    type: C
+    title: "Skill packaging and cross-layer execution checkpoint"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg23
+    depends_on: [T7.1.3]
+    scope: "."
+    checks:
+      - "First operational skill exists and satisfies packaging contract"
+      - "Workspace topology is documented in canonical workflow authority"
+      - "No normative duplication introduced across authorities"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -2064,3 +2157,12 @@ commit_groups:
       artifact optimized for independently executable decomposition, safe
       aggregation into reviewable commit groups, and controlled parallel
       execution under explicit dependency, boundary, and policy constraints.
+
+  - id: cg23
+    title: "Skill packaging — checkpoint closure skill and workspace topology documentation"
+    items: [D7.1.1, D7.1.2, T7.1.3, C7.1.4]
+    notes: >
+      First operational skill (plan-checkpoint-close) under agent-os/skills/.
+      Documents the workspace topology and artifact placement model in the
+      canonical workflow authority. Skill uses a two-root model to operate
+      on Layer-2 repos using shared Layer-0 tooling.

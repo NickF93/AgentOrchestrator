@@ -21,6 +21,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X4 | X | Governance Baseline Hardening | done |
 | X5 | X | Tracking Discipline and Canonical Consistency Hardening | done |
 | X6 | X | Planning Model Execution Optimization Clarification | done |
+| X7 | X | Skill Packaging and Cross-Layer Execution | done |
 
 ## Plan
 
@@ -283,6 +284,25 @@ Status: done
 | `T6.1.2` | `T` | Validate planning-model principle wording and regenerated plan views | done |  |
 | `C6.1.3` | `C` | Planning-model optimization checkpoint | done |  |
 
+### X7
+
+- ID: `X7`
+- Title: Skill Packaging and Cross-Layer Execution
+- Status: done
+- Note: Deliver the first operational skill under agent-os/skills/ and document the workspace topology and artifact placement model that enables shared skills and tooling to operate on Layer-2 repos.
+
+#### S7.1 Items
+
+Sprint: Sprint 1 — Checkpoint closure skill and workspace topology documentation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D7.1.1` | `D` | Create plan-checkpoint-close skill | done | First operational skill under agent-os/skills/. Implements a procedural, tool-neutral checkpoint closure workflow that operates at both Layer 0 and Layer 2 using a two-root model (control_plane_root for shared tooling, repo_root for target data). Satisfies the skill packaging contract defined in agent-os/skills/README.md and agent-os/workflow/portability-model.md. |
+| `D7.1.2` | `D` | Document workspace topology and artifact placement in shared workflow | done | Adds Workspace Topology diagram and Artifact Placement Across Layers table to the Three-Layer Model section of shared-workflow.md. Documents the two-root resolution model (control_plane_root vs repo_root) and how sync-workspace.sh stamps CONTROL_PLANE_ROOT for discovery. Content is additive — no duplication with existing canonical authorities. |
+| `T7.1.3` | `T` | Validate skill contract compliance and plan consistency | done |  |
+| `C7.1.4` | `C` | Skill packaging and cross-layer execution checkpoint | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -310,6 +330,7 @@ Status: done
 | cg20 | Governance hardening — tracking-first execution and exact commit_group traceability | `D5.1.1`, `D5.1.2`, `C5.1.3` |
 | cg21 | Cross-layer consistency repairs — templates, hook/bootstrap enforcement, local provenance, and tooling bootstrap | `D5.2.1`, `M5.2.2`, `M5.2.3`, `T5.2.4`, `C5.2.5` |
 | cg22 | Planning model clarification — execution optimization, aggregation, and controlled parallelization | `D6.1.1`, `T6.1.2`, `C6.1.3` |
+| cg23 | Skill packaging — checkpoint closure skill and workspace topology documentation | `D7.1.1`, `D7.1.2`, `T7.1.3`, `C7.1.4` |
 
 ## Item Details
 
@@ -1310,4 +1331,50 @@ Status: done
 - **Checks**:
   - Planning model is explicitly framed as execution-oriented in canonical workflow authority
   - Architectural principle is recorded without authority duplication
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### D7.1.1: Create plan-checkpoint-close skill
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S7.1`
+- **Actions**: design, implement, document
+- **Depends on**: `C6.1.3`
+- **Commit group**: `cg23`
+- **Artifacts**: agent-os/skills/plan-checkpoint-close/SKILL.md
+- **Notes**: First operational skill under agent-os/skills/. Implements a procedural, tool-neutral checkpoint closure workflow that operates at both Layer 0 and Layer 2 using a two-root model (control_plane_root for shared tooling, repo_root for target data). Satisfies the skill packaging contract defined in agent-os/skills/README.md and agent-os/workflow/portability-model.md.
+
+### D7.1.2: Document workspace topology and artifact placement in shared workflow
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S7.1`
+- **Actions**: document
+- **Commit group**: `cg23`
+- **Artifacts**: agent-os/workflow/shared-workflow.md
+- **Notes**: Adds Workspace Topology diagram and Artifact Placement Across Layers table to the Three-Layer Model section of shared-workflow.md. Documents the two-root resolution model (control_plane_root vs repo_root) and how sync-workspace.sh stamps CONTROL_PLANE_ROOT for discovery. Content is additive — no duplication with existing canonical authorities.
+
+### T7.1.3: Validate skill contract compliance and plan consistency
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S7.1`
+- **Actions**: test, verify
+- **Depends on**: `D7.1.1`, `D7.1.2`
+- **Commit group**: `cg23`
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - SKILL.md frontmatter has all required fields (id, description, owner, version, compatibility)
+  - SKILL.md body has all required sections (purpose, required inputs, expected outputs, constraints, failure handling)
+  - shared-workflow.md carries workspace topology without duplicating other authorities
+
+### C7.1.4: Skill packaging and cross-layer execution checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S7.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T7.1.3`
+- **Commit group**: `cg23`
+- **Checks**:
+  - First operational skill exists and satisfies packaging contract
+  - Workspace topology is documented in canonical workflow authority
+  - No normative duplication introduced across authorities
   - PLAN.md and PLAN.dot are regenerated and committed
