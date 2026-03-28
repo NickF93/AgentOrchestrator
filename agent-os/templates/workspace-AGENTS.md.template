@@ -43,6 +43,17 @@ All commits MUST use: `<type>(<scope>): <description>`
 Optional body and footer sections are strongly suggested, especially for
 medium or large commits.
 
+## Mandatory Commit Group Hard Gate
+
+Every `commit_group` MUST be committed immediately on completion, and work
+MUST NOT continue on the next `commit_group` before the current one is
+staged and committed.
+
+Canonical authority for this hard gate lives in:
+
+- `{{CONTROL_PLANE_ROOT}}/agent-os/workflow/shared-workflow.md`
+- `{{CONTROL_PLANE_ROOT}}/agent-os/workflow/git-automation-policy.md`
+
 ## Escalation
 
 Escalate to the human owner when:

@@ -132,6 +132,12 @@ sprints:
     title: "Sprint 6 — Validator enforcement for commit_group presence"
     status: done
 
+  - id: S4.7
+    type: S
+    parent: X4
+    title: "Sprint 7 — Commit hook enforcement and runtime wording alignment"
+    status: done
+
 items:
 
   # ─── D1.1.1: repository bootstrap hygiene ───────────────────────────────────────
@@ -1527,6 +1533,92 @@ items:
       - "Canonical commit policy remains in git-automation-policy.md"
       - "PLAN.md and PLAN.dot are regenerated and committed"
 
+  # ─── S4.7 items: hook enforcement and workspace wording alignment ─────────────
+  - id: M4.7.1
+    parent: S4.7
+    type: M
+    title: "Add local commit-msg hook guard for commit title contract"
+    actions: [implement, verify]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg19
+    depends_on: [C4.6.3]
+    scope: ".githooks"
+    artifacts_out:
+      - .githooks/commit-msg
+    notes: >
+      Add lightweight commit-msg hook enforcing the title pattern
+      ^([a-z]+)\(([a-z0-9._/-]+)\): .+$ for local commits. The hook prints a
+      clear error and references the canonical governance policy location.
+
+  - id: D4.7.2
+    parent: S4.7
+    type: D
+    title: "Document hook enablement workflow in README.md"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg19
+    depends_on: [M4.7.1]
+    scope: "README.md"
+    artifacts_out:
+      - README.md
+    notes: >
+      Add explicit setup instructions so contributors and agents enable the
+      repository hook path consistently.
+
+  - id: D4.7.3
+    parent: S4.7
+    type: D
+    title: "Align workspace runtime wording with mandatory commit_group hard gate"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg19
+    depends_on: [C4.6.3]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/workspace-AGENTS.md.template
+    notes: >
+      Add explicit runtime wording that the mandatory commit_group hard gate is
+      defined in shared-workflow.md and git-automation-policy.md.
+
+  - id: T4.7.4
+    parent: S4.7
+    type: T
+    title: "Validate commit hook pattern and documentation alignment"
+    actions: [test, verify]
+    status: done
+    role: tester
+    effort: low
+    commit_group: cg19
+    depends_on: [M4.7.1, D4.7.2, D4.7.3]
+    scope: "."
+    checks:
+      - "commit-msg hook enforces ^([a-z]+)\\(([a-z0-9._/-]+)\\): .+$"
+      - "README.md documents core.hooksPath setup and validation command"
+      - "workspace-AGENTS template references mandatory commit_group hard gate"
+      - "validate-plan.py PLAN.yaml exits 0"
+
+  - id: C4.7.5
+    parent: S4.7
+    type: C
+    title: "Commit tooling checkpoint — local enforcement and runtime clarity complete"
+    actions: [review, checkpoint, verify]
+    status: done
+    role: reviewer
+    effort: low
+    commit_group: cg19
+    depends_on: [T4.7.4]
+    checks:
+      - "Commit title guard exists in repo tooling"
+      - "README setup enables consistent local enforcement"
+      - "Runtime template wording is unambiguous about hard gate authority"
+      - "PLAN.md and PLAN.dot are regenerated and committed"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -1665,3 +1757,11 @@ commit_groups:
       Adds explicit hard-fail check that all executable items declare
       commit_group, validates behavior on current PLAN.yaml, and checkpoints
       that commit governance enforcement is executable in validator logic.
+
+  - id: cg19
+    title: "Commit tooling hardening — hook enforcement and runtime wording alignment"
+    items: [M4.7.1, D4.7.2, D4.7.3, T4.7.4, C4.7.5]
+    notes: >
+      Adds a local commit-msg hook for contract enforcement, documents enablement
+      in README, aligns workspace template wording to the canonical hard gate,
+      and validates consistency.

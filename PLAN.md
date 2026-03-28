@@ -219,6 +219,19 @@ Status: done
 | `T4.6.2` | `T` | Validate strict commit_group presence and coherence checks | done |  |
 | `C4.6.3` | `C` | Commit governance enforcement checkpoint — validation executable | done |  |
 
+#### S4.7 Items
+
+Sprint: Sprint 7 — Commit hook enforcement and runtime wording alignment
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M4.7.1` | `M` | Add local commit-msg hook guard for commit title contract | done | Add lightweight commit-msg hook enforcing the title pattern ^([a-z]+)\(([a-z0-9._/-]+)\): .+$ for local commits. The hook prints a clear error and references the canonical governance policy location. |
+| `D4.7.2` | `D` | Document hook enablement workflow in README.md | done | Add explicit setup instructions so contributors and agents enable the repository hook path consistently. |
+| `D4.7.3` | `D` | Align workspace runtime wording with mandatory commit_group hard gate | done | Add explicit runtime wording that the mandatory commit_group hard gate is defined in shared-workflow.md and git-automation-policy.md. |
+| `T4.7.4` | `T` | Validate commit hook pattern and documentation alignment | done |  |
+| `C4.7.5` | `C` | Commit tooling checkpoint — local enforcement and runtime clarity complete | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -242,6 +255,7 @@ Status: done
 | cg16 | Lifecycle unification and deferred field markers | `D4.4.1`, `D4.4.2`, `D4.4.3`, `T4.4.4` |
 | cg17 | Commit format, phase-gate enforcement, and milestone closure | `D4.5.1`, `M4.5.2`, `D4.5.3`, `M4.5.4`, `M4.5.5`, `T4.5.6`, `C4.5.7` |
 | cg18 | Validator hardening — enforce executable item commit_group presence | `M4.6.1`, `T4.6.2`, `C4.6.3` |
+| cg19 | Commit tooling hardening — hook enforcement and runtime wording alignment | `M4.7.1`, `D4.7.2`, `D4.7.3`, `T4.7.4`, `C4.7.5` |
 
 ## Item Details
 
@@ -1056,4 +1070,60 @@ Status: done
   - Commit-group presence is enforced in validator for executable items
   - Commit-group/item bidirectional coherence remains strict
   - Canonical commit policy remains in git-automation-policy.md
+  - PLAN.md and PLAN.dot are regenerated and committed
+
+### M4.7.1: Add local commit-msg hook guard for commit title contract
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S4.7`
+- **Actions**: implement, verify
+- **Depends on**: `C4.6.3`
+- **Commit group**: `cg19`
+- **Artifacts**: .githooks/commit-msg
+- **Notes**: Add lightweight commit-msg hook enforcing the title pattern ^([a-z]+)\(([a-z0-9._/-]+)\): .+$ for local commits. The hook prints a clear error and references the canonical governance policy location.
+
+### D4.7.2: Document hook enablement workflow in README.md
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S4.7`
+- **Actions**: document
+- **Depends on**: `M4.7.1`
+- **Commit group**: `cg19`
+- **Artifacts**: README.md
+- **Notes**: Add explicit setup instructions so contributors and agents enable the repository hook path consistently.
+
+### D4.7.3: Align workspace runtime wording with mandatory commit_group hard gate
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S4.7`
+- **Actions**: document
+- **Depends on**: `C4.6.3`
+- **Commit group**: `cg19`
+- **Artifacts**: agent-os/templates/workspace-AGENTS.md.template
+- **Notes**: Add explicit runtime wording that the mandatory commit_group hard gate is defined in shared-workflow.md and git-automation-policy.md.
+
+### T4.7.4: Validate commit hook pattern and documentation alignment
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S4.7`
+- **Actions**: test, verify
+- **Depends on**: `M4.7.1`, `D4.7.2`, `D4.7.3`
+- **Commit group**: `cg19`
+- **Checks**:
+  - commit-msg hook enforces ^([a-z]+)\(([a-z0-9._/-]+)\): .+$
+  - README.md documents core.hooksPath setup and validation command
+  - workspace-AGENTS template references mandatory commit_group hard gate
+  - validate-plan.py PLAN.yaml exits 0
+
+### C4.7.5: Commit tooling checkpoint — local enforcement and runtime clarity complete
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S4.7`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T4.7.4`
+- **Commit group**: `cg19`
+- **Checks**:
+  - Commit title guard exists in repo tooling
+  - README setup enables consistent local enforcement
+  - Runtime template wording is unambiguous about hard gate authority
   - PLAN.md and PLAN.dot are regenerated and committed

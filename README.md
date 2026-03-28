@@ -56,6 +56,25 @@ bash agent-os/scripts/bootstrap-repo.sh --owner <name> --ref <branch|tag> <targe
 bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
 ```
 
+### Enable local commit message guard
+
+```bash
+git config core.hooksPath .githooks
+chmod +x .githooks/commit-msg
+```
+
+The local `commit-msg` hook enforces the commit title contract:
+
+`<type>(<scope>): <description>`
+
+Regex: `^([a-z]+)\(([a-z0-9._/-]+)\): .+$`
+
+You can test it quickly with:
+
+```bash
+printf "bad title\n\n" > /tmp/bad-msg.txt && .githooks/commit-msg /tmp/bad-msg.txt
+```
+
 ## Three-Layer Model
 
 - **Level 0** (this repository): central control plane — shared workflow,
