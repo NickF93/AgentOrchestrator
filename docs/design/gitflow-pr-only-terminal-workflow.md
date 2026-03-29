@@ -2,6 +2,15 @@
 
 > Operational document for a **PR-only**, **terminal-only** workflow, with **simple merge of the base branch into the working branch before the PR**, **no rebase**, and **no branch deletion**.
 
+> **Governance note.** The normative rules from this document have been
+> extracted into the canonical authority
+> `agent-os/workflow/git-flow-policy.md`. This design document remains as
+> non-authoritative reference material (installation guides, Mermaid
+> diagrams, command-by-command explanations, rationale, and footnotes).
+> Agents MUST follow the governance file, not this document, for rule
+> lookup. See `agent-os/workflow/shared-workflow.md` § Design Document
+> Governance.
+
 ---
 
 ## Index

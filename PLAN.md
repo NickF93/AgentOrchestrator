@@ -33,6 +33,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 | X17 | X | Git Flow Design Doc English Translation | done |
 | X18 | X | Git Flow Conflict Resolution and Operational Refinements | done |
+| X19 | X | Git Flow Governance Extraction | done |
 
 ## Plan
 
@@ -516,6 +517,24 @@ Status: done
 | --- | --- | --- | --- | --- |
 | `D18.1.1` | `D` | Add conflict resolution scenarios and operational refinements to the Git Flow design doc | done | Add new sections to the English design document covering: Scenario A (single-PR conflict resolution for feature/bugfix), Scenario B (two-PR conflict resolution for hotfix/release with release-branch exception), conflict classification rules (trivial vs non-trivial), always-draft-PR policy, explicit staging rule (no git add -A), no agent branch deletion rule, and branch protection requirements placeholder. |
 
+### X19
+
+- ID: `X19`
+- Title: Git Flow Governance Extraction
+- Status: done
+- Note: Extract normative rules from the Git Flow design document (docs/design/gitflow-pr-only-terminal-workflow.md) into a canonical workflow authority (agent-os/workflow/git-flow-policy.md). Register the new authority in the Canonical Concern Split table and add a supersession note to the design document.
+
+#### S19.1 Items
+
+Sprint: Sprint 1 — Git Flow governance file and authority registration
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D19.1.1` | `D` | Create git-flow-policy.md governance authority | done | Extract normative rules from the Git Flow design document into agent-os/workflow/git-flow-policy.md. Covers: branch model definition, workflow invariants, forbidden operations, synchronization rules, conflict resolution model, PR topology, tagging policy, operational refinements, and branch protection enforcement. |
+| `D19.1.2` | `D` | Register git-flow-policy.md in canonical concern split and add design doc supersession note | done | Add git-flow-policy.md to the Canonical Concern Split table in shared-workflow.md. Add a supersession note at the top of the design document indicating which rules have been migrated to the canonical authority. |
+| `C19.1.3` | `C` | Checkpoint closure — X19 Git Flow governance extraction | done | Validate plan, render views, verify that the governance file exists, that the concern split table is updated, and that the design doc carries the supersession note. Close X19, S19.1. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -562,6 +581,7 @@ Status: done
 | cg40 | Design docs — add English peer translation for the Git Flow PR-only workflow | `D17.1.1`, `T17.1.2`, `C17.1.3` |
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 | cg41 | Design doc update — conflict resolution scenarios and operational refinements | `D18.1.1` |
+| cg42 | Git Flow governance extraction and authority registration | `D19.1.1`, `D19.1.2`, `C19.1.3` |
 
 ## Item Details
 
@@ -2047,3 +2067,31 @@ Status: done
 - **Commit group**: `cg41`
 - **Artifacts**: PLAN.yaml, docs/design/gitflow-pr-only-terminal-workflow.md
 - **Notes**: Add new sections to the English design document covering: Scenario A (single-PR conflict resolution for feature/bugfix), Scenario B (two-PR conflict resolution for hotfix/release with release-branch exception), conflict classification rules (trivial vs non-trivial), always-draft-PR policy, explicit staging rule (no git add -A), no agent branch deletion rule, and branch protection requirements placeholder.
+
+### D19.1.1: Create git-flow-policy.md governance authority
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S19.1`
+- **Actions**: document
+- **Commit group**: `cg42`
+- **Artifacts**: PLAN.yaml, agent-os/workflow/git-flow-policy.md
+- **Notes**: Extract normative rules from the Git Flow design document into agent-os/workflow/git-flow-policy.md. Covers: branch model definition, workflow invariants, forbidden operations, synchronization rules, conflict resolution model, PR topology, tagging policy, operational refinements, and branch protection enforcement.
+
+### D19.1.2: Register git-flow-policy.md in canonical concern split and add design doc supersession note
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S19.1`
+- **Actions**: document
+- **Depends on**: `D19.1.1`
+- **Commit group**: `cg42`
+- **Artifacts**: agent-os/workflow/shared-workflow.md, docs/design/gitflow-pr-only-terminal-workflow.md
+- **Notes**: Add git-flow-policy.md to the Canonical Concern Split table in shared-workflow.md. Add a supersession note at the top of the design document indicating which rules have been migrated to the canonical authority.
+
+### C19.1.3: Checkpoint closure — X19 Git Flow governance extraction
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S19.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D19.1.1`, `D19.1.2`
+- **Commit group**: `cg42`
+- **Notes**: Validate plan, render views, verify that the governance file exists, that the concern split table is updated, and that the design doc carries the supersession note. Close X19, S19.1.

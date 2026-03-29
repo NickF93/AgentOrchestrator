@@ -112,6 +112,7 @@ One concern must have exactly one canonical authority. Duplication is forbidden.
 | Graph plan view | `PLAN.dot` / `PLAN.svg` (generated) |
 | Decision rationale | `docs/adr/*` |
 | Practical codebase map | `REPO_MAP.md` |
+| Git branching model and merge policy | `agent-os/workflow/git-flow-policy.md` |
 | Shared templates, schemas, and cross-repo policy | Level-0 (`agent-os/`) |
 
 ## Authority Precedence
