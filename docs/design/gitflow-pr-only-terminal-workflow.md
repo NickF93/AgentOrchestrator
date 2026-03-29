@@ -1253,18 +1253,70 @@ git add .
 
 ---
 
-## 13. Branch protection requirements
+## 13. Branch protection enforcement
 
-> **Open point.** The specific branch protection settings for `main`, `develop`, and topic branches are under evaluation. This section will be populated once the configuration decisions are finalized.
+GitHub's server-side branch protection rules require a paid plan (Team or Enterprise) for private repositories. This workflow enforces branch protection through two layers that work on any GitHub plan.
 
-The following principles are already decided:
+### 13.1 Layer 1 — Local git hooks
+
+A `pre-push` hook prevents direct pushes to protected branches. It is installed as part of repository bootstrap and lives in `.githooks/` within the repository.
+
+```bash
+#!/usr/bin/env bash
+# .githooks/pre-push
+# Prevents direct pushes to protected branches.
+# Install: git config core.hooksPath .githooks
+
+protected_branches="main develop"
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+for branch in $protected_branches; do
+  if [ "$current_branch" = "$branch" ]; then
+    echo "ERROR: Direct push to '$branch' is forbidden."
+    echo "Use a topic branch and open a PR instead."
+    exit 1
+  fi
+done
+```
+
+**Installation:** `git config core.hooksPath .githooks` — this SHOULD be part of `bootstrap-repo.sh` for every governed repository.
+
+**Limitation:** local hooks are client-side. A human can bypass them with `--no-verify`. In a small disciplined team this is acceptable — the hook prevents accidents, not malice.
+
+### 13.2 Layer 2 — Agent governance
+
+Agents operating under this workflow follow the governance rules in `AGENTS.md` and the canonical workflow authorities. The `gitflow-pr-only` skill enforces the full PR-based flow procedurally. Agents MUST NOT push directly to `main` or `develop` under any circumstances.
+
+### 13.3 Deferred — GitHub Actions enforcement
+
+Server-side enforcement via GitHub Actions (branch guard on direct pushes, PR validation workflows) is deferred to a future milestone. When implemented, Actions will provide:
+
+- detection and alerting on direct pushes to protected branches,
+- PR validation rules (branch naming convention, target branch correctness),
+- status check enforcement.
+
+GitHub Actions are free for public repositories and included in the Free plan for private repositories (2000 minutes/month), so no plan upgrade is needed when this layer is activated.
+
+### 13.4 Branch protection principles
+
+Regardless of enforcement layer, the following rules apply:
 
 - `main` and `develop` MUST require PR-based merging (no direct push).
-- Status checks, when configured, MUST be required to pass before merge.
-- Rebase merging and squash merging SHOULD be disabled at the repository level.
+- Rebase merging and squash merging SHOULD be disabled at the repository level if the GitHub plan allows it.
 - Auto-delete head branches MUST be disabled.
-- Force push MUST be disallowed on `main` and `develop`.
-- Topic branches (`feature/*`, `bugfix/*`, `hotfix/*`, `release/*`, `support/*`) do not require branch protection — agents and humans push freely to their own topic branches.
+- Force push MUST NOT be used on `main` and `develop`.
+- Topic branches (`feature/*`, `bugfix/*`, `hotfix/*`, `release/*`, `support/*`) do not require protection — agents and humans push freely to their own topic branches.
+
+### 13.5 GitHub repository settings
+
+These settings SHOULD be configured at the repository level on GitHub when available:
+
+| Setting | Value | Available on Free? |
+|---------|-------|--------------------|
+| Allow merge commits | Yes | Yes |
+| Allow squash merging | No | Yes |
+| Allow rebase merging | No | Yes |
+| Automatically delete head branches | No | Yes |
 
 ---
 
