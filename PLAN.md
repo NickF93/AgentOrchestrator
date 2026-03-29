@@ -36,6 +36,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X19 | X | Git Flow Governance Extraction | done |
 | X20 | X | Git Flow PR-Only Skill | done |
 | X21 | X | Skill Discovery Table in AGENTS.md | done |
+| X22 | X | Planning-to-Git Mapping and Branch Naming Convention | done |
 
 ## Plan
 
@@ -571,6 +572,24 @@ Status: done
 | `D21.1.1` | `D` | Add available-skills table to AGENTS.md § Skills | done | Add a table listing each skill ID, its trigger conditions, and path to AGENTS.md § Skills. This makes AGENTS.md the single authority for skill discovery — agents read the table instead of scanning the directory. |
 | `C21.1.2` | `C` | Checkpoint closure — X21 skill discovery table | done |  |
 
+### X22
+
+- ID: `X22`
+- Title: Planning-to-Git Mapping and Branch Naming Convention
+- Status: done
+- Note: Document the mapping between the planning hierarchy (milestone, sprint, commit_group, checkpoint) and git concepts (branch, work phase, commit, PR merge). Define a branch naming convention that includes the milestone ID for traceability. Establish the hybrid approach: agent follows the documented rule, human can override. Based on industry consensus (Linear, GitLab, DORA research, agentic workflow literature).
+
+#### S22.1 Items
+
+Sprint: Sprint 1 — Planning-to-git mapping documentation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D22.1.1` | `D` | Document planning-to-git mapping in shared-workflow.md | done | Add a Planning-to-Git Mapping section to shared-workflow.md covering: the hierarchy mapping (milestone→branch, sprint→work phase, commit_group→commit, milestone closure→PR merge), the branch naming convention (<family>/<XNN>-<kebab-description>), the agent rule (trigger gitflow-pr-only start on milestone activation), the human override mechanism (planning-only milestones can skip branching), and the hook validation reference. Based on hybrid approach from industry consensus. |
+| `D22.1.2` | `D` | Add branch naming validation to git-flow-policy.md | done | Add a branch naming convention section to git-flow-policy.md that cross-references the mapping in shared-workflow.md. Include the naming pattern and hook validation rule. |
+| `C22.1.3` | `C` | Checkpoint closure — X22 planning-to-git mapping | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -620,6 +639,7 @@ Status: done
 | cg42 | Git Flow governance extraction and authority registration | `D19.1.1`, `D19.1.2`, `C19.1.3` |
 | cg43 | gitflow-pr-only skill implementation | `D20.1.1`, `C20.1.2` |
 | cg44 | Skill discovery table in AGENTS.md | `D21.1.1`, `C21.1.2` |
+| cg45 | Planning-to-git mapping and branch naming convention | `D22.1.1`, `D22.1.2`, `C22.1.3` |
 
 ## Item Details
 
@@ -2177,3 +2197,35 @@ Status: done
   - validate-plan.py exits 0
   - render-plan.py produces no drift
   - AGENTS.md § Skills contains available-skills table
+
+### D22.1.1: Document planning-to-git mapping in shared-workflow.md
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S22.1`
+- **Actions**: document
+- **Commit group**: `cg45`
+- **Artifacts**: agent-os/workflow/shared-workflow.md
+- **Notes**: Add a Planning-to-Git Mapping section to shared-workflow.md covering: the hierarchy mapping (milestone→branch, sprint→work phase, commit_group→commit, milestone closure→PR merge), the branch naming convention (<family>/<XNN>-<kebab-description>), the agent rule (trigger gitflow-pr-only start on milestone activation), the human override mechanism (planning-only milestones can skip branching), and the hook validation reference. Based on hybrid approach from industry consensus.
+
+### D22.1.2: Add branch naming validation to git-flow-policy.md
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S22.1`
+- **Actions**: document
+- **Depends on**: `D22.1.1`
+- **Commit group**: `cg45`
+- **Artifacts**: agent-os/workflow/git-flow-policy.md
+- **Notes**: Add a branch naming convention section to git-flow-policy.md that cross-references the mapping in shared-workflow.md. Include the naming pattern and hook validation rule.
+
+### C22.1.3: Checkpoint closure — X22 planning-to-git mapping
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S22.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D22.1.1`, `D22.1.2`
+- **Commit group**: `cg45`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - shared-workflow.md contains Planning-to-Git Mapping section
+  - git-flow-policy.md contains Branch Naming Convention section

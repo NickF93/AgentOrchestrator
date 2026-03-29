@@ -48,6 +48,32 @@ available. When AVH is not installed, equivalent `git checkout -b`
 commands with the correct base branch are acceptable. `support/*` child
 branches always use `git checkout -b`.
 
+### Branch Naming Convention
+
+Topic branch names SHOULD include the owning PLAN milestone ID for
+traceability between the planning system and git history:
+
+`<family>/<XNN>-<kebab-description>`
+
+Examples:
+- `feature/X20-gitflow-pr-only-skill`
+- `bugfix/X25-fix-validation-race`
+- `hotfix/X30-critical-auth-fix`
+- `release/X28-v1.0`
+
+The full planning-to-git mapping (milestone → branch, commit_group →
+commit, milestone closure → PR merge) is defined in
+`shared-workflow.md` § Planning-to-Git Mapping. The naming convention
+here is the enforcement surface for that mapping.
+
+When a branch is created outside the milestone lifecycle (e.g., ad hoc
+hotfix before a PLAN item exists), the milestone ID may be omitted. The
+PLAN item SHOULD be created retroactively and the branch name serves as
+a best-effort trace.
+
+Hook validation of branch names is deferred to a future milestone
+alongside other hook enhancements (see § Branch Protection Enforcement).
+
 ## Workflow Invariants
 
 These rules apply to all branch types without exception:

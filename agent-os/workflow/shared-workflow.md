@@ -249,6 +249,105 @@ Footer (SHOULD):
 - ADR: linked ADR if relevant
 - Follow-up: deferred work if applicable
 
+## Planning-to-Git Mapping
+
+The planning hierarchy maps to the git branching model defined in
+`agent-os/workflow/git-flow-policy.md`. This mapping bridges the
+execution graph in `PLAN.yaml` with the PR-only Git Flow workflow.
+
+### Hierarchy
+
+| Planning concept | Git concept | Cardinality |
+|-----------------|-------------|-------------|
+| Milestone (X) | Topic branch | 1 milestone = 1 branch |
+| Sprint (S) | Work phase on that branch | N sprints per branch |
+| Commit_group | Commit on that branch | N commits per branch |
+| Checkpoint (C) | Commit_group closure | 1 checkpoint per commit_group |
+| Milestone closure | PR merge | 1 PR per branch (or 2 for hotfix/release) |
+
+A milestone is a coherent semantic unit of work. It may span multiple
+sprints, multiple commit_groups, and multiple agent sessions. All of
+this work lands on a single topic branch. When the milestone is
+complete (all sprints done, all checkpoints closed), the branch is
+synchronized with its base and merged via PR.
+
+### Branch Naming Convention
+
+Topic branches include the milestone ID for traceability:
+
+`<family>/<XNN>-<kebab-description>`
+
+| Family | When | Example |
+|--------|------|---------|
+| `feature` | New capability or governance addition | `feature/X20-gitflow-pr-only-skill` |
+| `bugfix` | Fix for something broken in `develop` | `bugfix/X25-fix-validation-race` |
+| `hotfix` | Urgent fix for production (`main`) | `hotfix/X30-critical-auth-fix` |
+| `release` | Release preparation | `release/X28-v1.0` |
+| `support` | Long-lived maintenance line | `support/X35-3.2.x` |
+
+The milestone ID (`XNN`) in the branch name enables automatic
+traceability between the planning system and git history. Agents and
+hooks can extract the milestone ID from the branch name to verify
+planning coverage.
+
+### When to Create a Branch
+
+An agent creates a topic branch when a milestone transitions to active
+work (first item moves to `in_progress`). The procedure is:
+
+1. Determine the branch family from the milestone's nature (feature,
+   bugfix, hotfix, release, support).
+2. Build the branch name: `<family>/<XNN>-<kebab-description>`.
+3. Trigger the `gitflow-pr-only` skill, action `start`, with the
+   resolved branch type, name, and base.
+4. The skill handles fast-forwarding the base, creating the branch,
+   pushing, and opening the draft PR per the workflow invariants in
+   `git-flow-policy.md`.
+
+Branch creation is subject to the same phase gates as any git operation:
+local creation is Phase A, push and draft PR are Phase B.
+
+### When NOT to Create a Branch
+
+Not every milestone requires a branch. A milestone may skip branch
+creation when:
+
+- It is **planning-only**: all items are of type D (document) or involve
+  only PLAN.yaml, generated views, or governance files that land
+  directly on the current working branch.
+- The **human explicitly overrides**: the operator decides to group
+  multiple small milestones on a single branch, or to work on an
+  existing branch.
+- The milestone is **retrospective**: it tracks work that was already
+  completed and committed (e.g., closing out a governance review).
+
+When a milestone skips branching, the agent proceeds with normal
+commit_group workflow on the current branch. The override is implicit
+(no branch field declared) — no special annotation is required.
+
+### Milestone Closure and PR Merge
+
+When all sprints within a milestone are done and all checkpoints are
+closed:
+
+1. The agent triggers `gitflow-pr-only` skill, action `sync`, to
+   synchronize the topic branch with its base.
+2. The agent triggers `gitflow-pr-only` skill, action `merge`, to
+   merge the PR (requires Phase C authorization).
+3. For hotfix and release milestones, the agent additionally triggers
+   `tag` and `back-merge` actions per the two-PR flow.
+
+After merge, the topic branch remains (agents never delete branches per
+`git-flow-policy.md` Workflow Invariant 8).
+
+### Hook Validation
+
+The branch naming convention can be validated by a git hook. The
+existing `pre-push` hook (see `git-flow-policy.md` § Branch Protection
+Enforcement) can be extended to verify that topic branch names match
+the `<family>/<XNN>-<kebab-description>` pattern. This is deferred to
+a future milestone along with the other hook enhancements.
+
 ## Automation Staging
 - Phase A: branch naming, local commits, plan updates, view rendering
 - Phase B: push, draft PR, develop alignment
