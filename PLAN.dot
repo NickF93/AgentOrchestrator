@@ -18,7 +18,7 @@ digraph PLAN {
   "X16" [label="X16 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X14" [label="X14 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X17" [label="X17 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X18" [label="X18 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X18" [label="X18 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -46,7 +46,7 @@ digraph PLAN {
   "S15.1" [label="S15.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S14.1" [label="S14.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S17.1" [label="S17.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S18.1" [label="S18.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S18.1" [label="S18.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";

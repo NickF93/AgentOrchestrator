@@ -198,7 +198,7 @@ milestones:
   - id: X18
     type: X
     title: "Git Flow Conflict Resolution and Operational Refinements"
-    status: in_progress
+    status: done
     note: >
       Add conflict resolution scenarios (single-PR and two-PR flows),
       operational refinements (always-draft-PR, explicit staging, no agent
@@ -374,7 +374,7 @@ sprints:
     type: S
     parent: X18
     title: "Sprint 1 — Conflict resolution scenarios and operational refinements"
-    status: in_progress
+    status: done
 
 items:
 

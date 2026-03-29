@@ -32,7 +32,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X16 | X | Human-Readable TODO Checklist | done |
 | X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 | X17 | X | Git Flow Design Doc English Translation | done |
-| X18 | X | Git Flow Conflict Resolution and Operational Refinements | in_progress |
+| X18 | X | Git Flow Conflict Resolution and Operational Refinements | done |
 
 ## Plan
 
@@ -504,13 +504,13 @@ Status: done
 
 - ID: `X18`
 - Title: Git Flow Conflict Resolution and Operational Refinements
-- Status: in_progress
+- Status: done
 - Note: Add conflict resolution scenarios (single-PR and two-PR flows), operational refinements (always-draft-PR, explicit staging, no agent branch deletion, release-branch exception for hotfix back-merge), and branch protection requirements to the Git Flow design document. These decisions were made interactively with the human owner and must be captured before the governance file and skill are authored.
 
 #### S18.1 Items
 
 Sprint: Sprint 1 — Conflict resolution scenarios and operational refinements
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
