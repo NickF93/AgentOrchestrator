@@ -32,6 +32,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X16 | X | Human-Readable TODO Checklist | done |
 | X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 | X17 | X | Git Flow Design Doc English Translation | done |
+| X18 | X | Git Flow Conflict Resolution and Operational Refinements | in_progress |
 
 ## Plan
 
@@ -499,6 +500,22 @@ Status: done
 | `T17.1.2` | `T` | Validate the English peer document and regenerated plan views | done | validate-plan.py completed successfully against the schema. render-plan.py regenerated PLAN.md and PLAN.dot. Structural parity checks confirmed 61 headings, 100 code fences, and 21 references in both the Italian source and the English peer document. |
 | `C17.1.3` | `C` | Git Flow design doc English translation checkpoint | done | Checkpoint closure prepared with the plan-checkpoint-close procedure at Layer 0. REPO_MAP.md is not present in this repository, so freshness is not applicable. The Italian source document remained unchanged. |
 
+### X18
+
+- ID: `X18`
+- Title: Git Flow Conflict Resolution and Operational Refinements
+- Status: in_progress
+- Note: Add conflict resolution scenarios (single-PR and two-PR flows), operational refinements (always-draft-PR, explicit staging, no agent branch deletion, release-branch exception for hotfix back-merge), and branch protection requirements to the Git Flow design document. These decisions were made interactively with the human owner and must be captured before the governance file and skill are authored.
+
+#### S18.1 Items
+
+Sprint: Sprint 1 — Conflict resolution scenarios and operational refinements
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D18.1.1` | `D` | Add conflict resolution scenarios and operational refinements to the Git Flow design doc | done | Add new sections to the English design document covering: Scenario A (single-PR conflict resolution for feature/bugfix), Scenario B (two-PR conflict resolution for hotfix/release with release-branch exception), conflict classification rules (trivial vs non-trivial), always-draft-PR policy, explicit staging rule (no git add -A), no agent branch deletion rule, and branch protection requirements placeholder. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -544,6 +561,7 @@ Status: done
 | cg39 | TODO wording fix — NFC to RFC | `D16.1.2` |
 | cg40 | Design docs — add English peer translation for the Git Flow PR-only workflow | `D17.1.1`, `T17.1.2`, `C17.1.3` |
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
+| cg41 | Design doc update — conflict resolution scenarios and operational refinements | `D18.1.1` |
 
 ## Item Details
 
@@ -2020,3 +2038,12 @@ Status: done
   - Translation remains 1:1 at the document-structure level
   - PLAN.md and PLAN.dot are regenerated and committed
 - **Notes**: Checkpoint closure prepared with the plan-checkpoint-close procedure at Layer 0. REPO_MAP.md is not present in this repository, so freshness is not applicable. The Italian source document remained unchanged.
+
+### D18.1.1: Add conflict resolution scenarios and operational refinements to the Git Flow design doc
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S18.1`
+- **Actions**: document
+- **Commit group**: `cg41`
+- **Artifacts**: PLAN.yaml, docs/design/gitflow-pr-only-terminal-workflow.md
+- **Notes**: Add new sections to the English design document covering: Scenario A (single-PR conflict resolution for feature/bugfix), Scenario B (two-PR conflict resolution for hotfix/release with release-branch exception), conflict classification rules (trivial vs non-trivial), always-draft-PR policy, explicit staging rule (no git add -A), no agent branch deletion rule, and branch protection requirements placeholder.

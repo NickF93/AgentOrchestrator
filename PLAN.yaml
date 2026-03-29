@@ -195,6 +195,18 @@ milestones:
       gitflow_pr_only_terminal_workflow.md source, preserving the original
       structure, command examples, and reference set in a 1:1 translation.
 
+  - id: X18
+    type: X
+    title: "Git Flow Conflict Resolution and Operational Refinements"
+    status: in_progress
+    note: >
+      Add conflict resolution scenarios (single-PR and two-PR flows),
+      operational refinements (always-draft-PR, explicit staging, no agent
+      branch deletion, release-branch exception for hotfix back-merge),
+      and branch protection requirements to the Git Flow design document.
+      These decisions were made interactively with the human owner and
+      must be captured before the governance file and skill are authored.
+
 sprints:
   - id: S1.1
     type: S
@@ -357,6 +369,12 @@ sprints:
     parent: X17
     title: "Sprint 1 — Create English peer document for the gitflow design workflow"
     status: done
+
+  - id: S18.1
+    type: S
+    parent: X18
+    title: "Sprint 1 — Conflict resolution scenarios and operational refinements"
+    status: in_progress
 
 items:
 
@@ -2914,6 +2932,29 @@ items:
       Layer 0. REPO_MAP.md is not present in this repository, so freshness is
       not applicable. The Italian source document remained unchanged.
 
+  # ─── X18 / S18.1: Git Flow conflict resolution and operational refinements ──
+
+  - id: D18.1.1
+    parent: S18.1
+    type: D
+    title: "Add conflict resolution scenarios and operational refinements to the Git Flow design doc"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: medium
+    commit_group: cg41
+    scope: "docs/design"
+    artifacts_out:
+      - PLAN.yaml
+      - docs/design/gitflow-pr-only-terminal-workflow.md
+    notes: >
+      Add new sections to the English design document covering: Scenario A
+      (single-PR conflict resolution for feature/bugfix), Scenario B (two-PR
+      conflict resolution for hotfix/release with release-branch exception),
+      conflict classification rules (trivial vs non-trivial), always-draft-PR
+      policy, explicit staging rule (no git add -A), no agent branch deletion
+      rule, and branch protection requirements placeholder.
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -3230,3 +3271,12 @@ commit_groups:
     notes: >
       Re-validates the full stack, regenerates PLAN outputs, and closes the
       Copilot support and Kilo realignment milestone once all checks pass.
+
+  - id: cg41
+    title: "Design doc update — conflict resolution scenarios and operational refinements"
+    items: [D18.1.1]
+    notes: >
+      Adds conflict resolution scenarios (single-PR and two-PR flows),
+      operational refinements (always-draft-PR, explicit staging, no agent
+      branch deletion, release-branch exception), and branch protection
+      requirements to the Git Flow English design document.

@@ -19,7 +19,16 @@
 - [8. Flow: Release](#8-flow-release)
 - [9. Flow: Support](#9-flow-support)
 - [10. Final operational summary](#10-final-operational-summary)
-- [11. References](#11-references)
+- [11. Conflict resolution](#11-conflict-resolution)
+  - [11.1 Conflict classification](#111-conflict-classification)
+  - [11.2 Scenario A — Single-PR flows (feature, bugfix)](#112-scenario-a--single-pr-flows-feature-bugfix)
+  - [11.3 Scenario B — Two-PR flows (hotfix, release)](#113-scenario-b--two-pr-flows-hotfix-release)
+- [12. Operational refinements](#12-operational-refinements)
+  - [12.1 Always open a draft PR](#121-always-open-a-draft-pr)
+  - [12.2 Explicit staging only](#122-explicit-staging-only)
+  - [12.3 Branch deletion policy](#123-branch-deletion-policy)
+- [13. Branch protection requirements](#13-branch-protection-requirements)
+- [14. References](#14-references)
 
 ---
 
@@ -1022,11 +1031,244 @@ And your invariants always remain identical:
 - **never rebase** before the PR;
 - **always simple merge of the base into the working branch**;
 - merge the PR from the terminal with `gh`;
-- **never delete branches**. [^5]
+- **agents never delete branches** (human operator may prune manually);
+- **always open a draft PR** immediately after branch creation;
+- **stage files explicitly** (`git add <file> ...`), never use `git add -A`. [^5]
 
 ---
 
-## 11. References
+## 11. Conflict resolution
+
+Conflicts in this workflow can only surface during the synchronization merge (base into topic branch), never during the PR merge itself. The PR merge MUST be conflict-free. If it is not, the agent MUST re-run the synchronization step before attempting the merge again.
+
+### 11.1 Conflict classification
+
+When a `git merge <base>` produces conflicts on the topic branch, they are classified as either **trivial** or **non-trivial**:
+
+| Classification | Definition | Who resolves |
+|---------------|------------|--------------|
+| **Trivial** | Only one side has semantic changes (the other is whitespace, formatting, or context drift). Also: conflicts in generated files (`PLAN.md`, `PLAN.dot`) that will be regenerated. | Agent resolves |
+| **Non-trivial** | Both sides modified the same logical block, or the conflict is in governance/authority files, or the agent is not confident in the resolution. | Agent escalates to human |
+
+Regardless of who resolves, every conflict resolution MUST be reported in the PR description or as a PR comment, listing:
+- the files affected,
+- which hunks conflicted,
+- the resolution strategy used (agent-trivial or human-resolved).
+
+### 11.2 Scenario A — Single-PR flows (feature, bugfix)
+
+This scenario applies to feature and bugfix branches, which target develop with a single PR.
+
+```bash
+# 1. Update the base branch.
+git checkout develop
+git pull --ff-only origin develop
+
+# 2. Switch to the topic branch.
+git checkout feature/X
+
+# 3. Merge the base into the topic branch — conflicts surface here.
+git merge develop
+```
+
+**If no conflicts:** continue to step 4.
+
+**If conflicts at step 3:**
+
+- **Trivial:** agent resolves, commits the merge, and documents the resolution in the PR description.
+- **Non-trivial:** agent aborts the merge (`git merge --abort`), reports the conflicting files and hunks to the human, and waits for human resolution. After the human resolves and pushes, the agent resumes from step 4.
+
+```bash
+# 4. Push the conflict-free branch.
+git push
+
+# 5. Mark the draft PR as ready for review (if still in draft).
+gh pr ready
+
+# 6. Wait for CI checks to pass.
+gh pr checks --watch
+
+# 7. Merge the PR — guaranteed conflict-free.
+gh pr merge --merge
+
+# 8. Update the local base branch.
+git checkout develop
+git pull --ff-only origin develop
+```
+
+**Invariant:** the PR merge at step 7 MUST be conflict-free because step 3 already incorporated all of develop's state into the topic branch. If develop moved again between step 4 and step 7 causing new conflicts, repeat from step 1.
+
+### 11.3 Scenario B — Two-PR flows (hotfix, release)
+
+This scenario applies to hotfix and release branches, which require two PRs: one toward main (PR1) and one back-merge toward develop (PR2).
+
+#### PR1: hotfix/release toward main
+
+```bash
+# 1. Update the production branch.
+git checkout main
+git pull --ff-only origin main
+
+# 2. Switch to the hotfix/release branch.
+git checkout hotfix/1.4.1
+
+# 3. Merge the base into the topic branch — conflicts surface here.
+git merge main
+```
+
+**If no conflicts:** continue.
+
+**If conflicts at step 3:** same trivial/non-trivial rules as Scenario A.
+
+```bash
+# 4. Push the conflict-free branch.
+git push
+
+# 5. Mark the draft PR as ready for review (if still in draft).
+gh pr ready
+
+# 6. Wait for CI checks to pass.
+gh pr checks --watch
+
+# 7. Merge the PR toward main.
+gh pr merge --merge
+```
+
+#### Tag (hotfix and release only)
+
+```bash
+# 8. Update local main to tag the correct commit.
+git checkout main
+git pull --ff-only origin main
+
+# 9. Create the annotated tag.
+git tag -a 1.4.1 -m "Hotfix 1.4.1"
+
+# 10. Publish the tag.
+git push origin 1.4.1
+```
+
+#### PR2: hotfix/release back-merge
+
+**Before opening PR2, determine the back-merge target:**
+
+- If a release branch currently exists (`release/*`), the back-merge targets that release branch instead of develop. The release branch will eventually carry the hotfix into develop when it is itself merged, avoiding duplicate merge commits and double-conflict resolution.
+- If no release branch exists, the back-merge targets develop.
+
+Let `<target>` be `release/X.Y.Z` or `develop` accordingly.
+
+```bash
+# 11. Update the back-merge target.
+git checkout <target>
+git pull --ff-only origin <target>
+
+# 12. Switch to the hotfix/release branch.
+git checkout hotfix/1.4.1
+
+# 13. Merge the target into the hotfix/release branch — conflicts surface here.
+git merge <target>
+```
+
+**If no conflicts:** continue.
+
+**If conflicts at step 13:** same trivial/non-trivial rules as Scenario A. Agent resolves trivial, escalates non-trivial. Every resolution is reported in the PR2 description.
+
+```bash
+# 14. Push the conflict-free branch.
+git push
+
+# 15. Create the PR toward the back-merge target.
+gh pr create --base <target> --head hotfix/1.4.1 --fill
+# (or gh pr ready if a draft PR already exists for this target)
+
+# 16. Wait for CI checks to pass.
+gh pr checks --watch
+
+# 17. Merge the PR toward the back-merge target.
+gh pr merge --merge
+
+# 18. Update the local target branch.
+git checkout <target>
+git pull --ff-only origin <target>
+```
+
+**Invariant:** the tag (steps 8–10) is unaffected by PR2 conflicts — it points to the main-branch commit, which is already safe.
+
+#### Mermaid diagram — conflict resolution decision
+
+```mermaid
+flowchart TD
+    A[git merge base] --> B{conflicts?}
+    B -- no --> C[git push]
+    B -- yes --> D{classification?}
+    D -- trivial --> E[agent resolves]
+    E --> F[commit merge + document in PR]
+    F --> C
+    D -- non-trivial --> G[git merge --abort]
+    G --> H[report to human]
+    H --> I[human resolves + pushes]
+    I --> C
+    C --> J[gh pr merge --merge]
+```
+
+---
+
+## 12. Operational refinements
+
+### 12.1 Always open a draft PR
+
+A draft PR MUST be opened immediately after the branch is created and pushed, for every branch type. Do not attempt to predict whether a feature will be "long" or "short."
+
+**Rationale:** a draft PR provides immediate visibility, enables CI from the first push, and costs nothing. The `gh pr ready` command marks it as ready for review when the work is complete.
+
+```bash
+# Immediately after git push -u origin <branch>:
+gh pr create \
+  --base <target> \
+  --head <branch> \
+  --draft \
+  --fill
+```
+
+### 12.2 Explicit staging only
+
+Never use `git add -A` or `git add .` to stage changes. Always stage files explicitly by name:
+
+```bash
+# Correct:
+git add src/parser.py tests/test_parser.py
+
+# Forbidden:
+git add -A
+git add .
+```
+
+**Rationale:** `git add -A` can pick up `.env` files, secrets, editor temp files, large binaries, or other artifacts that should not enter version control. Explicit staging ensures every committed file is intentional.
+
+### 12.3 Branch deletion policy
+
+- **Agents MUST NOT delete branches** — neither local nor remote, neither topic branches nor long-lived branches.
+- **The human operator MAY manually prune** old merged branches when appropriate.
+- The GitHub repository setting **Automatically delete head branches** MUST remain disabled. [^12]
+
+---
+
+## 13. Branch protection requirements
+
+> **Open point.** The specific branch protection settings for `main`, `develop`, and topic branches are under evaluation. This section will be populated once the configuration decisions are finalized.
+
+The following principles are already decided:
+
+- `main` and `develop` MUST require PR-based merging (no direct push).
+- Status checks, when configured, MUST be required to pass before merge.
+- Rebase merging and squash merging SHOULD be disabled at the repository level.
+- Auto-delete head branches MUST be disabled.
+- Force push MUST be disallowed on `main` and `develop`.
+- Topic branches (`feature/*`, `bugfix/*`, `hotfix/*`, `release/*`, `support/*`) do not require branch protection — agents and humans push freely to their own topic branches.
+
+---
+
+## 14. References
 
 [^1]: GitHub / `gitflow-avh` README and command structure: https://github.com/petervanderdoes/gitflow-avh/blob/develop/README.md  
 [^2]: Git Flow Documentation - Features: https://git-flow.readthedocs.io/en/latest/features.html  
