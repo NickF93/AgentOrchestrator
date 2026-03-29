@@ -8,6 +8,22 @@ repositories governed by the PR-only Git Flow workflow.
 This is a canonical workflow authority. The non-authoritative design
 reference is `docs/design/gitflow-pr-only-terminal-workflow.md`.
 
+## Portability
+
+This governance file is runtime-neutral per the portability model
+(`agent-os/workflow/portability-model.md`). All rules are expressed in
+terms of outcomes and constraints, not runtime-specific tool calls.
+The concrete command sequences (e.g., `gh pr create`, `git flow start`)
+belong in the skill layer, where runtime adapter notes translate them
+to each agent's capabilities.
+
+Runtimes with restricted network or sandbox access (e.g., Codex, Kilo)
+may not be able to execute PR operations directly. In such cases:
+- The agent performs all local git operations (branching, committing,
+  pushing) that its sandbox allows.
+- PR creation and merge operations are deferred to the human operator
+  or to a CI/CD pipeline, while still respecting the rules below.
+
 ## Branch Model
 
 ### Long-lived branches
@@ -27,54 +43,60 @@ reference is `docs/design/gitflow-pr-only-terminal-workflow.md`.
 | `release/*` | `develop` | `main` + back-merge | 2 | Yes (annotated) |
 | `support/*` | `main` or tag | child branch targets `support/*` | 1 (child branch) | No |
 
-Branch creation uses `git flow ... start` (AVH Edition) for all families
-except `support/*` child branches, which use normal `git checkout -b`.
+Branch creation SHOULD use `git flow ... start` (AVH Edition) when
+available. When AVH is not installed, equivalent `git checkout -b`
+commands with the correct base branch are acceptable. `support/*` child
+branches always use `git checkout -b`.
 
 ## Workflow Invariants
 
 These rules apply to all branch types without exception:
 
 1. **Immediate push.** Every newly created branch MUST be pushed to origin
-   immediately after creation (`git push -u origin <branch>`).
+   immediately after creation.
 2. **Immediate draft PR.** A draft PR MUST be opened immediately after the
    branch is pushed, for every branch type. Do not predict whether work
-   will be long or short.
+   will be long or short. If the runtime cannot create PRs (sandbox
+   restriction), the agent MUST report the pending PR to the human.
 3. **Micro-commits and frequent pushes.** Commit early, push at least by
    end of day.
-4. **Explicit staging only.** Stage files by name (`git add <file> ...`).
-   Never use `git add -A` or `git add .`.
+4. **Explicit staging only.** Stage files by name. Never stage the entire
+   working tree indiscriminately.
 5. **No rebase.** Never rebase a topic branch. History is preserved as-is.
 6. **Merge-only synchronization.** Always merge the base branch into the
-   topic branch (`git merge <base>`). Never rebase onto the base.
-7. **Terminal-only PR merge.** Merge PRs exclusively from the terminal
-   using `gh pr merge --merge`. No squash, no rebase merge.
+   topic branch. Never rebase onto the base.
+7. **Merge-commit PR merge only.** PRs MUST be merged using the merge
+   commit strategy (no squash, no rebase merge). The concrete tool
+   (e.g., `gh pr merge --merge`, GitHub web UI) is determined by the
+   skill or adapter layer.
 8. **Agents never delete branches.** Neither local nor remote, neither
    topic nor long-lived. The human operator may prune manually.
 9. **Base update uses fast-forward only.** When updating a long-lived
-   branch, always use `git pull --ff-only origin <branch>`.
+   branch, always fast-forward from origin (no merge commits on pull).
 
 ## Forbidden Operations
 
-The following commands MUST NOT be used in this workflow:
+The following operations MUST NOT be performed in this workflow, regardless
+of the tool or runtime used to execute them:
 
-| Command | Reason |
-|---------|--------|
-| `git flow ... finish` | Performs local merges and branch deletion; conflicts with PR-only model. |
-| `gh pr merge --delete-branch` | Deletes the branch after merge; conflicts with branch retention. |
-| `git add -A` / `git add .` | Blanket staging risks committing secrets, editor files, or binaries. |
-| `git rebase` (on topic branches) | Rewrites history; conflicts with merge-only model. |
-| `git push --force` (on `main`/`develop`) | Destroys shared history. |
+| Operation | Reason |
+|-----------|--------|
+| Local finish of topic branches (e.g., `git flow ... finish`) | Performs local merges and branch deletion; conflicts with PR-only model. |
+| PR merge with branch deletion | Deletes the branch after merge; conflicts with branch retention. |
+| Indiscriminate staging (e.g., `git add -A`, `git add .`) | Blanket staging risks committing secrets, editor files, or binaries. |
+| Rebase of topic branches | Rewrites history; conflicts with merge-only model. |
+| Force push to `main` or `develop` | Destroys shared history. |
 
 ## Synchronization Rule
 
 Before a PR can be merged, the topic branch MUST incorporate the latest
 state of its base branch:
 
-1. `git checkout <base> && git pull --ff-only origin <base>`
-2. `git checkout <topic-branch>`
-3. `git merge <base>`
+1. Fast-forward the local base branch from origin.
+2. Switch to the topic branch.
+3. Merge the base branch into the topic branch.
 4. Resolve conflicts if any (see Conflict Resolution below).
-5. `git push`
+5. Push the topic branch.
 
 The PR merge MUST be conflict-free. If the base moved between push and
 merge, repeat the synchronization.
@@ -83,13 +105,13 @@ merge, repeat the synchronization.
 
 ### Single-PR flows (feature, bugfix)
 
-One PR from the topic branch toward `develop`. After merge, update local
-`develop` with `git pull --ff-only`.
+One PR from the topic branch toward `develop`. After merge, fast-forward
+local `develop` from origin.
 
 ### Two-PR flows (hotfix, release)
 
 1. **PR1** from the topic branch toward `main`. After merge:
-   - update local `main` (`git pull --ff-only`),
+   - fast-forward local `main` from origin,
    - create an annotated tag on `main`,
    - push the tag.
 2. **PR2** (back-merge) from the topic branch toward the back-merge target.
@@ -111,9 +133,10 @@ The child branch opens a single PR toward the `support/*` parent.
 
 - Hotfix and release branches receive an annotated tag after PR1 (toward
   `main`) is merged.
-- Tags are created on `main` after `git pull --ff-only`.
-- Format: `git tag -a <version> -m "<type> <version>"`.
-- Tags are pushed individually: `git push origin <version>`.
+- Tags are created on `main` after fast-forwarding from origin.
+- Tags MUST be annotated (not lightweight), with a message indicating the
+  type and version.
+- Tags are pushed individually to origin.
 
 ## Conflict Resolution
 
@@ -134,9 +157,8 @@ the PR merge, which MUST always be conflict-free.
 
 - **Trivial:** agent resolves, commits the merge, and documents the
   resolution in the PR description (files affected, hunks, strategy).
-- **Non-trivial:** agent aborts the merge (`git merge --abort`), reports
-  the conflicting files and hunks to the human, and waits for human
-  resolution.
+- **Non-trivial:** agent aborts the merge, reports the conflicting files
+  and hunks to the human, and waits for human resolution.
 - Every conflict resolution MUST be reported in the PR description or as
   a PR comment, regardless of who resolved it.
 
@@ -167,9 +189,10 @@ not malice.
 
 ### Layer 2 — Agent governance
 
-Agents follow the rules in this file, `AGENTS.md`, and the `gitflow-pr-only`
-skill. Agents MUST NOT push directly to `main` or `develop` under any
-circumstances.
+Agents follow the rules in this file and `AGENTS.md`, and execute PR
+operations through the `gitflow-pr-only` skill when available. Agents
+MUST NOT push directly to `main` or `develop` under any circumstances,
+regardless of runtime.
 
 ### Deferred — GitHub Actions enforcement
 
@@ -207,7 +230,7 @@ merge placement depends on Phase C authorization per
   rendering — all permitted.
 - **Phase B:** push, draft PR creation, synchronization merge — requires
   Phase B unlock.
-- **Phase C:** `gh pr merge` — requires Phase C authorization.
+- **Phase C:** PR merge — requires Phase C authorization.
 
 ## Design Reference
 
