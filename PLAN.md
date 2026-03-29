@@ -31,6 +31,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X15 | X | Environment Portability — Remove Hardcoded Conda Environment | done |
 | X16 | X | Human-Readable TODO Checklist | done |
 | X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
+| X17 | X | Git Flow Design Doc English Translation | done |
 
 ## Plan
 
@@ -480,6 +481,24 @@ Status: done
 | `T14.1.3` | `T` | Validate Copilot support and Kilo realignment | done |  |
 | `C14.1.4` | `C` | Portability completion checkpoint | done |  |
 
+### X17
+
+- ID: `X17`
+- Title: Git Flow Design Doc English Translation
+- Status: done
+- Note: Add an English peer document under docs/design/ for the existing gitflow_pr_only_terminal_workflow.md source, preserving the original structure, command examples, and reference set in a 1:1 translation.
+
+#### S17.1 Items
+
+Sprint: Sprint 1 — Create English peer document for the gitflow design workflow
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D17.1.1` | `D` | Create an English peer document for the Git Flow PR-only terminal workflow | done | Create a new English design document alongside the existing Italian source file, keeping headings, lists, commands, Mermaid diagrams, and references aligned 1:1 with the original workflow document under the peer filename docs/design/gitflow-pr-only-terminal-workflow.md. |
+| `T17.1.2` | `T` | Validate the English peer document and regenerated plan views | done | validate-plan.py completed successfully against the schema. render-plan.py regenerated PLAN.md and PLAN.dot. Structural parity checks confirmed 61 headings, 100 code fences, and 21 references in both the Italian source and the English peer document. |
+| `C17.1.3` | `C` | Git Flow design doc English translation checkpoint | done | Checkpoint closure prepared with the plan-checkpoint-close procedure at Layer 0. REPO_MAP.md is not present in this repository, so freshness is not applicable. The Italian source document remained unchanged. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -523,6 +542,7 @@ Status: done
 | cg37 | Environment portability — AGENT_PYTHON env var and .env.example | `M15.1.1`, `T15.1.2`, `C15.1.3` |
 | cg38 | Add non-normative TODO.md checklist | `D16.1.1` |
 | cg39 | TODO wording fix — NFC to RFC | `D16.1.2` |
+| cg40 | Design docs — add English peer translation for the Git Flow PR-only workflow | `D17.1.1`, `T17.1.2`, `C17.1.3` |
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 
 ## Item Details
@@ -1963,3 +1983,40 @@ Status: done
   - AGENT_PYTHON env var is the canonical override mechanism
   - .env is gitignored, .env.example is committed
   - PLAN.md and PLAN.dot are regenerated and committed
+
+### D17.1.1: Create an English peer document for the Git Flow PR-only terminal workflow
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S17.1`
+- **Actions**: document
+- **Commit group**: `cg40`
+- **Artifacts**: PLAN.yaml, docs/design/gitflow-pr-only-terminal-workflow.md
+- **Notes**: Create a new English design document alongside the existing Italian source file, keeping headings, lists, commands, Mermaid diagrams, and references aligned 1:1 with the original workflow document under the peer filename docs/design/gitflow-pr-only-terminal-workflow.md.
+
+### T17.1.2: Validate the English peer document and regenerated plan views
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S17.1`
+- **Actions**: test, verify
+- **Depends on**: `D17.1.1`
+- **Commit group**: `cg40`
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - docs/design/gitflow-pr-only-terminal-workflow.md exists as a peer English document
+  - English document preserves the original section structure, commands, Mermaid diagrams, and references
+- **Notes**: validate-plan.py completed successfully against the schema. render-plan.py regenerated PLAN.md and PLAN.dot. Structural parity checks confirmed 61 headings, 100 code fences, and 21 references in both the Italian source and the English peer document.
+
+### C17.1.3: Git Flow design doc English translation checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S17.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T17.1.2`
+- **Commit group**: `cg40`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=copilot/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Checks**:
+  - English peer document is committed without modifying the Italian source
+  - Translation remains 1:1 at the document-structure level
+  - PLAN.md and PLAN.dot are regenerated and committed
+- **Notes**: Checkpoint closure prepared with the plan-checkpoint-close procedure at Layer 0. REPO_MAP.md is not present in this repository, so freshness is not applicable. The Italian source document remained unchanged.

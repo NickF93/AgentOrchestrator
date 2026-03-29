@@ -17,6 +17,7 @@ digraph PLAN {
   "X15" [label="X15 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X16" [label="X16 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X14" [label="X14 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X17" [label="X17 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -43,6 +44,7 @@ digraph PLAN {
   "S16.1" [label="S16.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S15.1" [label="S15.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S14.1" [label="S14.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S17.1" [label="S17.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -324,6 +326,13 @@ digraph PLAN {
     label="cg39: TODO wording fix — NFC to RFC";
   "D16.1.2" [label="D16.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg40" {
+    style="rounded,dashed";
+    label="cg40: Design docs — add English peer translation for the Git Flow PR-only workflow";
+  "D17.1.1" [label="D17.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "T17.1.2" [label="T17.1.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C17.1.3" [label="C17.1.3 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   subgraph "cluster_cg36" {
     style="rounded,dashed";
     label="cg36: Portability verification and closure — validate X14 end to end";
@@ -356,6 +365,7 @@ digraph PLAN {
   "X16" -> "S16.1" [style=dashed];
   "X15" -> "S15.1" [style=dashed];
   "X14" -> "S14.1" [style=dashed];
+  "X17" -> "S17.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -483,6 +493,9 @@ digraph PLAN {
   "S15.1" -> "M15.1.1" [style=dashed];
   "S15.1" -> "T15.1.2" [style=dashed];
   "S15.1" -> "C15.1.3" [style=dashed];
+  "S17.1" -> "D17.1.1" [style=dashed];
+  "S17.1" -> "T17.1.2" [style=dashed];
+  "S17.1" -> "C17.1.3" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -641,4 +654,6 @@ digraph PLAN {
   "C14.1.4" -> "M15.1.1";
   "M15.1.1" -> "T15.1.2";
   "T15.1.2" -> "C15.1.3";
+  "D17.1.1" -> "T17.1.2";
+  "T17.1.2" -> "C17.1.3";
 }
