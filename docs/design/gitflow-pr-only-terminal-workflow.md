@@ -253,11 +253,13 @@ gh auth login
 The invariants of this process are:
 
 - immediate push of the branch as soon as it is created;
+- **always open a draft PR** immediately after branch creation;
 - micro-commits and frequent pushes;
+- **stage files explicitly** (`git add <file> ...`), never use `git add -A`;
 - **never rebase** before the PR;
 - **always simple merge of the base into the working branch**;
 - merge the PR from the terminal with `gh`;
-- **never delete branches**.
+- **agents never delete branches** (human operator may prune manually).
 
 ### Commands forbidden in this workflow
 
@@ -275,15 +277,22 @@ git flow release finish <release>
 
 # DO NOT use the flag that automatically deletes the local and remote branch after merge.
 gh pr merge --delete-branch
+
+# DO NOT use blanket staging commands — always stage files explicitly by name.
+git add -A
+git add .
 ```
 
 ### Why these commands are forbidden
 
-- `git flow ... finish`  
+- `git flow ... finish`
   In the classic flow, `finish` performs local merges and branch cleanup; this conflicts with the requirement that branches must always remain. [^2] [^8] [^9]
 
-- `gh pr merge --delete-branch`  
+- `gh pr merge --delete-branch`
   It deletes the local and remote branch after merge. This is explicitly contrary to the process rule. [^6]
+
+- `git add -A` / `git add .`
+  Blanket staging can pick up `.env` files, secrets, editor temp files, large binaries, or other artifacts that should not enter version control. Always stage files explicitly by name.
 
 ### GitHub setting to verify
 
@@ -382,9 +391,9 @@ git push -u origin feature/ABC-123-my-feature
 - `git push -u origin feature/ABC-123-my-feature`  
   To publish the branch immediately and configure remote tracking.
 
-### Immediate draft PR if the feature is long
+### Immediate draft PR
 
-If the feature is long, open a **draft PR** immediately from the terminal; `gh pr create` supports `--base`, `--head`, `--draft`, and `--fill`, while `gh pr ready` later marks it as ready for review. [^5] [^20]
+Always open a **draft PR** immediately after creating and pushing the branch. Do not attempt to predict whether the feature will be long or short. `gh pr create` supports `--base`, `--head`, `--draft`, and `--fill`, while `gh pr ready` later marks it as ready for review. [^5] [^20]
 
 ```bash
 # Create a draft pull request toward develop.
@@ -402,8 +411,8 @@ gh pr create \
 ### Day-to-day work
 
 ```bash
-# Add all current modifications to the index.
-git add -A
+# Stage the modified files explicitly by name.
+git add src/feature-x.py tests/test_feature_x.py
 
 # Create a local micro-commit with a descriptive message.
 git commit -m "Implement X"
@@ -506,7 +515,9 @@ git flow bugfix start BUG-456-fix-null-pointer
 git push -u origin bugfix/BUG-456-fix-null-pointer
 ```
 
-### If the bugfix is long or you want early review
+### Immediate draft PR
+
+Always open a draft PR immediately after creating and pushing the branch.
 
 ```bash
 # Create a draft PR for the bugfix toward develop.
@@ -520,8 +531,8 @@ gh pr create \
 ### Day-to-day work
 
 ```bash
-# Stage all current modifications.
-git add -A
+# Stage the modified files explicitly by name.
+git add src/parser.py tests/test_parser.py
 
 # Atomic commit of the fix or part of it.
 git commit -m "Fix null dereference in parser"
@@ -614,11 +625,24 @@ git flow hotfix start 1.4.1
 git push -u origin hotfix/1.4.1
 ```
 
+### Immediate draft PR
+
+Always open a draft PR immediately after creating and pushing the branch. For hotfix, the first PR targets main.
+
+```bash
+# Create a draft PR for the hotfix toward main.
+gh pr create \
+  --base main \
+  --head hotfix/1.4.1 \
+  --draft \
+  --fill
+```
+
 ### Day-to-day work
 
 ```bash
-# Stage all modifications.
-git add -A
+# Stage the modified files explicitly by name.
+git add src/payment.py tests/test_payment.py
 
 # Commit the urgent production fix.
 git commit -m "Fix production regression in payment flow"
@@ -648,16 +672,7 @@ git push
 
 ### PR 1: hotfix toward production
 
-```bash
-# Create a draft PR for the hotfix toward main.
-gh pr create \
-  --base main \
-  --head hotfix/1.4.1 \
-  --draft \
-  --fill
-```
-
-When ready:
+When the hotfix is ready (draft PR was already created immediately after branch creation):
 
 ```bash
 # Mark the PR toward main as ready.
@@ -763,11 +778,24 @@ git flow release start 1.5.0
 git push -u origin release/1.5.0
 ```
 
+### Immediate draft PR
+
+Always open a draft PR immediately after creating and pushing the branch. For release, the first PR targets main.
+
+```bash
+# Create a draft PR for the release toward main.
+gh pr create \
+  --base main \
+  --head release/1.5.0 \
+  --draft \
+  --fill
+```
+
 ### Typical work on a release
 
 ```bash
-# Stage the release stabilization changes.
-git add -A
+# Stage the release stabilization changes explicitly by name.
+git add VERSION setup.cfg CHANGELOG.md
 
 # Typical release commit, for example a version bump.
 git commit -m "Bump version to 1.5.0"
@@ -797,16 +825,7 @@ git push
 
 ### PR 1: release toward production
 
-```bash
-# Create a draft PR for the release toward main.
-gh pr create \
-  --base main \
-  --head release/1.5.0 \
-  --draft \
-  --fill
-```
-
-When ready:
+When the release is ready (draft PR was already created immediately after branch creation):
 
 ```bash
 # Mark the release->main PR as ready for review.
@@ -937,11 +956,24 @@ git switch -c fix/3.2.x-BUG-789
 git push -u origin fix/3.2.x-BUG-789
 ```
 
+### Immediate draft PR
+
+Always open a draft PR immediately after creating and pushing the child branch.
+
+```bash
+# Create a draft PR toward the support line.
+gh pr create \
+  --base support/3.2.x \
+  --head fix/3.2.x-BUG-789 \
+  --draft \
+  --fill
+```
+
 ### Day-to-day work
 
 ```bash
-# Stage the modifications on the support-line fix branch.
-git add -A
+# Stage the modified files explicitly by name.
+git add src/legacy_module.py tests/test_legacy.py
 
 # Commit the fix.
 git commit -m "Fix issue on 3.2.x line"
@@ -969,14 +1001,7 @@ git push
 
 ### PR toward the support line
 
-```bash
-# Create a draft PR toward the support line.
-gh pr create \
-  --base support/3.2.x \
-  --head fix/3.2.x-BUG-789 \
-  --draft \
-  --fill
-```
+When the fix is ready (draft PR was already created immediately after branch creation):
 
 ```bash
 # Mark the PR as ready.
