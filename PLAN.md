@@ -38,6 +38,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X21 | X | Skill Discovery Table in AGENTS.md | done |
 | X22 | X | Planning-to-Git Mapping and Branch Naming Convention | done |
 | X23 | X | Git Flow Skill Portability Repairs | done |
+| X24 | X | TODO Checklist Refresh After Git Flow Rollout | done |
 
 ## Plan
 
@@ -609,6 +610,22 @@ Status: done
 | `T23.1.2` | `T` | Validate gitflow skill registry resolution and plan/render consistency | done |  |
 | `C23.1.3` | `C` | Checkpoint closure — X23 gitflow skill portability repairs | done | Close the gitflow skill portability repair milestone after registry resolution, packaging-contract compliance, and template propagation are verified. Close X23, S23.1. |
 
+### X24
+
+- ID: `X24`
+- Title: TODO Checklist Refresh After Git Flow Rollout
+- Status: done
+- Note: Refresh the non-authoritative human checklist in TODO.md so it reflects the recent Git Flow governance, skill, portability, and planning-to-git mapping commits without expanding it into a second source of truth.
+
+#### S24.1 Items
+
+Sprint: Sprint 1 — TODO.md refresh
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D24.1.1` | `D` | Refresh human-readable TODO.md for the recent Git Flow work | done | Update the non-authoritative personal checklist to reflect the recent completion of the Git Flow governance extraction, gitflow-pr-only skill, discovery metadata, planning-to-git mapping, and portability repair work. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -660,6 +677,7 @@ Status: done
 | cg44 | Skill discovery table in AGENTS.md | `D21.1.1`, `C21.1.2` |
 | cg45 | Planning-to-git mapping and branch naming convention | `D22.1.1`, `D22.1.2`, `C22.1.3` |
 | cg46 | Git Flow skill portability repairs — registry, contract, and template propagation | `M23.1.1`, `T23.1.2`, `C23.1.3` |
+| cg47 | TODO checklist refresh for recent Git Flow work | `D24.1.1` |
 
 ## Item Details
 
@@ -2280,3 +2298,12 @@ Status: done
 - **Depends on**: `T23.1.2`
 - **Commit group**: `cg46`
 - **Notes**: Close the gitflow skill portability repair milestone after registry resolution, packaging-contract compliance, and template propagation are verified. Close X23, S23.1.
+
+### D24.1.1: Refresh human-readable TODO.md for the recent Git Flow work
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S24.1`
+- **Actions**: document
+- **Commit group**: `cg47`
+- **Artifacts**: PLAN.yaml, TODO.md
+- **Notes**: Update the non-authoritative personal checklist to reflect the recent completion of the Git Flow governance extraction, gitflow-pr-only skill, discovery metadata, planning-to-git mapping, and portability repair work.

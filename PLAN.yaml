@@ -262,6 +262,15 @@ milestones:
       with the skill packaging contract, and propagate portable skill
       discovery to the repo AGENTS template without widening scope.
 
+  - id: X24
+    type: X
+    title: "TODO Checklist Refresh After Git Flow Rollout"
+    status: done
+    note: >
+      Refresh the non-authoritative human checklist in TODO.md so it reflects
+      the recent Git Flow governance, skill, portability, and planning-to-git
+      mapping commits without expanding it into a second source of truth.
+
 sprints:
   - id: S1.1
     type: S
@@ -459,6 +468,12 @@ sprints:
     type: S
     parent: X23
     title: "Sprint 1 — Registry, skill contract, and template portability fixes"
+    status: done
+
+  - id: S24.1
+    type: S
+    parent: X24
+    title: "Sprint 1 — TODO.md refresh"
     status: done
 
 items:
@@ -3291,6 +3306,27 @@ items:
       resolution, packaging-contract compliance, and template propagation
       are verified. Close X23, S23.1.
 
+  # ─── X24 / S24.1: TODO.md refresh ──────────────────────────────────────────
+
+  - id: D24.1.1
+    parent: S24.1
+    type: D
+    title: "Refresh human-readable TODO.md for the recent Git Flow work"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg47
+    scope: "TODO.md"
+    artifacts_out:
+      - PLAN.yaml
+      - TODO.md
+    notes: >
+      Update the non-authoritative personal checklist to reflect the recent
+      completion of the Git Flow governance extraction, gitflow-pr-only
+      skill, discovery metadata, planning-to-git mapping, and portability
+      repair work.
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -3653,3 +3689,11 @@ commit_groups:
       missing registry entry, restoring required skill-package structure,
       propagating discovery metadata to the repo AGENTS template, and
       re-validating the plan and generated views.
+
+  - id: cg47
+    title: "TODO checklist refresh for recent Git Flow work"
+    items: [D24.1.1]
+    notes: >
+      Refreshes the non-authoritative TODO.md checklist so it reflects the
+      recently completed Git Flow governance, skill, portability, and
+      planning-to-git mapping work without changing canonical authorities.

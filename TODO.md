@@ -28,7 +28,8 @@
 ## Skills
 
 - [x] plan-checkpoint-close — closing C items with validations and commit closure
-- [ ] gitflow-pr-only — procedural PR-based git flow (strongest candidate)
+- [x] gitflow-pr-only — procedural PR-based git flow
+- [x] Skill discovery table in AGENTS.md and repo template
 - [ ] repo-bootstrap — wrapper around bootstrap-repo.sh + post-bootstrap checks
 - [ ] workspace-sync — regenerate Level-1 files, report provenance drift
 - [ ] plan-validate-render — validate + render + interpret failures/warnings
@@ -37,8 +38,10 @@
 
 ## Git Flow
 
-- [ ] Define and document the git branching/PR workflow
-- [ ] Implement gitflow-pr-only skill
+- [x] Define and document the git branching/PR workflow
+- [x] Implement gitflow-pr-only skill
+- [x] Planning-to-git mapping and branch naming convention
+- [x] Register gitflow-pr-only as a portable shared asset
 
 ## Shared Asset Distribution
 
