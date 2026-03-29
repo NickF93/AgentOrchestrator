@@ -484,13 +484,19 @@ flowchart TD
     B --> C[feature/ABC-123-my-feature]
     C --> D[immediate push]
     D --> E[draft PR toward develop]
-    E --> F[micro-commits and frequent pushes]
-    F --> G[simple merge develop -> feature]
-    G --> H[gh pr ready]
-    H --> I[gh pr checks --watch]
-    I --> J[gh pr merge --merge]
-    J --> K[updated develop]
-    C --> L[feature branch remains local/remote]
+    E --> F[explicit staging + micro-commits + pushes]
+    F --> G[merge develop into feature]
+    G --> H{conflicts?}
+    H -- no --> I[git push]
+    H -- trivial --> J[agent resolves + documents in PR]
+    J --> I
+    H -- non-trivial --> K[escalate to human]
+    K --> I
+    I --> L[gh pr ready]
+    L --> M[gh pr checks --watch]
+    M --> N[gh pr merge --merge]
+    N --> O[updated develop]
+    C --> P[feature branch remains local/remote]
 ```
 
 ---
@@ -594,13 +600,19 @@ flowchart TD
     B --> C[bugfix/BUG-456-fix-null-pointer]
     C --> D[immediate push]
     D --> E[draft PR toward develop]
-    E --> F[micro-commits and pushes]
-    F --> G[simple merge develop -> bugfix]
-    G --> H[gh pr ready]
-    H --> I[gh pr checks --watch]
-    I --> J[gh pr merge --merge]
-    J --> K[updated develop]
-    C --> L[bugfix branch remains local/remote]
+    E --> F[explicit staging + micro-commits + pushes]
+    F --> G[merge develop into bugfix]
+    G --> H{conflicts?}
+    H -- no --> I[git push]
+    H -- trivial --> J[agent resolves + documents in PR]
+    J --> I
+    H -- non-trivial --> K[escalate to human]
+    K --> I
+    I --> L[gh pr ready]
+    L --> M[gh pr checks --watch]
+    M --> N[gh pr merge --merge]
+    N --> O[updated develop]
+    C --> P[bugfix branch remains local/remote]
 ```
 
 ---
@@ -742,18 +754,28 @@ flowchart TD
     A[updated main] --> B[git flow hotfix start]
     B --> C[hotfix/1.4.1]
     C --> D[immediate push]
-    D --> E[PR 1 toward main]
-    E --> F[micro-commits and pushes]
-    F --> G[simple merge main -> hotfix]
-    G --> H[gh pr ready]
-    H --> I[gh pr checks --watch]
-    I --> J[gh pr merge --merge on main]
-    J --> K[tag 1.4.1]
-    K --> L[PR 2 toward develop]
+    D --> E[draft PR toward main]
+    E --> F[explicit staging + micro-commits + pushes]
+    F --> G[merge main into hotfix]
+    G --> H{conflicts?}
+    H -- no --> I[git push]
+    H -- trivial --> J[agent resolves + documents in PR]
+    J --> I
+    H -- non-trivial --> K[escalate to human]
+    K --> I
+    I --> L[gh pr ready]
     L --> M[gh pr checks --watch]
-    M --> N[gh pr merge --merge on develop]
-    N --> O[updated develop]
-    C --> P[hotfix branch remains local/remote]
+    M --> N[gh pr merge --merge on main]
+    N --> O[tag 1.4.1]
+    O --> P{release branch exists?}
+    P -- yes --> Q[PR 2 toward release branch]
+    P -- no --> R[PR 2 toward develop]
+    Q --> S[merge target into hotfix + resolve conflicts]
+    R --> S
+    S --> T[gh pr checks --watch]
+    T --> U[gh pr merge --merge]
+    U --> V[updated target branch]
+    C --> W[hotfix branch remains local/remote]
 ```
 
 ---
@@ -895,18 +917,25 @@ flowchart TD
     A[updated develop] --> B[git flow release start]
     B --> C[release/1.5.0]
     C --> D[immediate push]
-    D --> E[PR 1 toward main]
-    E --> F[stabilization commits and pushes]
-    F --> G[simple merge develop -> release]
-    G --> H[gh pr ready]
-    H --> I[gh pr checks --watch]
-    I --> J[gh pr merge --merge on main]
-    J --> K[tag 1.5.0]
-    K --> L[PR 2 toward develop]
+    D --> E[draft PR toward main]
+    E --> F[explicit staging + stabilization commits + pushes]
+    F --> G[merge develop into release]
+    G --> H{conflicts?}
+    H -- no --> I[git push]
+    H -- trivial --> J[agent resolves + documents in PR]
+    J --> I
+    H -- non-trivial --> K[escalate to human]
+    K --> I
+    I --> L[gh pr ready]
     L --> M[gh pr checks --watch]
-    M --> N[gh pr merge --merge on develop]
-    N --> O[updated develop]
-    C --> P[release branch remains local/remote]
+    M --> N[gh pr merge --merge on main]
+    N --> O[tag 1.5.0]
+    O --> P[PR 2 toward develop]
+    P --> Q[merge develop into release + resolve conflicts]
+    Q --> R[gh pr checks --watch]
+    R --> S[gh pr merge --merge on develop]
+    S --> T[updated develop]
+    C --> U[release branch remains local/remote]
 ```
 
 ---
@@ -1026,15 +1055,21 @@ flowchart TD
     D --> E[normal Git child branch]
     E --> F[fix/3.2.x-BUG-789]
     F --> G[immediate push]
-    G --> H[micro-commits and pushes]
-    H --> I[simple merge support -> fix]
-    I --> J[draft PR toward support]
-    J --> K[gh pr ready]
-    K --> L[gh pr checks --watch]
-    L --> M[gh pr merge --merge]
-    M --> N[updated support/3.2.x]
-    C --> O[support branch remains local/remote]
-    F --> P[fix branch remains local/remote]
+    G --> H[draft PR toward support]
+    H --> I[explicit staging + micro-commits + pushes]
+    I --> J[merge support into fix]
+    J --> K{conflicts?}
+    K -- no --> L[git push]
+    K -- trivial --> M[agent resolves + documents in PR]
+    M --> L
+    K -- non-trivial --> N[escalate to human]
+    N --> L
+    L --> O[gh pr ready]
+    O --> P[gh pr checks --watch]
+    P --> Q[gh pr merge --merge]
+    Q --> R[updated support/3.2.x]
+    C --> S[support branch remains local/remote]
+    F --> T[fix branch remains local/remote]
 ```
 
 ---
