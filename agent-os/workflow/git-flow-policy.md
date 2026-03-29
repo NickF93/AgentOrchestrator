@@ -53,26 +53,29 @@ branches always use `git checkout -b`.
 These rules apply to all branch types without exception:
 
 1. **Immediate push.** Every newly created branch MUST be pushed to origin
-   immediately after creation.
+   immediately after creation (e.g., `git push -u origin <branch>`).
 2. **Immediate draft PR.** A draft PR MUST be opened immediately after the
-   branch is pushed, for every branch type. Do not predict whether work
-   will be long or short. If the runtime cannot create PRs (sandbox
-   restriction), the agent MUST report the pending PR to the human.
+   branch is pushed, for every branch type (e.g.,
+   `gh pr create --base <target> --head <branch> --draft --fill`). Do not
+   predict whether work will be long or short. If the runtime cannot
+   create PRs (sandbox restriction), the agent MUST report the pending PR
+   to the human.
 3. **Micro-commits and frequent pushes.** Commit early, push at least by
    end of day.
-4. **Explicit staging only.** Stage files by name. Never stage the entire
-   working tree indiscriminately.
+4. **Explicit staging only.** Stage files by name (e.g.,
+   `git add <file> ...`). Never stage the entire working tree
+   indiscriminately (e.g., never `git add -A` or `git add .`).
 5. **No rebase.** Never rebase a topic branch. History is preserved as-is.
 6. **Merge-only synchronization.** Always merge the base branch into the
-   topic branch. Never rebase onto the base.
+   topic branch (e.g., `git merge <base>`). Never rebase onto the base.
 7. **Merge-commit PR merge only.** PRs MUST be merged using the merge
-   commit strategy (no squash, no rebase merge). The concrete tool
-   (e.g., `gh pr merge --merge`, GitHub web UI) is determined by the
-   skill or adapter layer.
+   commit strategy (e.g., `gh pr merge --merge`). No squash, no rebase
+   merge. The concrete tool is determined by the skill or adapter layer.
 8. **Agents never delete branches.** Neither local nor remote, neither
    topic nor long-lived. The human operator may prune manually.
 9. **Base update uses fast-forward only.** When updating a long-lived
-   branch, always fast-forward from origin (no merge commits on pull).
+   branch, always fast-forward from origin (e.g.,
+   `git pull --ff-only origin <branch>`). No merge commits on pull.
 
 ## Forbidden Operations
 
@@ -82,21 +85,22 @@ of the tool or runtime used to execute them:
 | Operation | Reason |
 |-----------|--------|
 | Local finish of topic branches (e.g., `git flow ... finish`) | Performs local merges and branch deletion; conflicts with PR-only model. |
-| PR merge with branch deletion | Deletes the branch after merge; conflicts with branch retention. |
+| PR merge with branch deletion (e.g., `gh pr merge --delete-branch`) | Deletes the branch after merge; conflicts with branch retention. |
 | Indiscriminate staging (e.g., `git add -A`, `git add .`) | Blanket staging risks committing secrets, editor files, or binaries. |
-| Rebase of topic branches | Rewrites history; conflicts with merge-only model. |
-| Force push to `main` or `develop` | Destroys shared history. |
+| Rebase of topic branches (e.g., `git rebase`) | Rewrites history; conflicts with merge-only model. |
+| Force push to `main` or `develop` (e.g., `git push --force`) | Destroys shared history. |
 
 ## Synchronization Rule
 
 Before a PR can be merged, the topic branch MUST incorporate the latest
 state of its base branch:
 
-1. Fast-forward the local base branch from origin.
-2. Switch to the topic branch.
-3. Merge the base branch into the topic branch.
+1. Fast-forward the local base branch from origin (e.g.,
+   `git checkout <base> && git pull --ff-only origin <base>`).
+2. Switch to the topic branch (e.g., `git checkout <topic-branch>`).
+3. Merge the base branch into the topic branch (e.g., `git merge <base>`).
 4. Resolve conflicts if any (see Conflict Resolution below).
-5. Push the topic branch.
+5. Push the topic branch (e.g., `git push`).
 
 The PR merge MUST be conflict-free. If the base moved between push and
 merge, repeat the synchronization.
@@ -106,14 +110,16 @@ merge, repeat the synchronization.
 ### Single-PR flows (feature, bugfix)
 
 One PR from the topic branch toward `develop`. After merge, fast-forward
-local `develop` from origin.
+local `develop` from origin (e.g., `git pull --ff-only origin develop`).
 
 ### Two-PR flows (hotfix, release)
 
 1. **PR1** from the topic branch toward `main`. After merge:
-   - fast-forward local `main` from origin,
-   - create an annotated tag on `main`,
-   - push the tag.
+   - fast-forward local `main` from origin
+     (e.g., `git pull --ff-only origin main`),
+   - create an annotated tag on `main`
+     (e.g., `git tag -a <version> -m "<type> <version>"`),
+   - push the tag (e.g., `git push origin <version>`).
 2. **PR2** (back-merge) from the topic branch toward the back-merge target.
 
 ### Back-merge target selection
@@ -133,10 +139,11 @@ The child branch opens a single PR toward the `support/*` parent.
 
 - Hotfix and release branches receive an annotated tag after PR1 (toward
   `main`) is merged.
-- Tags are created on `main` after fast-forwarding from origin.
+- Tags are created on `main` after fast-forwarding from origin
+  (e.g., `git pull --ff-only origin main`).
 - Tags MUST be annotated (not lightweight), with a message indicating the
-  type and version.
-- Tags are pushed individually to origin.
+  type and version (e.g., `git tag -a 1.4.1 -m "Hotfix 1.4.1"`).
+- Tags are pushed individually to origin (e.g., `git push origin 1.4.1`).
 
 ## Conflict Resolution
 
@@ -157,8 +164,9 @@ the PR merge, which MUST always be conflict-free.
 
 - **Trivial:** agent resolves, commits the merge, and documents the
   resolution in the PR description (files affected, hunks, strategy).
-- **Non-trivial:** agent aborts the merge, reports the conflicting files
-  and hunks to the human, and waits for human resolution.
+- **Non-trivial:** agent aborts the merge (e.g., `git merge --abort`),
+  reports the conflicting files and hunks to the human, and waits for
+  human resolution.
 - Every conflict resolution MUST be reported in the PR description or as
   a PR comment, regardless of who resolved it.
 
