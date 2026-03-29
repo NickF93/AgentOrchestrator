@@ -37,6 +37,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X20 | X | Git Flow PR-Only Skill | done |
 | X21 | X | Skill Discovery Table in AGENTS.md | done |
 | X22 | X | Planning-to-Git Mapping and Branch Naming Convention | done |
+| X23 | X | Git Flow Skill Portability Repairs | done |
 
 ## Plan
 
@@ -590,6 +591,24 @@ Status: done
 | `D22.1.2` | `D` | Add branch naming validation to git-flow-policy.md | done | Add a branch naming convention section to git-flow-policy.md that cross-references the mapping in shared-workflow.md. Include the naming pattern and hook validation rule. |
 | `C22.1.3` | `C` | Checkpoint closure — X22 planning-to-git mapping | done |  |
 
+### X23
+
+- ID: `X23`
+- Title: Git Flow Skill Portability Repairs
+- Status: done
+- Note: Repair the portability gaps found in the gitflow-pr-only rollout: register the skill in the shared asset registry, restore compliance with the skill packaging contract, and propagate portable skill discovery to the repo AGENTS template without widening scope.
+
+#### S23.1 Items
+
+Sprint: Sprint 1 — Registry, skill contract, and template portability fixes
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M23.1.1` | `M` | Register gitflow-pr-only as a portable shared skill and propagate discovery metadata | done | Fix the portability issues identified in review by registering the gitflow-pr-only skill in the canonical shared asset registry, adding the missing Expected Outputs section required by the skill packaging contract, and propagating the available-skills discovery table to the repo AGENTS template used by bootstrapped repos. |
+| `T23.1.2` | `T` | Validate gitflow skill registry resolution and plan/render consistency | done |  |
+| `C23.1.3` | `C` | Checkpoint closure — X23 gitflow skill portability repairs | done | Close the gitflow skill portability repair milestone after registry resolution, packaging-contract compliance, and template propagation are verified. Close X23, S23.1. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -640,6 +659,7 @@ Status: done
 | cg43 | gitflow-pr-only skill implementation | `D20.1.1`, `C20.1.2` |
 | cg44 | Skill discovery table in AGENTS.md | `D21.1.1`, `C21.1.2` |
 | cg45 | Planning-to-git mapping and branch naming convention | `D22.1.1`, `D22.1.2`, `C22.1.3` |
+| cg46 | Git Flow skill portability repairs — registry, contract, and template propagation | `M23.1.1`, `T23.1.2`, `C23.1.3` |
 
 ## Item Details
 
@@ -2229,3 +2249,34 @@ Status: done
   - render-plan.py produces no drift
   - shared-workflow.md contains Planning-to-Git Mapping section
   - git-flow-policy.md contains Branch Naming Convention section
+
+### M23.1.1: Register gitflow-pr-only as a portable shared skill and propagate discovery metadata
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S23.1`
+- **Actions**: implement
+- **Commit group**: `cg46`
+- **Artifacts**: PLAN.yaml, agent-os/registry/shared-assets.yaml, agent-os/skills/gitflow-pr-only/SKILL.md, agent-os/templates/repo-AGENTS.md.template
+- **Notes**: Fix the portability issues identified in review by registering the gitflow-pr-only skill in the canonical shared asset registry, adding the missing Expected Outputs section required by the skill packaging contract, and propagating the available-skills discovery table to the repo AGENTS template used by bootstrapped repos.
+
+### T23.1.2: Validate gitflow skill registry resolution and plan/render consistency
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S23.1`
+- **Actions**: verify
+- **Depends on**: `M23.1.1`
+- **Commit group**: `cg46`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - resolve-shared-asset.py resolves gitflow-pr-only in workspace mode
+  - repo-AGENTS.md.template contains the available-skills table entry for gitflow-pr-only
+
+### C23.1.3: Checkpoint closure — X23 gitflow skill portability repairs
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S23.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T23.1.2`
+- **Commit group**: `cg46`
+- **Notes**: Close the gitflow skill portability repair milestone after registry resolution, packaging-contract compliance, and template propagation are verified. Close X23, S23.1.

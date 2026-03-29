@@ -155,6 +155,18 @@ Default base branches (per git-flow-policy.md):
 | `branch`       | string | (required)    | Full topic branch name (hotfix or release)      |
 | `target`       | string | (resolved)    | Back-merge target — resolved per policy         |
 
+## Expected Outputs
+
+A concise action report describing the executed or pending workflow step:
+
+- `action` performed
+- resolved `repo_root` and `control_plane_root`
+- affected branch, base, target, or tag as applicable
+- whether remote operations were completed or deferred because of
+  sandbox/phase restrictions
+- any conflicts, escalations, or pending human actions
+- resulting PR URL, branch name, or tag reference when one is available
+
 ## Procedures
 
 ### Action: `start`

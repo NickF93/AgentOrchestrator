@@ -10,6 +10,13 @@ assets:
       - checkpoint-closure-review
       - check-result-v1
 
+  - id: gitflow-pr-only
+    kind: skill
+    version: "0.1.0"
+    path: agent-os/skills/gitflow-pr-only/SKILL.md
+    compatibility: [claude, codex, kilo, copilot]
+    materializable: true
+
   - id: checkpoint-closure-review
     kind: prompt
     version: "1.0.0"
