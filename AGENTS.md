@@ -50,6 +50,13 @@ conditions match the current task, read the relevant `SKILL.md` and follow
 its procedure. Skills are procedural — they apply existing governance rules
 and must not override or redefine them.
 
+### Available Skills
+
+| Skill ID | Path | Triggers on |
+|----------|------|-------------|
+| `plan-checkpoint-close` | `agent-os/skills/plan-checkpoint-close/SKILL.md` | Closing a checkpoint, finalizing a commit_group, verifying closure readiness |
+| `gitflow-pr-only` | `agent-os/skills/gitflow-pr-only/SKILL.md` | Starting a branch (feature, bugfix, hotfix, release, support), synchronizing a topic branch, merging a PR, tagging a release/hotfix, performing a back-merge |
+
 ## Commit Message Contract
 All commits MUST use this format:
 

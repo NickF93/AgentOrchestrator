@@ -35,6 +35,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X18 | X | Git Flow Conflict Resolution and Operational Refinements | done |
 | X19 | X | Git Flow Governance Extraction | done |
 | X20 | X | Git Flow PR-Only Skill | done |
+| X21 | X | Skill Discovery Table in AGENTS.md | done |
 
 ## Plan
 
@@ -553,6 +554,23 @@ Status: done
 | `D20.1.1` | `D` | Create gitflow-pr-only SKILL.md | done | Write the gitflow-pr-only skill with five actions (start, sync, merge, tag, back-merge). Follows the packaging contract from agent-os/skills/README.md, the two-root model from plan-checkpoint-close, and applies the governance rules from agent-os/workflow/git-flow-policy.md. Agent-agnostic with adapter notes for Claude, Codex, Kilo, and Copilot. |
 | `C20.1.2` | `C` | Checkpoint closure — X20 gitflow-pr-only skill | done | Validate plan, render views, verify skill file exists with correct frontmatter. Close X20, S20.1. |
 
+### X21
+
+- ID: `X21`
+- Title: Skill Discovery Table in AGENTS.md
+- Status: done
+- Note: Add an available-skills table to AGENTS.md § Skills so agents can discover skills by name and trigger condition without scanning the directory. Keeps AGENTS.md as the single authority for skill discovery.
+
+#### S21.1 Items
+
+Sprint: Sprint 1 — Skill discovery table
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D21.1.1` | `D` | Add available-skills table to AGENTS.md § Skills | done | Add a table listing each skill ID, its trigger conditions, and path to AGENTS.md § Skills. This makes AGENTS.md the single authority for skill discovery — agents read the table instead of scanning the directory. |
+| `C21.1.2` | `C` | Checkpoint closure — X21 skill discovery table | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -601,6 +619,7 @@ Status: done
 | cg41 | Design doc update — conflict resolution scenarios and operational refinements | `D18.1.1` |
 | cg42 | Git Flow governance extraction and authority registration | `D19.1.1`, `D19.1.2`, `C19.1.3` |
 | cg43 | gitflow-pr-only skill implementation | `D20.1.1`, `C20.1.2` |
+| cg44 | Skill discovery table in AGENTS.md | `D21.1.1`, `C21.1.2` |
 
 ## Item Details
 
@@ -2137,3 +2156,24 @@ Status: done
   - SKILL.md exists at agent-os/skills/gitflow-pr-only/SKILL.md
   - SKILL.md frontmatter contains required fields (id, description, owner, version, compatibility)
 - **Notes**: Validate plan, render views, verify skill file exists with correct frontmatter. Close X20, S20.1.
+
+### D21.1.1: Add available-skills table to AGENTS.md § Skills
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S21.1`
+- **Actions**: document
+- **Commit group**: `cg44`
+- **Artifacts**: AGENTS.md
+- **Notes**: Add a table listing each skill ID, its trigger conditions, and path to AGENTS.md § Skills. This makes AGENTS.md the single authority for skill discovery — agents read the table instead of scanning the directory.
+
+### C21.1.2: Checkpoint closure — X21 skill discovery table
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S21.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D21.1.1`
+- **Commit group**: `cg44`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - AGENTS.md § Skills contains available-skills table

@@ -229,6 +229,16 @@ milestones:
       supports the two-root model (Layer 0 and Layer 2) and is agent-agnostic
       (Claude, Codex, Kilo, Copilot).
 
+  - id: X21
+    type: X
+    title: "Skill Discovery Table in AGENTS.md"
+    status: done
+    note: >
+      Add an available-skills table to AGENTS.md § Skills so agents can
+      discover skills by name and trigger condition without scanning the
+      directory. Keeps AGENTS.md as the single authority for skill
+      discovery.
+
 sprints:
   - id: S1.1
     type: S
@@ -408,6 +418,12 @@ sprints:
     type: S
     parent: X20
     title: "Sprint 1 — gitflow-pr-only skill implementation"
+    status: done
+
+  - id: S21.1
+    type: S
+    parent: X21
+    title: "Sprint 1 — Skill discovery table"
     status: done
 
 items:
@@ -3088,6 +3104,42 @@ items:
       Validate plan, render views, verify skill file exists with correct
       frontmatter. Close X20, S20.1.
 
+  # ─── X21 / S21.1: Skill discovery table ───────────────────────────────────
+
+  - id: D21.1.1
+    parent: S21.1
+    type: D
+    title: "Add available-skills table to AGENTS.md § Skills"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: low
+    commit_group: cg44
+    scope: "AGENTS.md"
+    artifacts_out:
+      - AGENTS.md
+    notes: >
+      Add a table listing each skill ID, its trigger conditions, and path
+      to AGENTS.md § Skills. This makes AGENTS.md the single authority for
+      skill discovery — agents read the table instead of scanning the
+      directory.
+
+  - id: C21.1.2
+    parent: S21.1
+    type: C
+    title: "Checkpoint closure — X21 skill discovery table"
+    actions: [checkpoint, verify]
+    status: done
+    depends_on: [D21.1.1]
+    role: reviewer
+    effort: low
+    commit_group: cg44
+    scope: "."
+    checks:
+      - "validate-plan.py exits 0"
+      - "render-plan.py produces no drift"
+      - "AGENTS.md § Skills contains available-skills table"
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -3425,3 +3477,10 @@ commit_groups:
       Delivers the gitflow-pr-only operational skill with five actions
       (start, sync, merge, tag, back-merge), two-root model support,
       and agent-agnostic adapter notes.
+
+  - id: cg44
+    title: "Skill discovery table in AGENTS.md"
+    items: [D21.1.1, C21.1.2]
+    notes: >
+      Adds an available-skills table to AGENTS.md § Skills so agents
+      discover skills by name without scanning the directory.
