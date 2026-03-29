@@ -5,7 +5,7 @@ AUTO-GENERATED from PLAN.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-03-29
+- Last updated: 2026-03-30
 
 ## Mission
 
@@ -34,6 +34,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X17 | X | Git Flow Design Doc English Translation | done |
 | X18 | X | Git Flow Conflict Resolution and Operational Refinements | done |
 | X19 | X | Git Flow Governance Extraction | done |
+| X20 | X | Git Flow PR-Only Skill | done |
 
 ## Plan
 
@@ -535,6 +536,23 @@ Status: done
 | `D19.1.2` | `D` | Register git-flow-policy.md in canonical concern split and add design doc supersession note | done | Add git-flow-policy.md to the Canonical Concern Split table in shared-workflow.md. Add a supersession note at the top of the design document indicating which rules have been migrated to the canonical authority. |
 | `C19.1.3` | `C` | Checkpoint closure — X19 Git Flow governance extraction | done | Validate plan, render views, verify that the governance file exists, that the concern split table is updated, and that the design doc carries the supersession note. Close X19, S19.1. |
 
+### X20
+
+- ID: `X20`
+- Title: Git Flow PR-Only Skill
+- Status: done
+- Note: Deliver the gitflow-pr-only operational skill under agent-os/skills/. The skill implements five actions (start, sync, merge, tag, back-merge) as procedural steps applying the rules from git-flow-policy.md. It supports the two-root model (Layer 0 and Layer 2) and is agent-agnostic (Claude, Codex, Kilo, Copilot).
+
+#### S20.1 Items
+
+Sprint: Sprint 1 — gitflow-pr-only skill implementation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D20.1.1` | `D` | Create gitflow-pr-only SKILL.md | done | Write the gitflow-pr-only skill with five actions (start, sync, merge, tag, back-merge). Follows the packaging contract from agent-os/skills/README.md, the two-root model from plan-checkpoint-close, and applies the governance rules from agent-os/workflow/git-flow-policy.md. Agent-agnostic with adapter notes for Claude, Codex, Kilo, and Copilot. |
+| `C20.1.2` | `C` | Checkpoint closure — X20 gitflow-pr-only skill | done | Validate plan, render views, verify skill file exists with correct frontmatter. Close X20, S20.1. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -582,6 +600,7 @@ Status: done
 | cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 | cg41 | Design doc update — conflict resolution scenarios and operational refinements | `D18.1.1` |
 | cg42 | Git Flow governance extraction and authority registration | `D19.1.1`, `D19.1.2`, `C19.1.3` |
+| cg43 | gitflow-pr-only skill implementation | `D20.1.1`, `C20.1.2` |
 
 ## Item Details
 
@@ -2095,3 +2114,26 @@ Status: done
 - **Depends on**: `D19.1.1`, `D19.1.2`
 - **Commit group**: `cg42`
 - **Notes**: Validate plan, render views, verify that the governance file exists, that the concern split table is updated, and that the design doc carries the supersession note. Close X19, S19.1.
+
+### D20.1.1: Create gitflow-pr-only SKILL.md
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: high
+- **Sprint**: `S20.1`
+- **Actions**: implement
+- **Commit group**: `cg43`
+- **Artifacts**: agent-os/skills/gitflow-pr-only/SKILL.md
+- **Notes**: Write the gitflow-pr-only skill with five actions (start, sync, merge, tag, back-merge). Follows the packaging contract from agent-os/skills/README.md, the two-root model from plan-checkpoint-close, and applies the governance rules from agent-os/workflow/git-flow-policy.md. Agent-agnostic with adapter notes for Claude, Codex, Kilo, and Copilot.
+
+### C20.1.2: Checkpoint closure — X20 gitflow-pr-only skill
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S20.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D20.1.1`
+- **Commit group**: `cg43`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - SKILL.md exists at agent-os/skills/gitflow-pr-only/SKILL.md
+  - SKILL.md frontmatter contains required fields (id, description, owner, version, compatibility)
+- **Notes**: Validate plan, render views, verify skill file exists with correct frontmatter. Close X20, S20.1.

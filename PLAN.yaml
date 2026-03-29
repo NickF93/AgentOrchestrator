@@ -1,14 +1,14 @@
 # PLAN.yaml — AgentOrchestrator (Level-0 Control Plane OS)
 # Source of truth for the MVP construction plan of the agent-os/ control plane.
 # PLAN.md and PLAN.dot are GENERATED views — do not edit them manually.
-# Last updated: 2026-03-29
+# Last updated: 2026-03-30
 
 meta:
   repo: AgentOrchestrator
   owner: NickF93
   version: "0.1"
   schema_version: "draft-1.0"
-  last_updated: "2026-03-29"
+  last_updated: "2026-03-30"
   note: >
     This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself.
@@ -218,6 +218,17 @@ milestones:
       the new authority in the Canonical Concern Split table and add a
       supersession note to the design document.
 
+  - id: X20
+    type: X
+    title: "Git Flow PR-Only Skill"
+    status: done
+    note: >
+      Deliver the gitflow-pr-only operational skill under agent-os/skills/.
+      The skill implements five actions (start, sync, merge, tag, back-merge)
+      as procedural steps applying the rules from git-flow-policy.md. It
+      supports the two-root model (Layer 0 and Layer 2) and is agent-agnostic
+      (Claude, Codex, Kilo, Copilot).
+
 sprints:
   - id: S1.1
     type: S
@@ -391,6 +402,12 @@ sprints:
     type: S
     parent: X19
     title: "Sprint 1 — Git Flow governance file and authority registration"
+    status: done
+
+  - id: S20.1
+    type: S
+    parent: X20
+    title: "Sprint 1 — gitflow-pr-only skill implementation"
     status: done
 
 items:
@@ -3030,6 +3047,47 @@ items:
       that the concern split table is updated, and that the design doc
       carries the supersession note. Close X19, S19.1.
 
+  # ─── X20 / S20.1: Git Flow PR-Only Skill ──────────────────────────────────
+
+  - id: D20.1.1
+    parent: S20.1
+    type: D
+    title: "Create gitflow-pr-only SKILL.md"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: high
+    commit_group: cg43
+    scope: "agent-os/skills"
+    artifacts_out:
+      - agent-os/skills/gitflow-pr-only/SKILL.md
+    notes: >
+      Write the gitflow-pr-only skill with five actions (start, sync, merge,
+      tag, back-merge). Follows the packaging contract from agent-os/skills/README.md,
+      the two-root model from plan-checkpoint-close, and applies the governance
+      rules from agent-os/workflow/git-flow-policy.md. Agent-agnostic with
+      adapter notes for Claude, Codex, Kilo, and Copilot.
+
+  - id: C20.1.2
+    parent: S20.1
+    type: C
+    title: "Checkpoint closure — X20 gitflow-pr-only skill"
+    actions: [checkpoint, verify]
+    status: done
+    depends_on: [D20.1.1]
+    role: reviewer
+    effort: low
+    commit_group: cg43
+    scope: "."
+    checks:
+      - "validate-plan.py exits 0"
+      - "render-plan.py produces no drift"
+      - "SKILL.md exists at agent-os/skills/gitflow-pr-only/SKILL.md"
+      - "SKILL.md frontmatter contains required fields (id, description, owner, version, compatibility)"
+    notes: >
+      Validate plan, render views, verify skill file exists with correct
+      frontmatter. Close X20, S20.1.
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -3359,3 +3417,11 @@ commit_groups:
       operational refinements (always-draft-PR, explicit staging, no agent
       branch deletion, release-branch exception), and branch protection
       requirements to the Git Flow English design document.
+
+  - id: cg43
+    title: "gitflow-pr-only skill implementation"
+    items: [D20.1.1, C20.1.2]
+    notes: >
+      Delivers the gitflow-pr-only operational skill with five actions
+      (start, sync, merge, tag, back-merge), two-root model support,
+      and agent-agnostic adapter notes.
