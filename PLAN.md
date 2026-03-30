@@ -40,7 +40,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X23 | X | Git Flow Skill Portability Repairs | done |
 | X24 | X | TODO Checklist Refresh After Git Flow Rollout | done |
 | X25 | X | Full Runtime Parity and First-Class Promotion | done |
-| X26 | X | Gemini and Cursor First-Class Portability | in_progress |
+| X26 | X | Gemini and Cursor First-Class Portability | done |
 
 ## Plan
 
@@ -665,7 +665,7 @@ Status: done
 
 - ID: `X26`
 - Title: Gemini and Cursor First-Class Portability
-- Status: in_progress
+- Status: done
 - Note: Extend the first-class runtime portability model to Gemini and Cursor through thin repo-scoped native entrypoints, bootstrap integration, active profiles, registry/runtime compatibility updates, and end-to-end validation while preserving the existing workspace-vs-repo entrypoint boundary.
 
 #### S26.1 Items
@@ -682,15 +682,16 @@ Status: done
 #### S26.2 Items
 
 Sprint: Sprint 2 — Tooling integration, runtime updates, and validation
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `M26.2.1` | `M` | Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints | done |  |
 | `M26.2.2` | `M` | Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills | done |  |
 | `D26.2.3` | `D` | Remediate runtime portability drift in README.md and TODO.md | done |  |
-| `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | ready |  |
-| `C26.2.5` | `C` | Checkpoint closure — X26 Gemini and Cursor first-class portability | planned |  |
+| `M26.2.6` | `M` | Harden run-gates.sh against stale mypy cache failures | done |  |
+| `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | done |  |
+| `C26.2.5` | `C` | Checkpoint closure — X26 Gemini and Cursor first-class portability | done |  |
 
 ## Commit Groups
 
@@ -749,7 +750,7 @@ Status: in_progress
 | cg50 | Validation and milestone closure for X25 | `T25.2.4`, `C25.2.5` |
 | cg51 | Gemini/Cursor portability governance update and bootstrap templates | `D26.1.1`, `M26.1.2`, `M26.1.3` |
 | cg52 | Gemini/Cursor tooling integration and runtime compatibility updates | `M26.2.1`, `M26.2.2`, `D26.2.3` |
-| cg53 | Gemini/Cursor portability validation and milestone closure | `T26.2.4`, `C26.2.5` |
+| cg53 | Gemini/Cursor portability validation and milestone closure | `M26.2.6`, `T26.2.4`, `C26.2.5` |
 
 ## Item Details
 
@@ -2532,12 +2533,21 @@ Status: in_progress
 - **Commit group**: `cg52`
 - **Artifacts**: README.md, TODO.md
 
+### M26.2.6: Harden run-gates.sh against stale mypy cache failures
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S26.2`
+- **Actions**: implement, refactor
+- **Depends on**: `D26.2.3`
+- **Commit group**: `cg53`
+- **Artifacts**: agent-os/scripts/run-gates.sh
+
 ### T26.2.4: Validate six-runtime portability across bootstrap, sync, profiles, and governance
 
-- **Type**: T | **Status**: ready | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S26.2`
 - **Actions**: test, verify
-- **Depends on**: `D26.2.3`
+- **Depends on**: `D26.2.3`, `M26.2.6`
 - **Commit group**: `cg53`
 - **Checks**:
   - bootstrap-repo.sh creates CLAUDE.md with adapter overrides
@@ -2555,7 +2565,7 @@ Status: in_progress
 
 ### C26.2.5: Checkpoint closure — X26 Gemini and Cursor first-class portability
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S26.2`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T26.2.4`

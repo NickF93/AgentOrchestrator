@@ -69,6 +69,20 @@ def test_bootstrap_repo_creates_expected_files(
     assert "## Adapter Overrides" in codex_text
     assert "## Sandbox Notes" in codex_text
 
+    gemini_file = target_repo / "GEMINI.md"
+    assert gemini_file.exists()
+    gemini_text = gemini_file.read_text(encoding="utf-8")
+    assert "thin runtime entrypoint" in gemini_text
+    assert "AGENTS.md" in gemini_text
+    assert "## Adapter Overrides" in gemini_text
+
+    cursor_rules = target_repo / ".cursor" / "rules" / "governance.mdc"
+    assert cursor_rules.exists()
+    cursor_text = cursor_rules.read_text(encoding="utf-8")
+    assert "thin runtime entrypoint" in cursor_text
+    assert "AGENTS.md" in cursor_text
+    assert "## Adapter Overrides" in cursor_text
+
     kilo_rules = target_repo / ".kilocode" / "rules" / "governance.md"
     assert kilo_rules.exists()
     kilo_text = kilo_rules.read_text(encoding="utf-8")
@@ -104,7 +118,11 @@ def test_sync_workspace_stamps_control_plane_root(
     assert "CONTROL_PLANE_ROOT:" in workspace_codex
     assert str(repo_root) in workspace_codex
     assert "## Adapter Overrides" in workspace_codex
+
+    assert not (workspace_root / "GEMINI.md").exists()
+    assert not (workspace_root / ".cursor").exists()
     assert not (workspace_root / ".github").exists()
+    assert not (workspace_root / ".kilocode").exists()
     assert not (workspace_root / "KILO.md").exists()
 
 

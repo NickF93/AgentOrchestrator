@@ -285,7 +285,7 @@ milestones:
   - id: X26
     type: X
     title: "Gemini and Cursor First-Class Portability"
-    status: in_progress
+    status: done
     note: >
       Extend the first-class runtime portability model to Gemini and Cursor
       through thin repo-scoped native entrypoints, bootstrap integration,
@@ -520,7 +520,7 @@ sprints:
     type: S
     parent: X26
     title: "Sprint 2 — Tooling integration, runtime updates, and validation"
-    status: in_progress
+    status: done
 
 items:
 
@@ -3621,16 +3621,30 @@ items:
       - README.md
       - TODO.md
 
+  - id: M26.2.6
+    parent: S26.2
+    type: M
+    title: "Harden run-gates.sh against stale mypy cache failures"
+    actions: [implement, refactor]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg53
+    depends_on: [D26.2.3]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/run-gates.sh
+
   - id: T26.2.4
     parent: S26.2
     type: T
     title: "Validate six-runtime portability across bootstrap, sync, profiles, and governance"
     actions: [test, verify]
-    status: ready
+    status: done
     role: tester
     effort: medium
     commit_group: cg53
-    depends_on: [D26.2.3]
+    depends_on: [D26.2.3, M26.2.6]
     scope: "."
     checks:
       - "bootstrap-repo.sh creates CLAUDE.md with adapter overrides"
@@ -3651,7 +3665,7 @@ items:
     type: C
     title: "Checkpoint closure — X26 Gemini and Cursor first-class portability"
     actions: [checkpoint, verify]
-    status: planned
+    status: done
     role: reviewer
     effort: low
     commit_group: cg53
@@ -4075,8 +4089,9 @@ commit_groups:
 
   - id: cg53
     title: "Gemini/Cursor portability validation and milestone closure"
-    items: [T26.2.4, C26.2.5]
+    items: [M26.2.6, T26.2.4, C26.2.5]
     notes: >
       Validates six-runtime portability end to end across bootstrap, sync,
-      profiles, registry, governance, and generated plan views. Closes X26,
+      profiles, registry, governance, generated plan views, and any
+      remediation needed to keep the gate runner deterministic. Closes X26,
       S26.1, S26.2.
