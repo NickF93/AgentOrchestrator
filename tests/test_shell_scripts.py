@@ -52,6 +52,29 @@ def test_bootstrap_repo_creates_expected_files(
     copilot_text = copilot_instructions.read_text(encoding="utf-8")
     assert "thin runtime entrypoint" in copilot_text
     assert "AGENTS.md" in copilot_text
+    assert "## Adapter Overrides" in copilot_text
+
+    claude_md = target_repo / "CLAUDE.md"
+    assert claude_md.exists()
+    claude_text = claude_md.read_text(encoding="utf-8")
+    assert "thin runtime entrypoint" in claude_text
+    assert "AGENTS.md" in claude_text
+    assert "## Adapter Overrides" in claude_text
+
+    codex_file = target_repo / ".codex"
+    assert codex_file.exists()
+    codex_text = codex_file.read_text(encoding="utf-8")
+    assert "thin runtime entrypoint" in codex_text
+    assert "AGENTS.md" in codex_text
+    assert "## Adapter Overrides" in codex_text
+    assert "## Sandbox Notes" in codex_text
+
+    kilo_rules = target_repo / ".kilocode" / "rules" / "governance.md"
+    assert kilo_rules.exists()
+    kilo_text = kilo_rules.read_text(encoding="utf-8")
+    assert "thin runtime entrypoint" in kilo_text
+    assert "AGENTS.md" in kilo_text
+    assert "## Adapter Overrides" in kilo_text
 
 
 def test_sync_workspace_stamps_control_plane_root(

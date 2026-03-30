@@ -99,6 +99,9 @@ render_template "$TEMPLATES_DIR/repo-README.md.template" "$TARGET/README.md"
 render_template "$TEMPLATES_DIR/repo-ADR.md.template" "$TARGET/docs/adr/ADR-0001.md"
 render_template "$TEMPLATES_DIR/repo-commit-msg.template" "$TARGET/.githooks/commit-msg"
 render_template "$TEMPLATES_DIR/repo-copilot-instructions.md.template" "$TARGET/.github/copilot-instructions.md"
+render_template "$TEMPLATES_DIR/repo-CLAUDE.md.template" "$TARGET/CLAUDE.md"
+render_template "$TEMPLATES_DIR/repo-CODEX.md.template" "$TARGET/.codex"
+render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilocode/rules/governance.md"
 
 if [[ "$DRY_RUN" -eq 0 && -f "$TARGET/.githooks/commit-msg" ]]; then
   chmod +x "$TARGET/.githooks/commit-msg"
