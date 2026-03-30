@@ -15,6 +15,8 @@ version: "0.1.0"
 compatibility:
   - claude
   - codex
+  - gemini
+  - cursor
   - kilo
   - copilot
 ---
@@ -541,12 +543,12 @@ governance rules.
 
 ### Kilo
 
-Kilo uses `AGENTS.md` as its portable repo-level entrypoint. The skill
-is invoked through the standard `AGENTS.md` skill reference. Kilo agents
-should resolve `control_plane_root` via workspace-first discovery
-(`CONTROL_PLANE_ROOT` environment variable) or explicit input. Command
-execution follows the same shell sequences. Sandbox restrictions apply
-the same deferral model as Codex.
+Kilo uses `.kilocode/rules/governance.md` as its thin repo-local
+entrypoint in bootstrapped repositories. Kilo agents should resolve
+canonical governance from `AGENTS.md` and the workflow authorities after
+the runtime entrypoint is loaded. Command execution follows the same
+shell sequences. Sandbox restrictions apply the same deferral model as
+Codex.
 
 ### Copilot
 
@@ -557,3 +559,21 @@ to `gh` CLI for PR operations. Control plane resolution uses the
 workspace layout or explicit configuration. The same procedures apply;
 Copilot-specific behavior (e.g., inline suggestions vs. terminal
 execution) is handled by the Copilot adapter profile.
+
+### Gemini
+
+When invoked via Gemini CLI or Gemini-based agents, the skill is
+referenced from `GEMINI.md` (the thin repo-local entrypoint). Gemini
+agents should resolve canonical governance from `AGENTS.md` and the
+workflow authorities after the runtime entrypoint is loaded. The same
+procedures apply; Gemini-specific instruction tuning belongs in the
+profile or entrypoint layer, not in the shared skill.
+
+### Cursor
+
+When invoked via Cursor, the skill is referenced from
+`.cursor/rules/governance.mdc` (the thin repo-local entrypoint). Cursor
+agents should resolve canonical governance from `AGENTS.md` and the
+workflow authorities after the runtime entrypoint is loaded. The same
+procedures apply; Cursor-specific behavior belongs in the profile or
+entrypoint layer, not in the shared skill.

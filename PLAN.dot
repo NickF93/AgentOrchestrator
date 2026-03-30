@@ -64,7 +64,7 @@ digraph PLAN {
   "S25.1" [label="S25.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S25.2" [label="S25.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S26.1" [label="S26.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S26.2" [label="S26.2 | S | ready", shape=tab, style="filled,rounded", fillcolor=lightyellow];
+  "S26.2" [label="S26.2 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -434,14 +434,14 @@ digraph PLAN {
   subgraph "cluster_cg52" {
     style="rounded,dashed";
     label="cg52: Gemini/Cursor tooling integration and runtime compatibility updates";
-  "M26.2.1" [label="M26.2.1 | M | ready", shape=box, style="filled,rounded", fillcolor=lightyellow];
-  "M26.2.2" [label="M26.2.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "D26.2.3" [label="D26.2.3 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "M26.2.1" [label="M26.2.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M26.2.2" [label="M26.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "D26.2.3" [label="D26.2.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg53" {
     style="rounded,dashed";
     label="cg53: Gemini/Cursor portability validation and milestone closure";
-  "T26.2.4" [label="T26.2.4 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "T26.2.4" [label="T26.2.4 | T | ready", shape=ellipse, style="filled,rounded", fillcolor=lightyellow];
   "C26.2.5" [label="C26.2.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
   }
   "X1" -> "S1.1" [style=dashed];

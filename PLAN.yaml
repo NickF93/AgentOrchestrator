@@ -520,7 +520,7 @@ sprints:
     type: S
     parent: X26
     title: "Sprint 2 — Tooling integration, runtime updates, and validation"
-    status: ready
+    status: in_progress
 
 items:
 
@@ -3576,7 +3576,7 @@ items:
     type: M
     title: "Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints"
     actions: [implement]
-    status: ready
+    status: done
     role: implementer
     effort: medium
     commit_group: cg52
@@ -3588,16 +3588,15 @@ items:
   - id: M26.2.2
     parent: S26.2
     type: M
-    title: "Add Gemini/Cursor profiles and update runtime compatibility across governance and shared assets"
+    title: "Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills"
     actions: [implement, document]
-    status: planned
+    status: done
     role: implementer
     effort: high
     commit_group: cg52
     depends_on: [M26.2.1]
     scope: "."
     artifacts_out:
-      - agent-os/workflow/portability-model.md
       - agent-os/workflow/shared-workflow.md
       - agent-os/registry/shared-assets.yaml
       - agent-os/profiles/gemini/check-medium.yaml
@@ -3612,7 +3611,7 @@ items:
     type: D
     title: "Remediate runtime portability drift in README.md and TODO.md"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: low
     commit_group: cg52
@@ -3627,7 +3626,7 @@ items:
     type: T
     title: "Validate six-runtime portability across bootstrap, sync, profiles, and governance"
     actions: [test, verify]
-    status: planned
+    status: ready
     role: tester
     effort: medium
     commit_group: cg53

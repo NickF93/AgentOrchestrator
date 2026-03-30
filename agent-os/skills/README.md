@@ -18,6 +18,8 @@ Shared-asset support is currently defined for:
 
 - `claude`
 - `codex`
+- `gemini`
+- `cursor`
 - `kilo`
 - `copilot`
 

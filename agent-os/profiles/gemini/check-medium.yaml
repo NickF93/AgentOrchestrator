@@ -1,0 +1,13 @@
+id: gemini/check-medium
+owner: NickF93
+version: "1.0.0"
+status: active
+target_runtime: gemini
+intended_task_class: check
+default_effort: medium
+default_context_policy: focused
+expected_prompt_id: checkpoint-closure-review
+expected_result_protocol_id: check-result-v1
+adapter_notes:
+  - Use GEMINI.md as the thin runtime entrypoint in bootstrapped repos, then resolve canonical governance from AGENTS.md and workflow authorities.
+  - Keep runtime-specific instruction tuning in the entrypoint or profile layer, not in the shared prompt.

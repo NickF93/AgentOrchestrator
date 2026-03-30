@@ -4,7 +4,7 @@ assets:
     kind: skill
     version: "0.3.0"
     path: agent-os/skills/plan-checkpoint-close/SKILL.md
-    compatibility: [claude, codex, kilo, copilot]
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true
     depends_on_assets:
       - checkpoint-closure-review
@@ -14,14 +14,14 @@ assets:
     kind: skill
     version: "0.1.0"
     path: agent-os/skills/gitflow-pr-only/SKILL.md
-    compatibility: [claude, codex, kilo, copilot]
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true
 
   - id: checkpoint-closure-review
     kind: prompt
     version: "1.0.0"
     path: agent-os/prompts/checkpoint-closure-review.md
-    compatibility: [claude, codex, kilo, copilot]
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true
     depends_on_assets:
       - check-result-v1
@@ -56,11 +56,31 @@ assets:
       - checkpoint-closure-review
       - check-result-v1
 
+  - id: gemini/check-medium
+    kind: profile
+    version: "1.0.0"
+    path: agent-os/profiles/gemini/check-medium.yaml
+    compatibility: [gemini]
+    materializable: true
+    depends_on_assets:
+      - checkpoint-closure-review
+      - check-result-v1
+
+  - id: cursor/check-medium
+    kind: profile
+    version: "1.0.0"
+    path: agent-os/profiles/cursor/check-medium.yaml
+    compatibility: [cursor]
+    materializable: true
+    depends_on_assets:
+      - checkpoint-closure-review
+      - check-result-v1
+
   - id: check-result-v1
     kind: protocol
     version: "1.0.0"
     path: agent-os/protocols/check-result-v1.yaml
-    compatibility: [claude, codex, kilo, copilot]
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true
 
   - id: kilo/check-medium

@@ -12,6 +12,8 @@ version: "0.3.0"
 compatibility:
   - claude
   - codex
+  - gemini
+  - cursor
   - kilo
   - copilot
 ---
@@ -47,7 +49,8 @@ Shared asset companions for this skill:
 
 - prompt: `checkpoint-closure-review`
 - result protocol: `check-result-v1`
-- profiles: `claude/check-medium`, `codex/check-medium`, `kilo/check-medium`,
+- profiles: `claude/check-medium`, `codex/check-medium`,
+  `gemini/check-medium`, `cursor/check-medium`, `kilo/check-medium`,
   `copilot/check-medium`
 
 ## Two-Root Model
@@ -396,3 +399,34 @@ When invoked via Codex agents, use the file system and shell tools
 available in the sandbox. Both `repo_root` and `control_plane_root` must
 be accessible within the sandbox filesystem. If the workspace layout
 places them as siblings, both should be mounted.
+
+### Kilo
+
+When invoked via Kilo, the skill is referenced from
+`.kilocode/rules/governance.md` in bootstrapped repositories. Resolve
+canonical governance from `AGENTS.md` and the workflow authorities after
+the runtime entrypoint is loaded. Run the same shared validation/render
+tooling from `control_plane_root` against the target repo.
+
+### Copilot
+
+When invoked via GitHub Copilot agents, the skill is referenced from
+`.github/copilot-instructions.md` (the thin repo-local entrypoint).
+Control plane resolution uses the workspace layout or explicit
+configuration. The same closure procedure applies.
+
+### Gemini
+
+When invoked via Gemini CLI or Gemini-based agents, the skill is
+referenced from `GEMINI.md` (the thin repo-local entrypoint). Resolve
+canonical governance from `AGENTS.md` and the workflow authorities after
+the runtime entrypoint is loaded. The same shared validation/render
+tooling and closure procedure apply.
+
+### Cursor
+
+When invoked via Cursor, the skill is referenced from
+`.cursor/rules/governance.mdc` (the thin repo-local entrypoint). Resolve
+canonical governance from `AGENTS.md` and the workflow authorities after
+the runtime entrypoint is loaded. The same shared validation/render
+tooling and closure procedure apply.

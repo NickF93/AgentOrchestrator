@@ -682,14 +682,14 @@ Status: done
 #### S26.2 Items
 
 Sprint: Sprint 2 — Tooling integration, runtime updates, and validation
-Status: ready
+Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `M26.2.1` | `M` | Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints | ready |  |
-| `M26.2.2` | `M` | Add Gemini/Cursor profiles and update runtime compatibility across governance and shared assets | planned |  |
-| `D26.2.3` | `D` | Remediate runtime portability drift in README.md and TODO.md | planned |  |
-| `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | planned |  |
+| `M26.2.1` | `M` | Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints | done |  |
+| `M26.2.2` | `M` | Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills | done |  |
+| `D26.2.3` | `D` | Remediate runtime portability drift in README.md and TODO.md | done |  |
+| `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | ready |  |
 | `C26.2.5` | `C` | Checkpoint closure — X26 Gemini and Cursor first-class portability | planned |  |
 
 ## Commit Groups
@@ -2507,25 +2507,25 @@ Status: ready
 
 ### M26.2.1: Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints
 
-- **Type**: M | **Status**: ready | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S26.2`
 - **Actions**: implement
 - **Depends on**: `M26.1.2`, `M26.1.3`
 - **Commit group**: `cg52`
 - **Artifacts**: agent-os/scripts/bootstrap-repo.sh
 
-### M26.2.2: Add Gemini/Cursor profiles and update runtime compatibility across governance and shared assets
+### M26.2.2: Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S26.2`
 - **Actions**: implement, document
 - **Depends on**: `M26.2.1`
 - **Commit group**: `cg52`
-- **Artifacts**: agent-os/workflow/portability-model.md, agent-os/workflow/shared-workflow.md, agent-os/registry/shared-assets.yaml, agent-os/profiles/gemini/check-medium.yaml, agent-os/profiles/cursor/check-medium.yaml, agent-os/skills/README.md, agent-os/prompts/README.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/gitflow-pr-only/SKILL.md
+- **Artifacts**: agent-os/workflow/shared-workflow.md, agent-os/registry/shared-assets.yaml, agent-os/profiles/gemini/check-medium.yaml, agent-os/profiles/cursor/check-medium.yaml, agent-os/skills/README.md, agent-os/prompts/README.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/gitflow-pr-only/SKILL.md
 
 ### D26.2.3: Remediate runtime portability drift in README.md and TODO.md
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S26.2`
 - **Actions**: document
 - **Depends on**: `M26.2.2`
@@ -2534,7 +2534,7 @@ Status: ready
 
 ### T26.2.4: Validate six-runtime portability across bootstrap, sync, profiles, and governance
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: ready | **Role**: tester | **Effort**: medium
 - **Sprint**: `S26.2`
 - **Actions**: test, verify
 - **Depends on**: `D26.2.3`
