@@ -1,14 +1,14 @@
 # PLAN.yaml — AgentOrchestrator (Level-0 Control Plane OS)
 # Source of truth for the MVP construction plan of the agent-os/ control plane.
 # PLAN.md and PLAN.dot are GENERATED views — do not edit them manually.
-# Last updated: 2026-03-30
+# Last updated: 2026-03-31
 
 meta:
   repo: AgentOrchestrator
   owner: NickF93
   version: "0.1"
   schema_version: "draft-1.0"
-  last_updated: "2026-03-30"
+  last_updated: "2026-03-31"
   note: >
     This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself.
@@ -271,6 +271,17 @@ milestones:
       the recent Git Flow governance, skill, portability, and planning-to-git
       mapping commits without expanding it into a second source of truth.
 
+  - id: X25
+    type: X
+    title: "Full Runtime Parity and First-Class Promotion"
+    status: in_progress
+    note: >
+      Achieve full runtime parity by creating bootstrap templates for all
+      four runtimes (Claude, Codex, Copilot, Kilo), refining the first-class
+      tier definition to support both workspace-scoped and repo-scoped
+      runtimes, and promoting all runtimes to first-class status with
+      end-to-end validation.
+
 sprints:
   - id: S1.1
     type: S
@@ -475,6 +486,18 @@ sprints:
     parent: X24
     title: "Sprint 1 — TODO.md refresh"
     status: done
+
+  - id: S25.1
+    type: S
+    parent: X25
+    title: "Sprint 1 — Governance model update and bootstrap template creation"
+    status: done
+
+  - id: S25.2
+    type: S
+    parent: X25
+    title: "Sprint 2 — Tooling integration, profile updates, and validation"
+    status: planned
 
 items:
 
@@ -3327,6 +3350,161 @@ items:
       skill, discovery metadata, planning-to-git mapping, and portability
       repair work.
 
+  # ─── X25: Full Runtime Parity and First-Class Promotion ─────────────────────
+
+  - id: D25.1.1
+    parent: S25.1
+    type: D
+    title: "Refine portability-model.md first-class tier for workspace-scoped and repo-scoped runtimes"
+    actions: [design, document]
+    status: done
+    role: orchestrator
+    effort: medium
+    commit_group: cg48
+    scope: "agent-os/workflow"
+    artifacts_out:
+      - agent-os/workflow/portability-model.md
+
+  - id: M25.1.2
+    parent: S25.1
+    type: M
+    title: "Create repo-CLAUDE.md.template for downstream repo bootstrap"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg48
+    depends_on: [D25.1.1]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/repo-CLAUDE.md.template
+
+  - id: M25.1.3
+    parent: S25.1
+    type: M
+    title: "Create repo-CODEX.md.template for downstream repo bootstrap"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg48
+    depends_on: [D25.1.1]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/repo-CODEX.md.template
+
+  - id: M25.1.4
+    parent: S25.1
+    type: M
+    title: "Add adapter overrides section to repo-copilot-instructions.md.template"
+    actions: [implement, refactor]
+    status: done
+    role: implementer
+    effort: low
+    commit_group: cg48
+    depends_on: [D25.1.1]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/repo-copilot-instructions.md.template
+
+  - id: M25.1.5
+    parent: S25.1
+    type: M
+    title: "Create repo-kilo-rules.md.template for Kilo bootstrap entrypoint"
+    actions: [implement]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg48
+    depends_on: [D25.1.1]
+    scope: "agent-os/templates"
+    artifacts_out:
+      - agent-os/templates/repo-kilo-rules.md.template
+
+  - id: M25.2.1
+    parent: S25.2
+    type: M
+    title: "Update bootstrap-repo.sh to generate Claude, Codex, and Kilo entrypoints"
+    actions: [implement]
+    status: planned
+    role: implementer
+    effort: medium
+    commit_group: cg49
+    depends_on: [M25.1.2, M25.1.3, M25.1.5]
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/bootstrap-repo.sh
+
+  - id: M25.2.2
+    parent: S25.2
+    type: M
+    title: "Update runtime profiles, portability status table, and shared-workflow.md"
+    actions: [implement, document]
+    status: planned
+    role: implementer
+    effort: low
+    commit_group: cg49
+    depends_on: [M25.2.1]
+    scope: "."
+    artifacts_out:
+      - agent-os/workflow/portability-model.md
+      - agent-os/workflow/shared-workflow.md
+      - agent-os/profiles/kilo/check-medium.yaml
+
+  - id: D25.2.3
+    parent: S25.2
+    type: D
+    title: "Update TODO.md for runtime parity completion"
+    actions: [document]
+    status: planned
+    role: documenter
+    effort: low
+    commit_group: cg49
+    depends_on: [M25.2.2]
+    scope: "TODO.md"
+    artifacts_out:
+      - TODO.md
+
+  - id: T25.2.4
+    parent: S25.2
+    type: T
+    title: "Validate full runtime parity across bootstrap, sync, profiles, and governance"
+    actions: [test, verify]
+    status: planned
+    role: tester
+    effort: medium
+    commit_group: cg50
+    depends_on: [D25.2.3]
+    scope: "."
+    checks:
+      - "bootstrap-repo.sh creates CLAUDE.md with adapter overrides"
+      - "bootstrap-repo.sh creates .codex with adapter overrides and sandbox notes"
+      - "bootstrap-repo.sh creates .github/copilot-instructions.md with adapter overrides"
+      - "bootstrap-repo.sh creates .kilocode/rules/governance.md"
+      - "sync-workspace.sh still renders only AGENTS.md, CLAUDE.md, and .codex"
+      - "portability-model.md shows all four runtimes as first-class"
+      - "validate-plan.py exits 0"
+      - "render-plan.py produces no drift"
+      - "pytest -q passes"
+      - "run-gates.sh passes"
+
+  - id: C25.2.5
+    parent: S25.2
+    type: C
+    title: "Checkpoint closure — X25 full runtime parity and first-class promotion"
+    actions: [checkpoint, verify]
+    status: planned
+    role: reviewer
+    effort: low
+    commit_group: cg50
+    depends_on: [T25.2.4]
+    scope: "."
+    shared_assets:
+      skill: plan-checkpoint-close
+      prompt: checkpoint-closure-review
+      profile: claude/check-medium
+      result_protocol: check-result-v1
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -3697,3 +3875,26 @@ commit_groups:
       Refreshes the non-authoritative TODO.md checklist so it reflects the
       recently completed Git Flow governance, skill, portability, and
       planning-to-git mapping work without changing canonical authorities.
+
+  - id: cg48
+    title: "Runtime parity governance update and bootstrap templates"
+    items: [D25.1.1, M25.1.2, M25.1.3, M25.1.4, M25.1.5]
+    notes: >
+      Refines the first-class tier definition to support both workspace-scoped
+      and repo-scoped runtimes, creates bootstrap templates for Claude, Codex,
+      and Kilo, and adds adapter overrides to the Copilot bootstrap template.
+
+  - id: cg49
+    title: "Tooling integration and profile updates for first-class promotion"
+    items: [M25.2.1, M25.2.2, D25.2.3]
+    notes: >
+      Updates bootstrap-repo.sh to generate all four runtime entrypoints,
+      promotes all runtimes to first-class in the portability status table,
+      updates the Kilo profile, and refreshes TODO.md.
+
+  - id: cg50
+    title: "Validation and milestone closure for X25"
+    items: [T25.2.4, C25.2.5]
+    notes: >
+      End-to-end validation of full runtime parity across bootstrap, sync,
+      profiles, and governance. Closes X25, S25.1, S25.2.

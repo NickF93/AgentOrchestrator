@@ -1,6 +1,6 @@
 # AUTO-GENERATED from Level-0 template. Do not edit manually.
 
-# GitHub Copilot Repository Instructions
+# Codex Repository Instructions
 
 This file is a thin runtime entrypoint. It does not define governance rules.
 All normative rules live in the canonical authorities listed below.
@@ -11,14 +11,6 @@ All normative rules live in the canonical authorities listed below.
 - `ARCHITECTURE.md` — software constraints and boundaries
 - `PLAN.yaml` — active execution tracking
 - `REPO_MAP.md` — practical codebase topology reference
-
-## Runtime Boundary
-
-- Keep this file thin. Do not duplicate governance rules here.
-- Runtime-specific Copilot notes may be added only when they do not change the
-  meaning of the canonical authorities.
-- Follow `AGENTS.md` for tracking-first execution, commit-group closure, and
-  escalation rules.
 
 ## Adapter Overrides
 
@@ -43,10 +35,22 @@ automatically: implement, update statuses, run checks, validate, render,
 and commit each `commit_group` as it completes. Do not stop to ask between
 commit_groups unless an escalation condition from `AGENTS.md` is triggered.
 
-## Working Rules
+## Sandbox Notes
 
-- Read `AGENTS.md` before starting work.
-- Track work in `PLAN.yaml` before editing non-generated files.
-- Do not invent commit-group boundaries at commit time.
-- Shared prompts, skills, profiles, protocols, and registry remain Level-0
-  assets and must not be copied here as new sources of truth.
+Codex runs in a sandboxed environment. Use `python` (not `$AGENT_PYTHON`)
+for script execution. Ensure paths resolve correctly within the sandbox.
+The canonical tooling commands are:
+
+```
+python <control-plane>/agent-os/scripts/validate-plan.py PLAN.yaml --schema <control-plane>/agent-os/schemas/plan.schema.json
+python <control-plane>/agent-os/scripts/render-plan.py PLAN.yaml
+python -m pytest -q
+```
+
+## Runtime Boundary
+
+- Keep this file as an entrypoint only. Do not duplicate or redefine
+  normative governance here.
+- Runtime-specific execution notes may be added only when they do not change
+  the meaning of the canonical authorities.
+- When in doubt, follow `AGENTS.md` and the canonical authorities above.

@@ -32,9 +32,16 @@ Runtimes progress through three tiers before reaching full integration:
   remain optional and are expected only for runtimes whose native entrypoint
   shape is workspace-scoped.
 
-- **first-class** — all of supported, plus workspace template exists,
-  `sync-workspace.sh` generates runtime-specific files, and the runtime has
-  been validated end-to-end with the full governance stack.
+- **first-class** — all of supported, plus the runtime has a complete
+  entrypoint layer with adapter overrides and has been validated end-to-end
+  with the full governance stack. The promotion path depends on the
+  runtime's native entrypoint shape:
+  - *Workspace-scoped runtimes* (e.g. claude, codex): a workspace template
+    exists and `sync-workspace.sh` generates runtime-specific files.
+  - *Repo-scoped runtimes* (e.g. copilot, kilo): a bootstrap template
+    exists and `bootstrap-repo.sh` generates the runtime-specific
+    entrypoint with full governance parity (canonical authorities and
+    adapter overrides).
 
 Runtimes below experimental tier are not tracked in the portability model.
 Runtimes at experimental or above have an explicit lifecycle position and
