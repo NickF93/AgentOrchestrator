@@ -90,9 +90,17 @@ bash agent-os/scripts/bootstrap-repo.sh --owner <name> --ref <branch|tag> <targe
 ```
 
 The bootstrap also writes `.githooks/commit-msg` into the target repository.
-It also writes `.github/copilot-instructions.md` as a thin repo-level runtime
-entrypoint; canonical governance still lives in `AGENTS.md`,
-`ARCHITECTURE.md`, and `PLAN.yaml`.
+It also writes thin repo-local runtime entrypoints for:
+
+- `CLAUDE.md`
+- `.codex`
+- `GEMINI.md`
+- `.cursor/rules/governance.mdc`
+- `.github/copilot-instructions.md`
+- `.kilocode/rules/governance.md`
+
+Canonical governance still lives in `AGENTS.md`, `ARCHITECTURE.md`, and
+`PLAN.yaml`.
 Enable it with:
 
 ```bash
@@ -171,8 +179,9 @@ printf "docs(workflow): missing refs\n\n" > /tmp/bad-msg.txt
 Runtime entrypoint artifacts remain thin pointers only. In this repository:
 
 - `CLAUDE.md` and `.codex` are workspace/runtime entrypoints
-- `.github/copilot-instructions.md` is the repo-level Copilot entrypoint
-- `AGENTS.md` remains the portable repo-level entrypoint for Kilo in v1
+- `CLAUDE.md`, `.codex`, `GEMINI.md`, `.cursor/rules/governance.mdc`,
+  `.github/copilot-instructions.md`, and `.kilocode/rules/governance.md`
+  are bootstrapped repo-level runtime entrypoints
 
 ## License
 

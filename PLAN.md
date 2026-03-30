@@ -40,6 +40,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X23 | X | Git Flow Skill Portability Repairs | done |
 | X24 | X | TODO Checklist Refresh After Git Flow Rollout | done |
 | X25 | X | Full Runtime Parity and First-Class Promotion | done |
+| X26 | X | Gemini and Cursor First-Class Portability | done |
 
 ## Plan
 
@@ -660,6 +661,38 @@ Status: done
 | `T25.2.4` | `T` | Validate full runtime parity across bootstrap, sync, profiles, and governance | done |  |
 | `C25.2.5` | `C` | Checkpoint closure — X25 full runtime parity and first-class promotion | done |  |
 
+### X26
+
+- ID: `X26`
+- Title: Gemini and Cursor First-Class Portability
+- Status: done
+- Note: Extend the first-class runtime portability model to Gemini and Cursor through thin repo-scoped native entrypoints, bootstrap integration, active profiles, registry/runtime compatibility updates, and end-to-end validation while preserving the existing workspace-vs-repo entrypoint boundary.
+
+#### S26.1 Items
+
+Sprint: Sprint 1 — Gemini/Cursor governance update and bootstrap templates
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D26.1.1` | `D` | Extend the portability model for Gemini and Cursor repo-scoped first-class runtimes | done |  |
+| `M26.1.2` | `M` | Create repo-GEMINI.md.template for downstream repo bootstrap | done |  |
+| `M26.1.3` | `M` | Create repo-cursor-rules.mdc.template for downstream repo bootstrap | done |  |
+
+#### S26.2 Items
+
+Sprint: Sprint 2 — Tooling integration, runtime updates, and validation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M26.2.1` | `M` | Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints | done |  |
+| `M26.2.2` | `M` | Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills | done |  |
+| `D26.2.3` | `D` | Remediate runtime portability drift in README.md and TODO.md | done |  |
+| `M26.2.6` | `M` | Harden run-gates.sh against stale mypy cache failures | done |  |
+| `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | done |  |
+| `C26.2.5` | `C` | Checkpoint closure — X26 Gemini and Cursor first-class portability | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -715,6 +748,9 @@ Status: done
 | cg48 | Runtime parity governance update and bootstrap templates | `D25.1.1`, `M25.1.2`, `M25.1.3`, `M25.1.4`, `M25.1.5` |
 | cg49 | Tooling integration and profile updates for first-class promotion | `M25.2.1`, `M25.2.2`, `D25.2.3` |
 | cg50 | Validation and milestone closure for X25 | `T25.2.4`, `C25.2.5` |
+| cg51 | Gemini/Cursor portability governance update and bootstrap templates | `D26.1.1`, `M26.1.2`, `M26.1.3` |
+| cg52 | Gemini/Cursor tooling integration and runtime compatibility updates | `M26.2.1`, `M26.2.2`, `D26.2.3` |
+| cg53 | Gemini/Cursor portability validation and milestone closure | `M26.2.6`, `T26.2.4`, `C26.2.5` |
 
 ## Item Details
 
@@ -2443,3 +2479,95 @@ Status: done
 - **Depends on**: `T25.2.4`
 - **Commit group**: `cg50`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=claude/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D26.1.1: Extend the portability model for Gemini and Cursor repo-scoped first-class runtimes
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Sprint**: `S26.1`
+- **Actions**: design, document
+- **Commit group**: `cg51`
+- **Artifacts**: agent-os/workflow/portability-model.md
+
+### M26.1.2: Create repo-GEMINI.md.template for downstream repo bootstrap
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S26.1`
+- **Actions**: implement
+- **Depends on**: `D26.1.1`
+- **Commit group**: `cg51`
+- **Artifacts**: agent-os/templates/repo-GEMINI.md.template
+
+### M26.1.3: Create repo-cursor-rules.mdc.template for downstream repo bootstrap
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S26.1`
+- **Actions**: implement
+- **Depends on**: `D26.1.1`
+- **Commit group**: `cg51`
+- **Artifacts**: agent-os/templates/repo-cursor-rules.mdc.template
+
+### M26.2.1: Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S26.2`
+- **Actions**: implement
+- **Depends on**: `M26.1.2`, `M26.1.3`
+- **Commit group**: `cg52`
+- **Artifacts**: agent-os/scripts/bootstrap-repo.sh
+
+### M26.2.2: Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
+- **Sprint**: `S26.2`
+- **Actions**: implement, document
+- **Depends on**: `M26.2.1`
+- **Commit group**: `cg52`
+- **Artifacts**: agent-os/workflow/shared-workflow.md, agent-os/registry/shared-assets.yaml, agent-os/profiles/gemini/check-medium.yaml, agent-os/profiles/cursor/check-medium.yaml, agent-os/skills/README.md, agent-os/prompts/README.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/gitflow-pr-only/SKILL.md
+
+### D26.2.3: Remediate runtime portability drift in README.md and TODO.md
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S26.2`
+- **Actions**: document
+- **Depends on**: `M26.2.2`
+- **Commit group**: `cg52`
+- **Artifacts**: README.md, TODO.md
+
+### M26.2.6: Harden run-gates.sh against stale mypy cache failures
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S26.2`
+- **Actions**: implement, refactor
+- **Depends on**: `D26.2.3`
+- **Commit group**: `cg53`
+- **Artifacts**: agent-os/scripts/run-gates.sh
+
+### T26.2.4: Validate six-runtime portability across bootstrap, sync, profiles, and governance
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S26.2`
+- **Actions**: test, verify
+- **Depends on**: `D26.2.3`, `M26.2.6`
+- **Commit group**: `cg53`
+- **Checks**:
+  - bootstrap-repo.sh creates CLAUDE.md with adapter overrides
+  - bootstrap-repo.sh creates .codex with adapter overrides and sandbox notes
+  - bootstrap-repo.sh creates .github/copilot-instructions.md with adapter overrides
+  - bootstrap-repo.sh creates .kilocode/rules/governance.md
+  - bootstrap-repo.sh creates GEMINI.md with adapter overrides
+  - bootstrap-repo.sh creates .cursor/rules/governance.mdc with adapter overrides
+  - sync-workspace.sh still renders only AGENTS.md, CLAUDE.md, and .codex
+  - portability-model.md shows all six runtimes as first-class
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - pytest -q passes
+  - run-gates.sh passes
+
+### C26.2.5: Checkpoint closure — X26 Gemini and Cursor first-class portability
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S26.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T26.2.4`
+- **Commit group**: `cg53`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace

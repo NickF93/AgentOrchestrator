@@ -56,7 +56,9 @@ mapfile -t PY_FILES < <(find agent-os/scripts tests -type f -name '*.py' | sort)
 
 run_step "ruff check" "${AGENT_PYTHON_CMD[@]}" -m ruff check agent-os/scripts tests
 run_step "ruff format --check" "${AGENT_PYTHON_CMD[@]}" -m ruff format --check agent-os/scripts tests
-run_step "mypy" "${AGENT_PYTHON_CMD[@]}" -m mypy agent-os/scripts tests
+# Use a deterministic mypy invocation that does not depend on any stale
+# incremental cache format left over from a different mypy version.
+run_step "mypy" "${AGENT_PYTHON_CMD[@]}" -m mypy --no-incremental agent-os/scripts tests
 
 if [[ "${#PY_FILES[@]}" -gt 0 ]]; then
   run_step "python -m py_compile" "${AGENT_PYTHON_CMD[@]}" -m py_compile "${PY_FILES[@]}"
