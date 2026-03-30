@@ -38,10 +38,10 @@ Runtimes progress through three tiers before reaching full integration:
   runtime's native entrypoint shape:
   - *Workspace-scoped runtimes* (e.g. claude, codex): a workspace template
     exists and `sync-workspace.sh` generates runtime-specific files.
-  - *Repo-scoped runtimes* (e.g. copilot, kilo): a bootstrap template
-    exists and `bootstrap-repo.sh` generates the runtime-specific
-    entrypoint with full governance parity (canonical authorities and
-    adapter overrides).
+  - *Repo-scoped runtimes* (e.g. copilot, kilo, gemini, cursor): a
+    bootstrap template exists and `bootstrap-repo.sh` generates the
+    runtime-specific entrypoint with full governance parity (canonical
+    authorities and adapter overrides).
 
 Runtimes below experimental tier are not tracked in the portability model.
 Runtimes at experimental or above have an explicit lifecycle position and
@@ -55,6 +55,8 @@ upgrade path.
 | codex   | first-class | `.codex` (workspace + repo) | yes | yes | yes |
 | kilo    | first-class | `.kilocode/rules/governance.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 | copilot | first-class | `.github/copilot-instructions.md` (repo-local) | yes | yes | n/a (repo-scoped) |
+| gemini  | first-class | `GEMINI.md` (repo-local) | yes | yes | n/a (repo-scoped) |
+| cursor  | first-class | `.cursor/rules/governance.mdc` (repo-local) | yes | yes | n/a (repo-scoped) |
 
 ## Runtime Entrypoint Artifacts
 
