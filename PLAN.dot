@@ -25,6 +25,7 @@ digraph PLAN {
   "X22" [label="X22 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X23" [label="X23 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X24" [label="X24 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X25" [label="X25 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -59,6 +60,8 @@ digraph PLAN {
   "S22.1" [label="S22.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S23.1" [label="S23.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S24.1" [label="S24.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S25.1" [label="S25.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S25.2" [label="S25.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -396,6 +399,28 @@ digraph PLAN {
     label="cg47: TODO checklist refresh for recent Git Flow work";
   "D24.1.1" [label="D24.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg48" {
+    style="rounded,dashed";
+    label="cg48: Runtime parity governance update and bootstrap templates";
+  "D25.1.1" [label="D25.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "M25.1.2" [label="M25.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M25.1.3" [label="M25.1.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M25.1.4" [label="M25.1.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M25.1.5" [label="M25.1.5 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg49" {
+    style="rounded,dashed";
+    label="cg49: Tooling integration and profile updates for first-class promotion";
+  "M25.2.1" [label="M25.2.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M25.2.2" [label="M25.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "D25.2.3" [label="D25.2.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg50" {
+    style="rounded,dashed";
+    label="cg50: Validation and milestone closure for X25";
+  "T25.2.4" [label="T25.2.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C25.2.5" [label="C25.2.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -430,6 +455,8 @@ digraph PLAN {
   "X22" -> "S22.1" [style=dashed];
   "X23" -> "S23.1" [style=dashed];
   "X24" -> "S24.1" [style=dashed];
+  "X25" -> "S25.1" [style=dashed];
+  "X25" -> "S25.2" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -575,6 +602,16 @@ digraph PLAN {
   "S23.1" -> "T23.1.2" [style=dashed];
   "S23.1" -> "C23.1.3" [style=dashed];
   "S24.1" -> "D24.1.1" [style=dashed];
+  "S25.1" -> "D25.1.1" [style=dashed];
+  "S25.1" -> "M25.1.2" [style=dashed];
+  "S25.1" -> "M25.1.3" [style=dashed];
+  "S25.1" -> "M25.1.4" [style=dashed];
+  "S25.1" -> "M25.1.5" [style=dashed];
+  "S25.2" -> "M25.2.1" [style=dashed];
+  "S25.2" -> "M25.2.2" [style=dashed];
+  "S25.2" -> "D25.2.3" [style=dashed];
+  "S25.2" -> "T25.2.4" [style=dashed];
+  "S25.2" -> "C25.2.5" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -745,4 +782,15 @@ digraph PLAN {
   "D22.1.2" -> "C22.1.3";
   "M23.1.1" -> "T23.1.2";
   "T23.1.2" -> "C23.1.3";
+  "D25.1.1" -> "M25.1.2";
+  "D25.1.1" -> "M25.1.3";
+  "D25.1.1" -> "M25.1.4";
+  "D25.1.1" -> "M25.1.5";
+  "M25.1.2" -> "M25.2.1";
+  "M25.1.3" -> "M25.2.1";
+  "M25.1.5" -> "M25.2.1";
+  "M25.2.1" -> "M25.2.2";
+  "M25.2.2" -> "D25.2.3";
+  "D25.2.3" -> "T25.2.4";
+  "T25.2.4" -> "C25.2.5";
 }

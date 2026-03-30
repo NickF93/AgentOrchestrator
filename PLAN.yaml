@@ -274,7 +274,7 @@ milestones:
   - id: X25
     type: X
     title: "Full Runtime Parity and First-Class Promotion"
-    status: in_progress
+    status: done
     note: >
       Achieve full runtime parity by creating bootstrap templates for all
       four runtimes (Claude, Codex, Copilot, Kilo), refining the first-class
@@ -497,7 +497,7 @@ sprints:
     type: S
     parent: X25
     title: "Sprint 2 — Tooling integration, profile updates, and validation"
-    status: in_progress
+    status: done
 
 items:
 
@@ -3470,7 +3470,7 @@ items:
     type: T
     title: "Validate full runtime parity across bootstrap, sync, profiles, and governance"
     actions: [test, verify]
-    status: planned
+    status: done
     role: tester
     effort: medium
     commit_group: cg50
@@ -3493,7 +3493,7 @@ items:
     type: C
     title: "Checkpoint closure — X25 full runtime parity and first-class promotion"
     actions: [checkpoint, verify]
-    status: planned
+    status: done
     role: reviewer
     effort: low
     commit_group: cg50
