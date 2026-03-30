@@ -9,6 +9,5 @@ default_context_policy: focused
 expected_prompt_id: checkpoint-closure-review
 expected_result_protocol_id: check-result-v1
 adapter_notes:
-  - Use AGENTS.md as the portable Kilo entrypoint, then resolve canonical governance from the workflow authorities.
+  - Use .kilocode/rules/governance.md as the thin Kilo entrypoint in bootstrapped repos, then resolve canonical governance from AGENTS.md and workflow authorities.
   - Keep runtime-specific tooling behavior in the adapter layer, not in the prompt.
-  - Kilo support is profile-driven in v1; do not introduce a dedicated KILO.md authority file.

@@ -497,7 +497,7 @@ sprints:
     type: S
     parent: X25
     title: "Sprint 2 — Tooling integration, profile updates, and validation"
-    status: planned
+    status: in_progress
 
 items:
 
@@ -3426,7 +3426,7 @@ items:
     type: M
     title: "Update bootstrap-repo.sh to generate Claude, Codex, and Kilo entrypoints"
     actions: [implement]
-    status: planned
+    status: done
     role: implementer
     effort: medium
     commit_group: cg49
@@ -3440,7 +3440,7 @@ items:
     type: M
     title: "Update runtime profiles, portability status table, and shared-workflow.md"
     actions: [implement, document]
-    status: planned
+    status: done
     role: implementer
     effort: low
     commit_group: cg49
@@ -3456,7 +3456,7 @@ items:
     type: D
     title: "Update TODO.md for runtime parity completion"
     actions: [document]
-    status: planned
+    status: done
     role: documenter
     effort: low
     commit_group: cg49

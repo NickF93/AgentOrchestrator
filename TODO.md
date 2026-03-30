@@ -21,9 +21,10 @@
 - [x] Runtime lifecycle tiers (experimental / supported / first-class)
 - [x] Claude — first-class (adapter, profile, workspace template, sync)
 - [x] Codex — first-class (adapter, profile, workspace template, sync)
-- [x] Kilo — supported (profile-driven, uses AGENTS.md as entrypoint)
-- [x] Copilot — supported (repo-local .github/copilot-instructions.md)
-- [ ] Extend adapters for Kilo and Copilot (promote toward first-class when ready)
+- [x] Kilo — first-class (profile + .kilocode/rules/governance.md entrypoint)
+- [x] Copilot — first-class (repo-local .github/copilot-instructions.md, bootstrap template)
+- [x] Kilo — first-class (repo-local .kilocode/rules/governance.md, bootstrap template)
+- [x] Extend adapters for all runtimes (all four promoted to first-class)
 
 ## Skills
 
@@ -55,7 +56,7 @@
 - [x] sync-workspace.sh renders AGENTS.md, CLAUDE.md, .codex
 - [x] Workspace templates with {{CONTROL_PLANE_ROOT}} placeholders
 - [ ] Harden Layer-1 lifecycle (drift detection, staleness checks)
-- [ ] Evaluate workspace template needs for Kilo and Copilot
+- [x] Evaluated workspace template needs — repo-scoped runtimes (Kilo, Copilot) use bootstrap templates, not workspace templates
 
 ## Layer 2 — Repository-Local Governance
 

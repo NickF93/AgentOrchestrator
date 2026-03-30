@@ -49,12 +49,12 @@ upgrade path.
 
 ## Runtime Status
 
-| Runtime | Tier         | Entrypoint Artifacts | Profile | Workspace Template |
-|---------|-------------|----------------------|---------|--------------------|
-| claude  | first-class | `CLAUDE.md` (workspace) | yes | yes |
-| codex   | first-class | `.codex` (workspace) | yes | yes |
-| kilo    | supported   | `AGENTS.md` (portable repo entrypoint) | yes | no |
-| copilot | supported   | `.github/copilot-instructions.md` (repo-local) | yes | no |
+| Runtime | Tier         | Entrypoint Artifacts | Profile | Bootstrap Template | Workspace Template |
+|---------|-------------|----------------------|---------|--------------------|-------------------|
+| claude  | first-class | `CLAUDE.md` (workspace + repo) | yes | yes | yes |
+| codex   | first-class | `.codex` (workspace + repo) | yes | yes | yes |
+| kilo    | first-class | `.kilocode/rules/governance.md` (repo-local) | yes | yes | n/a (repo-scoped) |
+| copilot | first-class | `.github/copilot-instructions.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 
 ## Runtime Entrypoint Artifacts
 
@@ -133,12 +133,13 @@ In v1:
 The following runtime-specific extensions remain deferred in v1:
 
 - GitHub Copilot path-specific instruction files under `.github/instructions/`
-- Kilo-specific custom rule directories such as `.kilocode/` or mode-specific
-  rule folders
 
 These are runtime-layer extensions, not canonical governance sources. They may
 be added later only when the neutral model cannot express the needed behavior
 through prompts, skills, profiles, or thin entrypoint artifacts.
+
+Note: Kilo-specific `.kilocode/rules/` is no longer deferred — it is now the
+standard bootstrap entrypoint for Kilo (see Runtime Status table).
 
 ## Non-Goals
 
