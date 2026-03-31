@@ -28,6 +28,7 @@ digraph PLAN {
   "X25" [label="X25 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X26" [label="X26 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X27" [label="X27 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X28" [label="X28 | X | planned", shape=box3d, style="filled,rounded", fillcolor=lightgray];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -67,6 +68,8 @@ digraph PLAN {
   "S26.1" [label="S26.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S26.2" [label="S26.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S27.1" [label="S27.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S28.1" [label="S28.1 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
+  "S28.2" [label="S28.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -455,6 +458,18 @@ digraph PLAN {
   "T27.1.3" [label="T27.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C27.1.4" [label="C27.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg55" {
+    style="rounded,dashed";
+    label="cg55: Plan validate-render skill — SKILL.md authoring";
+  "D28.1.1" [label="D28.1.1 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg56" {
+    style="rounded,dashed";
+    label="cg56: Plan validate-render skill — registry, discovery, validation, and closure";
+  "M28.2.1" [label="M28.2.1 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "T28.2.2" [label="T28.2.2 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "C28.2.3" [label="C28.2.3 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -494,6 +509,8 @@ digraph PLAN {
   "X26" -> "S26.1" [style=dashed];
   "X26" -> "S26.2" [style=dashed];
   "X27" -> "S27.1" [style=dashed];
+  "X28" -> "S28.1" [style=dashed];
+  "X28" -> "S28.2" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -662,6 +679,10 @@ digraph PLAN {
   "S27.1" -> "M27.1.2" [style=dashed];
   "S27.1" -> "T27.1.3" [style=dashed];
   "S27.1" -> "C27.1.4" [style=dashed];
+  "S28.1" -> "D28.1.1" [style=dashed];
+  "S28.2" -> "M28.2.1" [style=dashed];
+  "S28.2" -> "T28.2.2" [style=dashed];
+  "S28.2" -> "C28.2.3" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -856,4 +877,8 @@ digraph PLAN {
   "D27.1.1" -> "M27.1.2";
   "M27.1.2" -> "T27.1.3";
   "T27.1.3" -> "C27.1.4";
+  "C27.1.4" -> "D28.1.1";
+  "D28.1.1" -> "M28.2.1";
+  "M28.2.1" -> "T28.2.2";
+  "T28.2.2" -> "C28.2.3";
 }
