@@ -293,6 +293,16 @@ milestones:
       validation while preserving the existing workspace-vs-repo entrypoint
       boundary.
 
+  - id: X27
+    type: X
+    title: "Repo Bootstrap Skill Packaging"
+    status: done
+    note: >
+      Package the existing bootstrap-repo.sh script as a portable skill
+      under agent-os/skills/. Add pre-flight validation, post-bootstrap
+      verification, and structured reporting. Register in the shared asset
+      registry and propagate discovery to AGENTS.md and the repo template.
+
 sprints:
   - id: S1.1
     type: S
@@ -520,6 +530,12 @@ sprints:
     type: S
     parent: X26
     title: "Sprint 2 — Tooling integration, runtime updates, and validation"
+    status: done
+
+  - id: S27.1
+    type: S
+    parent: X27
+    title: "Sprint 1 — Skill implementation, registry, and discovery propagation"
     status: done
 
 items:
@@ -3677,6 +3693,83 @@ items:
       profile: codex/check-medium
       result_protocol: check-result-v1
 
+  # ─── X27 / S27.1: Repo Bootstrap Skill Packaging ─────────────────────────────
+
+  - id: D27.1.1
+    parent: S27.1
+    type: D
+    title: "Create repo-bootstrap skill SKILL.md with pre-flight, execution, and verification procedure"
+    actions: [document]
+    status: done
+    role: implementer
+    effort: medium
+    commit_group: cg54
+    scope: "agent-os/skills"
+    artifacts_out:
+      - agent-os/skills/repo-bootstrap/SKILL.md
+    notes: >
+      Create SKILL.md following the skill packaging contract. Wraps
+      bootstrap-repo.sh with pre-flight validation, execution orchestration,
+      post-bootstrap verification, and structured reporting. Supports all
+      six first-class runtimes with adapter notes.
+
+  - id: M27.1.2
+    parent: S27.1
+    type: M
+    title: "Register repo-bootstrap in shared asset registry and propagate discovery metadata"
+    actions: [implement]
+    status: done
+    depends_on: [D27.1.1]
+    role: implementer
+    effort: low
+    commit_group: cg54
+    scope: "."
+    artifacts_out:
+      - agent-os/registry/shared-assets.yaml
+      - AGENTS.md
+      - agent-os/templates/repo-AGENTS.md.template
+      - TODO.md
+    notes: >
+      Add the repo-bootstrap skill entry to shared-assets.yaml registry.
+      Add the skill to the available-skills table in AGENTS.md (Level-0)
+      and in repo-AGENTS.md.template (Level-2 template). Check off TODO.md.
+
+  - id: T27.1.3
+    parent: S27.1
+    type: T
+    title: "Validate repo-bootstrap skill packaging and plan consistency"
+    actions: [verify]
+    status: done
+    depends_on: [M27.1.2]
+    role: reviewer
+    effort: low
+    commit_group: cg54
+    scope: "."
+    checks:
+      - "validate-plan.py exits 0"
+      - "render-plan.py produces no drift"
+      - "run-gates.sh passes"
+      - "AGENTS.md contains available-skills entry for repo-bootstrap"
+      - "repo-AGENTS.md.template contains available-skills entry for repo-bootstrap"
+      - "shared-assets.yaml contains repo-bootstrap entry"
+
+  - id: C27.1.4
+    parent: S27.1
+    type: C
+    title: "Checkpoint closure — X27 repo-bootstrap skill packaging"
+    actions: [checkpoint, verify]
+    status: done
+    depends_on: [T27.1.3]
+    role: reviewer
+    effort: low
+    commit_group: cg54
+    scope: "."
+    shared_assets:
+      skill: plan-checkpoint-close
+      prompt: checkpoint-closure-review
+      profile: codex/check-medium
+      result_protocol: check-result-v1
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -4095,3 +4188,12 @@ commit_groups:
       profiles, registry, governance, generated plan views, and any
       remediation needed to keep the gate runner deterministic. Closes X26,
       S26.1, S26.2.
+
+  - id: cg54
+    title: "Repo bootstrap skill — SKILL.md, registry entry, and discovery propagation"
+    items: [D27.1.1, M27.1.2, T27.1.3, C27.1.4]
+    notes: >
+      Delivers the repo-bootstrap operational skill under agent-os/skills/.
+      Wraps bootstrap-repo.sh with pre-flight, verification, and reporting.
+      Registers in shared-assets.yaml and propagates skill discovery to
+      both AGENTS.md and the repo-AGENTS.md.template.

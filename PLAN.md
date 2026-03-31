@@ -41,6 +41,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X24 | X | TODO Checklist Refresh After Git Flow Rollout | done |
 | X25 | X | Full Runtime Parity and First-Class Promotion | done |
 | X26 | X | Gemini and Cursor First-Class Portability | done |
+| X27 | X | Repo Bootstrap Skill Packaging | done |
 
 ## Plan
 
@@ -693,6 +694,25 @@ Status: done
 | `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | done |  |
 | `C26.2.5` | `C` | Checkpoint closure — X26 Gemini and Cursor first-class portability | done |  |
 
+### X27
+
+- ID: `X27`
+- Title: Repo Bootstrap Skill Packaging
+- Status: done
+- Note: Package the existing bootstrap-repo.sh script as a portable skill under agent-os/skills/. Add pre-flight validation, post-bootstrap verification, and structured reporting. Register in the shared asset registry and propagate discovery to AGENTS.md and the repo template.
+
+#### S27.1 Items
+
+Sprint: Sprint 1 — Skill implementation, registry, and discovery propagation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D27.1.1` | `D` | Create repo-bootstrap skill SKILL.md with pre-flight, execution, and verification procedure | done | Create SKILL.md following the skill packaging contract. Wraps bootstrap-repo.sh with pre-flight validation, execution orchestration, post-bootstrap verification, and structured reporting. Supports all six first-class runtimes with adapter notes. |
+| `M27.1.2` | `M` | Register repo-bootstrap in shared asset registry and propagate discovery metadata | done | Add the repo-bootstrap skill entry to shared-assets.yaml registry. Add the skill to the available-skills table in AGENTS.md (Level-0) and in repo-AGENTS.md.template (Level-2 template). Check off TODO.md. |
+| `T27.1.3` | `T` | Validate repo-bootstrap skill packaging and plan consistency | done |  |
+| `C27.1.4` | `C` | Checkpoint closure — X27 repo-bootstrap skill packaging | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -751,6 +771,7 @@ Status: done
 | cg51 | Gemini/Cursor portability governance update and bootstrap templates | `D26.1.1`, `M26.1.2`, `M26.1.3` |
 | cg52 | Gemini/Cursor tooling integration and runtime compatibility updates | `M26.2.1`, `M26.2.2`, `D26.2.3` |
 | cg53 | Gemini/Cursor portability validation and milestone closure | `M26.2.6`, `T26.2.4`, `C26.2.5` |
+| cg54 | Repo bootstrap skill — SKILL.md, registry entry, and discovery propagation | `D27.1.1`, `M27.1.2`, `T27.1.3`, `C27.1.4` |
 
 ## Item Details
 
@@ -2570,4 +2591,47 @@ Status: done
 - **Actions**: checkpoint, verify
 - **Depends on**: `T26.2.4`
 - **Commit group**: `cg53`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D27.1.1: Create repo-bootstrap skill SKILL.md with pre-flight, execution, and verification procedure
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S27.1`
+- **Actions**: document
+- **Commit group**: `cg54`
+- **Artifacts**: agent-os/skills/repo-bootstrap/SKILL.md
+- **Notes**: Create SKILL.md following the skill packaging contract. Wraps bootstrap-repo.sh with pre-flight validation, execution orchestration, post-bootstrap verification, and structured reporting. Supports all six first-class runtimes with adapter notes.
+
+### M27.1.2: Register repo-bootstrap in shared asset registry and propagate discovery metadata
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S27.1`
+- **Actions**: implement
+- **Depends on**: `D27.1.1`
+- **Commit group**: `cg54`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+- **Notes**: Add the repo-bootstrap skill entry to shared-assets.yaml registry. Add the skill to the available-skills table in AGENTS.md (Level-0) and in repo-AGENTS.md.template (Level-2 template). Check off TODO.md.
+
+### T27.1.3: Validate repo-bootstrap skill packaging and plan consistency
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S27.1`
+- **Actions**: verify
+- **Depends on**: `M27.1.2`
+- **Commit group**: `cg54`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - AGENTS.md contains available-skills entry for repo-bootstrap
+  - repo-AGENTS.md.template contains available-skills entry for repo-bootstrap
+  - shared-assets.yaml contains repo-bootstrap entry
+
+### C27.1.4: Checkpoint closure — X27 repo-bootstrap skill packaging
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S27.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T27.1.3`
+- **Commit group**: `cg54`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace

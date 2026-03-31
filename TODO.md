@@ -32,7 +32,7 @@
 - [x] plan-checkpoint-close — closing C items with validations and commit closure
 - [x] gitflow-pr-only — procedural PR-based git flow
 - [x] Skill discovery table in AGENTS.md and repo template
-- [ ] repo-bootstrap — wrapper around bootstrap-repo.sh + post-bootstrap checks
+- [x] repo-bootstrap — wrapper around bootstrap-repo.sh + post-bootstrap checks
 - [ ] workspace-sync — regenerate Level-1 files, report provenance drift
 - [ ] plan-validate-render — validate + render + interpret failures/warnings
 - [ ] repo-map-refresh — refresh REPO_MAP.md on triggers
