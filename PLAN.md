@@ -724,11 +724,11 @@ Status: done
 #### S28.1 Items
 
 Sprint: Sprint 1 — Skill definition and procedure authoring
-Status: planned
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D28.1.1` | `D` | Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure | planned | Create SKILL.md following the skill packaging contract. Wraps two scripts: validate-plan.py (17 validation checks, exit 0/1/2) and render-plan.py (PLAN.md + PLAN.dot generation, exit 0/2). Procedure covers two-root resolution, pre-flight checks, validation execution with flag assembly, output interpretation (parse OK/WARNING/ERROR lines, classify hard-fail vs advisory across 17 check categories), rendering, render drift detection via git diff, and structured verdict assembly via check-result-v1 protocol. Adapter notes for all six runtimes. |
+| `D28.1.1` | `D` | Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure | done | Create SKILL.md following the skill packaging contract. Wraps two scripts: validate-plan.py (17 validation checks, exit 0/1/2) and render-plan.py (PLAN.md + PLAN.dot generation, exit 0/2). Procedure covers two-root resolution, pre-flight checks, validation execution with flag assembly, output interpretation (parse OK/WARNING/ERROR lines, classify hard-fail vs advisory across 17 check categories), rendering, render drift detection via git diff, and structured verdict assembly via check-result-v1 protocol. Adapter notes for all six runtimes. |
 
 #### S28.2 Items
 
@@ -2668,7 +2668,7 @@ Status: planned
 
 ### D28.1.1: Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure
 
-- **Type**: D | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S28.1`
 - **Actions**: document
 - **Depends on**: `C27.1.4`

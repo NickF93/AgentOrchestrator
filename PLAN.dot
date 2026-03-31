@@ -68,7 +68,7 @@ digraph PLAN {
   "S26.1" [label="S26.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S26.2" [label="S26.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S27.1" [label="S27.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S28.1" [label="S28.1 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
+  "S28.1" [label="S28.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S28.2" [label="S28.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
@@ -461,7 +461,7 @@ digraph PLAN {
   subgraph "cluster_cg55" {
     style="rounded,dashed";
     label="cg55: Plan validate-render skill — SKILL.md authoring";
-  "D28.1.1" [label="D28.1.1 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "D28.1.1" [label="D28.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg56" {
     style="rounded,dashed";

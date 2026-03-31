@@ -553,7 +553,7 @@ sprints:
     type: S
     parent: X28
     title: "Sprint 1 — Skill definition and procedure authoring"
-    status: planned
+    status: done
 
   - id: S28.2
     type: S
@@ -3800,7 +3800,7 @@ items:
     type: D
     title: "Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure"
     actions: [document]
-    status: planned
+    status: done
     depends_on: [C27.1.4]
     role: implementer
     effort: high
