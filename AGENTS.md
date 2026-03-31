@@ -56,6 +56,7 @@ and must not override or redefine them.
 |----------|------|-------------|
 | `plan-checkpoint-close` | `agent-os/skills/plan-checkpoint-close/SKILL.md` | Closing a checkpoint, finalizing a commit_group, verifying closure readiness |
 | `gitflow-pr-only` | `agent-os/skills/gitflow-pr-only/SKILL.md` | Starting a branch (feature, bugfix, hotfix, release, support), synchronizing a topic branch, merging a PR, tagging a release/hotfix, performing a back-merge |
+| `repo-bootstrap` | `agent-os/skills/repo-bootstrap/SKILL.md` | Bootstrapping a new repo, scaffolding governance files, checking if a repo is already bootstrapped |
 
 ## Commit Message Contract
 All commits MUST use this format:
