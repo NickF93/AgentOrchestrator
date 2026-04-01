@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate PLAN.yaml against schema and governance hard rules."""
+"""Validate the canonical plan entrypoint against schema and governance hard rules."""
 
 from __future__ import annotations
 
@@ -9,6 +9,8 @@ import re
 import sys
 from datetime import date, datetime
 from pathlib import Path
+
+from plan_loader import PlanLoadError, load_plan
 
 try:
     import yaml
@@ -755,7 +757,7 @@ def validate_phase_gates(items: list[dict]) -> tuple[list[str], list[str]]:
     return errors, warnings
 
 
-def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
+def check_repo_map_freshness(plan: dict, repo_root: Path) -> list[str]:
     """Hard-fail if REPO_MAP.md is stale when checkpoint items are active."""
     errors: list[str] = []
     items = plan.get("items", []) or []
@@ -765,7 +767,7 @@ def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
     if not active_checkpoints:
         return errors
 
-    repo_map_path = plan_path.parent / "REPO_MAP.md"
+    repo_map_path = repo_root / "REPO_MAP.md"
     if not repo_map_path.exists():
         return errors
 
@@ -808,9 +810,43 @@ def check_repo_map_freshness(plan: dict, plan_path: Path) -> list[str]:
     return errors
 
 
+def print_split_plan_report(metadata: dict) -> None:
+    current_fragment = metadata.get("current_fragment", {})
+    archive_details = metadata.get("archives", []) or []
+
+    print("ACTIVE:")
+    print(f"  - current_plan: {metadata['current_path']}")
+    print(f"  - milestones: {len(current_fragment.get('milestones', []) or [])}")
+    print(f"  - sprints: {len(current_fragment.get('sprints', []) or [])}")
+    print(f"  - items: {len(current_fragment.get('items', []) or [])}")
+    print(f"  - commit_groups: {len(current_fragment.get('commit_groups', []) or [])}")
+
+    print("ARCHIVED:")
+    print(f"  - archive_root: {metadata['archive_root']}")
+    print(f"  - fragments: {len(archive_details)}")
+    print(
+        f"  - milestones: {sum(len(detail['fragment'].get('milestones', []) or []) for detail in archive_details)}"
+    )
+    print(
+        f"  - sprints: {sum(len(detail['fragment'].get('sprints', []) or []) for detail in archive_details)}"
+    )
+    print(
+        f"  - items: {sum(len(detail['fragment'].get('items', []) or []) for detail in archive_details)}"
+    )
+    print(
+        "  - commit_groups: "
+        f"{sum(len(detail['fragment'].get('commit_groups', []) or []) for detail in archive_details)}"
+    )
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Validate PLAN.yaml")
-    parser.add_argument("plan", nargs="?", default="PLAN.yaml", help="Path to PLAN.yaml")
+    parser = argparse.ArgumentParser(description="Validate the canonical plan entrypoint")
+    parser.add_argument(
+        "plan",
+        nargs="?",
+        default="plan/PLAN-index.yaml",
+        help="Path to plan/PLAN-index.yaml or a legacy aggregate PLAN.yaml",
+    )
     parser.add_argument(
         "--schema",
         default="agent-os/schemas/plan.schema.json",
@@ -819,7 +855,7 @@ def main() -> int:
     parser.add_argument(
         "--previous-plan",
         default="",
-        help="Optional previous PLAN.yaml to enforce lifecycle transition rules",
+        help="Optional previous plan entrypoint to enforce lifecycle transition rules",
     )
     parser.add_argument(
         "--check-freshness",
@@ -848,9 +884,12 @@ def main() -> int:
         return 2
 
     try:
-        plan = load_yaml(plan_path)
+        plan, plan_metadata = load_plan(plan_path)
+    except PlanLoadError as exc:
+        print(f"ERROR: Failed to load plan: {exc}", file=sys.stderr)
+        return 1
     except Exception as exc:
-        print(f"ERROR: Failed to load plan YAML: {exc}", file=sys.stderr)
+        print(f"ERROR: Failed to load plan: {exc}", file=sys.stderr)
         return 2
 
     try:
@@ -887,9 +926,12 @@ def main() -> int:
             print(f"ERROR: Previous plan file not found: {prev_path}", file=sys.stderr)
             return 2
         try:
-            previous = load_yaml(prev_path)
+            previous, _ = load_plan(prev_path)
+        except PlanLoadError as exc:
+            print(f"ERROR: Failed to load previous plan: {exc}", file=sys.stderr)
+            return 1
         except Exception as exc:
-            print(f"ERROR: Failed to load previous plan YAML: {exc}", file=sys.stderr)
+            print(f"ERROR: Failed to load previous plan: {exc}", file=sys.stderr)
             return 2
 
         transition_errors = validate_transitions(plan, previous)
@@ -904,7 +946,15 @@ def main() -> int:
     errors.extend(registry_errors)
 
     if args.check_freshness:
-        errors.extend(check_repo_map_freshness(plan, plan_path))
+        repo_root = (
+            plan_metadata["index_path"].parent.parent
+            if plan_metadata.get("format") == "split"
+            else plan_path.parent
+        )
+        errors.extend(check_repo_map_freshness(plan, repo_root))
+
+    if plan_metadata.get("format") == "split":
+        print_split_plan_report(plan_metadata)
 
     for warning in warnings:
         print(f"WARNING: {warning}")

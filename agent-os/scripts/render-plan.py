@@ -1,25 +1,12 @@
 #!/usr/bin/env python3
-"""Render PLAN.yaml into PLAN.md and PLAN.dot deterministically."""
+"""Render the canonical plan entrypoint into PLAN.md and PLAN.dot deterministically."""
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
-try:
-    import yaml
-except ImportError as exc:  # pragma: no cover
-    raise SystemExit(
-        "Missing dependency: pyyaml. Install tooling deps with: "
-        "python3 -m pip install -r requirements.txt"
-    ) from exc
-
-
-def load_yaml(path: Path) -> dict:
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if not isinstance(data, dict):
-        raise ValueError("Top-level YAML document must be a mapping")
-    return data
+from plan_loader import PlanLoadError, load_plan
 
 
 def source_order(items: list[dict] | None) -> list[dict]:
@@ -57,7 +44,7 @@ def format_shared_assets(item: dict) -> str:
     return ", ".join(present)
 
 
-def render_markdown(plan: dict) -> str:
+def render_markdown(plan: dict, source_label: str = "PLAN.yaml") -> str:
     milestones = source_order(plan.get("milestones"))
     sprints = source_order(plan.get("sprints"))
     items = source_order(plan.get("items"))
@@ -74,7 +61,7 @@ def render_markdown(plan: dict) -> str:
     lines: list[str] = []
     lines.append("# PLAN.md")
     lines.append("")
-    lines.append("AUTO-GENERATED from PLAN.yaml. Do not edit manually.")
+    lines.append(f"AUTO-GENERATED from {source_label}. Do not edit manually.")
     lines.append("")
     lines.append(f"- Repository: {plan.get('meta', {}).get('repo', '')}")
     lines.append(f"- Owner: {plan.get('meta', {}).get('owner', '')}")
@@ -284,8 +271,13 @@ def render_dot(plan: dict) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Render PLAN.yaml to PLAN.md and PLAN.dot")
-    parser.add_argument("plan", nargs="?", default="PLAN.yaml", help="Path to PLAN.yaml")
+    parser = argparse.ArgumentParser(description="Render the canonical plan entrypoint to PLAN.md and PLAN.dot")
+    parser.add_argument(
+        "plan",
+        nargs="?",
+        default="plan/PLAN-index.yaml",
+        help="Path to plan/PLAN-index.yaml or a legacy aggregate PLAN.yaml",
+    )
     parser.add_argument("--md", default="PLAN.md", help="Output markdown path")
     parser.add_argument("--dot", default="PLAN.dot", help="Output dot path")
     args = parser.parse_args()
@@ -296,12 +288,15 @@ def main() -> int:
         return 2
 
     try:
-        plan = load_yaml(plan_path)
+        plan, _ = load_plan(plan_path)
+    except PlanLoadError as exc:
+        print(f"ERROR: Failed to load plan: {exc}")
+        return 1
     except Exception as exc:
-        print(f"ERROR: Failed to read YAML: {exc}")
+        print(f"ERROR: Failed to load plan: {exc}")
         return 2
 
-    md_text = render_markdown(plan)
+    md_text = render_markdown(plan, source_label=str(plan_path))
     dot_text = render_dot(plan)
 
     Path(args.md).write_text(md_text, encoding="utf-8")

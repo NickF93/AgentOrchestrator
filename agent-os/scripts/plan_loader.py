@@ -342,6 +342,7 @@ def load_split_plan(index_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
         "format": "split",
         "index_path": index_path.resolve(),
         "current_path": current_path,
+        "current_fragment": current_fragment,
         "archive_root": archive_root,
         "archives": archive_details,
     }

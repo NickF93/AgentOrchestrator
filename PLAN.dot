@@ -77,7 +77,7 @@ digraph PLAN {
   "S29.2" [label="S29.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S30.1" [label="S30.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S31.1" [label="S31.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S31.2" [label="S31.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
+  "S31.2" [label="S31.2 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -528,8 +528,8 @@ digraph PLAN {
   subgraph "cluster_cg65" {
     style="rounded,dashed";
     label="cg65: Aggregate validator and renderer split-plan loader refactor";
-  "M31.2.1" [label="M31.2.1 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "M31.2.2" [label="M31.2.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "M31.2.1" [label="M31.2.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.2.2" [label="M31.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg66" {
     style="rounded,dashed";

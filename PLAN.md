@@ -1,6 +1,6 @@
 # PLAN.md
 
-AUTO-GENERATED from PLAN.yaml. Do not edit manually.
+AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 
 - Repository: AgentOrchestrator
 - Owner: NickF93
@@ -815,12 +815,12 @@ Status: done
 #### S31.2 Items
 
 Sprint: Sprint 2 — Aggregate tooling, archival automation, and propagation
-Status: planned
+Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `M31.2.1` | `M` | Refactor validate-plan.py onto the shared split-plan loader with active and archived reporting | planned | Keep aggregate governance enforcement intact while teaching validation to load plan/PLAN-index.yaml and report separate Active and Archived blocks. |
-| `M31.2.2` | `M` | Refactor render-plan.py onto the shared split-plan loader without changing aggregate output shape | planned |  |
+| `M31.2.1` | `M` | Refactor validate-plan.py onto the shared split-plan loader with active and archived reporting | done | Keep aggregate governance enforcement intact while teaching validation to load plan/PLAN-index.yaml and report separate Active and Archived blocks. |
+| `M31.2.2` | `M` | Refactor render-plan.py onto the shared split-plan loader without changing aggregate output shape | done |  |
 | `M31.2.3` | `M` | Add deterministic archive-plan automation and wire milestone archival into the git-flow path | planned | Archive a milestone only after its final checkpoint commit group is complete and before the milestone branch is synchronized for PR merge. |
 | `F31.2.4` | `F` | Propagate the split-plan entrypoint through docs, templates, bootstrap, and runtime adapters | planned | Update only the canonical path and split-plan workflow surfaces that must change, and keep non-authoritative or previously Claude-shaped skill text edits as small as possible. |
 | `T31.2.5` | `T` | Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap | planned |  |
@@ -2978,17 +2978,17 @@ Status: planned
 
 ### M31.2.1: Refactor validate-plan.py onto the shared split-plan loader with active and archived reporting
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S31.2`
 - **Actions**: implement, refactor, verify
 - **Depends on**: `C31.1.4`
 - **Commit group**: `cg65`
-- **Artifacts**: agent-os/scripts/validate-plan.py, agent-os/skills/plan-validate-render/SKILL.md
+- **Artifacts**: agent-os/scripts/plan_loader.py, agent-os/scripts/validate-plan.py, agent-os/skills/plan-validate-render/SKILL.md
 - **Notes**: Keep aggregate governance enforcement intact while teaching validation to load plan/PLAN-index.yaml and report separate Active and Archived blocks.
 
 ### M31.2.2: Refactor render-plan.py onto the shared split-plan loader without changing aggregate output shape
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S31.2`
 - **Actions**: implement, refactor, verify
 - **Depends on**: `C31.1.4`
