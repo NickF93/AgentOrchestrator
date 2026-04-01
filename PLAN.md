@@ -44,6 +44,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X27 | X | Repo Bootstrap Skill Packaging | done |
 | X28 | X | Plan Validate-Render Skill Packaging | done |
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
+| X30 | X | TODO Roadmap Expansion | done |
 
 ## Plan
 
@@ -775,6 +776,22 @@ Status: done
 | `T29.2.4` | `T` | Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates | done |  |
 | `C29.2.5` | `C` | Checkpoint closure — X29 portability and governance enforcement bugfixes | done |  |
 
+### X30
+
+- ID: `X30`
+- Title: TODO Roadmap Expansion
+- Status: done
+- Note: Expand the non-authoritative TODO.md checklist from a compact feature summary into a broader human-facing roadmap and architectural checklist. Keep it explicitly non-normative and avoid duplicating canonical governance, architecture, or execution-plan authorities.
+
+#### S30.1 Items
+
+Sprint: Sprint 1 — TODO.md roadmap rewrite
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D30.1.1` | `D` | Expand TODO.md into a broader human-facing roadmap and architectural checklist | done | Rewrite TODO.md so it remains a concise personal checklist while expanding plan-scaling, runtime, live-tracking, continuity, routing, integration, observability, issue-intake, validation, and context-economy coverage. Keep it non-normative and avoid repeating canonical rules from AGENTS.md, ARCHITECTURE.md, PLAN.yaml, or the workflow authorities. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -841,6 +858,7 @@ Status: done
 | cg59 | Validator fallback and interpreter portability repairs | `F29.2.1`, `F29.2.2` |
 | cg60 | Hook, bootstrap, validation, and closure repairs for X29 | `F29.2.3`, `T29.2.4`, `C29.2.5` |
 | cg61 | X29 refinement — minimal gitflow-pr-only cleanliness restoration | `D29.1.4`, `C29.1.5` |
+| cg62 | TODO roadmap expansion | `D30.1.1` |
 
 ## Item Details
 
@@ -2868,3 +2886,12 @@ Status: done
 - **Depends on**: `T29.2.4`
 - **Commit group**: `cg60`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D30.1.1: Expand TODO.md into a broader human-facing roadmap and architectural checklist
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S30.1`
+- **Actions**: document
+- **Commit group**: `cg62`
+- **Artifacts**: PLAN.yaml, TODO.md
+- **Notes**: Rewrite TODO.md so it remains a concise personal checklist while expanding plan-scaling, runtime, live-tracking, continuity, routing, integration, observability, issue-intake, validation, and context-economy coverage. Keep it non-normative and avoid repeating canonical rules from AGENTS.md, ARCHITECTURE.md, PLAN.yaml, or the workflow authorities.

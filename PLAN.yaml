@@ -325,6 +325,16 @@ milestones:
       enforcement, and align bootstrap, hooks, and docs around local
       pre-push protection for governed repositories.
 
+  - id: X30
+    type: X
+    title: "TODO Roadmap Expansion"
+    status: done
+    note: >
+      Expand the non-authoritative TODO.md checklist from a compact feature
+      summary into a broader human-facing roadmap and architectural checklist.
+      Keep it explicitly non-normative and avoid duplicating canonical
+      governance, architecture, or execution-plan authorities.
+
 sprints:
   - id: S1.1
     type: S
@@ -582,6 +592,12 @@ sprints:
     type: S
     parent: X29
     title: "Sprint 2 — Tooling, hooks, portability, and validation"
+    status: done
+
+  - id: S30.1
+    type: S
+    parent: X30
+    title: "Sprint 1 — TODO.md roadmap rewrite"
     status: done
 
 items:
@@ -4125,6 +4141,29 @@ items:
       profile: codex/check-medium
       result_protocol: check-result-v1
 
+  # ─── X30 / S30.1: TODO roadmap expansion ─────────────────────────────────────
+
+  - id: D30.1.1
+    parent: S30.1
+    type: D
+    title: "Expand TODO.md into a broader human-facing roadmap and architectural checklist"
+    actions: [document]
+    status: done
+    role: documenter
+    effort: medium
+    commit_group: cg62
+    scope: "."
+    artifacts_out:
+      - PLAN.yaml
+      - TODO.md
+    notes: >
+      Rewrite TODO.md so it remains a concise personal checklist while
+      expanding plan-scaling, runtime, live-tracking, continuity,
+      routing, integration, observability, issue-intake, validation, and
+      context-economy coverage. Keep it non-normative and avoid repeating
+      canonical rules from AGENTS.md, ARCHITECTURE.md, PLAN.yaml, or the
+      workflow authorities.
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -4610,3 +4649,11 @@ commit_groups:
       Reopens X29 only to restore the minimal workflow content cleanliness
       guidance in gitflow-pr-only after the skill was reset to the develop
       baseline, without reshaping the Claude-authored normative structure.
+
+  - id: cg62
+    title: "TODO roadmap expansion"
+    items: [D30.1.1]
+    notes: >
+      Tracks the broader non-authoritative TODO.md rewrite so the human
+      roadmap can be expanded without turning it into a second governance
+      authority or an execution-plan duplicate.
