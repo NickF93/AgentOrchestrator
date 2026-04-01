@@ -45,7 +45,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X28 | X | Plan Validate-Render Skill Packaging | done |
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
-| X31 | X | PLAN Splitting and Archival Foundation | done |
+| X31 | X | PLAN Splitting and Archival Foundation | in_progress |
 
 ## Plan
 
@@ -797,8 +797,8 @@ Status: done
 
 - ID: `X31`
 - Title: PLAN Splitting and Archival Foundation
-- Status: done
-- Note: Split the monolithic repo plan into a canonical plan/ entrypoint with active and archived fragments, keep aggregate validation and rendering deterministic, and propagate the new plan layout through Layer-0 tooling, skills, templates, and bootstrap flows.
+- Status: in_progress
+- Note: Split the monolithic repo plan into a canonical plan/ entrypoint with active and archived fragments, keep aggregate validation and rendering deterministic, and propagate the new plan layout through Layer-0 tooling, skills, templates, and bootstrap flows. Sprint 3 reopens X31 to harden the split-plan runtime, remove legacy aggregate support from shared Python tooling, and bring the governed Python surface to warning-strict green gates with >95% per-file coverage for agent-os/scripts/.
 
 #### S31.1 Items
 
@@ -825,6 +825,22 @@ Status: done
 | `F31.2.4` | `F` | Propagate the split-plan entrypoint through docs, templates, bootstrap, and runtime adapters | done | Update only the canonical path and split-plan workflow surfaces that must change, and keep non-authoritative or previously Claude-shaped skill text edits as small as possible. |
 | `T31.2.5` | `T` | Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap | done |  |
 | `C31.2.6` | `C` | Checkpoint closure — X31 split-plan archival and propagation | done |  |
+
+#### S31.3 Items
+
+Sprint: Sprint 3 — Warning-strict gates and script coverage hardening
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D31.3.1` | `D` | Reopen X31 and record the split-only, warning-strict coverage hardening decisions | done | Sprint 3 keeps the existing feature branch, applies the >95% per-file coverage target to agent-os/scripts/*.py only, treats Python/test warnings as failures, and removes legacy aggregate PLAN.yaml runtime support from shared Python tooling while keeping split-plan.py as the one-time migration entrypoint. |
+| `M31.3.2` | `M` | Make the Python gate runnable, warning-strict, and coverage-enforced for agent-os/scripts | planned | Wire pytest, pytest-cov, branch coverage reporting, warning-as-error handling, and deterministic per-file coverage enforcement into the canonical Python gate for the governed script surface. |
+| `M31.3.3` | `M` | Remove legacy aggregate PLAN.yaml runtime support from shared Python tooling | planned | Shared Python runtime tooling becomes split-plan-only. split-plan.py remains the explicit legacy migration path; no compatibility shims or aggregate runtime fallbacks remain. |
+| `T31.3.4` | `T` | Add high-signal hardening coverage for plan_loader.py, split-plan.py, and archive-plan.py | planned |  |
+| `M31.3.5` | `M` | Fix runtime defects exposed by loader, split, and archive hardening tests | planned |  |
+| `T31.3.6` | `T` | Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py | planned |  |
+| `M31.3.7` | `M` | Fix runtime defects exposed by validate, render, and asset-resolution hardening tests | planned |  |
+| `C31.3.8` | `C` | Checkpoint closure — X31 warning-strict coverage hardening | planned |  |
 
 ## Commit Groups
 
@@ -898,6 +914,11 @@ Status: done
 | cg65 | Aggregate validator and renderer split-plan loader refactor | `M31.2.1`, `M31.2.2` |
 | cg66 | Archival automation and split-plan propagation | `M31.2.3`, `F31.2.4` |
 | cg67 | Split-plan validation matrix and X31 closure | `T31.2.5`, `C31.2.6` |
+| cg68 | X31 sprint-3 tracking bootstrap | `D31.3.1` |
+| cg69 | Warning-strict Python gate and split-only runtime contract | `M31.3.2`, `M31.3.3` |
+| cg70 | Loader, split, and archive hardening loop | `T31.3.4`, `M31.3.5` |
+| cg71 | Validate, render, and asset-resolution hardening loop | `T31.3.6`, `M31.3.7` |
+| cg72 | Warning-strict gate closure for X31 sprint 3 | `C31.3.8` |
 
 ## Item Details
 
@@ -3038,3 +3059,89 @@ Status: done
 - **Depends on**: `T31.2.5`
 - **Commit group**: `cg67`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D31.3.1: Reopen X31 and record the split-only, warning-strict coverage hardening decisions
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Sprint**: `S31.3`
+- **Actions**: plan, document
+- **Depends on**: `C31.2.6`
+- **Commit group**: `cg68`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+- **Notes**: Sprint 3 keeps the existing feature branch, applies the >95% per-file coverage target to agent-os/scripts/*.py only, treats Python/test warnings as failures, and removes legacy aggregate PLAN.yaml runtime support from shared Python tooling while keeping split-plan.py as the one-time migration entrypoint.
+
+### M31.3.2: Make the Python gate runnable, warning-strict, and coverage-enforced for agent-os/scripts
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Sprint**: `S31.3`
+- **Actions**: implement, verify
+- **Depends on**: `D31.3.1`
+- **Commit group**: `cg69`
+- **Artifacts**: pyproject.toml, requirements-dev.txt, agent-os/scripts/run-gates.sh, tests/
+- **Notes**: Wire pytest, pytest-cov, branch coverage reporting, warning-as-error handling, and deterministic per-file coverage enforcement into the canonical Python gate for the governed script surface.
+
+### M31.3.3: Remove legacy aggregate PLAN.yaml runtime support from shared Python tooling
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Sprint**: `S31.3`
+- **Actions**: implement, refactor, verify
+- **Depends on**: `D31.3.1`
+- **Commit group**: `cg69`
+- **Artifacts**: agent-os/scripts/plan_loader.py, agent-os/scripts/render-plan.py, agent-os/scripts/validate-plan.py, tests/
+- **Notes**: Shared Python runtime tooling becomes split-plan-only. split-plan.py remains the explicit legacy migration path; no compatibility shims or aggregate runtime fallbacks remain.
+
+### T31.3.4: Add high-signal hardening coverage for plan_loader.py, split-plan.py, and archive-plan.py
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: high
+- **Sprint**: `S31.3`
+- **Actions**: test, verify
+- **Depends on**: `M31.3.2`, `M31.3.3`
+- **Commit group**: `cg70`
+- **Artifacts**: tests/test_archive_plan.py, tests/test_plan_loader.py, tests/test_split_plan.py
+- **Checks**:
+  - high-signal composite and edge-case scenarios cover plan_loader.py, split-plan.py, and archive-plan.py above the per-file threshold
+  - the targeted modules are warning-free under pytest warning-as-error execution
+
+### M31.3.5: Fix runtime defects exposed by loader, split, and archive hardening tests
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Sprint**: `S31.3`
+- **Actions**: implement, verify
+- **Depends on**: `T31.3.4`
+- **Commit group**: `cg70`
+- **Artifacts**: agent-os/scripts/plan_loader.py, agent-os/scripts/split-plan.py, agent-os/scripts/archive-plan.py, tests/
+
+### T31.3.6: Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: high
+- **Sprint**: `S31.3`
+- **Actions**: test, verify
+- **Depends on**: `M31.3.5`
+- **Commit group**: `cg71`
+- **Artifacts**: tests/test_render_plan.py, tests/test_resolve_shared_asset.py, tests/test_validate_plan.py
+- **Checks**:
+  - high-signal composite and edge-case scenarios cover validate-plan.py, render-plan.py, and resolve-shared-asset.py above the per-file threshold
+  - the targeted modules are warning-free under pytest warning-as-error execution
+
+### M31.3.7: Fix runtime defects exposed by validate, render, and asset-resolution hardening tests
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Sprint**: `S31.3`
+- **Actions**: implement, verify
+- **Depends on**: `T31.3.6`
+- **Commit group**: `cg71`
+- **Artifacts**: agent-os/scripts/resolve-shared-asset.py, agent-os/scripts/render-plan.py, agent-os/scripts/validate-plan.py, tests/
+
+### C31.3.8: Checkpoint closure — X31 warning-strict coverage hardening
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: medium
+- **Sprint**: `S31.3`
+- **Actions**: checkpoint, verify
+- **Depends on**: `M31.3.7`
+- **Commit group**: `cg72`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - pytest passes with zero Python warnings
+  - canonical Python gates pass
+  - each file under agent-os/scripts/*.py exceeds 95% coverage
