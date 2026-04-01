@@ -45,7 +45,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X28 | X | Plan Validate-Render Skill Packaging | done |
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
-| X31 | X | PLAN Splitting and Archival Foundation | in_progress |
+| X31 | X | PLAN Splitting and Archival Foundation | done |
 
 ## Plan
 
@@ -797,7 +797,7 @@ Status: done
 
 - ID: `X31`
 - Title: PLAN Splitting and Archival Foundation
-- Status: in_progress
+- Status: done
 - Note: Split the monolithic repo plan into a canonical plan/ entrypoint with active and archived fragments, keep aggregate validation and rendering deterministic, and propagate the new plan layout through Layer-0 tooling, skills, templates, and bootstrap flows.
 
 #### S31.1 Items
@@ -815,7 +815,7 @@ Status: done
 #### S31.2 Items
 
 Sprint: Sprint 2 — Aggregate tooling, archival automation, and propagation
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
@@ -823,8 +823,8 @@ Status: in_progress
 | `M31.2.2` | `M` | Refactor render-plan.py onto the shared split-plan loader without changing aggregate output shape | done |  |
 | `M31.2.3` | `M` | Add deterministic archive-plan automation and wire milestone archival into the git-flow path | done | Archive a milestone only after its final checkpoint commit group is complete and before the milestone branch is synchronized for PR merge. |
 | `F31.2.4` | `F` | Propagate the split-plan entrypoint through docs, templates, bootstrap, and runtime adapters | done | Update only the canonical path and split-plan workflow surfaces that must change, and keep non-authoritative or previously Claude-shaped skill text edits as small as possible. |
-| `T31.2.5` | `T` | Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap | planned |  |
-| `C31.2.6` | `C` | Checkpoint closure — X31 split-plan archival and propagation | planned |  |
+| `T31.2.5` | `T` | Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap | done |  |
+| `C31.2.6` | `C` | Checkpoint closure — X31 split-plan archival and propagation | done |  |
 
 ## Commit Groups
 
@@ -3017,11 +3017,12 @@ Status: in_progress
 
 ### T31.2.5: Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: high
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: high
 - **Sprint**: `S31.2`
 - **Actions**: test, verify
 - **Depends on**: `F31.2.4`
 - **Commit group**: `cg67`
+- **Artifacts**: tests/conftest.py, tests/test_archive_plan.py, tests/test_plan_loader.py, tests/test_render_plan.py, tests/test_shell_scripts.py, tests/test_split_plan.py, tests/test_validate_plan.py
 - **Checks**:
   - loader tests cover duplicate and missing archive references, empty current plans, and milestone ownership
   - migration tests confirm split-plan.py preserves aggregate logical-plan content
@@ -3031,7 +3032,7 @@ Status: in_progress
 
 ### C31.2.6: Checkpoint closure — X31 split-plan archival and propagation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S31.2`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T31.2.5`

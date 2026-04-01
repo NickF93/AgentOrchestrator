@@ -170,6 +170,31 @@ def test_load_split_plan_accepts_empty_current_fragment(repo_root: Path, tmp_pat
     assert [obj["id"] for obj in aggregate["milestones"]] == ["X1"]
 
 
+def test_load_split_plan_rejects_missing_archive_path_reference(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    archive_fragment = make_fragment(
+        milestone_id="X1",
+        milestone_title="Archived milestone",
+        milestone_status="done",
+        sprint_id="S1.1",
+        item_id="D1.1.1",
+        commit_group_id="cg1",
+    )
+    index_path, loader = build_index(
+        repo_root,
+        tmp_path,
+        current_fragment={"milestones": [], "sprints": [], "items": [], "commit_groups": []},
+        archives=[("X1", "Archived milestone", archive_fragment)],
+    )
+    index = load_yaml(index_path)
+    del index["archives"][0]["path"]
+    write_yaml(index_path, index)
+
+    with pytest.raises(loader.PlanLoadError, match=r"archives\[0\]\.path"):
+        loader.load_split_plan(index_path)
+
+
 def test_load_split_plan_rejects_duplicate_archive_milestones(
     repo_root: Path, tmp_path: Path
 ) -> None:
@@ -192,6 +217,29 @@ def test_load_split_plan_rejects_duplicate_archive_milestones(
     )
 
     with pytest.raises(loader.PlanLoadError, match="duplicate archived milestone 'X1'"):
+        loader.load_split_plan(index_path)
+
+
+def test_load_split_plan_rejects_sprint_parent_outside_fragment(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    broken_archive = make_fragment(
+        milestone_id="X1",
+        milestone_title="Archived milestone",
+        milestone_status="done",
+        sprint_id="S1.1",
+        item_id="D1.1.1",
+        commit_group_id="cg1",
+    )
+    broken_archive["sprints"][0]["parent"] = "X9"
+    index_path, loader = build_index(
+        repo_root,
+        tmp_path,
+        current_fragment={"milestones": [], "sprints": [], "items": [], "commit_groups": []},
+        archives=[("X1", "Archived milestone", broken_archive)],
+    )
+
+    with pytest.raises(loader.PlanLoadError, match="parent outside its fragment"):
         loader.load_split_plan(index_path)
 
 

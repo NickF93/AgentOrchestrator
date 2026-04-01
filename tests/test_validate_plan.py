@@ -5,8 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-import yaml
-from conftest import PLAN_PATH, SCHEMA_PATH, run_python_script
+from conftest import PLAN_PATH, SCHEMA_PATH, copy_split_plan, load_yaml, run_python_script, write_yaml
 
 
 def run_validate_plan_without_jsonschema(
@@ -52,20 +51,22 @@ def test_validate_plan_accepts_current_plan(repo_root: Path) -> None:
         str(SCHEMA_PATH),
     )
     assert result.returncode == 0, result.stderr
+    assert "ACTIVE:" in result.stdout
+    assert "ARCHIVED:" in result.stdout
     assert "OK:" in result.stdout
 
 
 def test_validate_plan_rejects_unknown_shared_asset(repo_root: Path, tmp_path: Path) -> None:
-    plan = yaml.safe_load(PLAN_PATH.read_text(encoding="utf-8"))
-    target_item = next(item for item in plan["items"] if item["id"] == "T9.1.4")
+    index_path = copy_split_plan(tmp_path)
+    current_path = index_path.parent / "PLAN-current.yaml"
+    current_plan = load_yaml(current_path)
+    target_item = next(item for item in current_plan["items"] if item["id"] == "C31.2.6")
     target_item["shared_assets"]["prompt"] = "does-not-exist"
-
-    invalid_plan = tmp_path / "PLAN-invalid-shared.yaml"
-    invalid_plan.write_text(yaml.safe_dump(plan, sort_keys=False), encoding="utf-8")
+    write_yaml(current_path, current_plan)
 
     result = run_python_script(
         repo_root / "agent-os" / "scripts" / "validate-plan.py",
-        str(invalid_plan),
+        str(index_path),
         "--schema",
         str(SCHEMA_PATH),
     )
@@ -75,15 +76,14 @@ def test_validate_plan_rejects_unknown_shared_asset(repo_root: Path, tmp_path: P
 
 
 def test_validate_plan_rejects_missing_required_field(repo_root: Path, tmp_path: Path) -> None:
-    plan = yaml.safe_load(PLAN_PATH.read_text(encoding="utf-8"))
-    del plan["meta"]["repo"]
-
-    invalid_plan = tmp_path / "PLAN-invalid-required.yaml"
-    invalid_plan.write_text(yaml.safe_dump(plan, sort_keys=False), encoding="utf-8")
+    index_path = copy_split_plan(tmp_path)
+    index = load_yaml(index_path)
+    del index["meta"]["repo"]
+    write_yaml(index_path, index)
 
     result = run_python_script(
         repo_root / "agent-os" / "scripts" / "validate-plan.py",
-        str(invalid_plan),
+        str(index_path),
         "--schema",
         str(SCHEMA_PATH),
     )
@@ -95,23 +95,67 @@ def test_validate_plan_rejects_missing_required_field(repo_root: Path, tmp_path:
 def test_validate_plan_accepts_current_plan_without_jsonschema(
     repo_root: Path, tmp_path: Path
 ) -> None:
-    result = run_validate_plan_without_jsonschema(repo_root, PLAN_PATH, SCHEMA_PATH, tmp_path)
+    index_path = copy_split_plan(tmp_path)
+    result = run_validate_plan_without_jsonschema(repo_root, index_path, SCHEMA_PATH, tmp_path)
     assert result.returncode == 0, f"{result.stdout}\n{result.stderr}"
+    assert "ACTIVE:" in result.stdout
+    assert "ARCHIVED:" in result.stdout
     assert "OK:" in result.stdout
 
 
 def test_validate_plan_rejects_missing_required_field_without_jsonschema(
     repo_root: Path, tmp_path: Path
 ) -> None:
-    plan = yaml.safe_load(PLAN_PATH.read_text(encoding="utf-8"))
-    del plan["meta"]["repo"]
+    index_path = copy_split_plan(tmp_path)
+    index = load_yaml(index_path)
+    del index["meta"]["repo"]
+    write_yaml(index_path, index)
 
-    invalid_plan = tmp_path / "PLAN-invalid-required-fallback.yaml"
-    invalid_plan.write_text(yaml.safe_dump(plan, sort_keys=False), encoding="utf-8")
-
-    result = run_validate_plan_without_jsonschema(repo_root, invalid_plan, SCHEMA_PATH, tmp_path)
+    result = run_validate_plan_without_jsonschema(repo_root, index_path, SCHEMA_PATH, tmp_path)
     assert result.returncode == 1
     combined = f"{result.stdout}\n{result.stderr}"
     assert "Schema validation failed" in combined
     assert "meta.repo: expected non-empty string" in combined
     assert "AttributeError" not in combined
+
+
+def test_validate_plan_rejects_archive_digest_mismatch(repo_root: Path, tmp_path: Path) -> None:
+    index_path = copy_split_plan(tmp_path)
+    index = load_yaml(index_path)
+    archive_path = index_path.parent / index["archives"][0]["path"]
+    archive_fragment = load_yaml(archive_path)
+    archive_fragment["items"][0]["title"] = "tampered archived item"
+    write_yaml(archive_path, archive_fragment)
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(index_path),
+        "--schema",
+        str(SCHEMA_PATH),
+    )
+
+    assert result.returncode == 1
+    combined = f"{result.stdout}\n{result.stderr}"
+    assert "archive digest mismatch" in combined
+
+
+def test_validate_plan_rejects_cross_fragment_archive_structure(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    index_path = copy_split_plan(tmp_path)
+    index = load_yaml(index_path)
+    archive_path = index_path.parent / index["archives"][0]["path"]
+    archive_fragment = load_yaml(archive_path)
+    archive_fragment["sprints"][0]["parent"] = "X999"
+    write_yaml(archive_path, archive_fragment)
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(index_path),
+        "--schema",
+        str(SCHEMA_PATH),
+    )
+
+    assert result.returncode == 1
+    combined = f"{result.stdout}\n{result.stderr}"
+    assert "outside its fragment" in combined

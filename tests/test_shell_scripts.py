@@ -76,6 +76,8 @@ def test_bootstrap_repo_dry_run_reports_creates(
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert "DRY-RUN: create" in result.stdout
+    assert "plan/PLAN-index.yaml" in result.stdout
+    assert "plan/archive" in result.stdout
     assert ".githooks/pre-push" in result.stdout
     assert not target_repo.exists()
 
@@ -98,7 +100,10 @@ def test_bootstrap_repo_creates_expected_files(
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert (target_repo / "AGENTS.md").exists()
-    assert (target_repo / "PLAN.yaml").exists()
+    assert (target_repo / "plan" / "PLAN-index.yaml").exists()
+    assert (target_repo / "plan" / "PLAN-current.yaml").exists()
+    assert (target_repo / "plan" / "archive").is_dir()
+    assert not (target_repo / "PLAN.yaml").exists()
     assert (target_repo / ".githooks" / "commit-msg").exists()
     assert (target_repo / ".githooks" / "pre-push").exists()
     assert (target_repo / ".githooks" / "commit-msg").stat().st_mode & 0o111
@@ -121,6 +126,7 @@ def test_bootstrap_repo_creates_expected_files(
     claude_text = claude_md.read_text(encoding="utf-8")
     assert "thin runtime entrypoint" in claude_text
     assert "AGENTS.md" in claude_text
+    assert "plan/PLAN-index.yaml" in claude_text
     assert "## Adapter Overrides" in claude_text
 
     codex_file = target_repo / ".codex"
@@ -129,6 +135,7 @@ def test_bootstrap_repo_creates_expected_files(
     assert "thin runtime entrypoint for Codex" in codex_text
     assert "AGENTS.md" in codex_text
     assert "AGENT_PYTHON" in codex_text
+    assert "plan/PLAN-index.yaml" in codex_text
     assert "Canonical authority is bounded in" in codex_text
 
     gemini_file = target_repo / "GEMINI.md"

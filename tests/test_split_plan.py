@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 from pathlib import Path
 
 import yaml
@@ -15,6 +16,16 @@ def load_module(module_name: str, path: Path) -> object:
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
+
+
+def normalize_generated_markdown(text: str) -> str:
+    return re.sub(
+        r"^AUTO-GENERATED from .+\. Do not edit manually\.$",
+        "AUTO-GENERATED from <source>. Do not edit manually.",
+        text,
+        count=1,
+        flags=re.MULTILINE,
+    )
 
 
 def test_split_plan_preserves_aggregate_content_and_outputs(repo_root: Path, tmp_path: Path) -> None:
@@ -99,9 +110,24 @@ def test_split_plan_preserves_aggregate_content_and_outputs(repo_root: Path, tmp
 
     loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
     aggregate, metadata = loader.load_split_plan(index_path)
+    legacy_md_path = tmp_path / "PLAN-legacy.md"
+    legacy_dot_path = tmp_path / "PLAN-legacy.dot"
+    render_result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "render-plan.py",
+        str(legacy_path),
+        "--md",
+        str(legacy_md_path),
+        "--dot",
+        str(legacy_dot_path),
+    )
 
     assert metadata["format"] == "split"
     assert aggregate == loader.sort_aggregate_plan(legacy_plan)
+    assert render_result.returncode == 0, render_result.stdout + render_result.stderr
+    assert normalize_generated_markdown(md_path.read_text(encoding="utf-8")) == normalize_generated_markdown(
+        legacy_md_path.read_text(encoding="utf-8")
+    )
+    assert dot_path.read_text(encoding="utf-8") == legacy_dot_path.read_text(encoding="utf-8")
     assert "### X1" in md_path.read_text(encoding="utf-8")
     assert '"cluster_cg1"' in dot_path.read_text(encoding="utf-8")
 

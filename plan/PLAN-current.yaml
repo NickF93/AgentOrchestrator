@@ -2,7 +2,7 @@ milestones:
 - id: X31
   type: X
   title: PLAN Splitting and Archival Foundation
-  status: in_progress
+  status: done
   note: 'Split the monolithic repo plan into a canonical plan/ entrypoint with active
     and archived fragments, keep aggregate validation and rendering deterministic,
     and propagate the new plan layout through Layer-0 tooling, skills, templates,
@@ -19,7 +19,7 @@ sprints:
   type: S
   parent: X31
   title: "Sprint 2 \u2014 Aggregate tooling, archival automation, and propagation"
-  status: in_progress
+  status: done
 items:
 - id: D31.1.1
   parent: S31.1
@@ -232,13 +232,21 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - F31.2.4
   role: tester
   effort: high
   commit_group: cg67
   scope: .
+  artifacts_out:
+  - tests/conftest.py
+  - tests/test_archive_plan.py
+  - tests/test_plan_loader.py
+  - tests/test_render_plan.py
+  - tests/test_shell_scripts.py
+  - tests/test_split_plan.py
+  - tests/test_validate_plan.py
   checks:
   - loader tests cover duplicate and missing archive references, empty current plans,
     and milestone ownership
@@ -255,7 +263,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - T31.2.5
   role: reviewer
