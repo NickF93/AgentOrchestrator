@@ -39,13 +39,15 @@ Copy `.env.example` to `.env` and set `AGENT_PYTHON` for your workstation:
 ```bash
 cp .env.example .env
 # Edit .env — set AGENT_PYTHON to your local Python command, e.g.:
-#   AGENT_PYTHON="conda run -n nn-2 python"
 #   AGENT_PYTHON="python3"
+#   AGENT_PYTHON="conda run -n myenv python"
 #   AGENT_PYTHON="/path/to/venv/bin/python"
 ```
 
 `.env` is gitignored and never committed. Scripts source it automatically.
-For manual commands, source it first: `source .env`
+`run-gates.sh` resolves Python with this precedence: exported
+`AGENT_PYTHON`, then `.env`, then `python3`. For manual commands, source
+`.env` first or export `AGENT_PYTHON` explicitly.
 
 ### Install runtime dependencies
 
@@ -116,7 +118,8 @@ bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
 
 ## Testing and Gates
 
-The Python environment is configured per workstation via `AGENT_PYTHON` in `.env`.
+Repo-tracked Python commands use `AGENT_PYTHON`. `run-gates.sh` resolves it
+with this precedence: exported `AGENT_PYTHON`, then `.env`, then `python3`.
 
 - Python tests: `$AGENT_PYTHON -m pytest -q`
 - Gate runner: `bash agent-os/scripts/run-gates.sh` (sources `.env` automatically)

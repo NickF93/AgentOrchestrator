@@ -72,7 +72,7 @@ digraph PLAN {
   "S28.1" [label="S28.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S28.2" [label="S28.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S29.1" [label="S29.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S29.2" [label="S29.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
+  "S29.2" [label="S29.2 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -487,8 +487,8 @@ digraph PLAN {
   subgraph "cluster_cg59" {
     style="rounded,dashed";
     label="cg59: Validator fallback and interpreter portability repairs";
-  "F29.2.1" [label="F29.2.1 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
-  "F29.2.2" [label="F29.2.2 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  "F29.2.1" [label="F29.2.1 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "F29.2.2" [label="F29.2.2 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg60" {
     style="rounded,dashed";

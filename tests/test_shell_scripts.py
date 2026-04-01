@@ -64,10 +64,10 @@ def test_bootstrap_repo_creates_expected_files(
     codex_file = target_repo / ".codex"
     assert codex_file.exists()
     codex_text = codex_file.read_text(encoding="utf-8")
-    assert "thin runtime entrypoint" in codex_text
+    assert "thin runtime entrypoint for Codex" in codex_text
     assert "AGENTS.md" in codex_text
-    assert "## Adapter Overrides" in codex_text
-    assert "## Sandbox Notes" in codex_text
+    assert "AGENT_PYTHON" in codex_text
+    assert "Canonical authority is bounded in" in codex_text
 
     gemini_file = target_repo / "GEMINI.md"
     assert gemini_file.exists()
@@ -117,7 +117,8 @@ def test_sync_workspace_stamps_control_plane_root(
     workspace_codex = (workspace_root / ".codex").read_text(encoding="utf-8")
     assert "CONTROL_PLANE_ROOT:" in workspace_codex
     assert str(repo_root) in workspace_codex
-    assert "## Adapter Overrides" in workspace_codex
+    assert "thin workspace runtime entrypoint for Codex" in workspace_codex
+    assert "AGENT_PYTHON" in workspace_codex
 
     assert not (workspace_root / "GEMINI.md").exists()
     assert not (workspace_root / ".cursor").exists()

@@ -763,12 +763,12 @@ Status: done
 #### S29.2 Items
 
 Sprint: Sprint 2 — Tooling, hooks, portability, and validation
-Status: planned
+Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `F29.2.1` | `F` | Fix validate-plan.py fallback when jsonschema is unavailable | planned | Route schema validation through a helper that uses jsonschema when available and the existing subset fallback when it is not, preserving readable failures and non-zero exit codes without crashing. |
-| `F29.2.2` | `F` | Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh | planned | Standardize active repo-tracked instructions on AGENT_PYTHON from .env, make the tracked default generic, and keep Codex sandbox guidance thin and non-host-specific. |
+| `F29.2.1` | `F` | Fix validate-plan.py fallback when jsonschema is unavailable | done | Route schema validation through a helper that uses jsonschema when available and the existing subset fallback when it is not, preserving readable failures and non-zero exit codes without crashing. |
+| `F29.2.2` | `F` | Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh | done | Standardize active repo-tracked instructions on AGENT_PYTHON from .env, make the tracked default generic, and keep Codex sandbox guidance thin and non-host-specific. |
 | `F29.2.3` | `F` | Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers | planned | Keep direct-push protection for main and develop, bootstrap both hooks, and reject narrow AI/codegen attribution markers in commit-message and pushed-text enforcement without blocking legitimate human co-author trailers. |
 | `T29.2.4` | `T` | Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates | planned |  |
 | `C29.2.5` | `C` | Checkpoint closure — X29 portability and governance enforcement bugfixes | planned |  |
@@ -2783,7 +2783,7 @@ Status: planned
 
 ### F29.2.1: Fix validate-plan.py fallback when jsonschema is unavailable
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S29.2`
 - **Actions**: implement, verify
 - **Depends on**: `D29.1.2`, `D29.1.3`
@@ -2793,12 +2793,12 @@ Status: planned
 
 ### F29.2.2: Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S29.2`
 - **Actions**: implement, verify
 - **Depends on**: `D29.1.2`, `D29.1.3`
 - **Commit group**: `cg59`
-- **Artifacts**: .env.example, README.md, .codex, agent-os/scripts/run-gates.sh, agent-os/templates/repo-CODEX.md.template, agent-os/templates/workspace-CODEX.md.template
+- **Artifacts**: .env.example, README.md, .codex, agent-os/scripts/run-gates.sh, agent-os/templates/repo-CODEX.md.template, agent-os/templates/workspace-CODEX.md.template, tests/test_shell_scripts.py
 - **Notes**: Standardize active repo-tracked instructions on AGENT_PYTHON from .env, make the tracked default generic, and keep Codex sandbox guidance thin and non-host-specific.
 
 ### F29.2.3: Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers
