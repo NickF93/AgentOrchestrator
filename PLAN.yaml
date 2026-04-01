@@ -8,7 +8,7 @@ meta:
   owner: NickF93
   version: "0.1"
   schema_version: "draft-1.0"
-  last_updated: "2026-03-31"
+  last_updated: "2026-04-01"
   note: >
     This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself.
@@ -306,7 +306,7 @@ milestones:
   - id: X28
     type: X
     title: "Plan Validate-Render Skill Packaging"
-    status: planned
+    status: done
     note: >
       Package the existing validate-plan.py and render-plan.py scripts as
       a portable skill under agent-os/skills/. Add two-root resolution,
@@ -559,7 +559,7 @@ sprints:
     type: S
     parent: X28
     title: "Sprint 2 — Registry, discovery propagation, validation, and closure"
-    status: planned
+    status: done
 
 items:
 
@@ -3824,7 +3824,7 @@ items:
     type: M
     title: "Register plan-validate-render in shared asset registry and propagate discovery metadata"
     actions: [implement]
-    status: planned
+    status: done
     depends_on: [D28.1.1]
     role: implementer
     effort: low
@@ -3847,7 +3847,7 @@ items:
     type: T
     title: "Validate plan-validate-render skill packaging, registry, and plan consistency"
     actions: [verify]
-    status: planned
+    status: done
     depends_on: [M28.2.1]
     role: reviewer
     effort: low
@@ -3871,7 +3871,7 @@ items:
     type: C
     title: "Checkpoint closure — X28 plan-validate-render skill packaging"
     actions: [checkpoint, verify]
-    status: planned
+    status: done
     depends_on: [T28.2.2]
     role: reviewer
     effort: low

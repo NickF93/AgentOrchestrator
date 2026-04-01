@@ -24,6 +24,15 @@ assets:
     compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true
 
+  - id: plan-validate-render
+    kind: skill
+    version: "0.1.0"
+    path: agent-os/skills/plan-validate-render/SKILL.md
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
+    materializable: true
+    depends_on_assets:
+      - check-result-v1
+
   - id: checkpoint-closure-review
     kind: prompt
     version: "1.0.0"

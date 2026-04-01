@@ -5,7 +5,7 @@ AUTO-GENERATED from PLAN.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-03-31
+- Last updated: 2026-04-01
 
 ## Mission
 
@@ -42,7 +42,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X25 | X | Full Runtime Parity and First-Class Promotion | done |
 | X26 | X | Gemini and Cursor First-Class Portability | done |
 | X27 | X | Repo Bootstrap Skill Packaging | done |
-| X28 | X | Plan Validate-Render Skill Packaging | planned |
+| X28 | X | Plan Validate-Render Skill Packaging | done |
 
 ## Plan
 
@@ -718,7 +718,7 @@ Status: done
 
 - ID: `X28`
 - Title: Plan Validate-Render Skill Packaging
-- Status: planned
+- Status: done
 - Note: Package the existing validate-plan.py and render-plan.py scripts as a portable skill under agent-os/skills/. Add two-root resolution, warning/error classification, render drift detection, and structured reporting via check-result-v1. Register in the shared asset registry and propagate discovery to AGENTS.md and the repo template.
 
 #### S28.1 Items
@@ -733,13 +733,13 @@ Status: done
 #### S28.2 Items
 
 Sprint: Sprint 2 — Registry, discovery propagation, validation, and closure
-Status: planned
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `M28.2.1` | `M` | Register plan-validate-render in shared asset registry and propagate discovery metadata | planned | Add the plan-validate-render skill entry to shared-assets.yaml (kind skill, version 0.1.0, six-runtime compatibility). Add a row to the available-skills table in AGENTS.md and in repo-AGENTS.md.template. Check off the plan-validate-render entry in TODO.md. |
-| `T28.2.2` | `T` | Validate plan-validate-render skill packaging, registry, and plan consistency | planned |  |
-| `C28.2.3` | `C` | Checkpoint closure — X28 plan-validate-render skill packaging | planned |  |
+| `M28.2.1` | `M` | Register plan-validate-render in shared asset registry and propagate discovery metadata | done | Add the plan-validate-render skill entry to shared-assets.yaml (kind skill, version 0.1.0, six-runtime compatibility). Add a row to the available-skills table in AGENTS.md and in repo-AGENTS.md.template. Check off the plan-validate-render entry in TODO.md. |
+| `T28.2.2` | `T` | Validate plan-validate-render skill packaging, registry, and plan consistency | done |  |
+| `C28.2.3` | `C` | Checkpoint closure — X28 plan-validate-render skill packaging | done |  |
 
 ## Commit Groups
 
@@ -2678,7 +2678,7 @@ Status: planned
 
 ### M28.2.1: Register plan-validate-render in shared asset registry and propagate discovery metadata
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S28.2`
 - **Actions**: implement
 - **Depends on**: `D28.1.1`
@@ -2688,7 +2688,7 @@ Status: planned
 
 ### T28.2.2: Validate plan-validate-render skill packaging, registry, and plan consistency
 
-- **Type**: T | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S28.2`
 - **Actions**: verify
 - **Depends on**: `M28.2.1`
@@ -2708,7 +2708,7 @@ Status: planned
 
 ### C28.2.3: Checkpoint closure — X28 plan-validate-render skill packaging
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S28.2`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T28.2.2`
