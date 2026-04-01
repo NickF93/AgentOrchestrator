@@ -1,0 +1,159 @@
+milestones:
+- id: X14
+  type: X
+  title: "Portability Milestone Completion \u2014 Copilot Support and Kilo Realignment"
+  status: done
+  note: 'Complete the runtime portability milestone without splitting authority. Add
+    GitHub Copilot as a supported runtime through a thin repo-level entrypoint, replace
+    the KILO.md adapter fiction with native Kilo portability through AGENTS.md plus
+    shared assets, and update the portability contract to speak in terms of runtime
+    entrypoint artifacts instead of a single adapter file shape.
+
+    '
+sprints:
+- id: S14.1
+  type: S
+  parent: X14
+  title: "Sprint 1 \u2014 Copilot support and Kilo entrypoint realignment"
+  status: done
+items:
+- id: D14.1.1
+  parent: S14.1
+  type: D
+  title: Track portability completion milestone and runtime entrypoint contract update
+  actions:
+  - design
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg34
+  depends_on:
+  - C13.1.3
+  scope: .
+  artifacts_out:
+  - PLAN.yaml
+  notes: "Adds X14 as the tracked follow-on to X11\u2013X13. Records the contract\
+    \ shift from singular adapter files to runtime entrypoint artifacts, targets Copilot\
+    \ as supported, and realigns Kilo to native portability through AGENTS.md instead\
+    \ of a dedicated KILO.md authority file.\n"
+- id: M14.1.2
+  parent: S14.1
+  type: M
+  title: Implement Copilot support and Kilo realignment across docs, templates, registry,
+    and tooling
+  actions:
+  - implement
+  - document
+  - refactor
+  status: done
+  role: implementer
+  effort: high
+  commit_group: cg35
+  depends_on:
+  - D14.1.1
+  scope: .
+  artifacts_out:
+  - .github/copilot-instructions.md
+  - agent-os/workflow/portability-model.md
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/registry/shared-assets.yaml
+  - agent-os/profiles/copilot/check-medium.yaml
+  - agent-os/profiles/kilo/check-medium.yaml
+  - agent-os/skills/plan-checkpoint-close/SKILL.md
+  - agent-os/templates/repo-copilot-instructions.md.template
+  - agent-os/templates/repo-README.md.template
+  - agent-os/scripts/bootstrap-repo.sh
+  - agent-os/scripts/resolve-shared-asset.py
+  - tests/test_shell_scripts.py
+  - README.md
+  - PLAN.yaml
+  notes: 'Adds a thin `.github/copilot-instructions.md` bootstrap template, registers
+    the Copilot profile, broadens neutral shared-asset compatibility to include Copilot,
+    removes KILO.md from the portability contract and verification expectations, and
+    keeps runtime authority centralized in canonical governance files.
+
+    '
+- id: T14.1.3
+  parent: S14.1
+  type: T
+  title: Validate Copilot support and Kilo realignment
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: medium
+  commit_group: cg36
+  depends_on:
+  - M14.1.2
+  scope: .
+  checks:
+  - bootstrap-repo.sh creates .github/copilot-instructions.md with thin-pointer content
+    only
+  - sync-workspace.sh still renders only AGENTS.md, CLAUDE.md, and .codex
+  - Registry neutral assets and runtime profiles are internally consistent for claude,
+    codex, kilo, and copilot
+  - No docs, tests, or verification expectations require KILO.md
+  - portability-model.md shows copilot and kilo as supported under the entrypoint-artifact
+    model
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - python -m pytest -q passes
+  - bash agent-os/scripts/run-gates.sh passes
+- id: C14.1.4
+  parent: S14.1
+  type: C
+  title: Portability completion checkpoint
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg36
+  depends_on:
+  - T14.1.3
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    profile: copilot/check-medium
+    result_protocol: check-result-v1
+  checks:
+  - All runtime entrypoint artifacts remain thin pointers to canonical authorities
+  - Copilot is supported through repo-level bootstrap entrypoints without authority
+    duplication
+  - Kilo support no longer depends on KILO.md
+  - Workspace sync remains limited to workspace-scoped runtimes
+  - PLAN.md and PLAN.dot are regenerated and committed
+commit_groups:
+- id: cg34
+  title: "Portability completion tracking \u2014 milestone, runtime contract, and\
+    \ commit boundaries"
+  items:
+  - D14.1.1
+  notes: 'Tracks the Copilot support and Kilo realignment tranche before any runtime
+    or tooling changes are made. Establishes the runtime entrypoint-artifact contract
+    and the commit boundaries for X14.
+
+    '
+- id: cg35
+  title: "Portability implementation \u2014 Copilot support and Kilo realignment"
+  items:
+  - M14.1.2
+  notes: 'Implements the portability contract update across workflow docs, bootstrap
+    templates, shared-asset registry, runtime profiles, and supporting tooling/tests
+    without splitting canonical authority.
+
+    '
+- id: cg36
+  title: "Portability verification and closure \u2014 validate X14 end to end"
+  items:
+  - T14.1.3
+  - C14.1.4
+  notes: 'Re-validates the full stack, regenerates PLAN outputs, and closes the Copilot
+    support and Kilo realignment milestone once all checks pass.
+
+    '

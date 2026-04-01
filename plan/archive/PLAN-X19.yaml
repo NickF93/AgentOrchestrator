@@ -1,0 +1,93 @@
+milestones:
+- id: X19
+  type: X
+  title: Git Flow Governance Extraction
+  status: done
+  note: 'Extract normative rules from the Git Flow design document (docs/design/gitflow-pr-only-terminal-workflow.md)
+    into a canonical workflow authority (agent-os/workflow/git-flow-policy.md). Register
+    the new authority in the Canonical Concern Split table and add a supersession
+    note to the design document.
+
+    '
+sprints:
+- id: S19.1
+  type: S
+  parent: X19
+  title: "Sprint 1 \u2014 Git Flow governance file and authority registration"
+  status: done
+items:
+- id: D19.1.1
+  parent: S19.1
+  type: D
+  title: Create git-flow-policy.md governance authority
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: medium
+  commit_group: cg42
+  scope: agent-os/workflow
+  artifacts_out:
+  - PLAN.yaml
+  - agent-os/workflow/git-flow-policy.md
+  notes: 'Extract normative rules from the Git Flow design document into agent-os/workflow/git-flow-policy.md.
+    Covers: branch model definition, workflow invariants, forbidden operations, synchronization
+    rules, conflict resolution model, PR topology, tagging policy, operational refinements,
+    and branch protection enforcement.
+
+    '
+- id: D19.1.2
+  parent: S19.1
+  type: D
+  title: Register git-flow-policy.md in canonical concern split and add design doc
+    supersession note
+  actions:
+  - document
+  status: done
+  depends_on:
+  - D19.1.1
+  role: documenter
+  effort: low
+  commit_group: cg42
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/shared-workflow.md
+  - docs/design/gitflow-pr-only-terminal-workflow.md
+  notes: 'Add git-flow-policy.md to the Canonical Concern Split table in shared-workflow.md.
+    Add a supersession note at the top of the design document indicating which rules
+    have been migrated to the canonical authority.
+
+    '
+- id: C19.1.3
+  parent: S19.1
+  type: C
+  title: "Checkpoint closure \u2014 X19 Git Flow governance extraction"
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D19.1.1
+  - D19.1.2
+  role: reviewer
+  effort: low
+  commit_group: cg42
+  scope: .
+  notes: 'Validate plan, render views, verify that the governance file exists, that
+    the concern split table is updated, and that the design doc carries the supersession
+    note. Close X19, S19.1.
+
+    '
+commit_groups:
+- id: cg42
+  title: Git Flow governance extraction and authority registration
+  items:
+  - D19.1.1
+  - D19.1.2
+  - C19.1.3
+  notes: 'Adds conflict resolution scenarios (single-PR and two-PR flows), operational
+    refinements (always-draft-PR, explicit staging, no agent branch deletion, release-branch
+    exception), and branch protection requirements to the Git Flow English design
+    document.
+
+    '

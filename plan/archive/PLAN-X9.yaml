@@ -1,0 +1,181 @@
+milestones:
+- id: X9
+  type: X
+  title: Shared Layer-0 Asset Distribution and Two-Root Consumption
+  status: done
+  note: 'Implements the shared-asset foundation for stable Layer-0 prompts, skills,
+    profiles, and protocols with a canonical registry, PLAN item references, workspace-first
+    two-root resolution, and optional explicit vendoring for standalone Layer-2 repos.
+    Local milestone numbering uses X9 because X7 is already allocated in this repository''s
+    canonical plan.
+
+    '
+sprints:
+- id: S9.1
+  type: S
+  parent: X9
+  title: "Sprint 1 \u2014 Shared assets, registry, and two-root consumption"
+  status: done
+items:
+- id: D9.1.1
+  parent: S9.1
+  type: D
+  title: Define canonical shared-asset families, registry, and seed assets
+  actions:
+  - design
+  - document
+  - implement
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg26
+  depends_on:
+  - C8.1.3
+  scope: agent-os
+  artifacts_out:
+  - ARCHITECTURE.md
+  - agent-os/registry/shared-assets.yaml
+  - agent-os/skills/plan-checkpoint-close/SKILL.md
+  - agent-os/prompts/checkpoint-closure-review.md
+  - agent-os/profiles/claude/check-medium.yaml
+  - agent-os/profiles/codex/check-medium.yaml
+  - agent-os/protocols/check-result-v1.yaml
+  - agent-os/prompts/README.md
+  - agent-os/skills/README.md
+  - agent-os/workflow/portability-model.md
+  - agent-os/workflow/shared-workflow.md
+  notes: 'Establishes the explicit shared asset families (skills, prompts, profiles,
+    protocols), adds the canonical registry, and ships the first real seed assets.
+    Contracts remain tool-neutral; runtime-specific behavior belongs in profiles and
+    adapter notes, not in the shared prompt or skill.
+
+    '
+- id: M9.1.2
+  parent: S9.1
+  type: M
+  title: Extend PLAN schema and validator for shared_assets registry-backed references
+  actions:
+  - design
+  - implement
+  - verify
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg26
+  depends_on:
+  - D9.1.1
+  scope: agent-os/schemas
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  - agent-os/scripts/validate-plan.py
+  - agent-os/scripts/render-plan.py
+  - agent-os/templates/PLAN.yaml.template
+  - agent-os/workflow/item-taxonomy.md
+  notes: 'Adds the optional shared_assets object to executable PLAN items, constrains
+    context_policy and resolution_mode values, and validates that referenced asset
+    IDs resolve through the canonical registry. Deferred triggers and tools_profile
+    fields remain untouched.
+
+    '
+- id: M9.1.3
+  parent: S9.1
+  type: M
+  title: Implement shared asset resolver, materialization, and runtime doc propagation
+  actions:
+  - design
+  - implement
+  - verify
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg26
+  depends_on:
+  - D9.1.1
+  scope: agent-os/scripts
+  artifacts_out:
+  - agent-os/scripts/resolve-shared-asset.py
+  - agent-os/scripts/materialize-shared-asset.sh
+  - agent-os/scripts/bootstrap-repo.sh
+  - agent-os/scripts/sync-workspace.sh
+  - agent-os/templates/workspace-AGENTS.md.template
+  - agent-os/templates/workspace-CLAUDE.md.template
+  - agent-os/templates/repo-AGENTS.md.template
+  - agent-os/templates/repo-README.md.template
+  notes: 'Implements two-root shared asset discovery with workspace-first CONTROL_PLANE_ROOT
+    resolution and optional explicit vendoring under .agent-os/vendor/. Generated
+    workspace and repo runtime docs must explain workspace mode and vendored mode
+    without making Layer-2 copies authoritative.
+
+    '
+- id: T9.1.4
+  parent: S9.1
+  type: T
+  title: Validate shared asset consistency, resolver behavior, and plan rendering
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: medium
+  commit_group: cg26
+  depends_on:
+  - M9.1.2
+  - M9.1.3
+  scope: .
+  shared_assets:
+    prompt: checkpoint-closure-review
+    profile: codex/check-medium
+    result_protocol: check-result-v1
+  checks:
+  - validate-plan.py PLAN.yaml exits 0 after shared_assets schema changes
+  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - Registry entries resolve to existing asset paths
+  - resolve-shared-asset.py resolves seed assets in workspace mode
+  - materialize-shared-asset.sh vendors an asset with provenance manifest and vendored
+    resolution works
+  - Generated workspace and repo docs describe two-root discovery, workspace mode,
+    and vendored mode
+- id: C9.1.5
+  parent: S9.1
+  type: C
+  title: Shared asset distribution and two-root consumption checkpoint
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg26
+  depends_on:
+  - T9.1.4
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    profile: codex/check-medium
+    result_protocol: check-result-v1
+  checks:
+  - Layer-0 registry, schema, validator, and resolver agree on shared asset IDs and
+    paths
+  - Seed skill, prompt, profiles, and protocol are internally consistent
+  - Layer-2 workspace mode consumes shared assets without copying
+  - Vendored mode consumes explicit snapshots without creating a new authority
+  - PLAN.md and PLAN.dot are regenerated and committed
+commit_groups:
+- id: cg26
+  title: "Shared assets \u2014 registry, PLAN references, two-root resolution, vendoring,\
+    \ and seed runtime assets"
+  items:
+  - D9.1.1
+  - M9.1.2
+  - M9.1.3
+  - T9.1.4
+  - C9.1.5
+  notes: 'Establishes explicit Layer-0 shared asset families plus the canonical registry,
+    extends PLAN.yaml to reference registry-backed shared assets, implements workspace-first
+    and vendored resolution, ships the first seed prompt/profile/protocol assets for
+    claude and codex, and propagates the two-root consumption model into generated
+    runtime docs.
+
+    '

@@ -1,0 +1,98 @@
+milestones:
+- id: X6
+  type: X
+  title: Planning Model Execution Optimization Clarification
+  status: done
+  note: 'Clarify in canonical authorities that the planning model is an execution-oriented
+    control artifact optimized for independently executable decomposition, safe aggregation
+    into reviewable commit groups, and controlled parallel execution under explicit
+    dependency, boundary, and policy constraints.
+
+    '
+sprints:
+- id: S6.1
+  type: S
+  parent: X6
+  title: "Sprint 1 \u2014 Planning model optimization principle"
+  status: done
+items:
+- id: D6.1.1
+  parent: S6.1
+  type: D
+  title: Codify the planning model as an execution-optimization artifact
+  actions:
+  - document
+  - review
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg22
+  depends_on:
+  - C5.2.5
+  scope: .
+  artifacts_out:
+  - ARCHITECTURE.md
+  - PLAN.yaml
+  - agent-os/workflow/shared-workflow.md
+  notes: 'Adds the planning-model optimization principle to the canonical workflow
+    authority, reflects it as an architectural principle, and records the repository-level
+    execution intent in PLAN.yaml without creating a second conflicting workflow authority.
+
+    '
+- id: T6.1.2
+  parent: S6.1
+  type: T
+  title: Validate planning-model principle wording and regenerated plan views
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg22
+  depends_on:
+  - D6.1.1
+  scope: .
+  checks:
+  - conda run -n nn-2 python agent-os/scripts/validate-plan.py PLAN.yaml exits 0
+  - conda run -n nn-2 python agent-os/scripts/render-plan.py PLAN.yaml updates PLAN.md
+    and PLAN.dot deterministically
+  - shared-workflow.md carries the canonical execution-optimization wording
+  - ARCHITECTURE.md states the execution-oriented planning principle without conflicting
+    with workflow authority
+  - PLAN.yaml mission/meta text records the repository-level intent without becoming
+    a second workflow specification
+- id: C6.1.3
+  parent: S6.1
+  type: C
+  title: Planning-model optimization checkpoint
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg22
+  depends_on:
+  - T6.1.2
+  scope: .
+  checks:
+  - Planning model is explicitly framed as execution-oriented in canonical workflow
+    authority
+  - Architectural principle is recorded without authority duplication
+  - PLAN.md and PLAN.dot are regenerated and committed
+commit_groups:
+- id: cg22
+  title: "Planning model clarification \u2014 execution optimization, aggregation,\
+    \ and controlled parallelization"
+  items:
+  - D6.1.1
+  - T6.1.2
+  - C6.1.3
+  notes: 'Clarifies that the planning model is an execution-oriented control artifact
+    optimized for independently executable decomposition, safe aggregation into reviewable
+    commit groups, and controlled parallel execution under explicit dependency, boundary,
+    and policy constraints.
+
+    '

@@ -1,0 +1,309 @@
+milestones:
+- id: X31
+  type: X
+  title: PLAN Splitting and Archival Foundation
+  status: in_progress
+  note: 'Split the monolithic repo plan into a canonical plan/ entrypoint with active
+    and archived fragments, keep aggregate validation and rendering deterministic,
+    and propagate the new plan layout through Layer-0 tooling, skills, templates,
+    and bootstrap flows.
+
+    '
+sprints:
+- id: S31.1
+  type: S
+  parent: X31
+  title: "Sprint 1 \u2014 Split model, migration, and bootstrap foundation"
+  status: done
+- id: S31.2
+  type: S
+  parent: X31
+  title: "Sprint 2 \u2014 Aggregate tooling, archival automation, and propagation"
+  status: planned
+items:
+- id: D31.1.1
+  parent: S31.1
+  type: D
+  title: Track X31 in the legacy root plan and reserve the feature branch before split
+    migration
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg63
+  scope: .
+  artifacts_out:
+  - PLAN.yaml
+  - PLAN.md
+  - PLAN.dot
+  notes: 'Reserve feature/X31-plan-splitting-archival for the milestone, add both
+    X31 sprints and commit groups to the legacy root PLAN.yaml before any non-generated
+    edits, and record the one-time migration rule: cg63 is the last commit tracked
+    in the root PLAN.yaml before the canonical entrypoint moves to plan/PLAN-index.yaml
+    in cg64.
+
+    '
+- id: M31.1.2
+  parent: S31.1
+  type: M
+  title: Add split-plan schemas, shared loader, and deterministic split-plan migration
+    tooling
+  actions:
+  - design
+  - implement
+  - migrate
+  - verify
+  status: done
+  depends_on:
+  - D31.1.1
+  role: implementer
+  effort: high
+  commit_group: cg64
+  scope: .
+  artifacts_out:
+  - plan/PLAN-index.yaml
+  - plan/PLAN-current.yaml
+  - plan/archive/
+  - agent-os/schemas/plan-index.schema.json
+  - agent-os/schemas/plan-fragment.schema.json
+  - agent-os/scripts/plan_loader.py
+  - agent-os/scripts/split-plan.py
+  - PLAN.md
+  - PLAN.dot
+  notes: 'Introduce the split plan storage model, migrate this repository from the
+    legacy monolithic root PLAN.yaml into plan/PLAN-index.yaml plus plan fragments,
+    and keep aggregate render output deterministic and reviewable.
+
+    '
+- id: T31.1.3
+  parent: S31.1
+  type: T
+  title: Prove split migration preserves the aggregate logical plan and rendered views
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - M31.1.2
+  role: tester
+  effort: medium
+  commit_group: cg64
+  scope: .
+  artifacts_out:
+  - tests/test_plan_loader.py
+  - tests/test_split_plan.py
+  checks:
+  - split-plan.py deterministically migrates the legacy root plan into plan/
+  - aggregate logical-plan content remains equivalent after migration
+  - PLAN.md and PLAN.dot remain deterministic aggregate views after migration
+- id: C31.1.4
+  parent: S31.1
+  type: C
+  title: "Checkpoint closure \u2014 X31 split-plan model and migration foundation"
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - T31.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg64
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    profile: codex/check-medium
+    result_protocol: check-result-v1
+- id: M31.2.1
+  parent: S31.2
+  type: M
+  title: Refactor validate-plan.py onto the shared split-plan loader with active and
+    archived reporting
+  actions:
+  - implement
+  - refactor
+  - verify
+  status: planned
+  depends_on:
+  - C31.1.4
+  role: implementer
+  effort: high
+  commit_group: cg65
+  scope: .
+  artifacts_out:
+  - agent-os/scripts/validate-plan.py
+  - agent-os/skills/plan-validate-render/SKILL.md
+  notes: 'Keep aggregate governance enforcement intact while teaching validation to
+    load plan/PLAN-index.yaml and report separate Active and Archived blocks.
+
+    '
+- id: M31.2.2
+  parent: S31.2
+  type: M
+  title: Refactor render-plan.py onto the shared split-plan loader without changing
+    aggregate output shape
+  actions:
+  - implement
+  - refactor
+  - verify
+  status: planned
+  depends_on:
+  - C31.1.4
+  role: implementer
+  effort: medium
+  commit_group: cg65
+  scope: .
+  artifacts_out:
+  - agent-os/scripts/render-plan.py
+  - PLAN.md
+  - PLAN.dot
+- id: M31.2.3
+  parent: S31.2
+  type: M
+  title: Add deterministic archive-plan automation and wire milestone archival into
+    the git-flow path
+  actions:
+  - design
+  - implement
+  - verify
+  status: planned
+  depends_on:
+  - M31.2.1
+  - M31.2.2
+  role: implementer
+  effort: high
+  commit_group: cg66
+  scope: .
+  artifacts_out:
+  - agent-os/scripts/archive-plan.py
+  - agent-os/skills/gitflow-pr-only/SKILL.md
+  - plan/PLAN-index.yaml
+  - plan/PLAN-current.yaml
+  - plan/archive/
+  notes: 'Archive a milestone only after its final checkpoint commit group is complete
+    and before the milestone branch is synchronized for PR merge.
+
+    '
+- id: F31.2.4
+  parent: S31.2
+  type: F
+  title: Propagate the split-plan entrypoint through docs, templates, bootstrap, and
+    runtime adapters
+  actions:
+  - implement
+  - verify
+  status: planned
+  depends_on:
+  - M31.2.3
+  role: implementer
+  effort: high
+  commit_group: cg66
+  scope: .
+  artifacts_out:
+  - README.md
+  - AGENTS.md
+  - ARCHITECTURE.md
+  - .codex
+  - agent-os/templates/
+  - agent-os/scripts/bootstrap-repo.sh
+  notes: 'Update only the canonical path and split-plan workflow surfaces that must
+    change, and keep non-authoritative or previously Claude-shaped skill text edits
+    as small as possible.
+
+    '
+- id: T31.2.5
+  parent: S31.2
+  type: T
+  title: Extend automated coverage for split loading, migration, archival, rendering,
+    validation, and bootstrap
+  actions:
+  - test
+  - verify
+  status: planned
+  depends_on:
+  - F31.2.4
+  role: tester
+  effort: high
+  commit_group: cg67
+  scope: .
+  checks:
+  - loader tests cover duplicate and missing archive references, empty current plans,
+    and milestone ownership
+  - migration tests confirm split-plan.py preserves aggregate logical-plan content
+  - validator tests cover Active and Archived reporting plus archive immutability
+    and cross-fragment failures
+  - renderer tests confirm aggregate PLAN.md and PLAN.dot output remains stable
+  - bootstrap tests confirm new repos start with plan/PLAN-index.yaml and validate
+    successfully
+- id: C31.2.6
+  parent: S31.2
+  type: C
+  title: "Checkpoint closure \u2014 X31 split-plan archival and propagation"
+  actions:
+  - checkpoint
+  - verify
+  status: planned
+  depends_on:
+  - T31.2.5
+  role: reviewer
+  effort: low
+  commit_group: cg67
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    profile: codex/check-medium
+    result_protocol: check-result-v1
+commit_groups:
+- id: cg63
+  title: X31 tracking bootstrap on the reserved feature branch
+  items:
+  - D31.1.1
+  notes: 'Adds the X31 milestone, its sprints, items, and commit groups to the legacy
+    root PLAN.yaml, records the one-time split migration rule, and reserves feature/X31-plan-splitting-archival
+    before non-generated implementation work moves to the plan/ layout.
+
+    '
+- id: cg64
+  title: Split-plan model, loader, migration tooling, and repository self-migration
+  items:
+  - M31.1.2
+  - T31.1.3
+  - C31.1.4
+  notes: 'Introduces the split plan schemas and shared loader, adds deterministic
+    migration tooling, moves this repository into the plan/ layout, and closes the
+    foundation sprint checkpoint once aggregate behavior is proven.
+
+    '
+- id: cg65
+  title: Aggregate validator and renderer split-plan loader refactor
+  items:
+  - M31.2.1
+  - M31.2.2
+  notes: 'Refactors validate-plan.py and render-plan.py onto the shared loader so
+    they operate on the split plan entrypoint while preserving the aggregate logical
+    plan and output surfaces.
+
+    '
+- id: cg66
+  title: Archival automation and split-plan propagation
+  items:
+  - M31.2.3
+  - F31.2.4
+  notes: 'Adds deterministic milestone archival automation, integrates it into the
+    git-flow path, and propagates the canonical plan/ entrypoint through docs, templates,
+    bootstrap, and runtime adapters.
+
+    '
+- id: cg67
+  title: Split-plan validation matrix and X31 closure
+  items:
+  - T31.2.5
+  - C31.2.6
+  notes: 'Extends automated coverage across split loading, migration, rendering, validation,
+    archival, and bootstrap behavior, then closes X31.
+
+    '

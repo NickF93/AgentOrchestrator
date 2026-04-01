@@ -1,0 +1,733 @@
+milestones:
+- id: X4
+  type: X
+  title: Governance Baseline Hardening
+  status: done
+  note: 'Remediate 19 findings from the post-X3 governance review: contradictions
+    between canonical authorities, soft language where hard gates are intended, undefined
+    field semantics, and missing enforcement mechanisms. All architectural decisions
+    resolved interactively with the human owner.
+
+    '
+sprints:
+- id: S4.1
+  type: S
+  parent: X4
+  title: "Sprint 1 \u2014 Language enforcement and clarity"
+  status: done
+- id: S4.2
+  type: S
+  parent: X4
+  title: "Sprint 2 \u2014 Semantic alignment (closure and freshness)"
+  status: done
+- id: S4.3
+  type: S
+  parent: X4
+  title: "Sprint 3 \u2014 Schema and taxonomy hardening"
+  status: done
+- id: S4.4
+  type: S
+  parent: X4
+  title: "Sprint 4 \u2014 Lifecycle unification and deferred fields"
+  status: done
+- id: S4.5
+  type: S
+  parent: X4
+  title: "Sprint 5 \u2014 Commit format, Phase B, and phase-gate enforcement"
+  status: done
+- id: S4.6
+  type: S
+  parent: X4
+  title: "Sprint 6 \u2014 Validator enforcement for commit_group presence"
+  status: done
+- id: S4.7
+  type: S
+  parent: X4
+  title: "Sprint 7 \u2014 Commit hook enforcement and runtime wording alignment"
+  status: done
+items:
+- id: M4.1.1
+  parent: S4.1
+  type: M
+  title: Tighten soft language to hard gates in governance files
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg13
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/workflow/lifecycle.md
+  notes: "Findings #2, #6, #12, #13: \"may only\" \u2192 \"MUST only\" in shared-workflow.md,\
+    \ \"should not\" \u2192 \"MUST NOT\" for design doc rule, \"can optionally detect\"\
+    \ \u2192 prescriptive in lifecycle.md, add explicit parallelism prohibition.\n"
+- id: M4.1.2
+  parent: S4.1
+  type: M
+  title: Document type/action coherence as warning-only
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg13
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/item-taxonomy.md
+  notes: "Finding #3: add note to type/action coherence table clarifying it is advisory\
+    \ \u2014 violations produce warnings, not hard failures.\n"
+- id: T4.1.3
+  parent: S4.1
+  type: T
+  title: Validate language fixes are consistent across governance docs
+  actions:
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg13
+  depends_on:
+  - M4.1.1
+  - M4.1.2
+  scope: .
+  checks:
+  - shared-workflow.md uses MUST only for commit group closure
+  - shared-workflow.md uses MUST NOT for design doc rule
+  - shared-workflow.md has explicit parallelism prohibition
+  - lifecycle.md uses prescriptive language for freshness detection
+  - item-taxonomy.md type/action table marked as advisory
+  - validate-plan.py PLAN.yaml exits 0
+- id: M4.2.1
+  parent: S4.2
+  type: M
+  title: Align commit group closure to require both status and checks
+  actions:
+  - implement
+  - document
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg14
+  depends_on:
+  - T4.1.3
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/lifecycle.md
+  - agent-os/workflow/shared-workflow.md
+  notes: "Finding #1: state both predicates together in both files \u2014 items must\
+    \ be in review/verified/done AND required checks must be satisfied.\n"
+- id: M4.2.2
+  parent: S4.2
+  type: M
+  title: Make REPO_MAP freshness a hard gate in docs and validator
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg14
+  depends_on:
+  - T4.1.3
+  scope: agent-os
+  artifacts_out:
+  - agent-os/workflow/lifecycle.md
+  - agent-os/scripts/validate-plan.py
+  notes: 'Finding #5: remove "advisory" language from lifecycle.md, change validate-plan.py
+    check_repo_map_freshness() from warning to hard-fail.
+
+    '
+- id: T4.2.3
+  parent: S4.2
+  type: T
+  title: Validate closure and freshness alignment
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg14
+  depends_on:
+  - M4.2.1
+  - M4.2.2
+  scope: .
+  checks:
+  - lifecycle.md and shared-workflow.md have consistent closure predicates
+  - lifecycle.md freshness is documented as hard gate
+  - validate-plan.py --check-freshness hard-fails on stale REPO_MAP
+  - validate-plan.py PLAN.yaml exits 0
+- id: M4.3.1
+  parent: S4.3
+  type: M
+  title: Restrict depends_on to exclude milestoneId in schema
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg15
+  depends_on:
+  - T4.2.3
+  scope: agent-os/schemas
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  notes: 'Finding #4: create dependencyTarget definition as oneOf [sprintId, itemId].
+    Update depends_on items ref to use dependencyTarget instead of planId.
+
+    '
+- id: M4.3.2
+  parent: S4.3
+  type: M
+  title: Define scope, checks, and suffix semantics in item-taxonomy
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: medium
+  commit_group: cg15
+  depends_on:
+  - T4.2.3
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/item-taxonomy.md
+  notes: 'Findings #8, #9, #17: scope is path prefix for collision detection, checks
+    is array of human-readable descriptions, suffixes are contiguous lowercase sequence
+    in derivation order with no gaps.
+
+    '
+- id: M4.3.3
+  parent: S4.3
+  type: M
+  title: Add decision if/then Q-only constraint in schema
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg15
+  depends_on:
+  - T4.2.3
+  scope: agent-os/schemas
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  notes: 'Finding #18: add JSON Schema if/then to forbid decision property on non-Q-type
+    items.
+
+    '
+- id: M4.3.4
+  parent: S4.3
+  type: M
+  title: Add scope pattern constraint to schema
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg15
+  depends_on:
+  - T4.2.3
+  scope: agent-os/schemas
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  notes: 'Finding #8 (schema side): add pattern for scope field to restrict to path-like
+    characters.
+
+    '
+- id: T4.3.5
+  parent: S4.3
+  type: T
+  title: Validate PLAN.yaml against hardened schema
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg15
+  depends_on:
+  - M4.3.1
+  - M4.3.2
+  - M4.3.3
+  - M4.3.4
+  scope: .
+  checks:
+  - validate-plan.py PLAN.yaml exits 0 with hardened schema
+  - depends_on rejects milestone IDs
+  - decision field rejected on non-Q items
+  - scope pattern validates existing scopes
+- id: D4.4.1
+  parent: S4.4
+  type: D
+  title: Unify governance asset states to draft/active/deprecated/superseded
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: medium
+  commit_group: cg16
+  depends_on:
+  - T4.2.3
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/lifecycle.md
+  notes: 'Finding #7: change ADR states from proposed/accepted to draft/active. Add
+    unified Governance Asset Lifecycle section applicable to prompts, ADRs, and skills.
+
+    '
+- id: D4.4.2
+  parent: S4.4
+  type: D
+  title: Add DEFERRED notes for triggers and tools_profile fields
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg16
+  depends_on:
+  - T4.2.3
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/item-taxonomy.md
+  - agent-os/workflow/portability-model.md
+  notes: 'Findings #15, #16: mark triggers and tools_profile as DEFERRED adapter-level
+    fields with semantics TBD, optional and non-normative in MVP.
+
+    '
+- id: D4.4.3
+  parent: S4.4
+  type: D
+  title: Clarify single-writer rule as documentation/review-enforced
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg16
+  depends_on:
+  - T4.2.3
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/shared-workflow.md
+  notes: 'Finding #10: add note that enforcement is governance-based (code review
+    and escalation), not automated. No validator check for single-writer.
+
+    '
+- id: T4.4.4
+  parent: S4.4
+  type: T
+  title: Validate lifecycle and field documentation changes
+  actions:
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg16
+  depends_on:
+  - D4.4.1
+  - D4.4.2
+  - D4.4.3
+  scope: .
+  checks:
+  - lifecycle.md has unified governance asset states
+  - ADR states use draft/active not proposed/accepted
+  - item-taxonomy.md has DEFERRED notes for triggers and tools_profile
+  - portability-model.md has DEFERRED notes
+  - shared-workflow.md single-writer section has enforcement note
+  - validate-plan.py PLAN.yaml exits 0
+- id: D4.5.1
+  parent: S4.5
+  type: D
+  title: Define recommended commit body/footer format
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: medium
+  commit_group: cg17
+  depends_on:
+  - T4.3.5
+  - T4.4.4
+  scope: .
+  artifacts_out:
+  - AGENTS.md
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/workflow/git-automation-policy.md
+  - agent-os/templates/repo-AGENTS.md.template
+  notes: 'Finding #19: define recommended (SHOULD) body/footer structure including
+    summary, scope, items, validation, refs, ADR, and follow-up sections.
+
+    '
+- id: M4.5.2
+  parent: S4.5
+  type: M
+  title: Simplify ARCHITECTURE.md Phase B to cross-reference
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg17
+  depends_on:
+  - T4.3.5
+  - T4.4.4
+  scope: .
+  artifacts_out:
+  - ARCHITECTURE.md
+  notes: 'Finding #11: replace single-condition Phase B statement with cross-reference
+    to shared-workflow.md Phase B Safety Gate for the full prerequisite list.
+
+    '
+- id: D4.5.3
+  parent: S4.5
+  type: D
+  title: Add phase-gate protocol for deferred automations
+  actions:
+  - design
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg17
+  depends_on:
+  - T4.3.5
+  - T4.4.4
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/git-automation-policy.md
+  notes: 'Finding #20 (part 1): add Phase Gate Protocol section requiring dedicated
+    decision item, human sign-off, and ADR for each deferred automation.
+
+    '
+- id: M4.5.4
+  parent: S4.5
+  type: M
+  title: Add phase-gate schema fields (requires_phase, approval_ref)
+  actions:
+  - implement
+  - document
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg17
+  depends_on:
+  - T4.3.5
+  - T4.4.4
+  scope: agent-os
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  - agent-os/workflow/item-taxonomy.md
+  notes: 'Finding #20 (part 2): add requires_phase enum [A,B,C,D] and approval_ref
+    string as optional item fields in schema and document in taxonomy.
+
+    '
+- id: M4.5.5
+  parent: S4.5
+  type: M
+  title: Add phase-gate validator enforcement
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: medium
+  commit_group: cg17
+  depends_on:
+  - M4.5.4
+  scope: agent-os/scripts
+  artifacts_out:
+  - agent-os/scripts/validate-plan.py
+  notes: "Finding #20 (part 3): add validate_phase_gates() \u2014 hard-fail if item\
+    \ has requires_phase and is ready/in_progress/review without approval_ref. Soft\
+    \ warning for deferred automation keywords without requires_phase.\n"
+- id: T4.5.6
+  parent: S4.5
+  type: T
+  title: Validate commit format, Phase B, and phase-gate changes
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg17
+  depends_on:
+  - D4.5.1
+  - M4.5.2
+  - D4.5.3
+  - M4.5.4
+  - M4.5.5
+  scope: .
+  checks:
+  - Commit body/footer format defined in AGENTS.md, shared-workflow.md, git-automation-policy.md
+  - ARCHITECTURE.md Phase B cross-references shared-workflow.md
+  - git-automation-policy.md has Phase Gate Protocol section
+  - plan.schema.json has requires_phase and approval_ref fields
+  - validate-plan.py phase-gate enforcement works
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py regenerates views deterministically
+- id: C4.5.7
+  parent: S4.5
+  type: C
+  title: "Milestone X4 closure checkpoint \u2014 governance baseline hardened"
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg17
+  depends_on:
+  - T4.5.6
+  checks:
+  - All S4.1-S4.5 items are verified or done
+  - All 19 findings are resolved
+  - No soft language remains for hard gates
+  - Schema enforces depends_on, decision, scope constraints
+  - Governance asset lifecycle is unified
+  - Phase-gate enforcement is operational
+  - PLAN.md and PLAN.dot are regenerated and committed
+  - validate-plan.py PLAN.yaml exits 0
+- id: M4.6.1
+  parent: S4.6
+  type: M
+  title: Enforce executable item commit_group presence in validate-plan.py
+  actions:
+  - implement
+  - verify
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg18
+  depends_on:
+  - T4.5.6
+  scope: agent-os/scripts
+  artifacts_out:
+  - agent-os/scripts/validate-plan.py
+  notes: 'Add hard-fail validation: every executable item type (Q, D, M, F, T, C)
+    must declare commit_group. This makes commit boundary enforcement explicit in
+    runtime validation, in addition to existing bidirectional coherence.
+
+    '
+- id: T4.6.2
+  parent: S4.6
+  type: T
+  title: Validate strict commit_group presence and coherence checks
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg18
+  depends_on:
+  - M4.6.1
+  scope: agent-os/scripts
+  checks:
+  - validate-plan.py hard-fails when executable items omit commit_group
+  - validate-plan.py keeps bidirectional commit_group coherence strict
+  - validate-plan.py PLAN.yaml exits 0
+- id: C4.6.3
+  parent: S4.6
+  type: C
+  title: "Commit governance enforcement checkpoint \u2014 validation executable"
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg18
+  depends_on:
+  - T4.6.2
+  checks:
+  - Commit-group presence is enforced in validator for executable items
+  - Commit-group/item bidirectional coherence remains strict
+  - Canonical commit policy remains in git-automation-policy.md
+  - PLAN.md and PLAN.dot are regenerated and committed
+- id: M4.7.1
+  parent: S4.7
+  type: M
+  title: Add local commit-msg hook guard for commit title contract
+  actions:
+  - implement
+  - verify
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg19
+  depends_on:
+  - C4.6.3
+  scope: .githooks
+  artifacts_out:
+  - .githooks/commit-msg
+  notes: 'Add lightweight commit-msg hook enforcing the title pattern ^([a-z]+)\(([a-z0-9._/-]+)\):
+    .+$ for local commits. The hook prints a clear error and references the canonical
+    governance policy location.
+
+    '
+- id: D4.7.2
+  parent: S4.7
+  type: D
+  title: Document hook enablement workflow in README.md
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg19
+  depends_on:
+  - M4.7.1
+  scope: README.md
+  artifacts_out:
+  - README.md
+  notes: 'Add explicit setup instructions so contributors and agents enable the repository
+    hook path consistently.
+
+    '
+- id: D4.7.3
+  parent: S4.7
+  type: D
+  title: Align workspace runtime wording with mandatory commit_group hard gate
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg19
+  depends_on:
+  - C4.6.3
+  scope: agent-os/templates
+  artifacts_out:
+  - agent-os/templates/workspace-AGENTS.md.template
+  notes: 'Add explicit runtime wording that the mandatory commit_group hard gate is
+    defined in shared-workflow.md and git-automation-policy.md.
+
+    '
+- id: T4.7.4
+  parent: S4.7
+  type: T
+  title: Validate commit hook pattern and documentation alignment
+  actions:
+  - test
+  - verify
+  status: done
+  role: tester
+  effort: low
+  commit_group: cg19
+  depends_on:
+  - M4.7.1
+  - D4.7.2
+  - D4.7.3
+  scope: .
+  checks:
+  - 'commit-msg hook enforces ^([a-z]+)\(([a-z0-9._/-]+)\): .+$'
+  - README.md documents core.hooksPath setup and validation command
+  - workspace-AGENTS template references mandatory commit_group hard gate
+  - validate-plan.py PLAN.yaml exits 0
+- id: C4.7.5
+  parent: S4.7
+  type: C
+  title: "Commit tooling checkpoint \u2014 local enforcement and runtime clarity complete"
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg19
+  depends_on:
+  - T4.7.4
+  checks:
+  - Commit title guard exists in repo tooling
+  - README setup enables consistent local enforcement
+  - Runtime template wording is unambiguous about hard gate authority
+  - PLAN.md and PLAN.dot are regenerated and committed
+commit_groups:
+- id: cg13
+  title: "Language enforcement \u2014 tighten soft language to hard gates"
+  items:
+  - M4.1.1
+  - M4.1.2
+  - T4.1.3
+  notes: 'Findings #2, #3, #6, #12, #13: replace may/should/can with MUST/MUST NOT
+    in governance files, add parallelism prohibition, document type/action coherence
+    as advisory.
+
+    '
+- id: cg14
+  title: Closure criteria and freshness hard gate alignment
+  items:
+  - M4.2.1
+  - M4.2.2
+  - T4.2.3
+  notes: 'Findings #1, #5: align closure predicate to require both status and checks,
+    make REPO_MAP freshness a hard gate in docs and validator.
+
+    '
+- id: cg15
+  title: "Schema and taxonomy hardening \u2014 depends_on, scope, checks, decision"
+  items:
+  - M4.3.1
+  - M4.3.2
+  - M4.3.3
+  - M4.3.4
+  - T4.3.5
+  notes: 'Findings #4, #8, #9, #17, #18: restrict depends_on to exclude milestones,
+    define scope/checks/suffix semantics, add decision Q-only schema constraint.
+
+    '
+- id: cg16
+  title: Lifecycle unification and deferred field markers
+  items:
+  - D4.4.1
+  - D4.4.2
+  - D4.4.3
+  - T4.4.4
+  notes: 'Findings #7, #10, #15, #16: unify governance asset states to draft/active/deprecated/superseded,
+    add DEFERRED notes for triggers and tools_profile, clarify single-writer enforcement.
+
+    '
+- id: cg17
+  title: Commit format, phase-gate enforcement, and milestone closure
+  items:
+  - D4.5.1
+  - M4.5.2
+  - D4.5.3
+  - M4.5.4
+  - M4.5.5
+  - T4.5.6
+  - C4.5.7
+  notes: 'Findings #11, #19, #20: define recommended commit body/footer, simplify
+    ARCHITECTURE.md Phase B cross-reference, add phase-gate protocol with schema fields
+    and validator enforcement, close milestone X4.
+
+    '
+- id: cg18
+  title: "Validator hardening \u2014 enforce executable item commit_group presence"
+  items:
+  - M4.6.1
+  - T4.6.2
+  - C4.6.3
+  notes: 'Adds explicit hard-fail check that all executable items declare commit_group,
+    validates behavior on current PLAN.yaml, and checkpoints that commit governance
+    enforcement is executable in validator logic.
+
+    '
+- id: cg19
+  title: "Commit tooling hardening \u2014 hook enforcement and runtime wording alignment"
+  items:
+  - M4.7.1
+  - D4.7.2
+  - D4.7.3
+  - T4.7.4
+  - C4.7.5
+  notes: 'Adds a local commit-msg hook for contract enforcement, documents enablement
+    in README, aligns workspace template wording to the canonical hard gate, and validates
+    consistency.
+
+    '

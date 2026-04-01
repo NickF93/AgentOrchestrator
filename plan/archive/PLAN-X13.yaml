@@ -1,0 +1,88 @@
+milestones:
+- id: X13
+  type: X
+  title: Workspace Template Parity and Test Coverage Repair
+  status: done
+  note: 'Fix workspace-CLAUDE.md.template missing adapter overrides section found
+    during governance audit. Expand sync-workspace.sh test to verify all three rendered
+    files.
+
+    '
+sprints:
+- id: S13.1
+  type: S
+  parent: X13
+  title: "Sprint 1 \u2014 Template parity fix and test expansion"
+  status: done
+items:
+- id: F13.1.1
+  parent: S13.1
+  type: F
+  title: Add adapter overrides to workspace-CLAUDE.md.template
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg33
+  depends_on:
+  - C12.1.3
+  scope: agent-os/templates
+  artifacts_out:
+  - agent-os/templates/workspace-CLAUDE.md.template
+  notes: 'Governance audit found workspace-CLAUDE.md.template is missing the adapter
+    overrides section that workspace-CODEX.md.template has. Layer 2 Claude agents
+    would not receive the mandatory commit override.
+
+    '
+- id: F13.1.2
+  parent: S13.1
+  type: F
+  title: Expand sync-workspace.sh test to verify all rendered files
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg33
+  depends_on:
+  - F13.1.1
+  scope: tests
+  artifacts_out:
+  - tests/test_shell_scripts.py
+  notes: 'Test only checks AGENTS.md existence and content. Must also verify CLAUDE.md
+    and .codex are generated with correct CONTROL_PLANE_ROOT stamping.
+
+    '
+- id: C13.1.3
+  parent: S13.1
+  type: C
+  title: Workspace template parity and test coverage checkpoint
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg33
+  depends_on:
+  - F13.1.2
+  scope: .
+  checks:
+  - workspace-CLAUDE.md.template has adapter overrides matching workspace-CODEX.md.template
+  - sync-workspace.sh test verifies AGENTS.md, CLAUDE.md, and .codex
+  - run-gates.sh and pytest pass
+  - PLAN.md and PLAN.dot are regenerated and committed
+commit_groups:
+- id: cg33
+  title: "Template parity fix \u2014 CLAUDE workspace adapter overrides and test expansion"
+  items:
+  - F13.1.1
+  - F13.1.2
+  - C13.1.3
+  notes: 'Fixes missing adapter overrides in workspace-CLAUDE.md.template found during
+    governance audit. Expands sync-workspace.sh test to verify all three rendered
+    files (AGENTS.md, CLAUDE.md, .codex).
+
+    '

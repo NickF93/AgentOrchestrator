@@ -28,9 +28,9 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X11 | X | Runtime Portability Expansion | done |
 | X12 | X | Promote Codex to First-Class Runtime | done |
 | X13 | X | Workspace Template Parity and Test Coverage Repair | done |
+| X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 | X15 | X | Environment Portability — Remove Hardcoded Conda Environment | done |
 | X16 | X | Human-Readable TODO Checklist | done |
-| X14 | X | Portability Milestone Completion — Copilot Support and Kilo Realignment | done |
 | X17 | X | Git Flow Design Doc English Translation | done |
 | X18 | X | Git Flow Conflict Resolution and Operational Refinements | done |
 | X19 | X | Git Flow Governance Extraction | done |
@@ -62,25 +62,25 @@ Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D1.1.1` | `D` | Create non-authoritative docs directory and initialize .gitignore | done | Moved startup documentation to docs/design/ as non-authoritative reference material and added baseline ignore rules for local/editor/runtime artifacts. |
-| `D1.1.2` | `D` | Create architecture review and open-questions document | done | Captures what is confirmed, what is ambiguous, and five open questions (Q1.1.1–Q1.1.5) that must be decided before schema and scripts can be written. |
-| `D1.1.3` | `D` | Enforce commit message contract in Layer-0 governance | done | Added mandatory commit title contract: <type>(<scope>): <description> with optional body/footer sections. This is a Layer-0 global rule. |
-| `D1.1.4` | `D` | Strengthen and align commit body/footer recommendation wording | done | Standardized wording to: "Optional body and footer sections are strongly suggested, especially for medium or large commits." across all authoritative governance surfaces. |
-| `Q1.1.1` | `Q` | Decide: PLAN.yaml required fields and state transition rules | done | Decision recorded from interactive governance alignment. |
-| `Q1.1.2` | `Q` | Decide: Level-1 runtime materialization strategy | done | Decision recorded from interactive governance alignment. |
-| `Q1.1.3` | `Q` | Decide: control-plane release and consumption model | done | Decision recorded from interactive governance alignment. |
-| `Q1.1.4` | `Q` | Decide: scope field format and collision-detection semantics | done | Decision recorded from interactive governance alignment. |
-| `Q1.1.5` | `Q` | Decide: tooling failure semantics and commit hygiene rules | done | Decision recorded from interactive governance alignment. |
-| `M1.1.1` | `M` | Create agent-os/workflow/ documentation files | done | Content sourced from docs/design/documento-architetturale-control-plane-coding-agents.md and docs/design/gitflow_pr_only_terminal_workflow.md. Do NOT duplicate content; these files are the canonical split of the monolithic architecture doc. |
-| `M1.1.6` | `M` | Create root governance files for this Level-0 repository | done | This repository is itself the Level-0 control-plane OS. Root AGENTS.md and ARCHITECTURE.md define local authority mapping and structural constraints for building and evolving agent-os/. |
-| `M1.1.2` | `M` | Create agent-os/schemas/plan.schema.json | done | JSON Schema (draft-2020-12) for PLAN.yaml. Must encode required fields, enum values for type/status/role/effort/actions, and scope field format as decided in Q1.1.1 and Q1.1.4. Must be self-consistent so that this PLAN.yaml passes validation once M1.1.4 is done. |
-| `M1.1.3` | `M` | Create agent-os/templates/ (AGENTS, ARCHITECTURE, REPO_MAP, PLAN) | done | Templates use {{REPO_NAME}}, {{DATE}}, {{OWNER}} placeholders. Level-1 files are generated from these templates by sync-workspace.sh (per Q1.1.2 decision). Each template must include the canonical source rule and authority map header so generated files self-document their origin. |
-| `M1.1.4` | `M` | Create agent-os/scripts/render-plan.py and validate-plan.py | done | validate-plan.py: validates PLAN.yaml against plan.schema.json; checks state transition legality, dangling depends_on, container items in depends_on, required fields. Exits non-zero on any hard-fail. render-plan.py: deterministic PLAN.yaml → PLAN.md + PLAN.yaml → PLAN.dot. Both scripts must be idempotent and callable standalone. |
-| `M1.1.5` | `M` | Create agent-os/scripts/bootstrap-repo.sh and sync-workspace.sh | done | bootstrap-repo.sh: instantiates a new repo-local layer (Level-2) from templates. Supports --dry-run. Emits a PLAN.yaml seed from the template. sync-workspace.sh: pulls latest from control plane (per Q1.1.3 decision) and regenerates Level-1 runtime files from Level-0 templates (per Q1.1.2 decision). |
-| `T1.1.1` | `T` | Validate this PLAN.yaml against plan.schema.json | done | This is the self-validation gate: the control plane must validate its own plan before it can claim to be a working control plane. |
-| `T1.1.2` | `T` | Dry-run bootstrap-repo.sh on a temp path | done | Must confirm bootstrap is idempotent and does not write to disk in dry-run mode. A second run on the same target must produce identical output. |
-| `T1.1.3` | `T` | Generate PLAN.md and PLAN.dot from this PLAN.yaml | done | PLAN.md and PLAN.dot are committed in the same commit as this PLAN.yaml update, not as separate commits (per Q1.1.5 decision). |
 | `C1.1.1` | `C` | Sprint 1 checkpoint — Level-0 scaffold complete and self-validating | done | After this checkpoint, the control plane is operational and able to bootstrap its first real target repo (Level-2) as Sprint 2 work. |
+| `D1.1.1` | `D` | Create non-authoritative docs directory and initialize .gitignore | done | Moved startup documentation to docs/design/ as non-authoritative reference material and added baseline ignore rules for local/editor/runtime artifacts. |
+| `M1.1.1` | `M` | Create agent-os/workflow/ documentation files | done | Content sourced from docs/design/documento-architetturale-control-plane-coding-agents.md and docs/design/gitflow_pr_only_terminal_workflow.md. Do NOT duplicate content; these files are the canonical split of the monolithic architecture doc. |
+| `Q1.1.1` | `Q` | Decide: PLAN.yaml required fields and state transition rules | done | Decision recorded from interactive governance alignment. |
+| `T1.1.1` | `T` | Validate this PLAN.yaml against plan.schema.json | done | This is the self-validation gate: the control plane must validate its own plan before it can claim to be a working control plane. |
+| `D1.1.2` | `D` | Create architecture review and open-questions document | done | Captures what is confirmed, what is ambiguous, and five open questions (Q1.1.1–Q1.1.5) that must be decided before schema and scripts can be written. |
+| `M1.1.2` | `M` | Create agent-os/schemas/plan.schema.json | done | JSON Schema (draft-2020-12) for PLAN.yaml. Must encode required fields, enum values for type/status/role/effort/actions, and scope field format as decided in Q1.1.1 and Q1.1.4. Must be self-consistent so that this PLAN.yaml passes validation once M1.1.4 is done. |
+| `Q1.1.2` | `Q` | Decide: Level-1 runtime materialization strategy | done | Decision recorded from interactive governance alignment. |
+| `T1.1.2` | `T` | Dry-run bootstrap-repo.sh on a temp path | done | Must confirm bootstrap is idempotent and does not write to disk in dry-run mode. A second run on the same target must produce identical output. |
+| `D1.1.3` | `D` | Enforce commit message contract in Layer-0 governance | done | Added mandatory commit title contract: <type>(<scope>): <description> with optional body/footer sections. This is a Layer-0 global rule. |
+| `M1.1.3` | `M` | Create agent-os/templates/ (AGENTS, ARCHITECTURE, REPO_MAP, PLAN) | done | Templates use {{REPO_NAME}}, {{DATE}}, {{OWNER}} placeholders. Level-1 files are generated from these templates by sync-workspace.sh (per Q1.1.2 decision). Each template must include the canonical source rule and authority map header so generated files self-document their origin. |
+| `Q1.1.3` | `Q` | Decide: control-plane release and consumption model | done | Decision recorded from interactive governance alignment. |
+| `T1.1.3` | `T` | Generate PLAN.md and PLAN.dot from this PLAN.yaml | done | PLAN.md and PLAN.dot are committed in the same commit as this PLAN.yaml update, not as separate commits (per Q1.1.5 decision). |
+| `D1.1.4` | `D` | Strengthen and align commit body/footer recommendation wording | done | Standardized wording to: "Optional body and footer sections are strongly suggested, especially for medium or large commits." across all authoritative governance surfaces. |
+| `M1.1.4` | `M` | Create agent-os/scripts/render-plan.py and validate-plan.py | done | validate-plan.py: validates PLAN.yaml against plan.schema.json; checks state transition legality, dangling depends_on, container items in depends_on, required fields. Exits non-zero on any hard-fail. render-plan.py: deterministic PLAN.yaml → PLAN.md + PLAN.yaml → PLAN.dot. Both scripts must be idempotent and callable standalone. |
+| `Q1.1.4` | `Q` | Decide: scope field format and collision-detection semantics | done | Decision recorded from interactive governance alignment. |
+| `M1.1.5` | `M` | Create agent-os/scripts/bootstrap-repo.sh and sync-workspace.sh | done | bootstrap-repo.sh: instantiates a new repo-local layer (Level-2) from templates. Supports --dry-run. Emits a PLAN.yaml seed from the template. sync-workspace.sh: pulls latest from control plane (per Q1.1.3 decision) and regenerates Level-1 runtime files from Level-0 templates (per Q1.1.2 decision). |
+| `Q1.1.5` | `Q` | Decide: tooling failure semantics and commit hygiene rules | done | Decision recorded from interactive governance alignment. |
+| `M1.1.6` | `M` | Create root governance files for this Level-0 repository | done | This repository is itself the Level-0 control-plane OS. Root AGENTS.md and ARCHITECTURE.md define local authority mapping and structural constraints for building and evolving agent-os/. |
 
 ### X2
 
@@ -96,6 +96,7 @@ Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
+| `C2.1.1` | `C` | Architecture finalization checkpoint — close review gaps G1-G5 | done | Marks architecture baseline as finalized for Level-0 governance, with unresolved work shifted from open questions into explicit governed policy. |
 | `D2.1.1` | `D` | Enforce missing architectural doc rules in workflow governance files | done | Close compliance gaps between the architecture doc (§6.2–6.4, §11.3–11.4, §4.2, §13.2) and the authoritative workflow files. Adds: full authority concern table, precedence rule, non-duplication rule, single-writer rule detail, grouping and collision rules, deferred automation list, and Kilo portability mapping example. |
 | `D2.1.2` | `D` | Create English translation of the Italian architectural document | done | 1:1 English translation of docs/design/documento-architetturale-control-plane-coding-agents.md, placed in the same directory. Structural fidelity to the original is required: all sections, tables, code blocks, and math equations must be preserved verbatim in structure. |
 | `D2.1.3` | `D` | Simplify commit title contract by removing item ID from header | done | Updated commit title contract everywhere from the item-ID-inclusive format to <type>(<scope>): <description> while keeping body/footer recommendation unchanged. |
@@ -104,7 +105,6 @@ Status: done
 | `D2.1.6` | `D` | Define REPO_MAP freshness policy and update triggers | done | Closes G3 by defining ownership, refresh triggers, and freshness metadata for REPO_MAP.md so map staleness is detectable and reviewable. |
 | `D2.1.7` | `D` | Define ADR template, numbering, and lifecycle states | done | Closes G4 by introducing a canonical ADR template with lifecycle states and linkage guidance to PLAN decision items. |
 | `D2.1.8` | `D` | Define canonical-authority conflict detection and recovery procedure | done | Closes G5 by defining conflict detection, recovery actions, escalation, and a safety gate before Phase B automation. |
-| `C2.1.1` | `C` | Architecture finalization checkpoint — close review gaps G1-G5 | done | Marks architecture baseline as finalized for Level-0 governance, with unresolved work shifted from open questions into explicit governed policy. |
 
 ### X3
 
@@ -441,6 +441,25 @@ Status: done
 | `F13.1.2` | `F` | Expand sync-workspace.sh test to verify all rendered files | done | Test only checks AGENTS.md existence and content. Must also verify CLAUDE.md and .codex are generated with correct CONTROL_PLANE_ROOT stamping. |
 | `C13.1.3` | `C` | Workspace template parity and test coverage checkpoint | done |  |
 
+### X14
+
+- ID: `X14`
+- Title: Portability Milestone Completion — Copilot Support and Kilo Realignment
+- Status: done
+- Note: Complete the runtime portability milestone without splitting authority. Add GitHub Copilot as a supported runtime through a thin repo-level entrypoint, replace the KILO.md adapter fiction with native Kilo portability through AGENTS.md plus shared assets, and update the portability contract to speak in terms of runtime entrypoint artifacts instead of a single adapter file shape.
+
+#### S14.1 Items
+
+Sprint: Sprint 1 — Copilot support and Kilo entrypoint realignment
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D14.1.1` | `D` | Track portability completion milestone and runtime entrypoint contract update | done | Adds X14 as the tracked follow-on to X11–X13. Records the contract shift from singular adapter files to runtime entrypoint artifacts, targets Copilot as supported, and realigns Kilo to native portability through AGENTS.md instead of a dedicated KILO.md authority file. |
+| `M14.1.2` | `M` | Implement Copilot support and Kilo realignment across docs, templates, registry, and tooling | done | Adds a thin `.github/copilot-instructions.md` bootstrap template, registers the Copilot profile, broadens neutral shared-asset compatibility to include Copilot, removes KILO.md from the portability contract and verification expectations, and keeps runtime authority centralized in canonical governance files. |
+| `T14.1.3` | `T` | Validate Copilot support and Kilo realignment | done |  |
+| `C14.1.4` | `C` | Portability completion checkpoint | done |  |
+
 ### X15
 
 - ID: `X15`
@@ -475,25 +494,6 @@ Status: done
 | --- | --- | --- | --- | --- |
 | `D16.1.1` | `D` | Create non-normative TODO.md checklist | done | Human-readable checklist of macro-features done and pending. Not governance, not read by agents. |
 | `D16.1.2` | `D` | Fix TODO typo from NFC to RFC for normative review section | done | Corrects the TODO heading/checkbox label typo from NFC to RFC in the non-normative future-considerations section. |
-
-### X14
-
-- ID: `X14`
-- Title: Portability Milestone Completion — Copilot Support and Kilo Realignment
-- Status: done
-- Note: Complete the runtime portability milestone without splitting authority. Add GitHub Copilot as a supported runtime through a thin repo-level entrypoint, replace the KILO.md adapter fiction with native Kilo portability through AGENTS.md plus shared assets, and update the portability contract to speak in terms of runtime entrypoint artifacts instead of a single adapter file shape.
-
-#### S14.1 Items
-
-Sprint: Sprint 1 — Copilot support and Kilo entrypoint realignment
-Status: done
-
-| ID | Type | Description | Status | Notes |
-| --- | --- | --- | --- | --- |
-| `D14.1.1` | `D` | Track portability completion milestone and runtime entrypoint contract update | done | Adds X14 as the tracked follow-on to X11–X13. Records the contract shift from singular adapter files to runtime entrypoint artifacts, targets Copilot as supported, and realigns Kilo to native portability through AGENTS.md instead of a dedicated KILO.md authority file. |
-| `M14.1.2` | `M` | Implement Copilot support and Kilo realignment across docs, templates, registry, and tooling | done | Adds a thin `.github/copilot-instructions.md` bootstrap template, registers the Copilot profile, broadens neutral shared-asset compatibility to include Copilot, removes KILO.md from the portability contract and verification expectations, and keeps runtime authority centralized in canonical governance files. |
-| `T14.1.3` | `T` | Validate Copilot support and Kilo realignment | done |  |
-| `C14.1.4` | `C` | Portability completion checkpoint | done |  |
 
 ### X17
 
@@ -694,9 +694,9 @@ Status: done
 | `M26.2.1` | `M` | Update bootstrap-repo.sh to generate Gemini and Cursor entrypoints | done |  |
 | `M26.2.2` | `M` | Add Gemini/Cursor profiles and update runtime compatibility across shared assets, workflow docs, and skills | done |  |
 | `D26.2.3` | `D` | Remediate runtime portability drift in README.md and TODO.md | done |  |
-| `M26.2.6` | `M` | Harden run-gates.sh against stale mypy cache failures | done |  |
 | `T26.2.4` | `T` | Validate six-runtime portability across bootstrap, sync, profiles, and governance | done |  |
 | `C26.2.5` | `C` | Checkpoint closure — X26 Gemini and Cursor first-class portability | done |  |
+| `M26.2.6` | `M` | Harden run-gates.sh against stale mypy cache failures | done |  |
 
 ### X27
 
@@ -803,14 +803,14 @@ Status: done
 #### S31.1 Items
 
 Sprint: Sprint 1 — Split model, migration, and bootstrap foundation
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D31.1.1` | `D` | Track X31 in the legacy root plan and reserve the feature branch before split migration | done | Reserve feature/X31-plan-splitting-archival for the milestone, add both X31 sprints and commit groups to the legacy root PLAN.yaml before any non-generated edits, and record the one-time migration rule: cg63 is the last commit tracked in the root PLAN.yaml before the canonical entrypoint moves to plan/PLAN-index.yaml in cg64. |
-| `M31.1.2` | `M` | Add split-plan schemas, shared loader, and deterministic split-plan migration tooling | planned | Introduce the split plan storage model, migrate this repository from the legacy monolithic root PLAN.yaml into plan/PLAN-index.yaml plus plan fragments, and keep aggregate render output deterministic and reviewable. |
-| `T31.1.3` | `T` | Prove split migration preserves the aggregate logical plan and rendered views | planned |  |
-| `C31.1.4` | `C` | Checkpoint closure — X31 split-plan model and migration foundation | planned |  |
+| `M31.1.2` | `M` | Add split-plan schemas, shared loader, and deterministic split-plan migration tooling | done | Introduce the split plan storage model, migrate this repository from the legacy monolithic root PLAN.yaml into plan/PLAN-index.yaml plus plan fragments, and keep aggregate render output deterministic and reviewable. |
+| `T31.1.3` | `T` | Prove split migration preserves the aggregate logical plan and rendered views | done |  |
+| `C31.1.4` | `C` | Checkpoint closure — X31 split-plan model and migration foundation | done |  |
 
 #### S31.2 Items
 
@@ -830,15 +830,15 @@ Status: planned
 
 | ID | Title | Items |
 |---|---|---|
-| cg7 | Governance compliance — propagate architectural rules to workflow docs | `D2.1.1`, `D2.1.2`, `D2.1.3` |
-| cg8 | Architecture finalization — close specification gaps G1-G5 | `D2.1.4`, `D2.1.5`, `D2.1.6`, `D2.1.7`, `D2.1.8`, `C2.1.1` |
 | cg0 | Repository bootstrap hygiene | `D1.1.1` |
 | cg1 | Review and planning artifacts | `D1.1.2` |
-| cg6 | Governance hardening updates | `D1.1.3`, `D1.1.4` |
 | cg2 | Decision gates — Q1.1.1 through Q1.1.5 answers recorded | `Q1.1.1`, `Q1.1.2`, `Q1.1.3`, `Q1.1.4`, `Q1.1.5` |
 | cg3 | Scaffold — workflow docs, schema, templates | `M1.1.1`, `M1.1.2`, `M1.1.3`, `M1.1.6` |
 | cg4 | Scripts — render, validate, bootstrap, sync | `M1.1.4`, `M1.1.5` |
 | cg5 | Sprint 1 closure — tests and checkpoint | `T1.1.1`, `T1.1.2`, `T1.1.3`, `C1.1.1` |
+| cg6 | Governance hardening updates | `D1.1.3`, `D1.1.4` |
+| cg7 | Governance compliance — propagate architectural rules to workflow docs | `D2.1.1`, `D2.1.2`, `D2.1.3` |
+| cg8 | Architecture finalization — close specification gaps G1-G5 | `D2.1.4`, `D2.1.5`, `D2.1.6`, `D2.1.7`, `D2.1.8`, `C2.1.1` |
 | cg9 | Source-of-truth integrity and schema hardening | `F3.1.1`, `M3.1.2`, `D3.1.3`, `T3.1.4` |
 | cg10 | Validation tooling hardening — cycle detection, commit group coherence, type/action warnings | `M3.2.1`, `M3.2.2`, `M3.2.3`, `T3.2.4`, `C3.2.5` |
 | cg11 | Rendering, bootstrap, and workspace template improvements | `M3.3.1`, `M3.3.2`, `M3.3.3`, `M3.3.4`, `M3.3.5`, `T3.3.6` |
@@ -866,11 +866,11 @@ Status: planned
 | cg33 | Template parity fix — CLAUDE workspace adapter overrides and test expansion | `F13.1.1`, `F13.1.2`, `C13.1.3` |
 | cg34 | Portability completion tracking — milestone, runtime contract, and commit boundaries | `D14.1.1` |
 | cg35 | Portability implementation — Copilot support and Kilo realignment | `M14.1.2` |
+| cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 | cg37 | Environment portability — AGENT_PYTHON env var and .env.example | `M15.1.1`, `T15.1.2`, `C15.1.3` |
 | cg38 | Add non-normative TODO.md checklist | `D16.1.1` |
 | cg39 | TODO wording fix — NFC to RFC | `D16.1.2` |
 | cg40 | Design docs — add English peer translation for the Git Flow PR-only workflow | `D17.1.1`, `T17.1.2`, `C17.1.3` |
-| cg36 | Portability verification and closure — validate X14 end to end | `T14.1.3`, `C14.1.4` |
 | cg41 | Design doc update — conflict resolution scenarios and operational refinements | `D18.1.1` |
 | cg42 | Git Flow governance extraction and authority registration | `D19.1.1`, `D19.1.2`, `C19.1.3` |
 | cg43 | gitflow-pr-only skill implementation | `D20.1.1`, `C20.1.2` |
@@ -901,190 +901,6 @@ Status: planned
 
 ## Item Details
 
-### D1.1.1: Create non-authoritative docs directory and initialize .gitignore
-
-- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: document
-- **Commit group**: `cg0`
-- **Artifacts**: .gitignore, docs/design/documento-architetturale-control-plane-coding-agents.md, docs/design/gitflow_pr_only_terminal_workflow.md, docs/design/REVIEW-AND-OPEN-QUESTIONS.md
-- **Notes**: Moved startup documentation to docs/design/ as non-authoritative reference material and added baseline ignore rules for local/editor/runtime artifacts.
-
-### D1.1.2: Create architecture review and open-questions document
-
-- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: document
-- **Commit group**: `cg1`
-- **Artifacts**: docs/design/REVIEW-AND-OPEN-QUESTIONS.md
-- **Notes**: Captures what is confirmed, what is ambiguous, and five open questions (Q1.1.1–Q1.1.5) that must be decided before schema and scripts can be written.
-
-### D1.1.3: Enforce commit message contract in Layer-0 governance
-
-- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: document, checkpoint
-- **Commit group**: `cg6`
-- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md, agent-os/templates/repo-AGENTS.md.template
-- **Notes**: Added mandatory commit title contract: <type>(<scope>): <description> with optional body/footer sections. This is a Layer-0 global rule.
-
-### D1.1.4: Strengthen and align commit body/footer recommendation wording
-
-- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: document
-- **Commit group**: `cg6`
-- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md, agent-os/templates/repo-AGENTS.md.template
-- **Notes**: Standardized wording to: "Optional body and footer sections are strongly suggested, especially for medium or large commits." across all authoritative governance surfaces.
-
-### Q1.1.1: Decide: PLAN.yaml required fields and state transition rules
-
-- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: decide
-- **Depends on**: `D1.1.2`
-- **Commit group**: `cg2`
-- **Decision**: Required executable fields are id, type, title, status, role, effort. State machine is planned -> ready -> in_progress -> review -> verified -> done, with blocked as a side-state reachable from active states. Container items (X, S) must not appear in depends_on. verified means all required checks pass; done means verified plus repository bookkeeping closure (committed, optionally pushed).
-- **Notes**: Decision recorded from interactive governance alignment.
-
-### Q1.1.2: Decide: Level-1 runtime materialization strategy
-
-- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: decide
-- **Depends on**: `D1.1.2`
-- **Commit group**: `cg2`
-- **Decision**: Level-1 runtime files are fully generated by sync-workspace.sh from Level-0 templates. Generated files are read-only outputs and must include an AUTO-GENERATED header.
-- **Notes**: Decision recorded from interactive governance alignment.
-
-### Q1.1.3: Decide: control-plane release and consumption model
-
-- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: decide
-- **Depends on**: `D1.1.2`
-- **Commit group**: `cg2`
-- **Decision**: MVP consumption tracks the control-plane main branch. Tag-based pinning will be introduced when a second external consumer is onboarded.
-- **Notes**: Decision recorded from interactive governance alignment.
-
-### Q1.1.4: Decide: scope field format and collision-detection semantics
-
-- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: decide
-- **Depends on**: `D1.1.2`
-- **Commit group**: `cg2`
-- **Decision**: scope is a repository-relative path prefix. validate-plan.py emits a warning (not hard-fail) when two in_progress items share a scope prefix.
-- **Notes**: Decision recorded from interactive governance alignment.
-
-### Q1.1.5: Decide: tooling failure semantics and commit hygiene rules
-
-- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: decide
-- **Depends on**: `D1.1.2`
-- **Commit group**: `cg2`
-- **Decision**: validate-plan.py hard-fails on missing required fields, unknown enum values, dangling depends_on references, and container types (X, S) in depends_on. Other policy checks can be warnings.
-- **Notes**: Decision recorded from interactive governance alignment.
-
-### M1.1.1: Create agent-os/workflow/ documentation files
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
-- **Sprint**: `S1.1`
-- **Actions**: implement, document
-- **Depends on**: `Q1.1.1`, `Q1.1.2`, `Q1.1.3`
-- **Commit group**: `cg3`
-- **Artifacts**: agent-os/workflow/shared-workflow.md, agent-os/workflow/item-taxonomy.md, agent-os/workflow/lifecycle.md, agent-os/workflow/git-automation-policy.md, agent-os/workflow/portability-model.md
-- **Notes**: Content sourced from docs/design/documento-architetturale-control-plane-coding-agents.md and docs/design/gitflow_pr_only_terminal_workflow.md. Do NOT duplicate content; these files are the canonical split of the monolithic architecture doc.
-
-### M1.1.6: Create root governance files for this Level-0 repository
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
-- **Sprint**: `S1.1`
-- **Actions**: design, implement, document
-- **Depends on**: `Q1.1.1`, `Q1.1.2`, `Q1.1.3`
-- **Commit group**: `cg3`
-- **Artifacts**: AGENTS.md, ARCHITECTURE.md
-- **Notes**: This repository is itself the Level-0 control-plane OS. Root AGENTS.md and ARCHITECTURE.md define local authority mapping and structural constraints for building and evolving agent-os/.
-
-### M1.1.2: Create agent-os/schemas/plan.schema.json
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
-- **Sprint**: `S1.1`
-- **Actions**: design, implement
-- **Depends on**: `Q1.1.1`, `Q1.1.4`
-- **Commit group**: `cg3`
-- **Artifacts**: agent-os/schemas/plan.schema.json
-- **Notes**: JSON Schema (draft-2020-12) for PLAN.yaml. Must encode required fields, enum values for type/status/role/effort/actions, and scope field format as decided in Q1.1.1 and Q1.1.4. Must be self-consistent so that this PLAN.yaml passes validation once M1.1.4 is done.
-
-### M1.1.3: Create agent-os/templates/ (AGENTS, ARCHITECTURE, REPO_MAP, PLAN)
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
-- **Sprint**: `S1.1`
-- **Actions**: design, implement
-- **Depends on**: `Q1.1.2`, `M1.1.1`
-- **Commit group**: `cg3`
-- **Artifacts**: agent-os/templates/repo-AGENTS.md.template, agent-os/templates/repo-ARCHITECTURE.md.template, agent-os/templates/repo-REPO_MAP.md.template, agent-os/templates/PLAN.yaml.template
-- **Notes**: Templates use {{REPO_NAME}}, {{DATE}}, {{OWNER}} placeholders. Level-1 files are generated from these templates by sync-workspace.sh (per Q1.1.2 decision). Each template must include the canonical source rule and authority map header so generated files self-document their origin.
-
-### M1.1.4: Create agent-os/scripts/render-plan.py and validate-plan.py
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
-- **Sprint**: `S1.1`
-- **Actions**: implement
-- **Depends on**: `M1.1.2`, `Q1.1.5`
-- **Commit group**: `cg4`
-- **Artifacts**: agent-os/scripts/render-plan.py, agent-os/scripts/validate-plan.py
-- **Notes**: validate-plan.py: validates PLAN.yaml against plan.schema.json; checks state transition legality, dangling depends_on, container items in depends_on, required fields. Exits non-zero on any hard-fail. render-plan.py: deterministic PLAN.yaml → PLAN.md + PLAN.yaml → PLAN.dot. Both scripts must be idempotent and callable standalone.
-
-### M1.1.5: Create agent-os/scripts/bootstrap-repo.sh and sync-workspace.sh
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
-- **Sprint**: `S1.1`
-- **Actions**: implement
-- **Depends on**: `M1.1.3`, `Q1.1.3`
-- **Commit group**: `cg4`
-- **Artifacts**: agent-os/scripts/bootstrap-repo.sh, agent-os/scripts/sync-workspace.sh
-- **Notes**: bootstrap-repo.sh: instantiates a new repo-local layer (Level-2) from templates. Supports --dry-run. Emits a PLAN.yaml seed from the template. sync-workspace.sh: pulls latest from control plane (per Q1.1.3 decision) and regenerates Level-1 runtime files from Level-0 templates (per Q1.1.2 decision).
-
-### T1.1.1: Validate this PLAN.yaml against plan.schema.json
-
-- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: test, verify
-- **Depends on**: `M1.1.2`, `M1.1.4`
-- **Commit group**: `cg5`
-- **Checks**:
-  - python agent-os/scripts/validate-plan.py PLAN.yaml exits 0
-  - no required fields missing
-  - no dangling depends_on references
-- **Notes**: This is the self-validation gate: the control plane must validate its own plan before it can claim to be a working control plane.
-
-### T1.1.2: Dry-run bootstrap-repo.sh on a temp path
-
-- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: test, verify
-- **Depends on**: `M1.1.5`
-- **Commit group**: `cg5`
-- **Checks**:
-  - bash agent-os/scripts/bootstrap-repo.sh --dry-run /tmp/test-repo exits 0
-  - expected output files listed without being created
-- **Notes**: Must confirm bootstrap is idempotent and does not write to disk in dry-run mode. A second run on the same target must produce identical output.
-
-### T1.1.3: Generate PLAN.md and PLAN.dot from this PLAN.yaml
-
-- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
-- **Sprint**: `S1.1`
-- **Actions**: test, verify
-- **Depends on**: `M1.1.4`
-- **Commit group**: `cg5`
-- **Checks**:
-  - python agent-os/scripts/render-plan.py PLAN.yaml produces PLAN.md
-  - python agent-os/scripts/render-plan.py PLAN.yaml produces PLAN.dot
-  - running render a second time produces identical output (idempotency)
-- **Notes**: PLAN.md and PLAN.dot are committed in the same commit as this PLAN.yaml update, not as separate commits (per Q1.1.5 decision).
-
 ### C1.1.1: Sprint 1 checkpoint — Level-0 scaffold complete and self-validating
 
 - **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
@@ -1101,6 +917,206 @@ Status: planned
   - Commit messages follow: <type>(<scope>): <description>
   - validate-plan.py passes on this PLAN.yaml
 - **Notes**: After this checkpoint, the control plane is operational and able to bootstrap its first real target repo (Level-2) as Sprint 2 work.
+
+### D1.1.1: Create non-authoritative docs directory and initialize .gitignore
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: document
+- **Commit group**: `cg0`
+- **Artifacts**: .gitignore, docs/design/documento-architetturale-control-plane-coding-agents.md, docs/design/gitflow_pr_only_terminal_workflow.md, docs/design/REVIEW-AND-OPEN-QUESTIONS.md
+- **Notes**: Moved startup documentation to docs/design/ as non-authoritative reference material and added baseline ignore rules for local/editor/runtime artifacts.
+
+### M1.1.1: Create agent-os/workflow/ documentation files
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S1.1`
+- **Actions**: implement, document
+- **Depends on**: `Q1.1.1`, `Q1.1.2`, `Q1.1.3`
+- **Commit group**: `cg3`
+- **Artifacts**: agent-os/workflow/shared-workflow.md, agent-os/workflow/item-taxonomy.md, agent-os/workflow/lifecycle.md, agent-os/workflow/git-automation-policy.md, agent-os/workflow/portability-model.md
+- **Notes**: Content sourced from docs/design/documento-architetturale-control-plane-coding-agents.md and docs/design/gitflow_pr_only_terminal_workflow.md. Do NOT duplicate content; these files are the canonical split of the monolithic architecture doc.
+
+### Q1.1.1: Decide: PLAN.yaml required fields and state transition rules
+
+- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: decide
+- **Depends on**: `D1.1.2`
+- **Commit group**: `cg2`
+- **Decision**: Required executable fields are id, type, title, status, role, effort. State machine is planned -> ready -> in_progress -> review -> verified -> done, with blocked as a side-state reachable from active states. Container items (X, S) must not appear in depends_on. verified means all required checks pass; done means verified plus repository bookkeeping closure (committed, optionally pushed).
+- **Notes**: Decision recorded from interactive governance alignment.
+
+### T1.1.1: Validate this PLAN.yaml against plan.schema.json
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: test, verify
+- **Depends on**: `M1.1.2`, `M1.1.4`
+- **Commit group**: `cg5`
+- **Checks**:
+  - python agent-os/scripts/validate-plan.py PLAN.yaml exits 0
+  - no required fields missing
+  - no dangling depends_on references
+- **Notes**: This is the self-validation gate: the control plane must validate its own plan before it can claim to be a working control plane.
+
+### D1.1.2: Create architecture review and open-questions document
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: document
+- **Commit group**: `cg1`
+- **Artifacts**: docs/design/REVIEW-AND-OPEN-QUESTIONS.md
+- **Notes**: Captures what is confirmed, what is ambiguous, and five open questions (Q1.1.1–Q1.1.5) that must be decided before schema and scripts can be written.
+
+### M1.1.2: Create agent-os/schemas/plan.schema.json
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S1.1`
+- **Actions**: design, implement
+- **Depends on**: `Q1.1.1`, `Q1.1.4`
+- **Commit group**: `cg3`
+- **Artifacts**: agent-os/schemas/plan.schema.json
+- **Notes**: JSON Schema (draft-2020-12) for PLAN.yaml. Must encode required fields, enum values for type/status/role/effort/actions, and scope field format as decided in Q1.1.1 and Q1.1.4. Must be self-consistent so that this PLAN.yaml passes validation once M1.1.4 is done.
+
+### Q1.1.2: Decide: Level-1 runtime materialization strategy
+
+- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: decide
+- **Depends on**: `D1.1.2`
+- **Commit group**: `cg2`
+- **Decision**: Level-1 runtime files are fully generated by sync-workspace.sh from Level-0 templates. Generated files are read-only outputs and must include an AUTO-GENERATED header.
+- **Notes**: Decision recorded from interactive governance alignment.
+
+### T1.1.2: Dry-run bootstrap-repo.sh on a temp path
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: test, verify
+- **Depends on**: `M1.1.5`
+- **Commit group**: `cg5`
+- **Checks**:
+  - bash agent-os/scripts/bootstrap-repo.sh --dry-run /tmp/test-repo exits 0
+  - expected output files listed without being created
+- **Notes**: Must confirm bootstrap is idempotent and does not write to disk in dry-run mode. A second run on the same target must produce identical output.
+
+### D1.1.3: Enforce commit message contract in Layer-0 governance
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: document, checkpoint
+- **Commit group**: `cg6`
+- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md, agent-os/templates/repo-AGENTS.md.template
+- **Notes**: Added mandatory commit title contract: <type>(<scope>): <description> with optional body/footer sections. This is a Layer-0 global rule.
+
+### M1.1.3: Create agent-os/templates/ (AGENTS, ARCHITECTURE, REPO_MAP, PLAN)
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S1.1`
+- **Actions**: design, implement
+- **Depends on**: `Q1.1.2`, `M1.1.1`
+- **Commit group**: `cg3`
+- **Artifacts**: agent-os/templates/repo-AGENTS.md.template, agent-os/templates/repo-ARCHITECTURE.md.template, agent-os/templates/repo-REPO_MAP.md.template, agent-os/templates/PLAN.yaml.template
+- **Notes**: Templates use {{REPO_NAME}}, {{DATE}}, {{OWNER}} placeholders. Level-1 files are generated from these templates by sync-workspace.sh (per Q1.1.2 decision). Each template must include the canonical source rule and authority map header so generated files self-document their origin.
+
+### Q1.1.3: Decide: control-plane release and consumption model
+
+- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: decide
+- **Depends on**: `D1.1.2`
+- **Commit group**: `cg2`
+- **Decision**: MVP consumption tracks the control-plane main branch. Tag-based pinning will be introduced when a second external consumer is onboarded.
+- **Notes**: Decision recorded from interactive governance alignment.
+
+### T1.1.3: Generate PLAN.md and PLAN.dot from this PLAN.yaml
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: test, verify
+- **Depends on**: `M1.1.4`
+- **Commit group**: `cg5`
+- **Checks**:
+  - python agent-os/scripts/render-plan.py PLAN.yaml produces PLAN.md
+  - python agent-os/scripts/render-plan.py PLAN.yaml produces PLAN.dot
+  - running render a second time produces identical output (idempotency)
+- **Notes**: PLAN.md and PLAN.dot are committed in the same commit as this PLAN.yaml update, not as separate commits (per Q1.1.5 decision).
+
+### D1.1.4: Strengthen and align commit body/footer recommendation wording
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: document
+- **Commit group**: `cg6`
+- **Artifacts**: AGENTS.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-automation-policy.md, agent-os/templates/repo-AGENTS.md.template
+- **Notes**: Standardized wording to: "Optional body and footer sections are strongly suggested, especially for medium or large commits." across all authoritative governance surfaces.
+
+### M1.1.4: Create agent-os/scripts/render-plan.py and validate-plan.py
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
+- **Sprint**: `S1.1`
+- **Actions**: implement
+- **Depends on**: `M1.1.2`, `Q1.1.5`
+- **Commit group**: `cg4`
+- **Artifacts**: agent-os/scripts/render-plan.py, agent-os/scripts/validate-plan.py
+- **Notes**: validate-plan.py: validates PLAN.yaml against plan.schema.json; checks state transition legality, dangling depends_on, container items in depends_on, required fields. Exits non-zero on any hard-fail. render-plan.py: deterministic PLAN.yaml → PLAN.md + PLAN.yaml → PLAN.dot. Both scripts must be idempotent and callable standalone.
+
+### Q1.1.4: Decide: scope field format and collision-detection semantics
+
+- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: decide
+- **Depends on**: `D1.1.2`
+- **Commit group**: `cg2`
+- **Decision**: scope is a repository-relative path prefix. validate-plan.py emits a warning (not hard-fail) when two in_progress items share a scope prefix.
+- **Notes**: Decision recorded from interactive governance alignment.
+
+### M1.1.5: Create agent-os/scripts/bootstrap-repo.sh and sync-workspace.sh
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S1.1`
+- **Actions**: implement
+- **Depends on**: `M1.1.3`, `Q1.1.3`
+- **Commit group**: `cg4`
+- **Artifacts**: agent-os/scripts/bootstrap-repo.sh, agent-os/scripts/sync-workspace.sh
+- **Notes**: bootstrap-repo.sh: instantiates a new repo-local layer (Level-2) from templates. Supports --dry-run. Emits a PLAN.yaml seed from the template. sync-workspace.sh: pulls latest from control plane (per Q1.1.3 decision) and regenerates Level-1 runtime files from Level-0 templates (per Q1.1.2 decision).
+
+### Q1.1.5: Decide: tooling failure semantics and commit hygiene rules
+
+- **Type**: Q | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S1.1`
+- **Actions**: decide
+- **Depends on**: `D1.1.2`
+- **Commit group**: `cg2`
+- **Decision**: validate-plan.py hard-fails on missing required fields, unknown enum values, dangling depends_on references, and container types (X, S) in depends_on. Other policy checks can be warnings.
+- **Notes**: Decision recorded from interactive governance alignment.
+
+### M1.1.6: Create root governance files for this Level-0 repository
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S1.1`
+- **Actions**: design, implement, document
+- **Depends on**: `Q1.1.1`, `Q1.1.2`, `Q1.1.3`
+- **Commit group**: `cg3`
+- **Artifacts**: AGENTS.md, ARCHITECTURE.md
+- **Notes**: This repository is itself the Level-0 control-plane OS. Root AGENTS.md and ARCHITECTURE.md define local authority mapping and structural constraints for building and evolving agent-os/.
+
+### C2.1.1: Architecture finalization checkpoint — close review gaps G1-G5
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S2.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `D2.1.4`, `D2.1.5`, `D2.1.6`, `D2.1.7`, `D2.1.8`
+- **Commit group**: `cg8`
+- **Checks**:
+  - Open gaps G1-G5 are resolved or explicitly governed with final policy
+  - REVIEW-AND-OPEN-QUESTIONS.md is updated from working status to closure status
+  - Prompt, skill, ADR, and REPO_MAP policies are defined in canonical authorities
+  - Phase B automation includes explicit safety gate for authority-conflict recovery
+  - validate-plan.py passes on this PLAN.yaml
+  - render-plan.py regenerates PLAN.md and PLAN.dot deterministically
+- **Notes**: Marks architecture baseline as finalized for Level-0 governance, with unresolved work shifted from open questions into explicit governed policy.
 
 ### D2.1.1: Enforce missing architectural doc rules in workflow governance files
 
@@ -1173,22 +1189,6 @@ Status: planned
 - **Commit group**: `cg8`
 - **Artifacts**: agent-os/workflow/shared-workflow.md, ARCHITECTURE.md, AGENTS.md
 - **Notes**: Closes G5 by defining conflict detection, recovery actions, escalation, and a safety gate before Phase B automation.
-
-### C2.1.1: Architecture finalization checkpoint — close review gaps G1-G5
-
-- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
-- **Sprint**: `S2.1`
-- **Actions**: review, checkpoint, verify
-- **Depends on**: `D2.1.4`, `D2.1.5`, `D2.1.6`, `D2.1.7`, `D2.1.8`
-- **Commit group**: `cg8`
-- **Checks**:
-  - Open gaps G1-G5 are resolved or explicitly governed with final policy
-  - REVIEW-AND-OPEN-QUESTIONS.md is updated from working status to closure status
-  - Prompt, skill, ADR, and REPO_MAP policies are defined in canonical authorities
-  - Phase B automation includes explicit safety gate for authority-conflict recovery
-  - validate-plan.py passes on this PLAN.yaml
-  - render-plan.py regenerates PLAN.md and PLAN.dot deterministically
-- **Notes**: Marks architecture baseline as finalized for Level-0 governance, with unresolved work shifted from open questions into explicit governed policy.
 
 ### F3.1.1: Fix duplicate note key in PLAN.yaml X2 milestone
 
@@ -2095,6 +2095,70 @@ Status: planned
   - requirements.txt remains runtime-only
   - PLAN.md and PLAN.dot are regenerated and committed
 
+### D11.1.1: Design runtime lifecycle model and plan portability expansion
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Sprint**: `S11.1`
+- **Actions**: design, document
+- **Depends on**: `C10.1.5`
+- **Commit group**: `cg28`
+- **Artifacts**: PLAN.yaml, agent-os/workflow/portability-model.md
+- **Notes**: Adds a formal three-tier runtime lifecycle (experimental, supported, first-class) to portability-model.md. Assigns current runtimes: claude = first-class, codex = supported, kilo = experimental. Documents Copilot as recognized but deferred with rationale about its different adapter shape.
+
+### M11.1.2: Populate Codex adapter and add lifecycle references to READMEs
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S11.1`
+- **Actions**: implement, document
+- **Depends on**: `D11.1.1`
+- **Commit group**: `cg29`
+- **Artifacts**: .codex, agent-os/skills/README.md, agent-os/prompts/README.md
+- **Notes**: Populates the empty .codex file following the CLAUDE.md thin adapter pattern. Same canonical authorities, same three adapter overrides. Codex-specific sandbox notes for tooling. Updates skills/README.md and prompts/README.md to reference the runtime lifecycle tiers.
+
+### M11.1.3: Add Kilo as experimental runtime with adapter, profile, and registry
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S11.1`
+- **Actions**: implement, document
+- **Depends on**: `D11.1.1`
+- **Commit group**: `cg30`
+- **Artifacts**: KILO.md, agent-os/profiles/kilo/check-medium.yaml, agent-os/registry/shared-assets.yaml, agent-os/skills/plan-checkpoint-close/SKILL.md, .gitignore
+- **Notes**: Creates KILO.md as a thin experimental adapter at repo root. Creates kilo profile. Adds kilo to neutral asset compatibility in the registry. Updates skill frontmatter. Adds .sixth/ to .gitignore.
+
+### T11.1.4: Validate portability expansion and runtime artifacts
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S11.1`
+- **Actions**: test, verify
+- **Depends on**: `M11.1.2`, `M11.1.3`
+- **Commit group**: `cg31`
+- **Checks**:
+  - validate-plan.py PLAN.yaml exits 0
+  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
+  - .codex is non-empty and follows the thin adapter pattern
+  - KILO.md exists and follows the thin adapter pattern
+  - agent-os/profiles/kilo/check-medium.yaml exists with target_runtime kilo
+  - Registry neutral assets include kilo in compatibility
+  - portability-model.md contains runtime lifecycle tiers and status table
+  - .gitignore includes .sixth/
+  - run-gates.sh passes
+
+### C11.1.5: Runtime portability expansion checkpoint
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S11.1`
+- **Actions**: review, checkpoint, verify
+- **Depends on**: `T11.1.4`
+- **Commit group**: `cg31`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=claude/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Checks**:
+  - Portability model defines explicit runtime lifecycle tiers
+  - Codex adapter is populated and follows the thin adapter pattern
+  - Kilo is registered as experimental with profile, adapter, and neutral asset compatibility
+  - Copilot is documented as deferred with rationale
+  - No normative duplication between adapters and canonical authorities
+  - PLAN.md and PLAN.dot are regenerated and committed
+
 ### M12.1.1: Create Codex workspace template and extend sync-workspace.sh
 
 - **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
@@ -2164,70 +2228,6 @@ Status: planned
   - run-gates.sh and pytest pass
   - PLAN.md and PLAN.dot are regenerated and committed
 
-### D11.1.1: Design runtime lifecycle model and plan portability expansion
-
-- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
-- **Sprint**: `S11.1`
-- **Actions**: design, document
-- **Depends on**: `C10.1.5`
-- **Commit group**: `cg28`
-- **Artifacts**: PLAN.yaml, agent-os/workflow/portability-model.md
-- **Notes**: Adds a formal three-tier runtime lifecycle (experimental, supported, first-class) to portability-model.md. Assigns current runtimes: claude = first-class, codex = supported, kilo = experimental. Documents Copilot as recognized but deferred with rationale about its different adapter shape.
-
-### M11.1.2: Populate Codex adapter and add lifecycle references to READMEs
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
-- **Sprint**: `S11.1`
-- **Actions**: implement, document
-- **Depends on**: `D11.1.1`
-- **Commit group**: `cg29`
-- **Artifacts**: .codex, agent-os/skills/README.md, agent-os/prompts/README.md
-- **Notes**: Populates the empty .codex file following the CLAUDE.md thin adapter pattern. Same canonical authorities, same three adapter overrides. Codex-specific sandbox notes for tooling. Updates skills/README.md and prompts/README.md to reference the runtime lifecycle tiers.
-
-### M11.1.3: Add Kilo as experimental runtime with adapter, profile, and registry
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
-- **Sprint**: `S11.1`
-- **Actions**: implement, document
-- **Depends on**: `D11.1.1`
-- **Commit group**: `cg30`
-- **Artifacts**: KILO.md, agent-os/profiles/kilo/check-medium.yaml, agent-os/registry/shared-assets.yaml, agent-os/skills/plan-checkpoint-close/SKILL.md, .gitignore
-- **Notes**: Creates KILO.md as a thin experimental adapter at repo root. Creates kilo profile. Adds kilo to neutral asset compatibility in the registry. Updates skill frontmatter. Adds .sixth/ to .gitignore.
-
-### T11.1.4: Validate portability expansion and runtime artifacts
-
-- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
-- **Sprint**: `S11.1`
-- **Actions**: test, verify
-- **Depends on**: `M11.1.2`, `M11.1.3`
-- **Commit group**: `cg31`
-- **Checks**:
-  - validate-plan.py PLAN.yaml exits 0
-  - render-plan.py PLAN.yaml updates PLAN.md and PLAN.dot deterministically
-  - .codex is non-empty and follows the thin adapter pattern
-  - KILO.md exists and follows the thin adapter pattern
-  - agent-os/profiles/kilo/check-medium.yaml exists with target_runtime kilo
-  - Registry neutral assets include kilo in compatibility
-  - portability-model.md contains runtime lifecycle tiers and status table
-  - .gitignore includes .sixth/
-  - run-gates.sh passes
-
-### C11.1.5: Runtime portability expansion checkpoint
-
-- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
-- **Sprint**: `S11.1`
-- **Actions**: review, checkpoint, verify
-- **Depends on**: `T11.1.4`
-- **Commit group**: `cg31`
-- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=claude/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
-- **Checks**:
-  - Portability model defines explicit runtime lifecycle tiers
-  - Codex adapter is populated and follows the thin adapter pattern
-  - Kilo is registered as experimental with profile, adapter, and neutral asset compatibility
-  - Copilot is documented as deferred with rationale
-  - No normative duplication between adapters and canonical authorities
-  - PLAN.md and PLAN.dot are regenerated and committed
-
 ### D14.1.1: Track portability completion milestone and runtime entrypoint contract update
 
 - **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
@@ -2281,25 +2281,6 @@ Status: planned
   - Workspace sync remains limited to workspace-scoped runtimes
   - PLAN.md and PLAN.dot are regenerated and committed
 
-### D16.1.1: Create non-normative TODO.md checklist
-
-- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
-- **Sprint**: `S16.1`
-- **Actions**: document
-- **Commit group**: `cg38`
-- **Artifacts**: TODO.md
-- **Notes**: Human-readable checklist of macro-features done and pending. Not governance, not read by agents.
-
-### D16.1.2: Fix TODO typo from NFC to RFC for normative review section
-
-- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
-- **Sprint**: `S16.1`
-- **Actions**: document
-- **Depends on**: `D16.1.1`
-- **Commit group**: `cg39`
-- **Artifacts**: PLAN.yaml, TODO.md
-- **Notes**: Corrects the TODO heading/checkbox label typo from NFC to RFC in the non-normative future-considerations section.
-
 ### M15.1.1: Replace hardcoded nn-2 with AGENT_PYTHON env var across scripts and docs
 
 - **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
@@ -2337,6 +2318,25 @@ Status: planned
   - AGENT_PYTHON env var is the canonical override mechanism
   - .env is gitignored, .env.example is committed
   - PLAN.md and PLAN.dot are regenerated and committed
+
+### D16.1.1: Create non-normative TODO.md checklist
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S16.1`
+- **Actions**: document
+- **Commit group**: `cg38`
+- **Artifacts**: TODO.md
+- **Notes**: Human-readable checklist of macro-features done and pending. Not governance, not read by agents.
+
+### D16.1.2: Fix TODO typo from NFC to RFC for normative review section
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S16.1`
+- **Actions**: document
+- **Depends on**: `D16.1.1`
+- **Commit group**: `cg39`
+- **Artifacts**: PLAN.yaml, TODO.md
+- **Notes**: Corrects the TODO heading/checkbox label typo from NFC to RFC in the non-normative future-considerations section.
 
 ### D17.1.1: Create an English peer document for the Git Flow PR-only terminal workflow
 
@@ -2680,15 +2680,6 @@ Status: planned
 - **Commit group**: `cg52`
 - **Artifacts**: README.md, TODO.md
 
-### M26.2.6: Harden run-gates.sh against stale mypy cache failures
-
-- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
-- **Sprint**: `S26.2`
-- **Actions**: implement, refactor
-- **Depends on**: `D26.2.3`
-- **Commit group**: `cg53`
-- **Artifacts**: agent-os/scripts/run-gates.sh
-
 ### T26.2.4: Validate six-runtime portability across bootstrap, sync, profiles, and governance
 
 - **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
@@ -2718,6 +2709,15 @@ Status: planned
 - **Depends on**: `T26.2.4`
 - **Commit group**: `cg53`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### M26.2.6: Harden run-gates.sh against stale mypy cache failures
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S26.2`
+- **Actions**: implement, refactor
+- **Depends on**: `D26.2.3`
+- **Commit group**: `cg53`
+- **Artifacts**: agent-os/scripts/run-gates.sh
 
 ### D27.1.1: Create repo-bootstrap skill SKILL.md with pre-flight, execution, and verification procedure
 
@@ -2946,7 +2946,7 @@ Status: planned
 
 ### M31.1.2: Add split-plan schemas, shared loader, and deterministic split-plan migration tooling
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S31.1`
 - **Actions**: design, implement, migrate, verify
 - **Depends on**: `D31.1.1`
@@ -2956,11 +2956,12 @@ Status: planned
 
 ### T31.1.3: Prove split migration preserves the aggregate logical plan and rendered views
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S31.1`
 - **Actions**: test, verify
 - **Depends on**: `M31.1.2`
 - **Commit group**: `cg64`
+- **Artifacts**: tests/test_plan_loader.py, tests/test_split_plan.py
 - **Checks**:
   - split-plan.py deterministically migrates the legacy root plan into plan/
   - aggregate logical-plan content remains equivalent after migration
@@ -2968,7 +2969,7 @@ Status: planned
 
 ### C31.1.4: Checkpoint closure — X31 split-plan model and migration foundation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S31.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T31.1.3`

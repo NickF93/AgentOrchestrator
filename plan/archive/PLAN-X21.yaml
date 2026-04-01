@@ -1,0 +1,57 @@
+milestones:
+- id: X21
+  type: X
+  title: Skill Discovery Table in AGENTS.md
+  status: done
+  note: "Add an available-skills table to AGENTS.md \xA7 Skills so agents can discover\
+    \ skills by name and trigger condition without scanning the directory. Keeps AGENTS.md\
+    \ as the single authority for skill discovery.\n"
+sprints:
+- id: S21.1
+  type: S
+  parent: X21
+  title: "Sprint 1 \u2014 Skill discovery table"
+  status: done
+items:
+- id: D21.1.1
+  parent: S21.1
+  type: D
+  title: "Add available-skills table to AGENTS.md \xA7 Skills"
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg44
+  scope: AGENTS.md
+  artifacts_out:
+  - AGENTS.md
+  notes: "Add a table listing each skill ID, its trigger conditions, and path to AGENTS.md\
+    \ \xA7 Skills. This makes AGENTS.md the single authority for skill discovery \u2014\
+    \ agents read the table instead of scanning the directory.\n"
+- id: C21.1.2
+  parent: S21.1
+  type: C
+  title: "Checkpoint closure \u2014 X21 skill discovery table"
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D21.1.1
+  role: reviewer
+  effort: low
+  commit_group: cg44
+  scope: .
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - "AGENTS.md \xA7 Skills contains available-skills table"
+commit_groups:
+- id: cg44
+  title: Skill discovery table in AGENTS.md
+  items:
+  - D21.1.1
+  - C21.1.2
+  notes: "Adds an available-skills table to AGENTS.md \xA7 Skills so agents discover\
+    \ skills by name without scanning the directory.\n"

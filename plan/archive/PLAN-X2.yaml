@@ -1,0 +1,234 @@
+milestones:
+- id: X2
+  type: X
+  title: Layer-0 Governance Hardening
+  status: done
+  note: 'Close the compliance gaps between the design authority document (docs/design/documento-architetturale-control-plane-coding-agents.md)
+    and the authoritative governance workflow files under agent-os/workflow/. Deliver
+    a working agent-os/ scaffold with schema, workflow docs, templates, and tooling.
+    Self-validate by running validate-plan.py on this PLAN.yaml.
+
+    '
+sprints:
+- id: S2.1
+  type: S
+  parent: X2
+  title: "Sprint 1 \u2014 Propagate missing architectural rules to governance files"
+  status: done
+items:
+- id: C2.1.1
+  parent: S2.1
+  type: C
+  title: "Architecture finalization checkpoint \u2014 close review gaps G1-G5"
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg8
+  depends_on:
+  - D2.1.4
+  - D2.1.5
+  - D2.1.6
+  - D2.1.7
+  - D2.1.8
+  checks:
+  - Open gaps G1-G5 are resolved or explicitly governed with final policy
+  - REVIEW-AND-OPEN-QUESTIONS.md is updated from working status to closure status
+  - Prompt, skill, ADR, and REPO_MAP policies are defined in canonical authorities
+  - Phase B automation includes explicit safety gate for authority-conflict recovery
+  - validate-plan.py passes on this PLAN.yaml
+  - render-plan.py regenerates PLAN.md and PLAN.dot deterministically
+  notes: 'Marks architecture baseline as finalized for Level-0 governance, with unresolved
+    work shifted from open questions into explicit governed policy.
+
+    '
+- id: D2.1.1
+  parent: S2.1
+  type: D
+  title: Enforce missing architectural doc rules in workflow governance files
+  actions:
+  - document
+  - review
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg7
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/workflow/git-automation-policy.md
+  - agent-os/workflow/portability-model.md
+  notes: "Close compliance gaps between the architecture doc (\xA76.2\u20136.4, \xA7\
+    11.3\u201311.4, \xA74.2, \xA713.2) and the authoritative workflow files. Adds:\
+    \ full authority concern table, precedence rule, non-duplication rule, single-writer\
+    \ rule detail, grouping and collision rules, deferred automation list, and Kilo\
+    \ portability mapping example.\n"
+- id: D2.1.2
+  parent: S2.1
+  type: D
+  title: Create English translation of the Italian architectural document
+  actions:
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg7
+  scope: docs/design
+  artifacts_out:
+  - docs/design/architectural-document-control-plane-coding-agents.md
+  notes: '1:1 English translation of docs/design/documento-architetturale-control-plane-coding-agents.md,
+    placed in the same directory. Structural fidelity to the original is required:
+    all sections, tables, code blocks, and math equations must be preserved verbatim
+    in structure.
+
+    '
+- id: D2.1.3
+  parent: S2.1
+  type: D
+  title: Simplify commit title contract by removing item ID from header
+  actions:
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg7
+  scope: .
+  artifacts_out:
+  - AGENTS.md
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/workflow/git-automation-policy.md
+  - agent-os/templates/repo-AGENTS.md.template
+  - PLAN.yaml
+  notes: 'Updated commit title contract everywhere from the item-ID-inclusive format
+    to <type>(<scope>): <description> while keeping body/footer recommendation unchanged.
+
+    '
+- id: D2.1.4
+  parent: S2.1
+  type: D
+  title: Define prompts directory contract and lifecycle
+  actions:
+  - design
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg8
+  scope: agent-os/prompts
+  artifacts_out:
+  - agent-os/prompts/README.md
+  - agent-os/workflow/shared-workflow.md
+  notes: 'Closes G1 by specifying prompt file format, required metadata, versioning,
+    and lifecycle triggers in authoritative workflow guidance.
+
+    '
+- id: D2.1.5
+  parent: S2.1
+  type: D
+  title: Define skills packaging contract and compatibility mapping
+  actions:
+  - design
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg8
+  scope: agent-os/skills
+  artifacts_out:
+  - agent-os/skills/README.md
+  - agent-os/workflow/portability-model.md
+  - agent-os/workflow/shared-workflow.md
+  notes: 'Closes G2 by defining a neutral skill package format and adapter mapping
+    expectations across agent runtimes.
+
+    '
+- id: D2.1.6
+  parent: S2.1
+  type: D
+  title: Define REPO_MAP freshness policy and update triggers
+  actions:
+  - design
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg8
+  scope: agent-os/templates
+  artifacts_out:
+  - agent-os/templates/repo-REPO_MAP.md.template
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/workflow/lifecycle.md
+  notes: 'Closes G3 by defining ownership, refresh triggers, and freshness metadata
+    for REPO_MAP.md so map staleness is detectable and reviewable.
+
+    '
+- id: D2.1.7
+  parent: S2.1
+  type: D
+  title: Define ADR template, numbering, and lifecycle states
+  actions:
+  - design
+  - document
+  status: done
+  role: orchestrator
+  effort: medium
+  commit_group: cg8
+  scope: agent-os/templates
+  artifacts_out:
+  - agent-os/templates/repo-ADR.md.template
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/templates/repo-ARCHITECTURE.md.template
+  notes: 'Closes G4 by introducing a canonical ADR template with lifecycle states
+    and linkage guidance to PLAN decision items.
+
+    '
+- id: D2.1.8
+  parent: S2.1
+  type: D
+  title: Define canonical-authority conflict detection and recovery procedure
+  actions:
+  - design
+  - document
+  - review
+  status: done
+  role: orchestrator
+  effort: high
+  commit_group: cg8
+  scope: agent-os/workflow
+  artifacts_out:
+  - agent-os/workflow/shared-workflow.md
+  - ARCHITECTURE.md
+  - AGENTS.md
+  notes: 'Closes G5 by defining conflict detection, recovery actions, escalation,
+    and a safety gate before Phase B automation.
+
+    '
+commit_groups:
+- id: cg7
+  title: "Governance compliance \u2014 propagate architectural rules to workflow docs"
+  items:
+  - D2.1.1
+  - D2.1.2
+  - D2.1.3
+  notes: "Closes doc-vs-code gaps in authority model, DAG execution rules, automation\
+    \ policy, and portability model (\xA76.2\u20136.4, \xA711.3\u201311.4, \xA74.2,\
+    \ \xA713.2 of the architecture document). Also adds English translation of the\
+    \ Italian architectural document and simplifies the commit title contract by removing\
+    \ item IDs from the title format.\n"
+- id: cg8
+  title: "Architecture finalization \u2014 close specification gaps G1-G5"
+  items:
+  - D2.1.4
+  - D2.1.5
+  - D2.1.6
+  - D2.1.7
+  - D2.1.8
+  - C2.1.1
+  notes: 'Finalizes unresolved architecture questions by defining prompts and skills
+    contracts, REPO_MAP freshness policy, ADR lifecycle, and authority-conflict detection/recovery
+    procedure as Phase B safety prerequisites.
+
+    '
