@@ -458,6 +458,22 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
     return errors
 
 
+def validate_plan_schema(plan: dict, schema: dict) -> tuple[list[str], str]:
+    """Validate the plan schema via jsonschema or the built-in subset fallback."""
+    if jsonschema is None:
+        return validate_plan_schema_subset(plan), "subset"
+
+    try:
+        jsonschema.validate(instance=plan, schema=schema)
+    except jsonschema.ValidationError as exc:
+        return [
+            f"path: {'/'.join(str(p) for p in exc.path)}",
+            f"message: {exc.message}",
+        ], "jsonschema"
+
+    return [], "jsonschema"
+
+
 def collect_ids(plan: dict) -> dict[str, str]:
     id_to_type: dict[str, str] = {}
     for section in ("milestones", "sprints", "items"):
@@ -849,12 +865,20 @@ def main() -> int:
         print(f"ERROR: Failed to load shared asset registry YAML: {exc}", file=sys.stderr)
         return 2
 
-    try:
-        jsonschema.validate(instance=plan, schema=schema)
-    except jsonschema.ValidationError as exc:
-        print("ERROR: Schema validation failed", file=sys.stderr)
-        print(f"  path: {'/'.join(str(p) for p in exc.path)}", file=sys.stderr)
-        print(f"  message: {exc.message}", file=sys.stderr)
+    schema_errors, schema_validator = validate_plan_schema(plan, schema)
+    if schema_errors:
+        if schema_validator == "subset":
+            print(
+                "ERROR: Schema validation failed "
+                "(jsonschema unavailable; using built-in subset validator)",
+                file=sys.stderr,
+            )
+            for err in schema_errors:
+                print(f"  - {err}", file=sys.stderr)
+        else:
+            print("ERROR: Schema validation failed", file=sys.stderr)
+            for err in schema_errors:
+                print(f"  {err}", file=sys.stderr)
         return 1
 
     if args.previous_plan:

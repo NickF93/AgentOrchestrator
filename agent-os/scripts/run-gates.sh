@@ -17,6 +17,13 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
+CALLER_AGENT_PYTHON_SET=0
+CALLER_AGENT_PYTHON=""
+if [[ "${AGENT_PYTHON+x}" == "x" ]]; then
+  CALLER_AGENT_PYTHON_SET=1
+  CALLER_AGENT_PYTHON="${AGENT_PYTHON}"
+fi
+
 # Load .env if present (per-workstation overrides).
 if [[ -f "${REPO_ROOT}/.env" ]]; then
   # shellcheck disable=SC1091
@@ -24,7 +31,11 @@ if [[ -f "${REPO_ROOT}/.env" ]]; then
 fi
 
 # Resolve the Python command.
-# Priority: AGENT_PYTHON env var > system python3 > error.
+# Priority: caller-supplied AGENT_PYTHON env var > .env > system python3 > error.
+if [[ "${CALLER_AGENT_PYTHON_SET}" -eq 1 ]]; then
+  AGENT_PYTHON="${CALLER_AGENT_PYTHON}"
+fi
+
 if [[ -z "${AGENT_PYTHON:-}" ]]; then
   if command -v python3 >/dev/null 2>&1; then
     AGENT_PYTHON="python3"

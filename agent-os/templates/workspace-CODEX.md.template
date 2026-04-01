@@ -8,100 +8,21 @@ CONTROL_PLANE_ROOT: {{CONTROL_PLANE_ROOT}}
 Control plane ref: {{CONTROL_PLANE_REF}}
 Control plane commit: {{CONTROL_PLANE_COMMIT}}
 
-This is a workspace runtime file generated from the current local control-plane
-checkout. Update Level-0 templates and re-run sync.
+This is a thin workspace runtime entrypoint for Codex generated from the
+current local control-plane checkout. It does not define governance rules.
 
-## Shared Assets
+Canonical authority is bounded in:
 
-Shared Layer-0 assets resolve from `CONTROL_PLANE_ROOT` in workspace mode.
+- `AGENTS.md`
+- `ARCHITECTURE.md`
+- `PLAN.yaml`
+- `{{CONTROL_PLANE_ROOT}}/agent-os/workflow/*`
 
-- prompts, skills, profiles, protocols, registry, and scripts come from the
-  control plane checkout
-- Layer-2 repos must not duplicate or manually edit those shared assets
-- vendored mode is optional and explicit through `.agent-os/vendor/`
-- bootstrap and workspace sync do not auto-vendor assets in v1
+## Runtime Notes
 
-## Governance Context
-
-This workspace is governed by a Level-0 control plane. Key rules:
-
-- **AGENTS.md** is the workflow authority in each repository.
-- **ARCHITECTURE.md** defines software constraints and boundaries.
-- **PLAN.yaml** is the source of truth for execution tracking.
-- Generated views (`PLAN.md`, `PLAN.dot`) are informative only — never edit them.
-- One orchestrator owns the canonical PLAN; other agents propose, not write.
-- Track work in `PLAN.yaml` before editing non-generated files.
-- Commit-group boundaries come from `PLAN.yaml`; do not invent them at commit time.
-
-## Authority Precedence
-
-1. Explicit human instructions
-2. AGENTS.md — workflow authority
-3. ARCHITECTURE.md — software constraints
-4. PLAN.yaml — execution tracking
-5. Code and tests — implementation evidence
-6. Generated views — non-authoritative
-
-## Adapter Overrides
-
-### Mandatory commit rule
-
-This repository requires every `commit_group` to be committed to git
-immediately upon completion. Do not ask for permission to commit when
-closing a commit_group — the governance rules already mandate it. Stage
-the relevant files, build the commit message per `AGENTS.md`, and commit.
-Do not push (Phase A only) unless explicitly told to.
-
-### Tracking-first execution
-
-Before modifying any non-generated file, the owning `PLAN.yaml` item must
-exist with a declared `commit_group`. If no item exists, create one first.
-Do not start implementation without tracking.
-
-### Autonomous plan execution
-
-When working through `PLAN.yaml`, advance items through the lifecycle
-automatically: implement, update statuses, run checks, validate, render,
-and commit each `commit_group` as it completes. Do not stop to ask between
-commit_groups unless an escalation condition from `AGENTS.md` is triggered.
-
-## Commit Message Contract
-
-All commits MUST use: `<type>(<scope>): <description>`
-
-Tracked work MUST include: `Refs: <PLAN item IDs>, <commit_group ID>`
-
-Optional body sections are strongly suggested, especially for medium or large
-commits.
-
-## Sandbox Notes
-
-Codex runs in a sandboxed environment. The canonical tooling commands are:
-
-```
-python {{CONTROL_PLANE_ROOT}}/agent-os/scripts/validate-plan.py PLAN.yaml --schema {{CONTROL_PLANE_ROOT}}/agent-os/schemas/plan.schema.json
-python {{CONTROL_PLANE_ROOT}}/agent-os/scripts/render-plan.py PLAN.yaml
-python -m pytest -q
-bash {{CONTROL_PLANE_ROOT}}/agent-os/scripts/run-gates.sh
-```
-
-## Escalation Triggers
-
-Stop and ask the human owner when:
-
-- Authority boundaries would change
-- ARCHITECTURE.md and PLAN.yaml conflict
-- Schema changes would invalidate existing plan data
-- Irreversible Git automation is requested beyond the current phase
-
-## Control Plane References
-
-- Workflow rules: `{{CONTROL_PLANE_ROOT}}/agent-os/workflow/`
-- Plan schema: `{{CONTROL_PLANE_ROOT}}/agent-os/schemas/plan.schema.json`
-- Shared asset registry: `{{CONTROL_PLANE_ROOT}}/agent-os/registry/shared-assets.yaml`
-- Shared asset resolver: `{{CONTROL_PLANE_ROOT}}/agent-os/scripts/resolve-shared-asset.py`
-- Shared asset materializer: `{{CONTROL_PLANE_ROOT}}/agent-os/scripts/materialize-shared-asset.sh`
-- Templates: `{{CONTROL_PLANE_ROOT}}/agent-os/templates/`
-- Validation: `{{CONTROL_PLANE_ROOT}}/agent-os/scripts/validate-plan.py`
-- Rendering: `{{CONTROL_PLANE_ROOT}}/agent-os/scripts/render-plan.py`
-- Current plan: `{{CONTROL_PLANE_ROOT}}/PLAN.yaml`
+- Follow `AGENTS.md` for workflow and operating rules.
+- Shared Layer-0 assets resolve from `CONTROL_PLANE_ROOT`.
+- Repo-tracked Python commands use `AGENT_PYTHON` from `.env`.
+- If `.env` is unavailable inside the sandbox, Codex may use the active
+  sandbox interpreter temporarily and report that adapter choice.
+- Keep host-specific paths and procedures only in `.env`.
