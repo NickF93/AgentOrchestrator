@@ -845,7 +845,7 @@ def main() -> int:
         "plan",
         nargs="?",
         default="plan/PLAN-index.yaml",
-        help="Path to plan/PLAN-index.yaml or a legacy aggregate PLAN.yaml",
+        help="Path to the canonical split-plan entrypoint (plan/PLAN-index.yaml)",
     )
     parser.add_argument(
         "--schema",

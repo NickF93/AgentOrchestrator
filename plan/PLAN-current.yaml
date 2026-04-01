@@ -315,7 +315,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - D31.3.1
   role: implementer
@@ -340,7 +340,7 @@ items:
   - implement
   - refactor
   - verify
-  status: planned
+  status: done
   depends_on:
   - D31.3.1
   role: implementer

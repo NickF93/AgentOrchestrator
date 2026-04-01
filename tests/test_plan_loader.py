@@ -1,17 +1,20 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
+from typing import Any
 
 import pytest
 import yaml
 
 
-def load_module(module_name: str, path: Path) -> object:
+def load_module(module_name: str, path: Path) -> Any:
     spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec is not None
     assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, str(path.parent))
     spec.loader.exec_module(module)
     return module
 
@@ -19,6 +22,12 @@ def load_module(module_name: str, path: Path) -> object:
 def write_yaml(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+
+def load_yaml(path: Path) -> dict:
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(data, dict)
+    return data
 
 
 def make_fragment(
@@ -78,7 +87,7 @@ def build_index(
     *,
     current_fragment: dict,
     archives: list[tuple[str, str, dict]],
-) -> tuple[Path, object]:
+) -> tuple[Path, Any]:
     loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
     current_path = tmp_path / "plan" / "PLAN-current.yaml"
     write_yaml(current_path, current_fragment)
@@ -210,14 +219,48 @@ def test_load_split_plan_rejects_duplicate_archive_milestones(
         repo_root,
         tmp_path,
         current_fragment={"milestones": [], "sprints": [], "items": [], "commit_groups": []},
-        archives=[
-            ("X1", "Archived milestone", archive_fragment),
-            ("X1", "Archived milestone", archive_fragment),
-        ],
+        archives=[("X1", "Archived milestone", archive_fragment)],
     )
+    index = load_yaml(index_path)
+    duplicate_path = tmp_path / "plan" / "archive" / "PLAN-X1-duplicate.yaml"
+    write_yaml(duplicate_path, archive_fragment)
+    index["archives"].append(
+        {
+            "milestone": "X1",
+            "title": "Archived milestone",
+            "path": "archive/PLAN-X1-duplicate.yaml",
+            "digest": loader.compute_fragment_digest(archive_fragment),
+        }
+    )
+    write_yaml(index_path, index)
 
     with pytest.raises(loader.PlanLoadError, match="duplicate archived milestone 'X1'"):
         loader.load_split_plan(index_path)
+
+
+def test_load_plan_rejects_legacy_aggregate_runtime_input(repo_root: Path, tmp_path: Path) -> None:
+    loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
+    legacy_path = tmp_path / "PLAN.yaml"
+    write_yaml(
+        legacy_path,
+        {
+            "meta": {
+                "repo": "fixture",
+                "owner": "tester",
+                "version": "1",
+                "schema_version": "1",
+                "last_updated": "2026-04-02",
+            },
+            "mission": "Fixture mission",
+            "milestones": [],
+            "sprints": [],
+            "items": [],
+            "commit_groups": [],
+        },
+    )
+
+    with pytest.raises(loader.PlanLoadError, match="must be a split plan index"):
+        loader.load_plan(legacy_path)
 
 
 def test_load_split_plan_rejects_sprint_parent_outside_fragment(

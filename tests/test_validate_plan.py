@@ -5,7 +5,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-from conftest import PLAN_PATH, SCHEMA_PATH, copy_split_plan, load_yaml, run_python_script, write_yaml
+from conftest import (
+    PLAN_PATH,
+    SCHEMA_PATH,
+    copy_split_plan,
+    load_yaml,
+    run_python_script,
+    write_yaml,
+)
 
 
 def run_validate_plan_without_jsonschema(
@@ -159,3 +166,36 @@ def test_validate_plan_rejects_cross_fragment_archive_structure(
     assert result.returncode == 1
     combined = f"{result.stdout}\n{result.stderr}"
     assert "outside its fragment" in combined
+
+
+def test_validate_plan_rejects_legacy_aggregate_runtime_input(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    legacy_path = tmp_path / "PLAN.yaml"
+    write_yaml(
+        legacy_path,
+        {
+            "meta": {
+                "repo": "fixture",
+                "owner": "tester",
+                "version": "1",
+                "schema_version": "1",
+                "last_updated": "2026-04-02",
+            },
+            "mission": "Fixture mission",
+            "milestones": [],
+            "sprints": [],
+            "items": [],
+            "commit_groups": [],
+        },
+    )
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(legacy_path),
+        "--schema",
+        str(SCHEMA_PATH),
+    )
+
+    assert result.returncode == 1
+    assert "split plan index" in result.stderr

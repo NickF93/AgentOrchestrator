@@ -6,17 +6,18 @@ from __future__ import annotations
 import argparse
 import importlib.util
 from pathlib import Path
+from typing import Any
 
 from plan_loader import (
     PlanLoadError,
     build_split_layout,
-    load_plan,
+    load_legacy_plan,
     load_split_plan,
     write_yaml,
 )
 
 
-def load_render_module(script_dir: Path) -> object:
+def load_render_module(script_dir: Path) -> Any:
     render_path = script_dir / "render-plan.py"
     spec = importlib.util.spec_from_file_location("render_plan_module", render_path)
     if spec is None or spec.loader is None:
@@ -28,7 +29,9 @@ def load_render_module(script_dir: Path) -> object:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Split a legacy PLAN.yaml into plan/ fragments")
-    parser.add_argument("plan", nargs="?", default="PLAN.yaml", help="Path to the legacy aggregate PLAN.yaml")
+    parser.add_argument(
+        "plan", nargs="?", default="PLAN.yaml", help="Path to the legacy aggregate PLAN.yaml"
+    )
     parser.add_argument(
         "--index",
         default="plan/PLAN-index.yaml",
@@ -51,14 +54,10 @@ def main() -> int:
         return 2
 
     try:
-        aggregate_plan, metadata = load_plan(plan_path)
+        aggregate_plan = load_legacy_plan(plan_path)
     except Exception as exc:
         print(f"ERROR: Failed to load plan: {exc}")
         return 2
-
-    if metadata.get("format") != "legacy":
-        print(f"ERROR: split-plan.py expects a legacy aggregate source plan, got {plan_path}")
-        return 1
 
     try:
         index, current_fragment, archive_fragments = build_split_layout(aggregate_plan)

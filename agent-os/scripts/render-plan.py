@@ -44,7 +44,7 @@ def format_shared_assets(item: dict) -> str:
     return ", ".join(present)
 
 
-def render_markdown(plan: dict, source_label: str = "PLAN.yaml") -> str:
+def render_markdown(plan: dict, source_label: str = "plan/PLAN-index.yaml") -> str:
     milestones = source_order(plan.get("milestones"))
     sprints = source_order(plan.get("sprints"))
     items = source_order(plan.get("items"))
@@ -271,12 +271,14 @@ def render_dot(plan: dict) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Render the canonical plan entrypoint to PLAN.md and PLAN.dot")
+    parser = argparse.ArgumentParser(
+        description="Render the canonical plan entrypoint to PLAN.md and PLAN.dot"
+    )
     parser.add_argument(
         "plan",
         nargs="?",
         default="plan/PLAN-index.yaml",
-        help="Path to plan/PLAN-index.yaml or a legacy aggregate PLAN.yaml",
+        help="Path to the canonical split-plan entrypoint (plan/PLAN-index.yaml)",
     )
     parser.add_argument("--md", default="PLAN.md", help="Output markdown path")
     parser.add_argument("--dot", default="PLAN.dot", help="Output dot path")

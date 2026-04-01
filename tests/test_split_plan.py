@@ -2,18 +2,20 @@ from __future__ import annotations
 
 import importlib.util
 import re
+import sys
 from pathlib import Path
+from typing import Any
 
 import yaml
-
 from conftest import run_python_script
 
 
-def load_module(module_name: str, path: Path) -> object:
+def load_module(module_name: str, path: Path) -> Any:
     spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec is not None
     assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, str(path.parent))
     spec.loader.exec_module(module)
     return module
 
@@ -28,7 +30,12 @@ def normalize_generated_markdown(text: str) -> str:
     )
 
 
-def test_split_plan_preserves_aggregate_content_and_outputs(repo_root: Path, tmp_path: Path) -> None:
+def test_split_plan_preserves_aggregate_content_and_outputs(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    render_module = load_module(
+        "render_plan", repo_root / "agent-os" / "scripts" / "render-plan.py"
+    )
     legacy_plan = {
         "meta": {
             "repo": "fixture",
@@ -43,7 +50,13 @@ def test_split_plan_preserves_aggregate_content_and_outputs(repo_root: Path, tmp
             {"id": "X2", "type": "X", "title": "Active milestone", "status": "in_progress"},
         ],
         "sprints": [
-            {"id": "S1.1", "type": "S", "parent": "X1", "title": "Archived sprint", "status": "done"},
+            {
+                "id": "S1.1",
+                "type": "S",
+                "parent": "X1",
+                "title": "Archived sprint",
+                "status": "done",
+            },
             {
                 "id": "S2.1",
                 "type": "S",
@@ -110,24 +123,15 @@ def test_split_plan_preserves_aggregate_content_and_outputs(repo_root: Path, tmp
 
     loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
     aggregate, metadata = loader.load_split_plan(index_path)
-    legacy_md_path = tmp_path / "PLAN-legacy.md"
-    legacy_dot_path = tmp_path / "PLAN-legacy.dot"
-    render_result = run_python_script(
-        repo_root / "agent-os" / "scripts" / "render-plan.py",
-        str(legacy_path),
-        "--md",
-        str(legacy_md_path),
-        "--dot",
-        str(legacy_dot_path),
-    )
 
     assert metadata["format"] == "split"
     assert aggregate == loader.sort_aggregate_plan(legacy_plan)
-    assert render_result.returncode == 0, render_result.stdout + render_result.stderr
-    assert normalize_generated_markdown(md_path.read_text(encoding="utf-8")) == normalize_generated_markdown(
-        legacy_md_path.read_text(encoding="utf-8")
-    )
-    assert dot_path.read_text(encoding="utf-8") == legacy_dot_path.read_text(encoding="utf-8")
+    expected_md = render_module.render_markdown(loader.sort_aggregate_plan(legacy_plan))
+    expected_dot = render_module.render_dot(loader.sort_aggregate_plan(legacy_plan))
+    assert normalize_generated_markdown(
+        md_path.read_text(encoding="utf-8")
+    ) == normalize_generated_markdown(expected_md)
+    assert dot_path.read_text(encoding="utf-8") == expected_dot
     assert "### X1" in md_path.read_text(encoding="utf-8")
     assert '"cluster_cg1"' in dot_path.read_text(encoding="utf-8")
 
@@ -143,7 +147,9 @@ def test_split_plan_can_remove_legacy_source(repo_root: Path, tmp_path: Path) ->
         },
         "mission": "Fixture mission",
         "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-        "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+        "sprints": [
+            {"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}
+        ],
         "items": [
             {
                 "id": "D1.1.1",

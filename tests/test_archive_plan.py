@@ -1,16 +1,19 @@
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
+from typing import Any
 
 from conftest import copy_split_plan, load_yaml, run_python_script, write_yaml
 
 
-def load_module(module_name: str, path: Path) -> object:
+def load_module(module_name: str, path: Path) -> Any:
     spec = importlib.util.spec_from_file_location(module_name, path)
     assert spec is not None
     assert spec.loader is not None
     module = importlib.util.module_from_spec(spec)
+    sys.path.insert(0, str(path.parent))
     spec.loader.exec_module(module)
     return module
 
@@ -54,7 +57,9 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
     assert updated_current == {"milestones": [], "sprints": [], "items": [], "commit_groups": []}
 
     updated_index = load_yaml(index_path)
-    archive_entry = next(entry for entry in updated_index["archives"] if entry["milestone"] == "X31")
+    archive_entry = next(
+        entry for entry in updated_index["archives"] if entry["milestone"] == "X31"
+    )
     loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
     archived_fragment = load_yaml(archive_path)
     assert archive_entry["digest"] == loader.compute_fragment_digest(archived_fragment)

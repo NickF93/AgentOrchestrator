@@ -552,8 +552,8 @@ digraph PLAN {
   subgraph "cluster_cg69" {
     style="rounded,dashed";
     label="cg69: Warning-strict Python gate and split-only runtime contract";
-  "M31.3.2" [label="M31.3.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "M31.3.3" [label="M31.3.3 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "M31.3.2" [label="M31.3.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.3.3" [label="M31.3.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg70" {
     style="rounded,dashed";

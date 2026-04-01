@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Shared loader and normalizer for legacy and split plan layouts."""
+"""Shared loader and normalizer for split plans plus explicit migration helpers."""
 
 from __future__ import annotations
 
@@ -104,11 +104,17 @@ def _commit_group_sort_key(obj: dict[str, Any]) -> tuple[int]:
 
 def sort_fragment(fragment: dict[str, Any]) -> dict[str, Any]:
     return {
-        "milestones": [dict(obj) for obj in sorted(fragment.get("milestones", []) or [], key=_milestone_sort_key)],
-        "sprints": [dict(obj) for obj in sorted(fragment.get("sprints", []) or [], key=_sprint_sort_key)],
+        "milestones": [
+            dict(obj)
+            for obj in sorted(fragment.get("milestones", []) or [], key=_milestone_sort_key)
+        ],
+        "sprints": [
+            dict(obj) for obj in sorted(fragment.get("sprints", []) or [], key=_sprint_sort_key)
+        ],
         "items": [dict(obj) for obj in sorted(fragment.get("items", []) or [], key=_item_sort_key)],
         "commit_groups": [
-            dict(obj) for obj in sorted(fragment.get("commit_groups", []) or [], key=_commit_group_sort_key)
+            dict(obj)
+            for obj in sorted(fragment.get("commit_groups", []) or [], key=_commit_group_sort_key)
         ],
     }
 
@@ -182,7 +188,9 @@ def _validate_fragment_structure(
         commit_group_id = str(commit_group.get("id", ""))
         members = commit_group.get("items")
         if not isinstance(members, list) or not members:
-            errors.append(f"{path}: commit group '{commit_group_id}' must declare a non-empty items list")
+            errors.append(
+                f"{path}: commit group '{commit_group_id}' must declare a non-empty items list"
+            )
             continue
         invalid_members = [str(item_id) for item_id in members if str(item_id) not in item_ids]
         if invalid_members:
@@ -205,7 +213,9 @@ def _detect_duplicate_ids(objects: list[dict[str, Any]], field: str, label: str)
     return [f"duplicate {label} id '{obj_id}'" for obj_id in duplicates]
 
 
-def load_fragment(path: Path, *, kind: str, expected_milestone: str | None = None) -> dict[str, Any]:
+def load_fragment(
+    path: Path, *, kind: str, expected_milestone: str | None = None
+) -> dict[str, Any]:
     fragment = load_yaml_mapping(path)
     if any(key not in fragment for key in FRAGMENT_KEYS):
         missing = [key for key in FRAGMENT_KEYS if key not in fragment]
@@ -269,7 +279,9 @@ def load_split_plan(index_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
             continue
         seen_paths.add(archive_path)
         if not archive_path.is_relative_to(archive_root):
-            errors.append(f"{index_path}: archive fragment '{archive_path}' must live under '{archive_root}'")
+            errors.append(
+                f"{index_path}: archive fragment '{archive_path}' must live under '{archive_root}'"
+            )
             continue
         if milestone_id in seen_milestones:
             errors.append(f"{index_path}: duplicate archived milestone '{milestone_id}'")
@@ -307,7 +319,7 @@ def load_split_plan(index_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     if errors:
         raise PlanLoadError("\n".join(errors))
 
-    aggregate = {
+    aggregate: dict[str, Any] = {
         "meta": dict(meta),
         "mission": mission,
         "milestones": list(current_fragment["milestones"]),
@@ -344,18 +356,25 @@ def load_split_plan(index_path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     return aggregate, metadata
 
 
+def load_legacy_plan(path: Path) -> dict[str, Any]:
+    raw = load_yaml_mapping(path)
+    if not is_aggregate_plan(raw):
+        raise PlanLoadError(f"{path}: not a legacy aggregate plan")
+    return sort_aggregate_plan(raw)
+
+
 def load_plan(path: Path) -> tuple[dict[str, Any], dict[str, Any]]:
     raw = load_yaml_mapping(path)
-    if is_plan_index(raw):
-        return load_split_plan(path)
-    if not is_aggregate_plan(raw):
-        raise PlanLoadError(f"{path}: unsupported plan format")
-    return sort_aggregate_plan(raw), {"format": "legacy", "source_path": path.resolve()}
+    if not is_plan_index(raw):
+        raise PlanLoadError(f"{path}: canonical runtime entrypoint must be a split plan index")
+    return load_split_plan(path)
 
 
 def extract_fragment(plan: dict[str, Any], milestone_ids: set[str]) -> dict[str, Any]:
     sorted_plan = sort_aggregate_plan(plan)
-    milestones = [obj for obj in sorted_plan["milestones"] if str(obj.get("id", "")) in milestone_ids]
+    milestones = [
+        obj for obj in sorted_plan["milestones"] if str(obj.get("id", "")) in milestone_ids
+    ]
     sprint_ids = {
         str(obj.get("id", ""))
         for obj in sorted_plan["sprints"]

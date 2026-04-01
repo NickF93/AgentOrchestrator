@@ -1,7 +1,17 @@
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-q -ra"
+addopts = "-q -ra --strict-config --strict-markers"
 testpaths = ["tests"]
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+branch = true
+source = ["agent-os/scripts"]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
 
 [tool.ruff]
 target-version = "py311"

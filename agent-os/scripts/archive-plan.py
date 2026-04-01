@@ -7,6 +7,7 @@ import argparse
 import importlib.util
 from datetime import date
 from pathlib import Path
+from typing import Any
 
 from plan_loader import (
     PlanLoadError,
@@ -18,7 +19,7 @@ from plan_loader import (
 )
 
 
-def load_render_module(script_dir: Path) -> object:
+def load_render_module(script_dir: Path) -> Any:
     render_path = script_dir / "render-plan.py"
     spec = importlib.util.spec_from_file_location("render_plan_module", render_path)
     if spec is None or spec.loader is None:
@@ -48,7 +49,9 @@ def main() -> int:
         default="plan/PLAN-index.yaml",
         help="Path to plan/PLAN-index.yaml",
     )
-    parser.add_argument("--milestone", required=True, help="Milestone ID to archive (for example X31)")
+    parser.add_argument(
+        "--milestone", required=True, help="Milestone ID to archive (for example X31)"
+    )
     parser.add_argument("--md", default="PLAN.md", help="Output markdown path")
     parser.add_argument("--dot", default="PLAN.dot", help="Output dot path")
     args = parser.parse_args()
@@ -74,11 +77,15 @@ def main() -> int:
         archive_rel_path = (archive_root_rel / f"PLAN-{milestone_id}.yaml").as_posix()
         archive_abs_path = index_path.parent / archive_rel_path
         if archive_abs_path.exists():
-            raise PlanLoadError(f"{milestone_id}: archive target already exists at {archive_abs_path}")
+            raise PlanLoadError(
+                f"{milestone_id}: archive target already exists at {archive_abs_path}"
+            )
 
         existing_entries = index.get("archives", []) or []
         if any(entry.get("milestone") == milestone_id for entry in existing_entries):
-            raise PlanLoadError(f"{milestone_id}: archive index already contains an entry for this milestone")
+            raise PlanLoadError(
+                f"{milestone_id}: archive index already contains an entry for this milestone"
+            )
 
         archived_fragment = extract_fragment(current_fragment, {milestone_id})
         ensure_fragment_is_closed(archived_fragment, milestone_id)
