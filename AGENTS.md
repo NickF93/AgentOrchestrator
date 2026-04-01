@@ -39,6 +39,7 @@ Priority order:
 - Do not hand-edit generated artifacts (`PLAN.md`, `PLAN.dot`) once render scripts exist.
 - Preserve determinism in generated outputs and script behavior.
 - Prefer additive, minimal changes with explicit checkpoints.
+- **Hard rule:** NO signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation are allowed in code, commits, PRs, reviews, or comments.
 - **Mandatory commit rule**: every `commit_group` MUST be committed to git
   immediately upon completion. Do NOT proceed to the next commit_group
   without committing the current one. This is a hard gate.

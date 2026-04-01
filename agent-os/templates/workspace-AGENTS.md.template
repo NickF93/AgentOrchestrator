@@ -58,6 +58,12 @@ Before modifying any non-generated file, create or update the owning
 Commit-group boundaries are plan-time decisions, not something agents may
 invent during commit creation.
 
+## No AI/Codegen Traces Hard Gate
+
+NO signatures, trailers, comments, PR text, or other traces attributable to
+generative AI or code generation are allowed in code, commits, PRs, reviews,
+or comments.
+
 ## Commit Message Contract
 
 All commits MUST use: `<type>(<scope>): <description>`

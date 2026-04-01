@@ -43,7 +43,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X26 | X | Gemini and Cursor First-Class Portability | done |
 | X27 | X | Repo Bootstrap Skill Packaging | done |
 | X28 | X | Plan Validate-Render Skill Packaging | done |
-| X29 | X | Portability and Governance Enforcement Bugfixes | planned |
+| X29 | X | Portability and Governance Enforcement Bugfixes | in_progress |
 
 ## Plan
 
@@ -746,19 +746,19 @@ Status: done
 
 - ID: `X29`
 - Title: Portability and Governance Enforcement Bugfixes
-- Status: planned
+- Status: in_progress
 - Note: Fix the validate-plan.py schema-validation fallback, remove remaining non-portable interpreter assumptions from active docs and tooling, add the canonical no-AI-traces hard rule plus matching workflow enforcement, and align bootstrap, hooks, and docs around local pre-push protection for governed repositories.
 
 #### S29.1 Items
 
 Sprint: Sprint 1 — Tracking and governance propagation
-Status: planned
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D29.1.1` | `D` | Add X29 tracking to PLAN.yaml and regenerate plan views | done | Introduce milestone X29, its sprints, executable items, and commit-group boundaries. Regenerate PLAN.md and PLAN.dot so the generated views remain derived from the canonical plan source. |
-| `D29.1.2` | `D` | Add the canonical no-AI-traces hard rule and propagate AGENTS materializations | planned | Add a single canonical hard rule forbidding signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation. Propagate it only through AGENTS materialization surfaces. |
-| `D29.1.3` | `D` | Extend Git Flow policy and skills with no-AI-traces workflow enforcement | planned | Add explicit workflow-level prohibitions and cleanliness checks for AI/codegen attribution markers across commits, PR titles and bodies, PR comments, PR reviews, and proposed commit messages. |
+| `D29.1.2` | `D` | Add the canonical no-AI-traces hard rule and propagate AGENTS materializations | done | Add a single canonical hard rule forbidding signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation. Propagate it only through AGENTS materialization surfaces. |
+| `D29.1.3` | `D` | Extend Git Flow policy and skills with no-AI-traces workflow enforcement | done | Add explicit workflow-level prohibitions and cleanliness checks for AI/codegen attribution markers across commits, PR titles and bodies, PR comments, PR reviews, and proposed commit messages. |
 
 #### S29.2 Items
 
@@ -2763,7 +2763,7 @@ Status: planned
 
 ### D29.1.2: Add the canonical no-AI-traces hard rule and propagate AGENTS materializations
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S29.1`
 - **Actions**: document
 - **Depends on**: `D29.1.1`
@@ -2773,7 +2773,7 @@ Status: planned
 
 ### D29.1.3: Extend Git Flow policy and skills with no-AI-traces workflow enforcement
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
 - **Sprint**: `S29.1`
 - **Actions**: document
 - **Depends on**: `D29.1.1`

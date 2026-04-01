@@ -36,6 +36,7 @@ Priority order:
   MUST NOT be invented ad hoc during commit creation.
 - Execution is dependency-driven, not globally sequential.
 - Parallel work is allowed when scope and boundaries do not conflict.
+- **Hard rule:** NO signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation are allowed in code, commits, PRs, reviews, or comments.
 - **Mandatory commit rule**: every `commit_group` MUST be committed to git
   immediately upon completion. Do NOT proceed to the next commit_group
   without committing the current one. This is a hard gate.

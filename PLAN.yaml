@@ -317,7 +317,7 @@ milestones:
   - id: X29
     type: X
     title: "Portability and Governance Enforcement Bugfixes"
-    status: planned
+    status: in_progress
     note: >
       Fix the validate-plan.py schema-validation fallback, remove remaining
       non-portable interpreter assumptions from active docs and tooling,
@@ -576,7 +576,7 @@ sprints:
     type: S
     parent: X29
     title: "Sprint 1 — Tracking and governance propagation"
-    status: planned
+    status: done
 
   - id: S29.2
     type: S
@@ -3933,7 +3933,7 @@ items:
     type: D
     title: "Add the canonical no-AI-traces hard rule and propagate AGENTS materializations"
     actions: [document]
-    status: planned
+    status: done
     depends_on: [D29.1.1]
     role: documenter
     effort: low
@@ -3953,7 +3953,7 @@ items:
     type: D
     title: "Extend Git Flow policy and skills with no-AI-traces workflow enforcement"
     actions: [document]
-    status: planned
+    status: done
     depends_on: [D29.1.1]
     role: documenter
     effort: medium

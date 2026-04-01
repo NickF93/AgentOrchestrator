@@ -109,6 +109,7 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `repo-README.md.template`              | `{repo_root}/README.md`                      |
 | `repo-ADR.md.template`                  | `{repo_root}/docs/adr/ADR-0001.md`           |
 | `repo-commit-msg.template`              | `{repo_root}/.githooks/commit-msg`           |
+| `repo-pre-push.template`                | `{repo_root}/.githooks/pre-push`             |
 | `repo-copilot-instructions.md.template` | `{repo_root}/.github/copilot-instructions.md`|
 | `repo-CLAUDE.md.template`               | `{repo_root}/CLAUDE.md`                      |
 | `repo-CODEX.md.template`                | `{repo_root}/.codex`                         |
@@ -158,6 +159,7 @@ files_created:
   - README.md: created | skipped | missing
   - docs/adr/ADR-0001.md: created | skipped | missing
   - .githooks/commit-msg: created | skipped | missing
+  - .githooks/pre-push: created | skipped | missing
   - .github/copilot-instructions.md: created | skipped | missing
   - CLAUDE.md: created | skipped | missing
   - .codex: created | skipped | missing
@@ -166,7 +168,7 @@ files_created:
   - .kilocode/rules/governance.md: created | skipped | missing
 verification:
   - plan_valid: true | false | skipped
-  - hook_executable: true | false | skipped
+  - hooks_executable: true | false | skipped
   - directory_structure: complete | incomplete
 commands_run:
   - `bash <cp>/agent-os/scripts/bootstrap-repo.sh [flags] <target>` -> exit <code>
@@ -278,17 +280,19 @@ The bootstrap script already runs this validation internally, but this
 step provides an independent verification and captures the result in the
 structured report.
 
-### Step 6 — Post-bootstrap: verify commit hook
+### Step 6 — Post-bootstrap: verify local hooks
 
 If `dry_run` is `true`, skip this step.
 
 1. Verify `{repo_root}/.githooks/commit-msg` exists.
-2. Verify it has the executable permission bit set.
+2. Verify `{repo_root}/.githooks/pre-push` exists.
+3. Verify both hooks have the executable permission bit set.
    ```bash
    test -x {repo_root}/.githooks/commit-msg
+   test -x {repo_root}/.githooks/pre-push
    ```
-3. If the hook exists but is not executable, flag as a verification
-   failure: "commit-msg hook is not executable."
+4. If either hook exists but is not executable, flag as a verification
+   failure naming the specific hook.
 
 ### Step 7 — Post-bootstrap: verify directory structure
 
@@ -352,8 +356,9 @@ python "$CP/agent-os/scripts/validate-plan.py" \
   "$TARGET/PLAN.yaml" \
   --schema "$CP/agent-os/schemas/plan.schema.json"
 
-# 4. Verify hook is executable
+# 4. Verify both local hooks are executable
 test -x "$TARGET/.githooks/commit-msg"
+test -x "$TARGET/.githooks/pre-push"
 
 # 5. Enable repo-local hooks
 git -C "$TARGET" config core.hooksPath .githooks
@@ -398,7 +403,7 @@ export CONTROL_PLANE_ROOT="$CP"
 | bootstrap-repo.sh non-zero exit            | Fail with stderr output                                   |
 | Expected files missing after bootstrap     | Fail with list of missing files                           |
 | PLAN.yaml validation fails post-bootstrap  | Fail with validation error details                        |
-| commit-msg hook not executable             | Fail with "commit-msg hook is not executable"             |
+| Local hook not executable                  | Fail with the specific hook path that is not executable   |
 | Directory structure incomplete             | Fail with list of missing directories                     |
 | Python not available for validation        | Warn; skip PLAN validation, note in report                |
 
