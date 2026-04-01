@@ -759,6 +759,8 @@ Status: done
 | `D29.1.1` | `D` | Add X29 tracking to PLAN.yaml and regenerate plan views | done | Introduce milestone X29, its sprints, executable items, and commit-group boundaries. Regenerate PLAN.md and PLAN.dot so the generated views remain derived from the canonical plan source. |
 | `D29.1.2` | `D` | Add the canonical no-AI-traces hard rule and propagate AGENTS materializations | done | Add a single canonical hard rule forbidding signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation. Propagate it only through AGENTS materialization surfaces. |
 | `D29.1.3` | `D` | Extend Git Flow policy and skills with no-AI-traces workflow enforcement | done | Add explicit workflow-level prohibitions and cleanliness checks for AI/codegen attribution markers across commits, PR titles and bodies, PR comments, PR reviews, and proposed commit messages. |
+| `D29.1.4` | `D` | Restore the minimal gitflow-pr-only cleanliness guidance without rewriting the evaluated baseline | done | Re-apply only the X29 workflow content cleanliness sub-procedure and the required action hooks in gitflow-pr-only after restoring the develop baseline. Preserve the Claude Code section and the existing normative structure unless a direct conflict requires otherwise. |
+| `C29.1.5` | `C` | Checkpoint closure — X29 minimal gitflow-pr-only cleanliness restoration | done |  |
 
 #### S29.2 Items
 
@@ -838,6 +840,7 @@ Status: done
 | cg58 | Canonical no-AI-traces rule and Git Flow workflow propagation | `D29.1.2`, `D29.1.3` |
 | cg59 | Validator fallback and interpreter portability repairs | `F29.2.1`, `F29.2.2` |
 | cg60 | Hook, bootstrap, validation, and closure repairs for X29 | `F29.2.3`, `T29.2.4`, `C29.2.5` |
+| cg61 | X29 refinement — minimal gitflow-pr-only cleanliness restoration | `D29.1.4`, `C29.1.5` |
 
 ## Item Details
 
@@ -2780,6 +2783,29 @@ Status: done
 - **Commit group**: `cg58`
 - **Artifacts**: agent-os/workflow/git-flow-policy.md, agent-os/skills/gitflow-pr-only/SKILL.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/repo-bootstrap/SKILL.md
 - **Notes**: Add explicit workflow-level prohibitions and cleanliness checks for AI/codegen attribution markers across commits, PR titles and bodies, PR comments, PR reviews, and proposed commit messages.
+
+### D29.1.4: Restore the minimal gitflow-pr-only cleanliness guidance without rewriting the evaluated baseline
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S29.1`
+- **Actions**: document
+- **Depends on**: `D29.1.3`
+- **Commit group**: `cg61`
+- **Artifacts**: PLAN.yaml, PLAN.md, PLAN.dot, agent-os/skills/gitflow-pr-only/SKILL.md
+- **Notes**: Re-apply only the X29 workflow content cleanliness sub-procedure and the required action hooks in gitflow-pr-only after restoring the develop baseline. Preserve the Claude Code section and the existing normative structure unless a direct conflict requires otherwise.
+
+### C29.1.5: Checkpoint closure — X29 minimal gitflow-pr-only cleanliness restoration
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S29.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D29.1.4`
+- **Commit group**: `cg61`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Checks**:
+  - gitflow-pr-only restores the workflow content cleanliness sub-procedure and action hooks
+  - The Claude Code adapter section remains unchanged unless a direct conflict required otherwise
+  - PLAN.md and PLAN.dot match PLAN.yaml
 
 ### F29.2.1: Fix validate-plan.py fallback when jsonschema is unavailable
 
