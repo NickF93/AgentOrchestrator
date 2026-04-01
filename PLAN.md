@@ -821,8 +821,8 @@ Status: in_progress
 | --- | --- | --- | --- | --- |
 | `M31.2.1` | `M` | Refactor validate-plan.py onto the shared split-plan loader with active and archived reporting | done | Keep aggregate governance enforcement intact while teaching validation to load plan/PLAN-index.yaml and report separate Active and Archived blocks. |
 | `M31.2.2` | `M` | Refactor render-plan.py onto the shared split-plan loader without changing aggregate output shape | done |  |
-| `M31.2.3` | `M` | Add deterministic archive-plan automation and wire milestone archival into the git-flow path | planned | Archive a milestone only after its final checkpoint commit group is complete and before the milestone branch is synchronized for PR merge. |
-| `F31.2.4` | `F` | Propagate the split-plan entrypoint through docs, templates, bootstrap, and runtime adapters | planned | Update only the canonical path and split-plan workflow surfaces that must change, and keep non-authoritative or previously Claude-shaped skill text edits as small as possible. |
+| `M31.2.3` | `M` | Add deterministic archive-plan automation and wire milestone archival into the git-flow path | done | Archive a milestone only after its final checkpoint commit group is complete and before the milestone branch is synchronized for PR merge. |
+| `F31.2.4` | `F` | Propagate the split-plan entrypoint through docs, templates, bootstrap, and runtime adapters | done | Update only the canonical path and split-plan workflow surfaces that must change, and keep non-authoritative or previously Claude-shaped skill text edits as small as possible. |
 | `T31.2.5` | `T` | Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap | planned |  |
 | `C31.2.6` | `C` | Checkpoint closure — X31 split-plan archival and propagation | planned |  |
 
@@ -2997,22 +2997,22 @@ Status: in_progress
 
 ### M31.2.3: Add deterministic archive-plan automation and wire milestone archival into the git-flow path
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S31.2`
 - **Actions**: design, implement, verify
 - **Depends on**: `M31.2.1`, `M31.2.2`
 - **Commit group**: `cg66`
-- **Artifacts**: agent-os/scripts/archive-plan.py, agent-os/skills/gitflow-pr-only/SKILL.md, plan/PLAN-index.yaml, plan/PLAN-current.yaml, plan/archive/
+- **Artifacts**: agent-os/scripts/plan_loader.py, agent-os/scripts/archive-plan.py, agent-os/skills/gitflow-pr-only/SKILL.md, plan/PLAN-index.yaml, plan/PLAN-current.yaml, plan/archive/
 - **Notes**: Archive a milestone only after its final checkpoint commit group is complete and before the milestone branch is synchronized for PR merge.
 
 ### F31.2.4: Propagate the split-plan entrypoint through docs, templates, bootstrap, and runtime adapters
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S31.2`
 - **Actions**: implement, verify
 - **Depends on**: `M31.2.3`
 - **Commit group**: `cg66`
-- **Artifacts**: README.md, AGENTS.md, ARCHITECTURE.md, .codex, agent-os/templates/, agent-os/scripts/bootstrap-repo.sh
+- **Artifacts**: README.md, AGENTS.md, ARCHITECTURE.md, CLAUDE.md, .codex, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/plan-validate-render/SKILL.md, agent-os/skills/repo-bootstrap/SKILL.md, agent-os/workflow/git-automation-policy.md, agent-os/workflow/portability-model.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/git-flow-policy.md, agent-os/templates/, agent-os/scripts/bootstrap-repo.sh
 - **Notes**: Update only the canonical path and split-plan workflow surfaces that must change, and keep non-authoritative or previously Claude-shaped skill text edits as small as possible.
 
 ### T31.2.5: Extend automated coverage for split loading, migration, archival, rendering, validation, and bootstrap

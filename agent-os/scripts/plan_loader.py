@@ -164,11 +164,6 @@ def _validate_fragment_structure(
             )
         if milestones and str(milestones[0].get("status", "")) != "done":
             errors.append(f"{path}: archived milestone must have status 'done'")
-    elif kind == "current":
-        done_milestones = [mid for mid, obj in zip(milestone_ids, milestones) if obj.get("status") == "done"]
-        if done_milestones:
-            errors.append(f"{path}: current fragment must not contain done milestones: {done_milestones}")
-
     sprint_ids: set[str] = set()
     for sprint in sprints:
         sprint_id = str(sprint.get("id", ""))

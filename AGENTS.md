@@ -10,7 +10,7 @@ schemas, and scripts used to bootstrap and coordinate other repositories.
 - Plan schema contract: `agent-os/schemas/plan.schema.json`
 - Repo bootstrap templates: `agent-os/templates/*`
 - Operational tooling: `agent-os/scripts/*`
-- Active execution tracking for this repository: `PLAN.yaml`
+- Active execution tracking for this repository: `plan/PLAN-index.yaml`
 - Design/background references (non-authoritative): `docs/design/*`
 - Structural constraints for this repository: `ARCHITECTURE.md`
 
@@ -22,18 +22,20 @@ Priority order:
 1. Explicit human instructions
 2. This file for workflow authority and operating rules
 3. `ARCHITECTURE.md` for structural and boundary constraints
-4. `PLAN.yaml` for active execution tracking
+4. `plan/PLAN-index.yaml` for active execution tracking
 5. Code and tests as implementation evidence
 6. Generated plan views (`PLAN.md`, `PLAN.dot`) as non-authoritative outputs
 
 ## Working Rules
-- Treat `PLAN.yaml` as source of truth for planning status and dependencies.
+- Treat `plan/PLAN-index.yaml` as source of truth for planning status and dependencies.
+- Active work items live in `plan/PLAN-current.yaml`; archived milestone fragments
+  live under `plan/archive/`.
 - Before modifying any non-generated repository file, create or update the
-  owning `PLAN.yaml` item first. The item MUST already declare the intended
+  owning `plan/PLAN-current.yaml` item first. The item MUST already declare the intended
   `commit_group`, relevant `scope`, and expected artifacts. Untracked edits are
   forbidden.
 - Do not invent or reshuffle `commit_group` boundaries during commit creation.
-  `commit_group` membership is declared in `PLAN.yaml` before implementation
+  `commit_group` membership is declared in the split plan before implementation
   starts and is the mandatory git commit boundary.
 - Keep startup/design documents in `docs/design/`; do not use them as runtime authority.
 - Do not hand-edit generated artifacts (`PLAN.md`, `PLAN.dot`) once render scripts exist.
@@ -96,7 +98,7 @@ Valid examples:
 ## Escalation and Stop Conditions
 Stop and ask the human owner when:
 - A change would alter authority boundaries,
-- A conflict exists between `ARCHITECTURE.md` and `PLAN.yaml`,
+- A conflict exists between `ARCHITECTURE.md` and `plan/PLAN-index.yaml`,
 - A canonical-authority conflict cannot be resolved by regeneration from source,
 - A schema change would invalidate existing plan data,
 - A workflow policy implies irreversible Git automation beyond current phase.

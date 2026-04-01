@@ -25,11 +25,13 @@ workspace/                          <- Layer 1 (workspace runtime)
 │   │   ├── schemas/                <- shared schemas
 │   │   ├── skills/                 <- shared procedures
 │   │   └── workflow/               <- canonical governance rules
-│   └── PLAN.yaml                   <- Layer 0's own plan
+│   └── plan/PLAN-index.yaml        <- Layer 0's canonical plan entrypoint
 ├── SomeProject/                    <- Layer 2 (governed repo)
 │   ├── AGENTS.md                   <- repo-local governance (bootstrapped)
 │   ├── ARCHITECTURE.md
-│   ├── PLAN.yaml                   <- repo's own plan
+│   ├── plan/PLAN-index.yaml        <- repo's canonical plan entrypoint
+│   ├── plan/PLAN-current.yaml      <- repo's active execution fragment
+│   ├── plan/archive/               <- repo's archived milestone fragments
 │   ├── REPO_MAP.md
 │   ├── CLAUDE.md                   <- repo-local Claude entrypoint (thin)
 │   ├── .codex                      <- repo-local Codex entrypoint (thin)
@@ -52,11 +54,13 @@ workspace/                          <- Layer 1 (workspace runtime)
 | Shared skills (procedures)         | Layer 0 (`agent-os/skills/`)      | Maintained once, used by all governed repos |
 | Runtime adapter profiles           | Layer 0 (`agent-os/profiles/`)    | Runtime-specific behavior without taxonomy drift |
 | Shared result protocols            | Layer 0 (`agent-os/protocols/`)   | Stable output contracts for checks/reviews  |
-| Shared tooling (validate, render)  | Layer 0 (`agent-os/scripts/`)     | Runs against any repo's PLAN.yaml           |
+| Shared tooling (validate, render)  | Layer 0 (`agent-os/scripts/`)     | Runs against any repo's canonical plan entrypoint |
 | Plan schema                        | Layer 0 (`agent-os/schemas/`)     | Shared contract                             |
 | Canonical governance rules         | Layer 0 (`agent-os/workflow/`)    | Authoritative reference for rule lookup     |
 | Runtime entrypoint artifacts       | Layer 1 or Layer 2, by runtime    | Thin runtime-specific pointers only         |
-| PLAN.yaml (execution data)         | Layer 2 (each governed repo)      | Repo-local execution tracking               |
+| `plan/PLAN-index.yaml`             | Layer 2 (each governed repo)      | Canonical plan entrypoint                   |
+| `plan/PLAN-current.yaml`           | Layer 2 (each governed repo)      | Active execution tracking                   |
+| `plan/archive/PLAN-XNN.yaml`       | Layer 2 (each governed repo)      | Closed milestone history                    |
 | AGENTS.md (commit contract)        | Layer 2 (each governed repo)      | Repo-local copy from bootstrap              |
 | REPO_MAP.md                        | Layer 2 (each governed repo)      | Repo-local topology                         |
 | Vendored shared assets             | Layer 2 (`.agent-os/vendor/`)     | Optional portability snapshots only         |
@@ -67,7 +71,8 @@ agent must resolve two roots:
 
 - `control_plane_root` for the shared asset registry, prompts, skills,
   profiles, protocols, schemas, and scripts
-- `repo_root` for the target repo's `PLAN.yaml`, repo code, and repo-local checks
+- `repo_root` for the target repo's `plan/PLAN-index.yaml`, plan fragments,
+  repo code, and repo-local checks
 
 At Layer 0 both roots are the same directory. At Layer 2 they are distinct,
 typically siblings under the workspace parent. The workspace-level runtime
@@ -114,7 +119,7 @@ One concern must have exactly one canonical authority. Duplication is forbidden.
 |---|---|
 | Agentic workflow and operating rules | `AGENTS.md` |
 | Software constraints, boundaries, and design invariants | `ARCHITECTURE.md` or `docs/architecture/*` |
-| Active execution tracking | `PLAN.yaml` |
+| Active execution tracking | `plan/PLAN-index.yaml` |
 | Human-readable plan view | `PLAN.md` (generated) |
 | Graph plan view | `PLAN.dot` / `PLAN.svg` (generated) |
 | Decision rationale | `docs/adr/*` |
@@ -128,22 +133,22 @@ Priority order for conflict resolution:
 1. Explicit human instructions
 2. `AGENTS.md` — workflow authority and operating rules
 3. `ARCHITECTURE.md` / `docs/architecture/*` — software constraints
-4. `PLAN.yaml` — active execution tracking
+4. `plan/PLAN-index.yaml` — active execution tracking
 5. Code, tests, and real artifacts — implementation evidence
 6. Generated views (`PLAN.md`, `PLAN.dot`) — informative, not authoritative
 
 ## Non-Duplication Rule
 
 - `AGENTS.md` may reference `ARCHITECTURE.md` but must not duplicate its detailed content.
-- `PLAN.yaml` may reference architectural decisions but must not become a technical constitution.
-- `PLAN.md` and `PLAN.dot` must contain only content derivable from `PLAN.yaml`.
+- `plan/PLAN-index.yaml` may reference architectural decisions but must not become a technical constitution.
+- `PLAN.md` and `PLAN.dot` must contain only content derivable from the split plan rooted at `plan/PLAN-index.yaml`.
 - Each concern lives in exactly one authority; cross-referencing is allowed, copying is not.
 
 ## Planning and Execution
 - Human planning model: milestone -> sprint -> item
 - Runtime execution model: dependency-driven and scope-aware
 - Tracking-first hard gate: before modifying any non-generated file, the owning
-  PLAN item MUST already exist in `PLAN.yaml` with a declared `commit_group`.
+  PLAN item MUST already exist in `plan/PLAN-current.yaml` with a declared `commit_group`.
   Untracked edits are forbidden.
 - Single-writer rule: one orchestrator agent owns and writes the canonical PLAN source;
   other agents may propose changes or produce evidence but must not write directly
@@ -203,7 +208,7 @@ An agent may group compatible items into a shared commit_group if:
 - required checks for all items are compatible,
 - a reviewer can evaluate the group without losing item-level traceability.
 
-Commit-group boundaries are declared in `PLAN.yaml` before implementation
+Commit-group boundaries are declared in the split plan before implementation
 starts. Agents MUST NOT invent, merge, or split commit groups ad hoc while
 creating a commit.
 
@@ -260,7 +265,7 @@ Footer (SHOULD):
 
 The planning hierarchy maps to the git branching model defined in
 `agent-os/workflow/git-flow-policy.md`. This mapping bridges the
-execution graph in `PLAN.yaml` with the PR-only Git Flow workflow.
+execution graph in the split plan with the PR-only Git Flow workflow.
 
 ### Hierarchy
 
@@ -320,7 +325,7 @@ Not every milestone requires a branch. A milestone may skip branch
 creation when:
 
 - It is **planning-only**: all items are of type D (document) or involve
-  only PLAN.yaml, generated views, or governance files that land
+  only plan/PLAN-index.yaml, plan/PLAN-current.yaml, generated views, or governance files that land
   directly on the current working branch.
 - The **human explicitly overrides**: the operator decides to group
   multiple small milestones on a single branch, or to work on an
@@ -337,11 +342,13 @@ commit_group workflow on the current branch. The override is implicit
 When all sprints within a milestone are done and all checkpoints are
 closed:
 
-1. The agent triggers `gitflow-pr-only` skill, action `sync`, to
+1. The agent archives the closed milestone from `plan/PLAN-current.yaml`
+   into `plan/archive/` and updates `plan/PLAN-index.yaml`.
+2. The agent triggers `gitflow-pr-only` skill, action `sync`, to
    synchronize the topic branch with its base.
-2. The agent triggers `gitflow-pr-only` skill, action `merge`, to
+3. The agent triggers `gitflow-pr-only` skill, action `merge`, to
    merge the PR (requires Phase C authorization).
-3. For hotfix and release milestones, the agent additionally triggers
+4. For hotfix and release milestones, the agent additionally triggers
    `tag` and `back-merge` actions per the two-PR flow.
 
 After merge, the topic branch remains (agents never delete branches per

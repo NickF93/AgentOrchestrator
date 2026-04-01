@@ -26,7 +26,9 @@ repositories. It does not host product code.
 |---|---|
 | `AGENTS.md` | Workflow authority and operating rules |
 | `ARCHITECTURE.md` | Structural constraints and boundary rules |
-| `PLAN.yaml` | Active execution tracking (source of truth) |
+| `plan/PLAN-index.yaml` | Canonical plan entrypoint (source of truth) |
+| `plan/PLAN-current.yaml` | Active execution fragment |
+| `plan/archive/PLAN-XNN.yaml` | Closed milestone archive fragments |
 | `PLAN.md` | Human-readable plan view (generated) |
 | `PLAN.dot` | Graph plan view (generated) |
 
@@ -64,13 +66,13 @@ $AGENT_PYTHON -m pip install -r requirements-dev.txt
 ### Validate a plan
 
 ```bash
-$AGENT_PYTHON agent-os/scripts/validate-plan.py PLAN.yaml --schema agent-os/schemas/plan.schema.json
+$AGENT_PYTHON agent-os/scripts/validate-plan.py plan/PLAN-index.yaml --schema agent-os/schemas/plan.schema.json
 ```
 
 ### Render plan views
 
 ```bash
-$AGENT_PYTHON agent-os/scripts/render-plan.py PLAN.yaml
+$AGENT_PYTHON agent-os/scripts/render-plan.py plan/PLAN-index.yaml
 ```
 
 ### Run script tests
@@ -106,7 +108,7 @@ It also writes thin repo-local runtime entrypoints for:
 - `.kilocode/rules/governance.md`
 
 Canonical governance still lives in `AGENTS.md`, `ARCHITECTURE.md`, and
-`PLAN.yaml`.
+`plan/PLAN-index.yaml`.
 Enable them with:
 
 ```bash

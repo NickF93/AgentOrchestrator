@@ -60,8 +60,8 @@ procedure belongs to exactly one of them.
 
 | Root                  | What lives there                                        |
 |-----------------------|---------------------------------------------------------|
-| `repo_root`           | The target repository: `PLAN.yaml`, `REPO_MAP.md`,     |
-|                       | `AGENTS.md` (local copy), repo tests, repo code        |
+| `repo_root`           | The target repository: `plan/PLAN-index.yaml`,         |
+|                       | `REPO_MAP.md`, `AGENTS.md` (local copy), repo tests, repo code |
 | `control_plane_root`  | The Level-0 checkout: shared scripts, schemas,          |
 |                       | canonical workflow files, skill definitions             |
 
@@ -77,7 +77,7 @@ workspace parent).
 
 ### Target repo data (from `repo_root`)
 
-- `{repo_root}/PLAN.yaml` (or `plan_path` if overridden)
+- `{repo_root}/plan/PLAN-index.yaml` (or `plan_path` if overridden)
 - `{repo_root}/REPO_MAP.md`
 - `{repo_root}/AGENTS.md`
 - Repo-specific tests and checks declared in item `checks` arrays
@@ -87,7 +87,7 @@ workspace parent).
 | Input                  | Type   | Default       | Description                                      |
 |------------------------|--------|---------------|--------------------------------------------------|
 | `checkpoint_item_id`   | string | (required)    | ID of the target C-type item (e.g. `C1.1.3`)    |
-| `plan_path`            | string | `PLAN.yaml`   | Path to the plan file (relative to `repo_root`)  |
+| `plan_path`            | string | `plan/PLAN-index.yaml` | Path to the canonical plan entrypoint (relative to `repo_root`) |
 | `repo_root`            | string | `.`           | Root of the target repository                    |
 | `control_plane_root`   | string | (resolved)    | Root of the Level-0 control-plane checkout       |
 | `allow_commit`         | bool   | `false`       | If true, execute the commit; otherwise dry-run   |
@@ -169,7 +169,7 @@ cannot be located, nothing else is meaningful.
 
 ### Step 1 — Locate and validate the target
 
-1. Parse `PLAN.yaml` at `{repo_root}/{plan_path}`.
+1. Parse the canonical plan entrypoint at `{repo_root}/{plan_path}`.
 2. Find the item matching `checkpoint_item_id`.
 3. Confirm its `type` is `C`. If not, fail: "Target is not a C-type item."
 4. Record its `commit_group`, `depends_on`, `checks`, `scope`, and `status`.
@@ -187,7 +187,7 @@ cannot be located, nothing else is meaningful.
 
 For every item in the commit_group:
 
-1. Read its current `status` from `PLAN.yaml`.
+1. Read its current `status` from the loaded plan.
 2. Closure requires each item to be in `review`, `verified`, or `done`.
    Record any item that is not.
 
@@ -338,7 +338,7 @@ the purpose of the skill.
 |----------------------------------------|----------------------------------------------------------|
 | Control plane root not resolvable      | Fail with resolution instructions                        |
 | Control plane scripts missing          | Fail with "validate-plan.py not found at <path>"         |
-| `checkpoint_item_id` not found         | Fail with "Item not found in PLAN.yaml"                  |
+| `checkpoint_item_id` not found         | Fail with "Item not found in plan"                      |
 | Target is not C-type                   | Fail with "Target is not a C-type checkpoint item"       |
 | Item not in its declared commit_group  | Fail with "Checkpoint not in commit_group <cgNN>"        |
 | Items not in review/verified/done      | Block; list items and their current statuses             |
@@ -347,7 +347,7 @@ the purpose of the skill.
 | REPO_MAP stale at checkpoint closure   | Block; report staleness delta                            |
 | Repo-local checks fail                 | Block; include test output                               |
 | Item checks not satisfiable            | Block; list unverifiable checks                          |
-| PLAN.yaml parse error                  | Fail with parse error details                            |
+| Plan parse error                       | Fail with parse error details                            |
 
 ## Common-Case Command Sequence
 
@@ -361,15 +361,15 @@ REPO="/path/to/MyProject"             # repo_root
 
 # 1. Validate the plan (shared tooling, repo data)
 python "$CP/agent-os/scripts/validate-plan.py" \
-  "$REPO/PLAN.yaml" \
+  "$REPO/plan/PLAN-index.yaml" \
   --schema "$CP/agent-os/schemas/plan.schema.json"
 
 # 2. Freshness check (if applicable)
 python "$CP/agent-os/scripts/validate-plan.py" \
-  "$REPO/PLAN.yaml" --check-freshness
+  "$REPO/plan/PLAN-index.yaml" --check-freshness
 
 # 3. Render plan views (shared tooling, repo data)
-python "$CP/agent-os/scripts/render-plan.py" "$REPO/PLAN.yaml"
+python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml"
 
 # 4. Check for render drift (in repo)
 git -C "$REPO" diff PLAN.md PLAN.dot
@@ -379,7 +379,7 @@ cd "$REPO" && <repo test commands>
 
 # 6. Stage and commit (only if all checks pass and allow_commit is true)
 cd "$REPO"
-git add PLAN.yaml PLAN.md PLAN.dot <other files in commit_group>
+git add <plan files updated in commit_group> PLAN.md PLAN.dot <other files in commit_group>
 git commit -m "<prepared message>"
 ```
 
@@ -391,7 +391,7 @@ For Layer 0 (control plane closing its own checkpoint), replace both
 ### Claude
 
 When invoked via Claude Code or Claude-based agents, this skill can use
-`Read` to parse PLAN.yaml from `repo_root`, `Bash` to run shared
+`Read` to parse the canonical plan entrypoint from `repo_root`, `Bash` to run shared
 validation/render scripts from `control_plane_root` against the target
 repo's data, and `Grep`/`Glob` to locate REPO_MAP.md and discover
 repo-local test commands. The closure report is returned as direct text

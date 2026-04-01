@@ -45,7 +45,7 @@ Canonical authorities (paths relative to `control_plane_root`):
 
 - `agent-os/scripts/bootstrap-repo.sh` — the wrapped bootstrap script
 - `agent-os/templates/` — source templates for all rendered files
-- `agent-os/scripts/validate-plan.py` — post-bootstrap PLAN validation
+- `agent-os/scripts/validate-plan.py` — post-bootstrap canonical plan validation
 - `agent-os/schemas/plan.schema.json` — PLAN schema for validation
 - `agent-os/workflow/shared-workflow.md` — three-layer model, workspace
   topology
@@ -58,9 +58,9 @@ procedure belongs to exactly one of them.
 | Root                  | What lives there                                        |
 |-----------------------|---------------------------------------------------------|
 | `repo_root`           | The target repository being bootstrapped: receives      |
-|                       | AGENTS.md, ARCHITECTURE.md, REPO_MAP.md, PLAN.yaml,    |
+|                       | AGENTS.md, ARCHITECTURE.md, REPO_MAP.md, plan/,        |
 |                       | README.md, CLAUDE.md, .codex, GEMINI.md, docs/adr/,    |
-|                       | .githooks/, .github/, .cursor/, .kilocode/              |
+|                       | .githooks/, .github/, .cursor/, .kilocode/             |
 | `control_plane_root`  | The Level-0 checkout: bootstrap script, templates,      |
 |                       | validation tooling, schemas, skill definitions          |
 
@@ -105,7 +105,8 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `repo-AGENTS.md.template`               | `{repo_root}/AGENTS.md`                      |
 | `repo-ARCHITECTURE.md.template`         | `{repo_root}/ARCHITECTURE.md`                |
 | `repo-REPO_MAP.md.template`             | `{repo_root}/REPO_MAP.md`                    |
-| `PLAN.yaml.template`                    | `{repo_root}/PLAN.yaml`                      |
+| `PLAN-index.yaml.template`              | `{repo_root}/plan/PLAN-index.yaml`          |
+| `PLAN-current.yaml.template`            | `{repo_root}/plan/PLAN-current.yaml`        |
 | `repo-README.md.template`              | `{repo_root}/README.md`                      |
 | `repo-ADR.md.template`                  | `{repo_root}/docs/adr/ADR-0001.md`           |
 | `repo-commit-msg.template`              | `{repo_root}/.githooks/commit-msg`           |
@@ -155,7 +156,9 @@ files_created:
   - AGENTS.md: created | skipped | missing
   - ARCHITECTURE.md: created | skipped | missing
   - REPO_MAP.md: created | skipped | missing
-  - PLAN.yaml: created | skipped | missing
+  - plan/PLAN-index.yaml: created | skipped | missing
+  - plan/PLAN-current.yaml: created | skipped | missing
+  - plan/archive/: created | skipped | missing
   - README.md: created | skipped | missing
   - docs/adr/ADR-0001.md: created | skipped | missing
   - .githooks/commit-msg: created | skipped | missing
@@ -172,11 +175,11 @@ verification:
   - directory_structure: complete | incomplete
 commands_run:
   - `bash <cp>/agent-os/scripts/bootstrap-repo.sh [flags] <target>` -> exit <code>
-  - `python <cp>/agent-os/scripts/validate-plan.py <target>/PLAN.yaml --schema <cp>/agent-os/schemas/plan.schema.json` -> exit <code>
+  - `python <cp>/agent-os/scripts/validate-plan.py <target>/plan/PLAN-index.yaml --schema <cp>/agent-os/schemas/plan.schema.json` -> exit <code>
 next_steps:
   - "Enable repo-local hooks: git -C <target> config core.hooksPath .githooks"
   - "Set up workspace: export CONTROL_PLANE_ROOT=<cp>"
-  - "Review and customize PLAN.yaml for project-specific milestones"
+  - "Review and customize plan/PLAN-index.yaml and plan/PLAN-current.yaml for project-specific milestones"
 ```
 
 ## Procedure
@@ -262,15 +265,15 @@ files are present and which are missing. If any expected file is missing
 and was not reported as skipped (pre-existing), flag it as a
 verification failure.
 
-### Step 5 — Post-bootstrap: validate PLAN.yaml
+### Step 5 — Post-bootstrap: validate the canonical plan entrypoint
 
 If `dry_run` is `true`, skip this step.
 
-1. Verify `{repo_root}/PLAN.yaml` exists.
+1. Verify `{repo_root}/plan/PLAN-index.yaml` exists.
 2. Run PLAN validation:
    ```bash
    python {control_plane_root}/agent-os/scripts/validate-plan.py \
-     {repo_root}/PLAN.yaml \
+     {repo_root}/plan/PLAN-index.yaml \
      --schema {control_plane_root}/agent-os/schemas/plan.schema.json
    ```
 3. Record the exit code and any error output. A non-zero exit is a
@@ -328,7 +331,7 @@ Record completeness in the report.
    - "Set up workspace resolution:
      `export CONTROL_PLANE_ROOT=<control_plane_root>`"
    - "Or run sync-workspace.sh to stamp the workspace."
-   - "Review and customize PLAN.yaml for project-specific milestones."
+   - "Review and customize plan/PLAN-index.yaml and plan/PLAN-current.yaml for project-specific milestones."
    - "Shared assets resolve from CONTROL_PLANE_ROOT in workspace mode.
      Optional vendoring is explicit via materialize-shared-asset.sh."
 
@@ -351,9 +354,9 @@ bash "$CP/agent-os/scripts/bootstrap-repo.sh" \
   --ref "$(git -C "$CP" rev-parse --short HEAD)" \
   "$TARGET"
 
-# 3. Verify PLAN.yaml (shared tooling, repo data)
+# 3. Verify the canonical plan entrypoint (shared tooling, repo data)
 python "$CP/agent-os/scripts/validate-plan.py" \
-  "$TARGET/PLAN.yaml" \
+  "$TARGET/plan/PLAN-index.yaml" \
   --schema "$CP/agent-os/schemas/plan.schema.json"
 
 # 4. Verify both local hooks are executable
@@ -396,13 +399,13 @@ export CONTROL_PLANE_ROOT="$CP"
 | Control plane root not resolvable          | Fail with resolution instructions                         |
 | bootstrap-repo.sh not found               | Fail with "bootstrap-repo.sh not found at <path>"         |
 | Templates directory incomplete             | Fail with list of missing template files                   |
-| validate-plan.py or schema not found       | Warn; skip post-bootstrap PLAN validation                 |
+| validate-plan.py or schema not found       | Warn; skip post-bootstrap plan validation                 |
 | Target path does not exist (init_git=false)| Fail with "Target path does not exist"                    |
 | Target is not a git repo (init_git=false)  | Fail with "Target is not a git repository"                |
 | Target already bootstrapped                | Warn; continue (script will skip existing files)          |
 | bootstrap-repo.sh non-zero exit            | Fail with stderr output                                   |
 | Expected files missing after bootstrap     | Fail with list of missing files                           |
-| PLAN.yaml validation fails post-bootstrap  | Fail with validation error details                        |
+| Plan validation fails post-bootstrap       | Fail with validation error details                        |
 | Local hook not executable                  | Fail with the specific hook path that is not executable   |
 | Directory structure incomplete             | Fail with list of missing directories                     |
 | Python not available for validation        | Warn; skip PLAN validation, note in report                |

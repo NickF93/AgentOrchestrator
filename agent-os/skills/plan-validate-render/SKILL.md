@@ -1,7 +1,7 @@
 ---
 id: plan-validate-render
 description: >
-  Validate a PLAN.yaml file and render its generated views (PLAN.md,
+  Validate the canonical plan entrypoint and render its generated views (PLAN.md,
   PLAN.dot). Use this skill whenever the task involves validating a
   plan, rendering plan views, checking for plan drift, interpreting
   validation warnings or errors, or verifying that generated plan
@@ -24,8 +24,8 @@ compatibility:
 
 ## Purpose
 
-Provide a repeatable, execution-layer procedure for validating a
-`PLAN.yaml` file and rendering its generated views. This skill wraps
+Provide a repeatable, execution-layer procedure for validating the
+canonical plan entrypoint and rendering its generated views. This skill wraps
 two existing scripts — `validate-plan.py` and `render-plan.py` — with
 structured reporting, warning/error classification, and render drift
 detection. It does not define governance rules. It applies the
@@ -59,7 +59,7 @@ procedure belongs to exactly one of them.
 
 | Root                  | What lives there                                        |
 |-----------------------|---------------------------------------------------------|
-| `repo_root`           | The target repository: `PLAN.yaml`, `PLAN.md`,         |
+| `repo_root`           | The target repository: `plan/PLAN-index.yaml`, `PLAN.md`,         |
 |                       | `PLAN.dot`, `REPO_MAP.md`, repo code and tests         |
 | `control_plane_root`  | The Level-0 checkout: validation and render scripts,    |
 |                       | schema, shared asset registry, skill definitions        |
@@ -97,7 +97,7 @@ missing.
 
 ### Target repo data (from `repo_root`)
 
-- `{repo_root}/PLAN.yaml` (or `plan_path` if overridden)
+- `{repo_root}/plan/PLAN-index.yaml` (or `plan_path` if overridden)
 - `{repo_root}/PLAN.md` (generated view — may or may not exist yet)
 - `{repo_root}/PLAN.dot` (generated view — may or may not exist yet)
 - `{repo_root}/REPO_MAP.md` (optional — used by `--check-freshness`)
@@ -106,10 +106,10 @@ missing.
 
 | Input                    | Type   | Default                                     | Description                                                    |
 |--------------------------|--------|---------------------------------------------|----------------------------------------------------------------|
-| `plan_path`              | string | `PLAN.yaml`                                 | Path to the plan file (relative to `repo_root`)                |
+| `plan_path`              | string | `plan/PLAN-index.yaml`                      | Path to the canonical plan entrypoint (relative to `repo_root`) |
 | `schema_path`            | string | `agent-os/schemas/plan.schema.json`         | Path to the JSON schema (relative to `control_plane_root`)     |
 | `check_freshness`        | bool   | `false`                                     | If true, check REPO_MAP.md freshness at checkpoint boundaries  |
-| `previous_plan`          | string | (none)                                      | Optional path to a previous PLAN.yaml for lifecycle transition checks |
+| `previous_plan`          | string | (none)                                      | Optional path to a previous plan entrypoint for lifecycle transition checks |
 | `shared_asset_registry`  | string | (auto-resolved from `control_plane_root`)   | Path to shared asset registry YAML                             |
 | `repo_root`              | string | `.`                                         | Root of the target repository                                  |
 | `control_plane_root`     | string | (resolved)                                  | Root of the Level-0 control-plane checkout                     |
@@ -305,8 +305,8 @@ this step and record drift check as "skipped" in the report.
 - **Two-root integrity**: validation scripts and schema come from
   `control_plane_root`. Plan data and generated files live in
   `repo_root`. Never confuse which root a file belongs to.
-- **No modification of PLAN.yaml**: this skill reads and validates
-  the plan. It does not modify PLAN.yaml content. Status transitions
+- **No modification of the canonical plan entrypoint**: this skill reads and validates
+  the plan. It does not modify plan content. Status transitions
   and item updates are outside this skill's scope.
 - **Rendering overwrites generated files**: `render-plan.py` writes
   PLAN.md and PLAN.dot in place. This is expected behavior — these
@@ -315,7 +315,7 @@ this step and record drift check as "skipped" in the report.
   commit them. The operator (or a checkpoint closure skill) handles
   the commit.
 - **Deterministic for same input**: running the skill twice on the
-  same PLAN.yaml produces the same validation output and the same
+  same canonical plan entrypoint produces the same validation output and the same
   rendered files.
 - **Scripts are authoritative**: when the skill's interpretation of
   a check conflicts with the script's actual behavior, the script
@@ -330,7 +330,7 @@ this step and record drift check as "skipped" in the report.
 | validate-plan.py not found                   | Fail with "validate-plan.py not found at `<path>`"        |
 | render-plan.py not found                     | Fail with "render-plan.py not found at `<path>`"          |
 | Schema file not found                        | Fail with "plan.schema.json not found at `<path>`"        |
-| PLAN.yaml not found                          | Fail with "Plan file not found: `<path>`"                 |
+| Plan entrypoint not found                   | Fail with "Plan file not found: `<path>`"                 |
 | validate-plan.py exits 1 (validation fail)   | Report all errors with categories; verdict **fail**       |
 | validate-plan.py exits 2 (system error)      | Report system error details; verdict **blocked**          |
 | render-plan.py exits non-zero                | Report render error; verdict **fail**                     |
@@ -352,15 +352,15 @@ REPO="/path/to/MyProject"             # repo_root
 
 # 1. Validate the plan (shared tooling, repo data)
 python "$CP/agent-os/scripts/validate-plan.py" \
-  "$REPO/PLAN.yaml" \
+  "$REPO/plan/PLAN-index.yaml" \
   --schema "$CP/agent-os/schemas/plan.schema.json"
 
 # 2. Freshness check (if applicable)
 python "$CP/agent-os/scripts/validate-plan.py" \
-  "$REPO/PLAN.yaml" --check-freshness
+  "$REPO/plan/PLAN-index.yaml" --check-freshness
 
 # 3. Render plan views (shared tooling, repo data)
-python "$CP/agent-os/scripts/render-plan.py" "$REPO/PLAN.yaml" \
+python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml" \
   --md "$REPO/PLAN.md" --dot "$REPO/PLAN.dot"
 
 # 4. Check for render drift (in repo)
@@ -376,7 +376,7 @@ For Layer 0 (control plane validating its own plan), replace both
 
 When invoked via Claude Code or Claude-based agents, this skill uses
 `Bash` to run validation and render scripts from `control_plane_root`
-against the target repo's data, `Read` to inspect PLAN.yaml or
+against the target repo's data, `Read` to inspect the canonical plan entrypoint or
 validation output if needed, and `Grep` to locate REPO_MAP.md for
 freshness checks. For control plane resolution, check the environment
 for `CONTROL_PLANE_ROOT`, or read the workspace `AGENTS.md` in the

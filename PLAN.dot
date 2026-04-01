@@ -534,8 +534,8 @@ digraph PLAN {
   subgraph "cluster_cg66" {
     style="rounded,dashed";
     label="cg66: Archival automation and split-plan propagation";
-  "M31.2.3" [label="M31.2.3 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "F31.2.4" [label="F31.2.4 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  "M31.2.3" [label="M31.2.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "F31.2.4" [label="F31.2.4 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg67" {
     style="rounded,dashed";

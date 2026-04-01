@@ -11,7 +11,7 @@
 ## Authority Map
 - Workflow authority: AGENTS.md (this file)
 - Software constraints: ARCHITECTURE.md
-- Execution tracking source: PLAN.yaml
+- Execution tracking source: plan/PLAN-index.yaml
 - Generated views: PLAN.md, PLAN.dot (non-authoritative)
 - Repo topology reference: REPO_MAP.md
 
@@ -23,16 +23,16 @@ Priority order:
 1. Explicit human instructions
 2. AGENTS.md for workflow behavior
 3. ARCHITECTURE.md for software constraints
-4. PLAN.yaml for active execution tracking
+4. plan/PLAN-index.yaml for active execution tracking
 5. Code/tests/config as implementation evidence
 6. Generated plan views for readability only
 
 ## Workflow Rules
-- Orchestrator is single writer for PLAN.yaml.
+- Orchestrator is single writer for the split plan rooted at plan/PLAN-index.yaml.
 - Worker agents propose changes and produce evidence.
 - Before modifying any non-generated file, create or update the owning
-  PLAN.yaml item first. The item MUST already declare its `commit_group`.
-- Commit-group boundaries are declared in PLAN.yaml before implementation and
+  plan/PLAN-current.yaml item first. The item MUST already declare its `commit_group`.
+- Commit-group boundaries are declared in the split plan before implementation and
   MUST NOT be invented ad hoc during commit creation.
 - Execution is dependency-driven, not globally sequential.
 - Parallel work is allowed when scope and boundaries do not conflict.

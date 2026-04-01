@@ -15,7 +15,7 @@ Canonical authority is bounded in:
 
 - `AGENTS.md`
 - `ARCHITECTURE.md`
-- `PLAN.yaml`
+- `plan/PLAN-index.yaml`
 - `{{CONTROL_PLANE_ROOT}}/agent-os/workflow/*`
 
 ## Runtime Notes

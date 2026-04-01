@@ -1,0 +1,14 @@
+meta:
+  repo: "{{REPO_NAME}}"
+  owner: "{{OWNER}}"
+  version: "0.1"
+  schema_version: "draft-1.0"
+  last_updated: "{{DATE}}"
+  note: "Bootstrap split-plan index generated from Level-0 template"
+
+mission: >
+  Define initial repository governance and produce a first validated execution plan.
+
+current_plan: PLAN-current.yaml
+archive_root: archive
+archives: []

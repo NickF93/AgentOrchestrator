@@ -170,7 +170,7 @@ items:
   - design
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - M31.2.1
   - M31.2.2
@@ -179,6 +179,7 @@ items:
   commit_group: cg66
   scope: .
   artifacts_out:
+  - agent-os/scripts/plan_loader.py
   - agent-os/scripts/archive-plan.py
   - agent-os/skills/gitflow-pr-only/SKILL.md
   - plan/PLAN-index.yaml
@@ -196,7 +197,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - M31.2.3
   role: implementer
@@ -207,7 +208,15 @@ items:
   - README.md
   - AGENTS.md
   - ARCHITECTURE.md
+  - CLAUDE.md
   - .codex
+  - agent-os/skills/plan-checkpoint-close/SKILL.md
+  - agent-os/skills/plan-validate-render/SKILL.md
+  - agent-os/skills/repo-bootstrap/SKILL.md
+  - agent-os/workflow/git-automation-policy.md
+  - agent-os/workflow/portability-model.md
+  - agent-os/workflow/shared-workflow.md
+  - agent-os/workflow/git-flow-policy.md
   - agent-os/templates/
   - agent-os/scripts/bootstrap-repo.sh
   notes: 'Update only the canonical path and split-plan workflow surfaces that must

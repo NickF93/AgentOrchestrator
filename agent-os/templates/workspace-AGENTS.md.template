@@ -30,7 +30,7 @@ Priority order for conflict resolution:
 1. Explicit human instructions
 2. `AGENTS.md` — workflow authority and operating rules
 3. `ARCHITECTURE.md` — software constraints and boundaries
-4. `PLAN.yaml` — active execution tracking
+4. `plan/PLAN-index.yaml` — active execution tracking
 5. Code, tests, and real artifacts — implementation evidence
 6. Generated views (`PLAN.md`, `PLAN.dot`) — informative, not authoritative
 
@@ -40,7 +40,7 @@ Priority order for conflict resolution:
 |---|---|
 | Workflow and operating rules | `AGENTS.md` |
 | Software constraints and boundaries | `ARCHITECTURE.md` |
-| Active execution tracking | `PLAN.yaml` |
+| Active execution tracking | `plan/PLAN-index.yaml` |
 | Human-readable plan view | `PLAN.md` (generated) |
 | Graph plan view | `PLAN.dot` (generated) |
 | Codebase topology | `REPO_MAP.md` |
@@ -54,7 +54,7 @@ directly to the canonical PLAN.
 ## Tracking-First Hard Gate
 
 Before modifying any non-generated file, create or update the owning
-`PLAN.yaml` item first. The item MUST already declare its `commit_group`.
+`plan/PLAN-current.yaml` item first. The item MUST already declare its `commit_group`.
 Commit-group boundaries are plan-time decisions, not something agents may
 invent during commit creation.
 
@@ -89,7 +89,7 @@ Canonical authority for this hard gate lives in:
 Escalate to the human owner when:
 
 - A change would alter authority boundaries
-- A conflict exists between `ARCHITECTURE.md` and `PLAN.yaml`
+- A conflict exists between `ARCHITECTURE.md` and `plan/PLAN-index.yaml`
 - A schema change would invalidate existing plan data
 - Irreversible Git automation is requested beyond the current phase
 

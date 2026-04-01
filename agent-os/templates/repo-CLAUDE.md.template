@@ -9,7 +9,7 @@ All normative rules live in the canonical authorities listed below.
 
 - `AGENTS.md` — workflow authority and operating rules
 - `ARCHITECTURE.md` — software constraints and boundaries
-- `PLAN.yaml` — active execution tracking
+- `plan/PLAN-index.yaml` — canonical plan entrypoint
 - `REPO_MAP.md` — practical codebase topology reference
 
 ## Adapter Overrides
@@ -24,13 +24,13 @@ Do not push (Phase A only) unless explicitly told to.
 
 ### Tracking-first execution
 
-Before modifying any non-generated file, the owning `PLAN.yaml` item must
+Before modifying any non-generated file, the owning `plan/PLAN-current.yaml` item must
 exist with a declared `commit_group`. If no item exists, create one first.
 Do not start implementation without tracking.
 
 ### Autonomous plan execution
 
-When working through `PLAN.yaml`, advance items through the lifecycle
+When working through `plan/PLAN-current.yaml`, advance items through the lifecycle
 automatically: implement, update statuses, run checks, validate, render,
 and commit each `commit_group` as it completes. Do not stop to ask between
 commit_groups unless an escalation condition from `AGENTS.md` is triggered.
@@ -41,8 +41,8 @@ Use `$AGENT_PYTHON` (configured per workstation via `.env`) to run shared
 scripts when operating in a workspace with a Level-0 control plane:
 
 ```
-$AGENT_PYTHON <control-plane>/agent-os/scripts/validate-plan.py PLAN.yaml --schema <control-plane>/agent-os/schemas/plan.schema.json
-$AGENT_PYTHON <control-plane>/agent-os/scripts/render-plan.py PLAN.yaml
+$AGENT_PYTHON <control-plane>/agent-os/scripts/validate-plan.py plan/PLAN-index.yaml --schema <control-plane>/agent-os/schemas/plan.schema.json
+$AGENT_PYTHON <control-plane>/agent-os/scripts/render-plan.py plan/PLAN-index.yaml
 $AGENT_PYTHON -m pytest -q
 ```
 
