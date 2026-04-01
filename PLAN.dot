@@ -29,7 +29,7 @@ digraph PLAN {
   "X26" [label="X26 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X27" [label="X27 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X28" [label="X28 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X29" [label="X29 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X29" [label="X29 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -72,7 +72,7 @@ digraph PLAN {
   "S28.1" [label="S28.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S28.2" [label="S28.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S29.1" [label="S29.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S29.2" [label="S29.2 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S29.2" [label="S29.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -493,9 +493,9 @@ digraph PLAN {
   subgraph "cluster_cg60" {
     style="rounded,dashed";
     label="cg60: Hook, bootstrap, validation, and closure repairs for X29";
-  "F29.2.3" [label="F29.2.3 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
-  "T29.2.4" [label="T29.2.4 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
-  "C29.2.5" [label="C29.2.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  "F29.2.3" [label="F29.2.3 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "T29.2.4" [label="T29.2.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C29.2.5" [label="C29.2.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];

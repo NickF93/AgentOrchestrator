@@ -43,7 +43,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X26 | X | Gemini and Cursor First-Class Portability | done |
 | X27 | X | Repo Bootstrap Skill Packaging | done |
 | X28 | X | Plan Validate-Render Skill Packaging | done |
-| X29 | X | Portability and Governance Enforcement Bugfixes | in_progress |
+| X29 | X | Portability and Governance Enforcement Bugfixes | done |
 
 ## Plan
 
@@ -746,7 +746,7 @@ Status: done
 
 - ID: `X29`
 - Title: Portability and Governance Enforcement Bugfixes
-- Status: in_progress
+- Status: done
 - Note: Fix the validate-plan.py schema-validation fallback, remove remaining non-portable interpreter assumptions from active docs and tooling, add the canonical no-AI-traces hard rule plus matching workflow enforcement, and align bootstrap, hooks, and docs around local pre-push protection for governed repositories.
 
 #### S29.1 Items
@@ -763,15 +763,15 @@ Status: done
 #### S29.2 Items
 
 Sprint: Sprint 2 — Tooling, hooks, portability, and validation
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `F29.2.1` | `F` | Fix validate-plan.py fallback when jsonschema is unavailable | done | Route schema validation through a helper that uses jsonschema when available and the existing subset fallback when it is not, preserving readable failures and non-zero exit codes without crashing. |
 | `F29.2.2` | `F` | Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh | done | Standardize active repo-tracked instructions on AGENT_PYTHON from .env, make the tracked default generic, and keep Codex sandbox guidance thin and non-host-specific. |
-| `F29.2.3` | `F` | Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers | planned | Keep direct-push protection for main and develop, bootstrap both hooks, and reject narrow AI/codegen attribution markers in commit-message and pushed-text enforcement without blocking legitimate human co-author trailers. |
-| `T29.2.4` | `T` | Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates | planned |  |
-| `C29.2.5` | `C` | Checkpoint closure — X29 portability and governance enforcement bugfixes | planned |  |
+| `F29.2.3` | `F` | Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers | done | Keep direct-push protection for main and develop, bootstrap both hooks, and reject narrow AI/codegen attribution markers in commit-message and pushed-text enforcement without blocking legitimate human co-author trailers. |
+| `T29.2.4` | `T` | Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates | done |  |
+| `C29.2.5` | `C` | Checkpoint closure — X29 portability and governance enforcement bugfixes | done |  |
 
 ## Commit Groups
 
@@ -2803,7 +2803,7 @@ Status: in_progress
 
 ### F29.2.3: Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S29.2`
 - **Actions**: implement, verify
 - **Depends on**: `D29.1.2`, `D29.1.3`
@@ -2813,7 +2813,7 @@ Status: in_progress
 
 ### T29.2.4: Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S29.2`
 - **Actions**: verify
 - **Depends on**: `F29.2.1`, `F29.2.2`, `F29.2.3`
@@ -2836,7 +2836,7 @@ Status: in_progress
 
 ### C29.2.5: Checkpoint closure — X29 portability and governance enforcement bugfixes
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S29.2`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T29.2.4`

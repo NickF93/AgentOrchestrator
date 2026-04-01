@@ -38,18 +38,25 @@ This repository is governed by the Level-0 control plane.
 - Each git commit closes exactly one `commit_group`.
 - Tracked commits MUST include a footer of the form:
   `Refs: <PLAN item IDs>, <commit_group ID>`
+- Repo-tracked Python commands use `AGENT_PYTHON` from `.env`; keep
+  host-specific interpreter paths only there.
 - Runtime entrypoints such as `.github/copilot-instructions.md` are thin
   pointers only; canonical governance remains in `AGENTS.md`,
   `ARCHITECTURE.md`, and `PLAN.yaml`.
 
-## Local Hook
+## Local Hooks
 
-This bootstrap includes `.githooks/commit-msg` to enforce the commit title and
-`Refs:` footer contract locally.
+This bootstrap includes both local hooks:
 
-Enable it with:
+- `.githooks/commit-msg` enforces the commit title and `Refs:` footer
+  contract and blocks AI/codegen attribution markers in commit messages.
+- `.githooks/pre-push` blocks direct pushes to `main` and `develop` and
+  rejects pushed commit messages or added lines that contain the same
+  banned AI/codegen attribution markers.
+
+Enable them with:
 
 ```bash
 git config core.hooksPath .githooks
-chmod +x .githooks/commit-msg
+chmod +x .githooks/commit-msg .githooks/pre-push
 ```
