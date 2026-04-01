@@ -5,7 +5,7 @@ AUTO-GENERATED from PLAN.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-03-31
+- Last updated: 2026-04-01
 
 ## Mission
 
@@ -42,6 +42,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X25 | X | Full Runtime Parity and First-Class Promotion | done |
 | X26 | X | Gemini and Cursor First-Class Portability | done |
 | X27 | X | Repo Bootstrap Skill Packaging | done |
+| X28 | X | Plan Validate-Render Skill Packaging | done |
 
 ## Plan
 
@@ -713,6 +714,33 @@ Status: done
 | `T27.1.3` | `T` | Validate repo-bootstrap skill packaging and plan consistency | done |  |
 | `C27.1.4` | `C` | Checkpoint closure — X27 repo-bootstrap skill packaging | done |  |
 
+### X28
+
+- ID: `X28`
+- Title: Plan Validate-Render Skill Packaging
+- Status: done
+- Note: Package the existing validate-plan.py and render-plan.py scripts as a portable skill under agent-os/skills/. Add two-root resolution, warning/error classification, render drift detection, and structured reporting via check-result-v1. Register in the shared asset registry and propagate discovery to AGENTS.md and the repo template.
+
+#### S28.1 Items
+
+Sprint: Sprint 1 — Skill definition and procedure authoring
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D28.1.1` | `D` | Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure | done | Create SKILL.md following the skill packaging contract. Wraps two scripts: validate-plan.py (17 validation checks, exit 0/1/2) and render-plan.py (PLAN.md + PLAN.dot generation, exit 0/2). Procedure covers two-root resolution, pre-flight checks, validation execution with flag assembly, output interpretation (parse OK/WARNING/ERROR lines, classify hard-fail vs advisory across 17 check categories), rendering, render drift detection via git diff, and structured verdict assembly via check-result-v1 protocol. Adapter notes for all six runtimes. |
+
+#### S28.2 Items
+
+Sprint: Sprint 2 — Registry, discovery propagation, validation, and closure
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `M28.2.1` | `M` | Register plan-validate-render in shared asset registry and propagate discovery metadata | done | Add the plan-validate-render skill entry to shared-assets.yaml (kind skill, version 0.1.0, six-runtime compatibility). Add a row to the available-skills table in AGENTS.md and in repo-AGENTS.md.template. Check off the plan-validate-render entry in TODO.md. |
+| `T28.2.2` | `T` | Validate plan-validate-render skill packaging, registry, and plan consistency | done |  |
+| `C28.2.3` | `C` | Checkpoint closure — X28 plan-validate-render skill packaging | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -772,6 +800,8 @@ Status: done
 | cg52 | Gemini/Cursor tooling integration and runtime compatibility updates | `M26.2.1`, `M26.2.2`, `D26.2.3` |
 | cg53 | Gemini/Cursor portability validation and milestone closure | `M26.2.6`, `T26.2.4`, `C26.2.5` |
 | cg54 | Repo bootstrap skill — SKILL.md, registry entry, and discovery propagation | `D27.1.1`, `M27.1.2`, `T27.1.3`, `C27.1.4` |
+| cg55 | Plan validate-render skill — SKILL.md authoring | `D28.1.1` |
+| cg56 | Plan validate-render skill — registry, discovery, validation, and closure | `M28.2.1`, `T28.2.2`, `C28.2.3` |
 
 ## Item Details
 
@@ -2634,4 +2664,53 @@ Status: done
 - **Actions**: checkpoint, verify
 - **Depends on**: `T27.1.3`
 - **Commit group**: `cg54`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D28.1.1: Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: high
+- **Sprint**: `S28.1`
+- **Actions**: document
+- **Depends on**: `C27.1.4`
+- **Commit group**: `cg55`
+- **Artifacts**: agent-os/skills/plan-validate-render/SKILL.md
+- **Notes**: Create SKILL.md following the skill packaging contract. Wraps two scripts: validate-plan.py (17 validation checks, exit 0/1/2) and render-plan.py (PLAN.md + PLAN.dot generation, exit 0/2). Procedure covers two-root resolution, pre-flight checks, validation execution with flag assembly, output interpretation (parse OK/WARNING/ERROR lines, classify hard-fail vs advisory across 17 check categories), rendering, render drift detection via git diff, and structured verdict assembly via check-result-v1 protocol. Adapter notes for all six runtimes.
+
+### M28.2.1: Register plan-validate-render in shared asset registry and propagate discovery metadata
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S28.2`
+- **Actions**: implement
+- **Depends on**: `D28.1.1`
+- **Commit group**: `cg56`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+- **Notes**: Add the plan-validate-render skill entry to shared-assets.yaml (kind skill, version 0.1.0, six-runtime compatibility). Add a row to the available-skills table in AGENTS.md and in repo-AGENTS.md.template. Check off the plan-validate-render entry in TODO.md.
+
+### T28.2.2: Validate plan-validate-render skill packaging, registry, and plan consistency
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S28.2`
+- **Actions**: verify
+- **Depends on**: `M28.2.1`
+- **Commit group**: `cg56`
+- **Checks**:
+  - agent-os/skills/plan-validate-render/SKILL.md exists with valid YAML frontmatter
+  - SKILL.md frontmatter contains id, description, owner, version, and six-entry compatibility
+  - SKILL.md body contains Purpose, Two-Root Model, Required Inputs, Expected Outputs, Procedure, Constraints, Failure Handling, and Adapter Notes
+  - Adapter Notes covers all six runtimes
+  - shared-assets.yaml contains plan-validate-render entry with kind skill
+  - AGENTS.md available-skills table contains plan-validate-render row
+  - repo-AGENTS.md.template available-skills table contains plan-validate-render row
+  - TODO.md shows plan-validate-render checked off
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### C28.2.3: Checkpoint closure — X28 plan-validate-render skill packaging
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S28.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T28.2.2`
+- **Commit group**: `cg56`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace

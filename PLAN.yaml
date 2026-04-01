@@ -8,7 +8,7 @@ meta:
   owner: NickF93
   version: "0.1"
   schema_version: "draft-1.0"
-  last_updated: "2026-03-31"
+  last_updated: "2026-04-01"
   note: >
     This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself.
@@ -303,6 +303,17 @@ milestones:
       verification, and structured reporting. Register in the shared asset
       registry and propagate discovery to AGENTS.md and the repo template.
 
+  - id: X28
+    type: X
+    title: "Plan Validate-Render Skill Packaging"
+    status: done
+    note: >
+      Package the existing validate-plan.py and render-plan.py scripts as
+      a portable skill under agent-os/skills/. Add two-root resolution,
+      warning/error classification, render drift detection, and structured
+      reporting via check-result-v1. Register in the shared asset registry
+      and propagate discovery to AGENTS.md and the repo template.
+
 sprints:
   - id: S1.1
     type: S
@@ -536,6 +547,18 @@ sprints:
     type: S
     parent: X27
     title: "Sprint 1 — Skill implementation, registry, and discovery propagation"
+    status: done
+
+  - id: S28.1
+    type: S
+    parent: X28
+    title: "Sprint 1 — Skill definition and procedure authoring"
+    status: done
+
+  - id: S28.2
+    type: S
+    parent: X28
+    title: "Sprint 2 — Registry, discovery propagation, validation, and closure"
     status: done
 
 items:
@@ -3770,6 +3793,96 @@ items:
       profile: codex/check-medium
       result_protocol: check-result-v1
 
+  # ─── X28: Plan Validate-Render Skill Packaging ─────────────────────────────────
+
+  - id: D28.1.1
+    parent: S28.1
+    type: D
+    title: "Create plan-validate-render skill SKILL.md with validation, rendering, drift detection, and reporting procedure"
+    actions: [document]
+    status: done
+    depends_on: [C27.1.4]
+    role: implementer
+    effort: high
+    commit_group: cg55
+    scope: "agent-os/skills"
+    artifacts_out:
+      - agent-os/skills/plan-validate-render/SKILL.md
+    notes: >
+      Create SKILL.md following the skill packaging contract. Wraps two
+      scripts: validate-plan.py (17 validation checks, exit 0/1/2) and
+      render-plan.py (PLAN.md + PLAN.dot generation, exit 0/2). Procedure
+      covers two-root resolution, pre-flight checks, validation execution
+      with flag assembly, output interpretation (parse OK/WARNING/ERROR
+      lines, classify hard-fail vs advisory across 17 check categories),
+      rendering, render drift detection via git diff, and structured
+      verdict assembly via check-result-v1 protocol. Adapter notes for
+      all six runtimes.
+
+  - id: M28.2.1
+    parent: S28.2
+    type: M
+    title: "Register plan-validate-render in shared asset registry and propagate discovery metadata"
+    actions: [implement]
+    status: done
+    depends_on: [D28.1.1]
+    role: implementer
+    effort: low
+    commit_group: cg56
+    scope: "."
+    artifacts_out:
+      - agent-os/registry/shared-assets.yaml
+      - AGENTS.md
+      - agent-os/templates/repo-AGENTS.md.template
+      - TODO.md
+    notes: >
+      Add the plan-validate-render skill entry to shared-assets.yaml
+      (kind skill, version 0.1.0, six-runtime compatibility). Add a row
+      to the available-skills table in AGENTS.md and in
+      repo-AGENTS.md.template. Check off the plan-validate-render entry
+      in TODO.md.
+
+  - id: T28.2.2
+    parent: S28.2
+    type: T
+    title: "Validate plan-validate-render skill packaging, registry, and plan consistency"
+    actions: [verify]
+    status: done
+    depends_on: [M28.2.1]
+    role: reviewer
+    effort: low
+    commit_group: cg56
+    scope: "."
+    checks:
+      - "agent-os/skills/plan-validate-render/SKILL.md exists with valid YAML frontmatter"
+      - "SKILL.md frontmatter contains id, description, owner, version, and six-entry compatibility"
+      - "SKILL.md body contains Purpose, Two-Root Model, Required Inputs, Expected Outputs, Procedure, Constraints, Failure Handling, and Adapter Notes"
+      - "Adapter Notes covers all six runtimes"
+      - "shared-assets.yaml contains plan-validate-render entry with kind skill"
+      - "AGENTS.md available-skills table contains plan-validate-render row"
+      - "repo-AGENTS.md.template available-skills table contains plan-validate-render row"
+      - "TODO.md shows plan-validate-render checked off"
+      - "validate-plan.py exits 0"
+      - "render-plan.py produces no drift"
+      - "run-gates.sh passes"
+
+  - id: C28.2.3
+    parent: S28.2
+    type: C
+    title: "Checkpoint closure — X28 plan-validate-render skill packaging"
+    actions: [checkpoint, verify]
+    status: done
+    depends_on: [T28.2.2]
+    role: reviewer
+    effort: low
+    commit_group: cg56
+    scope: "."
+    shared_assets:
+      skill: plan-checkpoint-close
+      prompt: checkpoint-closure-review
+      profile: codex/check-medium
+      result_protocol: check-result-v1
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -4197,3 +4310,21 @@ commit_groups:
       Wraps bootstrap-repo.sh with pre-flight, verification, and reporting.
       Registers in shared-assets.yaml and propagates skill discovery to
       both AGENTS.md and the repo-AGENTS.md.template.
+
+  - id: cg55
+    title: "Plan validate-render skill — SKILL.md authoring"
+    items: [D28.1.1]
+    notes: >
+      Creates the plan-validate-render operational skill under
+      agent-os/skills/. Wraps validate-plan.py and render-plan.py with
+      two-root resolution, warning/error classification, render drift
+      detection, and structured check-result-v1 reporting.
+
+  - id: cg56
+    title: "Plan validate-render skill — registry, discovery, validation, and closure"
+    items: [M28.2.1, T28.2.2, C28.2.3]
+    notes: >
+      Registers plan-validate-render in shared-assets.yaml, propagates
+      skill discovery to AGENTS.md and repo-AGENTS.md.template, validates
+      end-to-end packaging and plan consistency, and closes X28, S28.1,
+      S28.2.

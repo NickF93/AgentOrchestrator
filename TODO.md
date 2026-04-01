@@ -34,7 +34,7 @@
 - [x] Skill discovery table in AGENTS.md and repo template
 - [x] repo-bootstrap — wrapper around bootstrap-repo.sh + post-bootstrap checks
 - [ ] workspace-sync — regenerate Level-1 files, report provenance drift
-- [ ] plan-validate-render — validate + render + interpret failures/warnings
+- [x] plan-validate-render — validate + render + interpret failures/warnings
 - [ ] repo-map-refresh — refresh REPO_MAP.md on triggers
 - [ ] checker-reviewer-delegation — delegation contract (needs design first)
 
