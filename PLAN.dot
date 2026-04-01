@@ -31,6 +31,7 @@ digraph PLAN {
   "X28" [label="X28 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X29" [label="X29 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X30" [label="X30 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X31" [label="X31 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -75,6 +76,8 @@ digraph PLAN {
   "S29.1" [label="S29.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S29.2" [label="S29.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S30.1" [label="S30.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S31.1" [label="S31.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S31.2" [label="S31.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -510,6 +513,36 @@ digraph PLAN {
     label="cg62: TODO roadmap expansion";
   "D30.1.1" [label="D30.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg63" {
+    style="rounded,dashed";
+    label="cg63: X31 tracking bootstrap on the reserved feature branch";
+  "D31.1.1" [label="D31.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg64" {
+    style="rounded,dashed";
+    label="cg64: Split-plan model, loader, migration tooling, and repository self-migration";
+  "M31.1.2" [label="M31.1.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "T31.1.3" [label="T31.1.3 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "C31.1.4" [label="C31.1.4 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg65" {
+    style="rounded,dashed";
+    label="cg65: Aggregate validator and renderer split-plan loader refactor";
+  "M31.2.1" [label="M31.2.1 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "M31.2.2" [label="M31.2.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg66" {
+    style="rounded,dashed";
+    label="cg66: Archival automation and split-plan propagation";
+  "M31.2.3" [label="M31.2.3 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "F31.2.4" [label="F31.2.4 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg67" {
+    style="rounded,dashed";
+    label="cg67: Split-plan validation matrix and X31 closure";
+  "T31.2.5" [label="T31.2.5 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "C31.2.6" [label="C31.2.6 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -554,6 +587,8 @@ digraph PLAN {
   "X29" -> "S29.1" [style=dashed];
   "X29" -> "S29.2" [style=dashed];
   "X30" -> "S30.1" [style=dashed];
+  "X31" -> "S31.1" [style=dashed];
+  "X31" -> "S31.2" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -737,6 +772,16 @@ digraph PLAN {
   "S29.2" -> "T29.2.4" [style=dashed];
   "S29.2" -> "C29.2.5" [style=dashed];
   "S30.1" -> "D30.1.1" [style=dashed];
+  "S31.1" -> "D31.1.1" [style=dashed];
+  "S31.1" -> "M31.1.2" [style=dashed];
+  "S31.1" -> "T31.1.3" [style=dashed];
+  "S31.1" -> "C31.1.4" [style=dashed];
+  "S31.2" -> "M31.2.1" [style=dashed];
+  "S31.2" -> "M31.2.2" [style=dashed];
+  "S31.2" -> "M31.2.3" [style=dashed];
+  "S31.2" -> "F31.2.4" [style=dashed];
+  "S31.2" -> "T31.2.5" [style=dashed];
+  "S31.2" -> "C31.2.6" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -950,4 +995,14 @@ digraph PLAN {
   "F29.2.2" -> "T29.2.4";
   "F29.2.3" -> "T29.2.4";
   "T29.2.4" -> "C29.2.5";
+  "D31.1.1" -> "M31.1.2";
+  "M31.1.2" -> "T31.1.3";
+  "T31.1.3" -> "C31.1.4";
+  "C31.1.4" -> "M31.2.1";
+  "C31.1.4" -> "M31.2.2";
+  "M31.2.1" -> "M31.2.3";
+  "M31.2.2" -> "M31.2.3";
+  "M31.2.3" -> "F31.2.4";
+  "F31.2.4" -> "T31.2.5";
+  "T31.2.5" -> "C31.2.6";
 }
