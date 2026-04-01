@@ -43,6 +43,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X26 | X | Gemini and Cursor First-Class Portability | done |
 | X27 | X | Repo Bootstrap Skill Packaging | done |
 | X28 | X | Plan Validate-Render Skill Packaging | done |
+| X29 | X | Portability and Governance Enforcement Bugfixes | planned |
 
 ## Plan
 
@@ -741,6 +742,37 @@ Status: done
 | `T28.2.2` | `T` | Validate plan-validate-render skill packaging, registry, and plan consistency | done |  |
 | `C28.2.3` | `C` | Checkpoint closure — X28 plan-validate-render skill packaging | done |  |
 
+### X29
+
+- ID: `X29`
+- Title: Portability and Governance Enforcement Bugfixes
+- Status: planned
+- Note: Fix the validate-plan.py schema-validation fallback, remove remaining non-portable interpreter assumptions from active docs and tooling, add the canonical no-AI-traces hard rule plus matching workflow enforcement, and align bootstrap, hooks, and docs around local pre-push protection for governed repositories.
+
+#### S29.1 Items
+
+Sprint: Sprint 1 — Tracking and governance propagation
+Status: planned
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D29.1.1` | `D` | Add X29 tracking to PLAN.yaml and regenerate plan views | done | Introduce milestone X29, its sprints, executable items, and commit-group boundaries. Regenerate PLAN.md and PLAN.dot so the generated views remain derived from the canonical plan source. |
+| `D29.1.2` | `D` | Add the canonical no-AI-traces hard rule and propagate AGENTS materializations | planned | Add a single canonical hard rule forbidding signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation. Propagate it only through AGENTS materialization surfaces. |
+| `D29.1.3` | `D` | Extend Git Flow policy and skills with no-AI-traces workflow enforcement | planned | Add explicit workflow-level prohibitions and cleanliness checks for AI/codegen attribution markers across commits, PR titles and bodies, PR comments, PR reviews, and proposed commit messages. |
+
+#### S29.2 Items
+
+Sprint: Sprint 2 — Tooling, hooks, portability, and validation
+Status: planned
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `F29.2.1` | `F` | Fix validate-plan.py fallback when jsonschema is unavailable | planned | Route schema validation through a helper that uses jsonschema when available and the existing subset fallback when it is not, preserving readable failures and non-zero exit codes without crashing. |
+| `F29.2.2` | `F` | Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh | planned | Standardize active repo-tracked instructions on AGENT_PYTHON from .env, make the tracked default generic, and keep Codex sandbox guidance thin and non-host-specific. |
+| `F29.2.3` | `F` | Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers | planned | Keep direct-push protection for main and develop, bootstrap both hooks, and reject narrow AI/codegen attribution markers in commit-message and pushed-text enforcement without blocking legitimate human co-author trailers. |
+| `T29.2.4` | `T` | Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates | planned |  |
+| `C29.2.5` | `C` | Checkpoint closure — X29 portability and governance enforcement bugfixes | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -802,6 +834,10 @@ Status: done
 | cg54 | Repo bootstrap skill — SKILL.md, registry entry, and discovery propagation | `D27.1.1`, `M27.1.2`, `T27.1.3`, `C27.1.4` |
 | cg55 | Plan validate-render skill — SKILL.md authoring | `D28.1.1` |
 | cg56 | Plan validate-render skill — registry, discovery, validation, and closure | `M28.2.1`, `T28.2.2`, `C28.2.3` |
+| cg57 | X29 plan tracking and generated plan views | `D29.1.1` |
+| cg58 | Canonical no-AI-traces rule and Git Flow workflow propagation | `D29.1.2`, `D29.1.3` |
+| cg59 | Validator fallback and interpreter portability repairs | `F29.2.1`, `F29.2.2` |
+| cg60 | Hook, bootstrap, validation, and closure repairs for X29 | `F29.2.3`, `T29.2.4`, `C29.2.5` |
 
 ## Item Details
 
@@ -2713,4 +2749,96 @@ Status: done
 - **Actions**: checkpoint, verify
 - **Depends on**: `T28.2.2`
 - **Commit group**: `cg56`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D29.1.1: Add X29 tracking to PLAN.yaml and regenerate plan views
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S29.1`
+- **Actions**: plan, document
+- **Depends on**: `C28.2.3`
+- **Commit group**: `cg57`
+- **Artifacts**: PLAN.yaml, PLAN.md, PLAN.dot
+- **Notes**: Introduce milestone X29, its sprints, executable items, and commit-group boundaries. Regenerate PLAN.md and PLAN.dot so the generated views remain derived from the canonical plan source.
+
+### D29.1.2: Add the canonical no-AI-traces hard rule and propagate AGENTS materializations
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Sprint**: `S29.1`
+- **Actions**: document
+- **Depends on**: `D29.1.1`
+- **Commit group**: `cg58`
+- **Artifacts**: AGENTS.md, agent-os/templates/repo-AGENTS.md.template, agent-os/templates/workspace-AGENTS.md.template
+- **Notes**: Add a single canonical hard rule forbidding signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation. Propagate it only through AGENTS materialization surfaces.
+
+### D29.1.3: Extend Git Flow policy and skills with no-AI-traces workflow enforcement
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S29.1`
+- **Actions**: document
+- **Depends on**: `D29.1.1`
+- **Commit group**: `cg58`
+- **Artifacts**: agent-os/workflow/git-flow-policy.md, agent-os/skills/gitflow-pr-only/SKILL.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/repo-bootstrap/SKILL.md
+- **Notes**: Add explicit workflow-level prohibitions and cleanliness checks for AI/codegen attribution markers across commits, PR titles and bodies, PR comments, PR reviews, and proposed commit messages.
+
+### F29.2.1: Fix validate-plan.py fallback when jsonschema is unavailable
+
+- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S29.2`
+- **Actions**: implement, verify
+- **Depends on**: `D29.1.2`, `D29.1.3`
+- **Commit group**: `cg59`
+- **Artifacts**: agent-os/scripts/validate-plan.py, tests/test_validate_plan.py
+- **Notes**: Route schema validation through a helper that uses jsonschema when available and the existing subset fallback when it is not, preserving readable failures and non-zero exit codes without crashing.
+
+### F29.2.2: Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh
+
+- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S29.2`
+- **Actions**: implement, verify
+- **Depends on**: `D29.1.2`, `D29.1.3`
+- **Commit group**: `cg59`
+- **Artifacts**: .env.example, README.md, .codex, agent-os/scripts/run-gates.sh, agent-os/templates/repo-CODEX.md.template, agent-os/templates/workspace-CODEX.md.template
+- **Notes**: Standardize active repo-tracked instructions on AGENT_PYTHON from .env, make the tracked default generic, and keep Codex sandbox guidance thin and non-host-specific.
+
+### F29.2.3: Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers
+
+- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Sprint**: `S29.2`
+- **Actions**: implement, verify
+- **Depends on**: `D29.1.2`, `D29.1.3`
+- **Commit group**: `cg60`
+- **Artifacts**: .githooks/commit-msg, .githooks/pre-push, README.md, agent-os/scripts/bootstrap-repo.sh, agent-os/templates/repo-README.md.template, agent-os/templates/repo-commit-msg.template, agent-os/templates/repo-pre-push.template, tests/test_shell_scripts.py
+- **Notes**: Keep direct-push protection for main and develop, bootstrap both hooks, and reject narrow AI/codegen attribution markers in commit-message and pushed-text enforcement without blocking legitimate human co-author trailers.
+
+### T29.2.4: Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S29.2`
+- **Actions**: verify
+- **Depends on**: `F29.2.1`, `F29.2.2`, `F29.2.3`
+- **Commit group**: `cg60`
+- **Checks**:
+  - validate-plan.py passes with jsonschema installed
+  - validate-plan.py falls back cleanly when jsonschema is unavailable
+  - commit-msg rejects banned AI/codegen attribution markers and accepts valid messages
+  - pre-push rejects direct pushes to main/develop and AI-attributed pushed content
+  - bootstrap dry-run and real bootstrap create both local hooks
+  - repo README template documents both hooks and the portable interpreter contract
+  - pytest -q passes
+  - ruff check passes
+  - ruff format --check passes
+  - mypy --no-incremental passes
+  - python -m py_compile passes
+  - bash agent-os/scripts/run-gates.sh passes
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+
+### C29.2.5: Checkpoint closure — X29 portability and governance enforcement bugfixes
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S29.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T29.2.4`
+- **Commit group**: `cg60`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace

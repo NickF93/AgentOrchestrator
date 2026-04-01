@@ -29,6 +29,7 @@ digraph PLAN {
   "X26" [label="X26 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X27" [label="X27 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X28" [label="X28 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X29" [label="X29 | X | planned", shape=box3d, style="filled,rounded", fillcolor=lightgray];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -70,6 +71,8 @@ digraph PLAN {
   "S27.1" [label="S27.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S28.1" [label="S28.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S28.2" [label="S28.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S29.1" [label="S29.1 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
+  "S29.2" [label="S29.2 | S | planned", shape=tab, style="filled,rounded", fillcolor=lightgray];
   subgraph "cluster_cg7" {
     style="rounded,dashed";
     label="cg7: Governance compliance — propagate architectural rules to workflow docs";
@@ -470,6 +473,30 @@ digraph PLAN {
   "T28.2.2" [label="T28.2.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C28.2.3" [label="C28.2.3 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg57" {
+    style="rounded,dashed";
+    label="cg57: X29 plan tracking and generated plan views";
+  "D29.1.1" [label="D29.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg58" {
+    style="rounded,dashed";
+    label="cg58: Canonical no-AI-traces rule and Git Flow workflow propagation";
+  "D29.1.2" [label="D29.1.2 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "D29.1.3" [label="D29.1.3 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg59" {
+    style="rounded,dashed";
+    label="cg59: Validator fallback and interpreter portability repairs";
+  "F29.2.1" [label="F29.2.1 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  "F29.2.2" [label="F29.2.2 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg60" {
+    style="rounded,dashed";
+    label="cg60: Hook, bootstrap, validation, and closure repairs for X29";
+  "F29.2.3" [label="F29.2.3 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  "T29.2.4" [label="T29.2.4 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "C29.2.5" [label="C29.2.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -511,6 +538,8 @@ digraph PLAN {
   "X27" -> "S27.1" [style=dashed];
   "X28" -> "S28.1" [style=dashed];
   "X28" -> "S28.2" [style=dashed];
+  "X29" -> "S29.1" [style=dashed];
+  "X29" -> "S29.2" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "D1.1.2" [style=dashed];
   "S1.1" -> "D1.1.3" [style=dashed];
@@ -683,6 +712,14 @@ digraph PLAN {
   "S28.2" -> "M28.2.1" [style=dashed];
   "S28.2" -> "T28.2.2" [style=dashed];
   "S28.2" -> "C28.2.3" [style=dashed];
+  "S29.1" -> "D29.1.1" [style=dashed];
+  "S29.1" -> "D29.1.2" [style=dashed];
+  "S29.1" -> "D29.1.3" [style=dashed];
+  "S29.2" -> "F29.2.1" [style=dashed];
+  "S29.2" -> "F29.2.2" [style=dashed];
+  "S29.2" -> "F29.2.3" [style=dashed];
+  "S29.2" -> "T29.2.4" [style=dashed];
+  "S29.2" -> "C29.2.5" [style=dashed];
   "D1.1.2" -> "Q1.1.1";
   "D1.1.2" -> "Q1.1.2";
   "D1.1.2" -> "Q1.1.3";
@@ -881,4 +918,17 @@ digraph PLAN {
   "D28.1.1" -> "M28.2.1";
   "M28.2.1" -> "T28.2.2";
   "T28.2.2" -> "C28.2.3";
+  "C28.2.3" -> "D29.1.1";
+  "D29.1.1" -> "D29.1.2";
+  "D29.1.1" -> "D29.1.3";
+  "D29.1.2" -> "F29.2.1";
+  "D29.1.3" -> "F29.2.1";
+  "D29.1.2" -> "F29.2.2";
+  "D29.1.3" -> "F29.2.2";
+  "D29.1.2" -> "F29.2.3";
+  "D29.1.3" -> "F29.2.3";
+  "F29.2.1" -> "T29.2.4";
+  "F29.2.2" -> "T29.2.4";
+  "F29.2.3" -> "T29.2.4";
+  "T29.2.4" -> "C29.2.5";
 }

@@ -314,6 +314,17 @@ milestones:
       reporting via check-result-v1. Register in the shared asset registry
       and propagate discovery to AGENTS.md and the repo template.
 
+  - id: X29
+    type: X
+    title: "Portability and Governance Enforcement Bugfixes"
+    status: planned
+    note: >
+      Fix the validate-plan.py schema-validation fallback, remove remaining
+      non-portable interpreter assumptions from active docs and tooling,
+      add the canonical no-AI-traces hard rule plus matching workflow
+      enforcement, and align bootstrap, hooks, and docs around local
+      pre-push protection for governed repositories.
+
 sprints:
   - id: S1.1
     type: S
@@ -560,6 +571,18 @@ sprints:
     parent: X28
     title: "Sprint 2 — Registry, discovery propagation, validation, and closure"
     status: done
+
+  - id: S29.1
+    type: S
+    parent: X29
+    title: "Sprint 1 — Tracking and governance propagation"
+    status: planned
+
+  - id: S29.2
+    type: S
+    parent: X29
+    title: "Sprint 2 — Tooling, hooks, portability, and validation"
+    status: planned
 
 items:
 
@@ -3883,6 +3906,181 @@ items:
       profile: codex/check-medium
       result_protocol: check-result-v1
 
+  # ─── X29: Portability and Governance Enforcement Bugfixes ──────────────────────
+
+  - id: D29.1.1
+    parent: S29.1
+    type: D
+    title: "Add X29 tracking to PLAN.yaml and regenerate plan views"
+    actions: [plan, document]
+    status: done
+    depends_on: [C28.2.3]
+    role: orchestrator
+    effort: low
+    commit_group: cg57
+    scope: "."
+    artifacts_out:
+      - PLAN.yaml
+      - PLAN.md
+      - PLAN.dot
+    notes: >
+      Introduce milestone X29, its sprints, executable items, and commit-group
+      boundaries. Regenerate PLAN.md and PLAN.dot so the generated views remain
+      derived from the canonical plan source.
+
+  - id: D29.1.2
+    parent: S29.1
+    type: D
+    title: "Add the canonical no-AI-traces hard rule and propagate AGENTS materializations"
+    actions: [document]
+    status: planned
+    depends_on: [D29.1.1]
+    role: documenter
+    effort: low
+    commit_group: cg58
+    scope: "."
+    artifacts_out:
+      - AGENTS.md
+      - agent-os/templates/repo-AGENTS.md.template
+      - agent-os/templates/workspace-AGENTS.md.template
+    notes: >
+      Add a single canonical hard rule forbidding signatures, trailers,
+      comments, PR text, or other traces attributable to generative AI or code
+      generation. Propagate it only through AGENTS materialization surfaces.
+
+  - id: D29.1.3
+    parent: S29.1
+    type: D
+    title: "Extend Git Flow policy and skills with no-AI-traces workflow enforcement"
+    actions: [document]
+    status: planned
+    depends_on: [D29.1.1]
+    role: documenter
+    effort: medium
+    commit_group: cg58
+    scope: "."
+    artifacts_out:
+      - agent-os/workflow/git-flow-policy.md
+      - agent-os/skills/gitflow-pr-only/SKILL.md
+      - agent-os/skills/plan-checkpoint-close/SKILL.md
+      - agent-os/skills/repo-bootstrap/SKILL.md
+    notes: >
+      Add explicit workflow-level prohibitions and cleanliness checks for
+      AI/codegen attribution markers across commits, PR titles and bodies,
+      PR comments, PR reviews, and proposed commit messages.
+
+  - id: F29.2.1
+    parent: S29.2
+    type: F
+    title: "Fix validate-plan.py fallback when jsonschema is unavailable"
+    actions: [implement, verify]
+    status: planned
+    depends_on: [D29.1.2, D29.1.3]
+    role: implementer
+    effort: medium
+    commit_group: cg59
+    scope: "agent-os/scripts"
+    artifacts_out:
+      - agent-os/scripts/validate-plan.py
+      - tests/test_validate_plan.py
+    notes: >
+      Route schema validation through a helper that uses jsonschema when
+      available and the existing subset fallback when it is not, preserving
+      readable failures and non-zero exit codes without crashing.
+
+  - id: F29.2.2
+    parent: S29.2
+    type: F
+    title: "Normalize interpreter portability across .env, docs, Codex entrypoints, and run-gates.sh"
+    actions: [implement, verify]
+    status: planned
+    depends_on: [D29.1.2, D29.1.3]
+    role: implementer
+    effort: medium
+    commit_group: cg59
+    scope: "."
+    artifacts_out:
+      - .env.example
+      - README.md
+      - .codex
+      - agent-os/scripts/run-gates.sh
+      - agent-os/templates/repo-CODEX.md.template
+      - agent-os/templates/workspace-CODEX.md.template
+    notes: >
+      Standardize active repo-tracked instructions on AGENT_PYTHON from .env,
+      make the tracked default generic, and keep Codex sandbox guidance thin
+      and non-host-specific.
+
+  - id: F29.2.3
+    parent: S29.2
+    type: F
+    title: "Add pre-push protection and extend hook/bootstrap enforcement for banned AI attribution markers"
+    actions: [implement, verify]
+    status: planned
+    depends_on: [D29.1.2, D29.1.3]
+    role: implementer
+    effort: high
+    commit_group: cg60
+    scope: "."
+    artifacts_out:
+      - .githooks/commit-msg
+      - .githooks/pre-push
+      - README.md
+      - agent-os/scripts/bootstrap-repo.sh
+      - agent-os/templates/repo-README.md.template
+      - agent-os/templates/repo-commit-msg.template
+      - agent-os/templates/repo-pre-push.template
+      - tests/test_shell_scripts.py
+    notes: >
+      Keep direct-push protection for main and develop, bootstrap both hooks,
+      and reject narrow AI/codegen attribution markers in commit-message and
+      pushed-text enforcement without blocking legitimate human co-author
+      trailers.
+
+  - id: T29.2.4
+    parent: S29.2
+    type: T
+    title: "Validate portability, hook behavior, validator fallback, bootstrap outputs, and gates"
+    actions: [verify]
+    status: planned
+    depends_on: [F29.2.1, F29.2.2, F29.2.3]
+    role: tester
+    effort: medium
+    commit_group: cg60
+    scope: "."
+    checks:
+      - "validate-plan.py passes with jsonschema installed"
+      - "validate-plan.py falls back cleanly when jsonschema is unavailable"
+      - "commit-msg rejects banned AI/codegen attribution markers and accepts valid messages"
+      - "pre-push rejects direct pushes to main/develop and AI-attributed pushed content"
+      - "bootstrap dry-run and real bootstrap create both local hooks"
+      - "repo README template documents both hooks and the portable interpreter contract"
+      - "pytest -q passes"
+      - "ruff check passes"
+      - "ruff format --check passes"
+      - "mypy --no-incremental passes"
+      - "python -m py_compile passes"
+      - "bash agent-os/scripts/run-gates.sh passes"
+      - "validate-plan.py exits 0"
+      - "render-plan.py produces no drift"
+
+  - id: C29.2.5
+    parent: S29.2
+    type: C
+    title: "Checkpoint closure — X29 portability and governance enforcement bugfixes"
+    actions: [checkpoint, verify]
+    status: planned
+    depends_on: [T29.2.4]
+    role: reviewer
+    effort: low
+    commit_group: cg60
+    scope: "."
+    shared_assets:
+      skill: plan-checkpoint-close
+      prompt: checkpoint-closure-review
+      profile: codex/check-medium
+      result_protocol: check-result-v1
+
 commit_groups:
   - id: cg7
     title: "Governance compliance — propagate architectural rules to workflow docs"
@@ -4328,3 +4526,35 @@ commit_groups:
       skill discovery to AGENTS.md and repo-AGENTS.md.template, validates
       end-to-end packaging and plan consistency, and closes X28, S28.1,
       S28.2.
+
+  - id: cg57
+    title: "X29 plan tracking and generated plan views"
+    items: [D29.1.1]
+    notes: >
+      Adds milestone X29, its sprints, executable items, and commit-group
+      boundaries to the canonical plan source and regenerates the derived plan
+      views before implementation work begins.
+
+  - id: cg58
+    title: "Canonical no-AI-traces rule and Git Flow workflow propagation"
+    items: [D29.1.2, D29.1.3]
+    notes: >
+      Adds the canonical hard rule forbidding AI/codegen traces, propagates it
+      through AGENTS materializations, and updates Git Flow policy and skills
+      with commit/PR cleanliness requirements.
+
+  - id: cg59
+    title: "Validator fallback and interpreter portability repairs"
+    items: [F29.2.1, F29.2.2]
+    notes: >
+      Fixes validate-plan.py fallback behavior when jsonschema is unavailable
+      and removes remaining non-portable interpreter assumptions from active
+      docs, Codex entrypoints, and run-gates.sh.
+
+  - id: cg60
+    title: "Hook, bootstrap, validation, and closure repairs for X29"
+    items: [F29.2.3, T29.2.4, C29.2.5]
+    notes: >
+      Adds and bootstraps pre-push protection, enforces narrow AI attribution
+      blocking in local hooks, validates the full portability and enforcement
+      stack, and closes X29.
