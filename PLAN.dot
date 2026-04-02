@@ -32,7 +32,7 @@ digraph PLAN {
   "X29" [label="X29 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X30" [label="X30 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X31" [label="X31 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X33" [label="X33 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X33" [label="X33 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -81,7 +81,7 @@ digraph PLAN {
   "S31.2" [label="S31.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S31.3" [label="S31.3 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S31.4" [label="S31.4 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S33.1" [label="S33.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S33.1" [label="S33.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -606,12 +606,12 @@ digraph PLAN {
   subgraph "cluster_cg80" {
     style="rounded,dashed";
     label="cg80: X33 checkpoint closure";
-  "C33.1.5" [label="C33.1.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  "C33.1.5" [label="C33.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg81" {
     style="rounded,dashed";
     label="cg81: Fix hardcoded test IDs";
-  "F33.1.6" [label="F33.1.6 | F | in_progress", shape=octagon, style="filled,rounded", fillcolor=lightblue];
+  "F33.1.6" [label="F33.1.6 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];

@@ -2,7 +2,7 @@ milestones:
 - id: X33
   type: X
   title: Issue #8 Review Response and TODO Roadmap Integration
-  status: in_progress
+  status: done
   note: >
     Respond to Gianni Massi's code review (issue #8) with a deep technical
     analysis, integrate actionable suggestions into the TODO roadmap with
@@ -13,7 +13,7 @@ sprints:
   type: S
   parent: X33
   title: "Sprint 1 \u2014 Issue reply, TODO integration, consistency check"
-  status: in_progress
+  status: done
 
 items:
 - id: D33.1.1
@@ -91,7 +91,7 @@ items:
   actions:
   - implement
   - test
-  status: in_progress
+  status: done
   depends_on:
   - D33.1.4
   role: implementer
@@ -114,7 +114,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - D33.1.2
   - D33.1.3

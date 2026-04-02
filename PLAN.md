@@ -46,7 +46,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
 | X31 | X | PLAN Splitting and Archival Foundation | done |
-| X33 | X | Issue | in_progress |
+| X33 | X | Issue | done |
 
 ## Plan
 
@@ -859,13 +859,13 @@ Status: done
 
 - ID: `X33`
 - Title: Issue
-- Status: in_progress
+- Status: done
 - Note: Respond to Gianni Massi's code review (issue #8) with a deep technical analysis, integrate actionable suggestions into the TODO roadmap with per-section priorities, and consistency-check the result.
 
 #### S33.1 Items
 
 Sprint: Sprint 1 — Issue reply, TODO integration, consistency check
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
@@ -873,8 +873,8 @@ Status: in_progress
 | `D33.1.2` | `D` | Reply to issue | done | GitHub issue comment only. No file changes. |
 | `D33.1.3` | `D` | Integrate review suggestions into TODO.md with section priorities | done |  |
 | `D33.1.4` | `D` | Consistency-check TODO.md against codebase state and fix drift | done |  |
-| `C33.1.5` | `C` | Checkpoint closure — X33 | planned |  |
-| `F33.1.6` | `F` | Fix hardcoded milestone/item IDs in archive and validate tests | in_progress | Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically. |
+| `C33.1.5` | `C` | Checkpoint closure — X33 | done |  |
+| `F33.1.6` | `F` | Fix hardcoded milestone/item IDs in archive and validate tests | done | Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically. |
 
 ## Commit Groups
 
@@ -3270,7 +3270,7 @@ Status: in_progress
 
 ### C33.1.5: Checkpoint closure — X33
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S33.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D33.1.2`, `D33.1.3`, `D33.1.4`, `F33.1.6`
@@ -3287,7 +3287,7 @@ Status: in_progress
 
 ### F33.1.6: Fix hardcoded milestone/item IDs in archive and validate tests
 
-- **Type**: F | **Status**: in_progress | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S33.1`
 - **Actions**: implement, test
 - **Depends on**: `D33.1.4`
