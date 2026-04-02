@@ -2,7 +2,7 @@ milestones:
 - id: X31
   type: X
   title: PLAN Splitting and Archival Foundation
-  status: in_progress
+  status: done
   note: 'Split the monolithic repo plan into a canonical plan/ entrypoint with active
     and archived fragments, keep aggregate validation and rendering deterministic,
     and propagate the new plan layout through Layer-0 tooling, skills, templates,
@@ -34,7 +34,7 @@ sprints:
   type: S
   parent: X31
   title: "Sprint 4 \u2014 Final closure audit and consistency cleanup"
-  status: in_progress
+  status: done
 items:
 - id: D31.1.1
   parent: S31.1
@@ -555,7 +555,7 @@ items:
   - checkpoint
   - review
   - verify
-  status: planned
+  status: done
   depends_on:
   - M31.4.3
   role: reviewer

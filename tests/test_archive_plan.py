@@ -83,6 +83,10 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
 
 def test_archive_plan_rejects_open_milestone(repo_root: Path, tmp_path: Path) -> None:
     index_path = copy_split_plan(tmp_path)
+    current_path = index_path.parent / "PLAN-current.yaml"
+    current_fragment = load_yaml(current_path)
+    current_fragment["milestones"][0]["status"] = "in_progress"
+    write_yaml(current_path, current_fragment)
 
     result = run_python_script(
         repo_root / "agent-os" / "scripts" / "archive-plan.py",
@@ -90,6 +94,10 @@ def test_archive_plan_rejects_open_milestone(repo_root: Path, tmp_path: Path) ->
         str(index_path),
         "--milestone",
         "X31",
+        "--md",
+        str(tmp_path / "PLAN.md"),
+        "--dot",
+        str(tmp_path / "PLAN.dot"),
     )
 
     assert result.returncode == 1
