@@ -1,4 +1,103 @@
-milestones: []
-sprints: []
-items: []
-commit_groups: []
+milestones:
+- id: X32
+  type: X
+  title: TODO Reconciliation for Plan Scaling / Archival
+  status: in_progress
+  note: 'Reconcile the non-normative TODO checklist after the completed and archived
+    X31 split-plan rollout. Keep the scope narrow to the Plan Scaling / Archival
+    section so the checklist no longer claims the delivered split-plan behavior is
+    still undone.
+
+    '
+sprints:
+- id: S32.1
+  type: S
+  parent: X32
+  title: "Sprint 1 \u2014 Narrow TODO reconciliation for plan scaling and archival"
+  status: in_progress
+items:
+- id: D32.1.1
+  parent: S32.1
+  type: D
+  title: Track X32 and regenerate plan views before the TODO reconciliation edit
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg76
+  scope: .
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+  notes: 'Create the narrow corrective milestone, keep the work on bugfix/X32-todo-plan-reconciliation,
+    and satisfy tracking-first governance before touching TODO.md.
+
+    '
+- id: D32.1.2
+  parent: S32.1
+  type: D
+  title: Reconcile the TODO Plan Scaling / Archival checklist against the archived X31 outcome
+  actions:
+  - document
+  - review
+  status: planned
+  depends_on:
+  - D32.1.1
+  role: documenter
+  effort: low
+  commit_group: cg77
+  scope: TODO.md
+  artifacts_out:
+  - TODO.md
+  notes: 'Mark only the X31-delivered split-plan archival capabilities as done, leave
+    genuinely unimplemented future-facing bullets open, and avoid broad TODO cleanup.
+
+    '
+- id: C32.1.3
+  parent: S32.1
+  type: C
+  title: "Checkpoint closure \u2014 X32 TODO reconciliation"
+  actions:
+  - checkpoint
+  - verify
+  status: planned
+  depends_on:
+  - D32.1.2
+  role: reviewer
+  effort: low
+  commit_group: cg77
+  scope: .
+  artifacts_out:
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - TODO.md no longer claims the delivered X31 split-plan archival work is undone
+  - archived X31 remains unchanged
+  - generated PLAN views remain canonical and clean
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    profile: codex/check-medium
+    result_protocol: check-result-v1
+commit_groups:
+- id: cg76
+  title: X32 tracking bootstrap
+  items:
+  - D32.1.1
+  notes: 'Adds the narrow X32 follow-up milestone to the active fragment and regenerates
+    canonical plan views before the TODO.md reconciliation edit.
+
+    '
+- id: cg77
+  title: TODO reconciliation and X32 closure
+  items:
+  - D32.1.2
+  - C32.1.3
+  notes: 'Updates only the Plan Scaling / Archival checklist in TODO.md to match the
+    archived X31 outcome, validates the wording against canonical plan sources, and
+    closes X32.
+
+    '
