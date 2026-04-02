@@ -128,7 +128,12 @@ def test_render_markdown_handles_items_without_optional_fields(repo_root: Path) 
     )
     markdown = render_module.render_markdown(
         {
-            "meta": {"repo": "fixture", "owner": "tester", "version": "1", "last_updated": "2026-04-02"},
+            "meta": {
+                "repo": "fixture",
+                "owner": "tester",
+                "version": "1",
+                "last_updated": "2026-04-02",
+            },
             "mission": "Fixture mission",
             "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
             "sprints": [],
@@ -159,7 +164,15 @@ def test_render_dot_renders_orphan_items_and_dependency_edges(repo_root: Path) -
     dot = render_module.render_dot(
         {
             "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-            "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+            "sprints": [
+                {
+                    "id": "S1.1",
+                    "type": "S",
+                    "parent": "X1",
+                    "title": "Only sprint",
+                    "status": "done",
+                }
+            ],
             "items": [
                 {
                     "id": "D1.1.1",
@@ -187,7 +200,10 @@ def test_render_dot_renders_orphan_items_and_dependency_edges(repo_root: Path) -
 
 
 def test_render_plan_main_succeeds_in_process(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("render_plan", repo_root / "agent-os" / "scripts" / "render-plan.py")
     index_path = copy_split_plan(tmp_path)
@@ -207,11 +223,16 @@ def test_render_plan_main_succeeds_in_process(
 
 
 def test_render_plan_main_handles_unexpected_load_error(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("render_plan", repo_root / "agent-os" / "scripts" / "render-plan.py")
     index_path = copy_split_plan(tmp_path)
-    monkeypatch.setattr(module, "load_plan", lambda _path: (_ for _ in ()).throw(RuntimeError("boom")))
+    monkeypatch.setattr(
+        module, "load_plan", lambda _path: (_ for _ in ()).throw(RuntimeError("boom"))
+    )
     monkeypatch.setattr(sys, "argv", ["render-plan.py", str(index_path)])
 
     assert module.main() == 2
@@ -225,6 +246,8 @@ def test_render_plan_script_entrypoint_runs(
     monkeypatch.setattr(sys, "argv", ["render-plan.py", str(index_path)])
 
     with pytest.raises(SystemExit) as exc:
-        runpy.run_path(str(repo_root / "agent-os" / "scripts" / "render-plan.py"), run_name="__main__")
+        runpy.run_path(
+            str(repo_root / "agent-os" / "scripts" / "render-plan.py"), run_name="__main__"
+        )
 
     assert exc.value.code == 0

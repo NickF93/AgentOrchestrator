@@ -234,12 +234,17 @@ def test_validate_plan_main_accepts_current_plan_in_process(
 
 
 def test_validate_plan_main_handles_missing_inputs(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     missing_plan = tmp_path / "missing.yaml"
 
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(missing_plan), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(missing_plan), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 2
     assert "Plan file not found" in capsys.readouterr().err
 
@@ -267,7 +272,9 @@ def test_load_helpers_reject_non_mappings_and_non_objects(repo_root: Path, tmp_p
         module.load_schema(json_path)
 
 
-def test_validate_shared_asset_registry_rejects_malformed_entries(repo_root: Path, tmp_path: Path) -> None:
+def test_validate_shared_asset_registry_rejects_malformed_entries(
+    repo_root: Path, tmp_path: Path
+) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     registry_path = tmp_path / "shared-assets.yaml"
     registry = {
@@ -381,7 +388,9 @@ def test_validate_plan_schema_subset_accepts_valid_full_shape(repo_root: Path) -
             },
             "mission": "Fixture mission",
             "milestones": [{"id": "X1", "type": "X", "title": "Milestone", "status": "planned"}],
-            "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Sprint", "status": "planned"}],
+            "sprints": [
+                {"id": "S1.1", "type": "S", "parent": "X1", "title": "Sprint", "status": "planned"}
+            ],
             "items": [
                 {
                     "id": "Q1.1.1",
@@ -424,7 +433,13 @@ def test_validate_plan_schema_subset_rejects_deep_invalid_shapes(repo_root: Path
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     errors = module.validate_plan_schema_subset(
         {
-            "meta": {"repo": "", "owner": "", "version": "", "schema_version": "", "last_updated": ""},
+            "meta": {
+                "repo": "",
+                "owner": "",
+                "version": "",
+                "schema_version": "",
+                "last_updated": "",
+            },
             "mission": " ",
             "milestones": [{"id": "bad", "type": "M", "title": "", "status": "oops"}],
             "sprints": [{"id": "bad", "type": "X", "parent": "bad", "title": "", "status": "oops"}],
@@ -469,7 +484,9 @@ def test_validate_plan_schema_subset_rejects_deep_invalid_shapes(repo_root: Path
     assert any("milestones[0].id: expected milestone id like X1" in error for error in errors)
     assert any("sprints[0].parent: expected milestone id like X1" in error for error in errors)
     assert any("items[0].actions: invalid action 'bad'" in error for error in errors)
-    assert any("items[0].shared_assets: unexpected field(s): unexpected" in error for error in errors)
+    assert any(
+        "items[0].shared_assets: unexpected field(s): unexpected" in error for error in errors
+    )
     assert any("items[1]: missing required field 'id'" in error for error in errors)
     assert any("commit_groups[0].items: expected item IDs" in error for error in errors)
 
@@ -535,10 +552,13 @@ def test_collect_helpers_and_transition_skips_unknown_states(repo_root: Path) ->
 
     assert module.collect_ids(plan) == {"X1": "X", "D1.1.1": "D", "D1.1.2": "D"}
     assert module.collect_statuses(plan) == {"X1": "planned", "D1.1.1": "review"}
-    assert module.validate_transitions(
-        {"items": [{"id": "D1.1.1", "status": "planned"}]},
-        {"items": [{"id": "D1.1.1", "status": "unknown"}]},
-    ) == []
+    assert (
+        module.validate_transitions(
+            {"items": [{"id": "D1.1.1", "status": "planned"}]},
+            {"items": [{"id": "D1.1.1", "status": "unknown"}]},
+        )
+        == []
+    )
 
 
 def test_commit_group_and_phase_gate_helpers_report_errors(repo_root: Path, tmp_path: Path) -> None:
@@ -587,10 +607,23 @@ def test_commit_group_and_phase_gate_helpers_report_errors(repo_root: Path, tmp_
 def test_validate_custom_rules_reports_composite_errors_and_warnings(repo_root: Path) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     plan = {
-        "milestones": [{"id": "bad", "type": "X", "status": "planned"}, {"id": "X1", "type": "X", "status": "planned"}],
-        "sprints": [{"id": "bad", "type": "S", "parent": "bad", "status": "planned"}, {"id": "S1.1", "type": "S", "parent": "X1", "status": "planned"}],
+        "milestones": [
+            {"id": "bad", "type": "X", "status": "planned"},
+            {"id": "X1", "type": "X", "status": "planned"},
+        ],
+        "sprints": [
+            {"id": "bad", "type": "S", "parent": "bad", "status": "planned"},
+            {"id": "S1.1", "type": "S", "parent": "X1", "status": "planned"},
+        ],
         "items": [
-            {"id": "bad", "type": "D", "status": "planned", "actions": ["plan"], "commit_group": "cg1", "depends_on": []},
+            {
+                "id": "bad",
+                "type": "D",
+                "status": "planned",
+                "actions": ["plan"],
+                "commit_group": "cg1",
+                "depends_on": [],
+            },
             {
                 "id": "M1.1.1a",
                 "type": "M",
@@ -609,10 +642,38 @@ def test_validate_custom_rules_reports_composite_errors_and_warnings(repo_root: 
                 "depends_on": ["missing"],
                 "scope": "pkg",
             },
-            {"id": "M1.1.1c", "type": "M", "status": "planned", "actions": ["implement"], "commit_group": "cg2", "depends_on": []},
-            {"id": "T1.1.2", "type": "T", "status": "ready", "actions": ["verify"], "commit_group": "cg3", "depends_on": ["M1.1.3"]},
-            {"id": "M1.1.3", "type": "M", "status": "planned", "actions": ["implement"], "commit_group": "cg9", "depends_on": []},
-            {"id": "D1.1.4", "type": "D", "status": "review", "actions": ["document"], "commit_group": "cg4", "requires_phase": "A"},
+            {
+                "id": "M1.1.1c",
+                "type": "M",
+                "status": "planned",
+                "actions": ["implement"],
+                "commit_group": "cg2",
+                "depends_on": [],
+            },
+            {
+                "id": "T1.1.2",
+                "type": "T",
+                "status": "ready",
+                "actions": ["verify"],
+                "commit_group": "cg3",
+                "depends_on": ["M1.1.3"],
+            },
+            {
+                "id": "M1.1.3",
+                "type": "M",
+                "status": "planned",
+                "actions": ["implement"],
+                "commit_group": "cg9",
+                "depends_on": [],
+            },
+            {
+                "id": "D1.1.4",
+                "type": "D",
+                "status": "review",
+                "actions": ["document"],
+                "commit_group": "cg4",
+                "requires_phase": "A",
+            },
             {
                 "id": "F1.1.5",
                 "type": "F",
@@ -645,7 +706,10 @@ def test_validate_custom_rules_reports_composite_errors_and_warnings(repo_root: 
     assert any("item 'M1.1.3' references unknown commit_group 'cg9'" in error for error in errors)
     assert any("commit_group 'cg1' references unknown item 'missing'" in error for error in errors)
     assert any("but is not listed in that commit_group's items" in error for error in errors)
-    assert any("lists item 'M1.1.1a' but that item declares commit_group 'cg1'" in error for error in errors)
+    assert any(
+        "lists item 'M1.1.1a' but that item declares commit_group 'cg1'" in error
+        for error in errors
+    )
     assert any("references unknown asset id 'missing-skill'" in error for error in errors)
     assert any("but no approval_ref" in error for error in errors)
     assert any("scope collision warning" in warning for warning in warnings)
@@ -656,7 +720,12 @@ def test_check_repo_map_freshness_reports_checkpoint_metadata_errors(
     repo_root: Path, tmp_path: Path
 ) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
-    plan = {"items": [{"id": "C1.1.1", "type": "C", "status": "review"}, {"id": "C1.1.2", "type": "C", "status": "verified"}]}
+    plan = {
+        "items": [
+            {"id": "C1.1.1", "type": "C", "status": "review"},
+            {"id": "C1.1.2", "type": "C", "status": "verified"},
+        ]
+    }
     repo_map = tmp_path / "REPO_MAP.md"
 
     repo_map.write_text("repo map\n", encoding="utf-8")
@@ -695,8 +764,22 @@ def test_print_split_plan_report_emits_active_and_archived_counts(
         {
             "current_path": "plan/PLAN-current.yaml",
             "archive_root": "plan/archive",
-            "current_fragment": {"milestones": [{"id": "X1"}], "sprints": [{"id": "S1.1"}], "items": [{"id": "D1.1.1"}], "commit_groups": [{"id": "cg1"}]},
-            "archives": [{"fragment": {"milestones": [{"id": "X0"}], "sprints": [{"id": "S0.1"}], "items": [{"id": "D0.1.1"}, {"id": "T0.1.2"}], "commit_groups": [{"id": "cg0"}]}}],
+            "current_fragment": {
+                "milestones": [{"id": "X1"}],
+                "sprints": [{"id": "S1.1"}],
+                "items": [{"id": "D1.1.1"}],
+                "commit_groups": [{"id": "cg1"}],
+            },
+            "archives": [
+                {
+                    "fragment": {
+                        "milestones": [{"id": "X0"}],
+                        "sprints": [{"id": "S0.1"}],
+                        "items": [{"id": "D0.1.1"}, {"id": "T0.1.2"}],
+                        "commit_groups": [{"id": "cg0"}],
+                    }
+                }
+            ],
         }
     )
 
@@ -708,7 +791,10 @@ def test_print_split_plan_report_emits_active_and_archived_counts(
 
 
 def test_validate_plan_main_handles_previous_plan_failure(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     current_path = copy_split_plan(tmp_path)
@@ -736,24 +822,41 @@ def test_validate_plan_main_handles_previous_plan_failure(
 
 
 def test_validate_plan_main_handles_loader_and_dependency_failures(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     index_path = copy_split_plan(tmp_path)
 
-    monkeypatch.setattr(module, "load_plan", lambda _path: (_ for _ in ()).throw(module.PlanLoadError("bad plan")))
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        module, "load_plan", lambda _path: (_ for _ in ()).throw(module.PlanLoadError("bad plan"))
+    )
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 1
     assert "ERROR: Failed to load plan: bad plan" in capsys.readouterr().err
 
-    monkeypatch.setattr(module, "load_plan", lambda _path: (_ for _ in ()).throw(RuntimeError("boom")))
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        module, "load_plan", lambda _path: (_ for _ in ()).throw(RuntimeError("boom"))
+    )
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 2
     assert "ERROR: Failed to load plan: boom" in capsys.readouterr().err
 
-    monkeypatch.setattr(module, "load_plan", lambda _path: ({}, {"format": "split", "index_path": index_path}))
-    monkeypatch.setattr(module, "load_schema", lambda _path: (_ for _ in ()).throw(ValueError("bad schema")))
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        module, "load_plan", lambda _path: ({}, {"format": "split", "index_path": index_path})
+    )
+    monkeypatch.setattr(
+        module, "load_schema", lambda _path: (_ for _ in ()).throw(ValueError("bad schema"))
+    )
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 2
     assert "ERROR: Failed to load schema JSON: bad schema" in capsys.readouterr().err
 
@@ -763,18 +866,25 @@ def test_validate_plan_main_handles_loader_and_dependency_failures(
         "load_shared_asset_registry",
         lambda _path: (_ for _ in ()).throw(ValueError("bad registry")),
     )
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 2
-    assert "ERROR: Failed to load shared asset registry YAML: bad registry" in capsys.readouterr().err
+    assert (
+        "ERROR: Failed to load shared asset registry YAML: bad registry" in capsys.readouterr().err
+    )
 
 
 def test_validate_plan_main_handles_schema_and_previous_plan_branches(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     index_path = copy_split_plan(tmp_path)
     previous_path = copy_split_plan(tmp_path / "prev")
-    plan = {"items": []}
+    plan: dict[str, object] = {"items": []}
     metadata = {
         "format": "split",
         "index_path": index_path,
@@ -787,13 +897,21 @@ def test_validate_plan_main_handles_schema_and_previous_plan_branches(
     monkeypatch.setattr(module, "load_plan", lambda _path: (plan, metadata))
     monkeypatch.setattr(module, "load_schema", lambda _path: {})
     monkeypatch.setattr(module, "load_shared_asset_registry", lambda _path: {"assets": []})
-    monkeypatch.setattr(module, "validate_plan_schema", lambda _plan, _schema: (["meta.repo: bad"], "subset"))
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        module, "validate_plan_schema", lambda _plan, _schema: (["meta.repo: bad"], "subset")
+    )
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 1
     assert "using built-in subset validator" in capsys.readouterr().err
 
-    monkeypatch.setattr(module, "validate_plan_schema", lambda _plan, _schema: (["path: items/0/id"], "jsonschema"))
-    monkeypatch.setattr(sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)])
+    monkeypatch.setattr(
+        module, "validate_plan_schema", lambda _plan, _schema: (["path: items/0/id"], "jsonschema")
+    )
+    monkeypatch.setattr(
+        sys, "argv", ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)]
+    )
     assert module.main() == 1
     assert "ERROR: Schema validation failed" in capsys.readouterr().err
 
@@ -802,7 +920,14 @@ def test_validate_plan_main_handles_schema_and_previous_plan_branches(
     monkeypatch.setattr(
         sys,
         "argv",
-        ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH), "--previous-plan", str(missing_previous)],
+        [
+            "validate-plan.py",
+            str(index_path),
+            "--schema",
+            str(SCHEMA_PATH),
+            "--previous-plan",
+            str(missing_previous),
+        ],
     )
     assert module.main() == 2
     assert "ERROR: Previous plan file not found" in capsys.readouterr().err
@@ -819,7 +944,14 @@ def test_validate_plan_main_handles_schema_and_previous_plan_branches(
     monkeypatch.setattr(
         sys,
         "argv",
-        ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH), "--previous-plan", str(previous_path)],
+        [
+            "validate-plan.py",
+            str(index_path),
+            "--schema",
+            str(SCHEMA_PATH),
+            "--previous-plan",
+            str(previous_path),
+        ],
     )
     assert module.main() == 1
     assert "ERROR: Failed to load previous plan: bad previous" in capsys.readouterr().err
@@ -836,14 +968,24 @@ def test_validate_plan_main_handles_schema_and_previous_plan_branches(
     monkeypatch.setattr(
         sys,
         "argv",
-        ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH), "--previous-plan", str(previous_path)],
+        [
+            "validate-plan.py",
+            str(index_path),
+            "--schema",
+            str(SCHEMA_PATH),
+            "--previous-plan",
+            str(previous_path),
+        ],
     )
     assert module.main() == 2
     assert "ERROR: Failed to load previous plan: explode" in capsys.readouterr().err
 
 
 def test_validate_plan_main_emits_warnings_and_freshness_errors(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     index_path = copy_split_plan(tmp_path)
@@ -859,9 +1001,17 @@ def test_validate_plan_main_emits_warnings_and_freshness_errors(
     monkeypatch.setattr(module, "load_schema", lambda _path: {})
     monkeypatch.setattr(module, "load_shared_asset_registry", lambda _path: {"assets": []})
     monkeypatch.setattr(module, "validate_plan_schema", lambda _plan, _schema: ([], "jsonschema"))
-    monkeypatch.setattr(module, "validate_shared_asset_registry", lambda _registry, _path: ({}, ["registry error"]))
-    monkeypatch.setattr(module, "validate_custom_rules", lambda _plan, _asset_map: (["governance error"], ["warn one"]))
-    monkeypatch.setattr(module, "check_repo_map_freshness", lambda _plan, _root: ["freshness error"])
+    monkeypatch.setattr(
+        module, "validate_shared_asset_registry", lambda _registry, _path: ({}, ["registry error"])
+    )
+    monkeypatch.setattr(
+        module,
+        "validate_custom_rules",
+        lambda _plan, _asset_map: (["governance error"], ["warn one"]),
+    )
+    monkeypatch.setattr(
+        module, "check_repo_map_freshness", lambda _plan, _root: ["freshness error"]
+    )
     monkeypatch.setattr(
         sys,
         "argv",
@@ -887,6 +1037,8 @@ def test_validate_plan_script_entrypoint_runs(
     )
 
     with pytest.raises(SystemExit) as exc:
-        runpy.run_path(str(repo_root / "agent-os" / "scripts" / "validate-plan.py"), run_name="__main__")
+        runpy.run_path(
+            str(repo_root / "agent-os" / "scripts" / "validate-plan.py"), run_name="__main__"
+        )
 
     assert exc.value.code == 0

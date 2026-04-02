@@ -151,7 +151,9 @@ def test_load_yaml_rejects_non_mapping(repo_root: Path, tmp_path: Path) -> None:
         module.load_yaml(path)
 
 
-def test_discover_control_plane_root_prefers_env(repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_discover_control_plane_root_prefers_env(
+    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
     )
@@ -176,7 +178,10 @@ def test_discover_control_plane_root_handles_explicit_local_and_missing(
 
     explicit_root = tmp_path / "explicit-root"
     explicit_root.mkdir()
-    assert module.discover_control_plane_root(repo_clone, str(explicit_root)) == explicit_root.resolve()
+    assert (
+        module.discover_control_plane_root(repo_clone, str(explicit_root))
+        == explicit_root.resolve()
+    )
 
     local_registry = repo_clone / "agent-os" / "registry"
     local_registry.mkdir(parents=True)
@@ -188,7 +193,9 @@ def test_discover_control_plane_root_handles_explicit_local_and_missing(
         module.discover_control_plane_root(repo_clone, None)
 
 
-def test_discover_control_plane_root_uses_stamped_workspace(repo_root: Path, tmp_path: Path) -> None:
+def test_discover_control_plane_root_uses_stamped_workspace(
+    repo_root: Path, tmp_path: Path
+) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
     )
@@ -196,12 +203,16 @@ def test_discover_control_plane_root_uses_stamped_workspace(repo_root: Path, tmp
     workspace_root.mkdir()
     repo_clone = workspace_root / "repo"
     repo_clone.mkdir()
-    (workspace_root / "CLAUDE.md").write_text(f"CONTROL_PLANE_ROOT: {repo_root}\n", encoding="utf-8")
+    (workspace_root / "CLAUDE.md").write_text(
+        f"CONTROL_PLANE_ROOT: {repo_root}\n", encoding="utf-8"
+    )
 
     assert module.discover_control_plane_root(repo_clone, None) == repo_root.resolve()
 
 
-def test_parse_workspace_control_plane_root_reads_codex_marker(repo_root: Path, tmp_path: Path) -> None:
+def test_parse_workspace_control_plane_root_reads_codex_marker(
+    repo_root: Path, tmp_path: Path
+) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
     )
@@ -214,13 +225,17 @@ def test_parse_workspace_control_plane_root_reads_codex_marker(repo_root: Path, 
     assert module.parse_workspace_control_plane_root(repo_clone) == repo_root.resolve()
 
 
-def test_find_registry_asset_rejects_non_mapping_entries(repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_find_registry_asset_rejects_non_mapping_entries(
+    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
     )
     monkeypatch.setattr(module, "load_registry", lambda _root: {"assets": ["bad"]})
 
-    with pytest.raises(ValueError, match="Registry entry for 'plan-checkpoint-close' is not a mapping"):
+    with pytest.raises(
+        ValueError, match="Registry entry for 'plan-checkpoint-close' is not a mapping"
+    ):
         module.find_registry_asset("plan-checkpoint-close", tmp_path)
 
 
@@ -401,7 +416,9 @@ def test_resolve_vendored_asset_returns_manifest_data(repo_root: Path, tmp_path:
     assert result["path"].endswith("payload.txt")
 
 
-def test_emit_supports_shell_and_json_formats(repo_root: Path, capsys: pytest.CaptureFixture[str]) -> None:
+def test_emit_supports_shell_and_json_formats(
+    repo_root: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
     )
@@ -437,7 +454,10 @@ def test_emit_supports_path_format(repo_root: Path, capsys: pytest.CaptureFixtur
 
 
 def test_resolve_shared_asset_main_succeeds_in_process(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
@@ -464,7 +484,10 @@ def test_resolve_shared_asset_main_succeeds_in_process(
 
 
 def test_resolve_shared_asset_main_handles_missing_repo_root(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"
@@ -481,7 +504,10 @@ def test_resolve_shared_asset_main_handles_missing_repo_root(
 
 
 def test_resolve_shared_asset_main_handles_resolution_failure(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module(
         "resolve_shared_asset", repo_root / "agent-os" / "scripts" / "resolve-shared-asset.py"

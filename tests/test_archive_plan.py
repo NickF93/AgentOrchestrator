@@ -97,33 +97,52 @@ def test_archive_plan_rejects_open_milestone(repo_root: Path, tmp_path: Path) ->
 
 
 def test_archive_plan_main_handles_missing_plan_index(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
     missing_path = tmp_path / "missing-index.yaml"
 
-    monkeypatch.setattr(sys, "argv", ["archive-plan.py", "--plan", str(missing_path), "--milestone", "X31"])
+    monkeypatch.setattr(
+        sys, "argv", ["archive-plan.py", "--plan", str(missing_path), "--milestone", "X31"]
+    )
 
     assert module.main() == 2
     assert "Plan index not found" in capsys.readouterr().out
 
 
 def test_archive_plan_main_rejects_missing_current_milestone(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
     index_path = copy_split_plan(tmp_path)
 
-    monkeypatch.setattr(sys, "argv", ["archive-plan.py", "--plan", str(index_path), "--milestone", "X999"])
+    monkeypatch.setattr(
+        sys, "argv", ["archive-plan.py", "--plan", str(index_path), "--milestone", "X999"]
+    )
 
     assert module.main() == 1
     assert "milestone is not present in the current fragment" in capsys.readouterr().out
 
 
 def test_archive_plan_main_succeeds_in_process(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
     mark_current_fragment_done(current_path)
@@ -156,9 +175,14 @@ def test_archive_plan_main_succeeds_in_process(
 
 
 def test_archive_plan_main_rejects_existing_archive_target_in_process(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
     mark_current_fragment_done(current_path)
@@ -187,7 +211,9 @@ def test_archive_plan_main_rejects_existing_archive_target_in_process(
 def test_ensure_fragment_is_closed_rejects_open_elements(
     repo_root: Path, status_updates: dict[str, str], message: str
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
     fragment = {
         "milestones": [{"id": "X1", "status": "done"}],
         "sprints": [{"id": "S1.1", "status": "done"}],
@@ -202,9 +228,14 @@ def test_ensure_fragment_is_closed_rejects_open_elements(
 
 
 def test_archive_plan_main_handles_unexpected_render_failure(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
     mark_current_fragment_done(current_path)
@@ -236,8 +267,12 @@ def test_archive_plan_main_handles_unexpected_render_failure(
 def test_archive_plan_load_render_module_rejects_unloadable_script(
     repo_root: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    module = load_module("archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py")
-    monkeypatch.setattr(module.importlib.util, "spec_from_file_location", lambda *_args, **_kwargs: None)
+    module = load_module(
+        "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
+    )
+    monkeypatch.setattr(
+        module.importlib.util, "spec_from_file_location", lambda *_args, **_kwargs: None
+    )
 
     with pytest.raises(module.PlanLoadError, match="Unable to load render helper"):
         module.load_render_module(repo_root / "agent-os" / "scripts")
@@ -267,6 +302,8 @@ def test_archive_plan_script_entrypoint_runs(
     )
 
     with pytest.raises(SystemExit) as exc:
-        runpy.run_path(str(repo_root / "agent-os" / "scripts" / "archive-plan.py"), run_name="__main__")
+        runpy.run_path(
+            str(repo_root / "agent-os" / "scripts" / "archive-plan.py"), run_name="__main__"
+        )
 
     assert exc.value.code == 0

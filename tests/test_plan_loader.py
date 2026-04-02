@@ -355,7 +355,9 @@ def test_load_fragment_rejects_missing_required_keys(repo_root: Path, tmp_path: 
         loader.load_fragment(path, kind="current")
 
 
-def test_load_fragment_rejects_non_list_commit_group_members(repo_root: Path, tmp_path: Path) -> None:
+def test_load_fragment_rejects_non_list_commit_group_members(
+    repo_root: Path, tmp_path: Path
+) -> None:
     loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
     fragment = make_fragment(
         milestone_id="X1",
@@ -410,7 +412,9 @@ def test_load_split_plan_rejects_archive_title_mismatch(repo_root: Path, tmp_pat
         loader.load_split_plan(index_path)
 
 
-def test_load_split_plan_rejects_archive_outside_archive_root(repo_root: Path, tmp_path: Path) -> None:
+def test_load_split_plan_rejects_archive_outside_archive_root(
+    repo_root: Path, tmp_path: Path
+) -> None:
     archive_fragment = make_fragment(
         milestone_id="X1",
         milestone_title="Archived milestone",
@@ -446,7 +450,13 @@ def test_extract_fragment_rejects_cross_milestone_commit_group(repo_root: Path) 
         ],
         "sprints": [
             {"id": "S1.1", "type": "S", "parent": "X1", "title": "One sprint", "status": "done"},
-            {"id": "S2.1", "type": "S", "parent": "X2", "title": "Two sprint", "status": "in_progress"},
+            {
+                "id": "S2.1",
+                "type": "S",
+                "parent": "X2",
+                "title": "Two sprint",
+                "status": "in_progress",
+            },
         ],
         "items": [
             {
@@ -618,11 +628,21 @@ def test_load_split_plan_rejects_other_invalid_index_fields(
         ("bad", r"archives\[0\] must be a mapping"),
         ({}, r"archives\[0\]\.milestone must be a non-empty string"),
         (
-            {"milestone": "X1", "title": "", "path": "archive/PLAN-X1.yaml", "digest": "sha256:abc"},
+            {
+                "milestone": "X1",
+                "title": "",
+                "path": "archive/PLAN-X1.yaml",
+                "digest": "sha256:abc",
+            },
             r"archives\[0\]\.title must be a non-empty string",
         ),
         (
-            {"milestone": "X1", "title": "Archived milestone", "path": "archive/PLAN-X1.yaml", "digest": ""},
+            {
+                "milestone": "X1",
+                "title": "Archived milestone",
+                "path": "archive/PLAN-X1.yaml",
+                "digest": "",
+            },
             r"archives\[0\]\.digest must be a non-empty string",
         ),
     ],

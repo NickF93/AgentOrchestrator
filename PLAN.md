@@ -1,11 +1,11 @@
 # PLAN.md
 
-AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
+AUTO-GENERATED from /tmp/pytest-of-niccolo/pytest-56/test_archive_plan_rejects_open0/plan/PLAN-index.yaml. Do not edit manually.
 
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-01
+- Last updated: 2026-04-02
 
 ## Mission
 
@@ -45,7 +45,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X28 | X | Plan Validate-Render Skill Packaging | done |
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
-| X31 | X | PLAN Splitting and Archival Foundation | in_progress |
+| X31 | X | PLAN Splitting and Archival Foundation | done |
 
 ## Plan
 
@@ -797,7 +797,7 @@ Status: done
 
 - ID: `X31`
 - Title: PLAN Splitting and Archival Foundation
-- Status: in_progress
+- Status: done
 - Note: Split the monolithic repo plan into a canonical plan/ entrypoint with active and archived fragments, keep aggregate validation and rendering deterministic, and propagate the new plan layout through Layer-0 tooling, skills, templates, and bootstrap flows. Sprint 3 reopens X31 to harden the split-plan runtime, remove legacy aggregate support from shared Python tooling, and bring the governed Python surface to warning-strict green gates with >95% per-file coverage for agent-os/scripts/.
 
 #### S31.1 Items
@@ -829,7 +829,7 @@ Status: done
 #### S31.3 Items
 
 Sprint: Sprint 3 — Warning-strict gates and script coverage hardening
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
@@ -840,7 +840,7 @@ Status: in_progress
 | `M31.3.5` | `M` | Fix runtime defects exposed by loader, split, and archive hardening tests | done |  |
 | `T31.3.6` | `T` | Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py | done |  |
 | `M31.3.7` | `M` | Fix runtime defects exposed by validate, render, and asset-resolution hardening tests | done |  |
-| `C31.3.8` | `C` | Checkpoint closure — X31 warning-strict coverage hardening | planned |  |
+| `C31.3.8` | `C` | Checkpoint closure — X31 warning-strict coverage hardening | done |  |
 
 ## Commit Groups
 
@@ -3134,7 +3134,7 @@ Status: in_progress
 
 ### C31.3.8: Checkpoint closure — X31 warning-strict coverage hardening
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: medium
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: medium
 - **Sprint**: `S31.3`
 - **Actions**: checkpoint, verify
 - **Depends on**: `M31.3.7`

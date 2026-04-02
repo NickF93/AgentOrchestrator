@@ -185,7 +185,10 @@ def test_split_plan_can_remove_legacy_source(repo_root: Path, tmp_path: Path) ->
 
 
 def test_split_plan_main_handles_missing_source(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
 
@@ -196,7 +199,10 @@ def test_split_plan_main_handles_missing_source(
 
 
 def test_split_plan_main_rejects_split_index_input(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
     index_path = tmp_path / "plan" / "PLAN-index.yaml"
@@ -222,7 +228,10 @@ def test_split_plan_main_rejects_split_index_input(
 
 
 def test_split_plan_main_succeeds_in_process(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
     legacy_path = tmp_path / "PLAN.yaml"
@@ -237,8 +246,18 @@ def test_split_plan_main_succeeds_in_process(
                     "last_updated": "2026-04-02",
                 },
                 "mission": "Fixture mission",
-                "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-                "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+                "milestones": [
+                    {"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}
+                ],
+                "sprints": [
+                    {
+                        "id": "S1.1",
+                        "type": "S",
+                        "parent": "X1",
+                        "title": "Only sprint",
+                        "status": "done",
+                    }
+                ],
                 "items": [
                     {
                         "id": "D1.1.1",
@@ -290,7 +309,10 @@ def test_split_plan_main_succeeds_in_process(
 
 
 def test_split_plan_main_succeeds_without_remove_source(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
     legacy_path = tmp_path / "PLAN.yaml"
@@ -305,8 +327,18 @@ def test_split_plan_main_succeeds_without_remove_source(
                     "last_updated": "2026-04-02",
                 },
                 "mission": "Fixture mission",
-                "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-                "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+                "milestones": [
+                    {"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}
+                ],
+                "sprints": [
+                    {
+                        "id": "S1.1",
+                        "type": "S",
+                        "parent": "X1",
+                        "title": "Only sprint",
+                        "status": "done",
+                    }
+                ],
                 "items": [
                     {
                         "id": "D1.1.1",
@@ -349,7 +381,10 @@ def test_split_plan_main_succeeds_without_remove_source(
 
 
 def test_split_plan_main_detects_render_drift(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
     legacy_path = tmp_path / "PLAN.yaml"
@@ -364,8 +399,18 @@ def test_split_plan_main_detects_render_drift(
                     "last_updated": "2026-04-02",
                 },
                 "mission": "Fixture mission",
-                "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-                "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+                "milestones": [
+                    {"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}
+                ],
+                "sprints": [
+                    {
+                        "id": "S1.1",
+                        "type": "S",
+                        "parent": "X1",
+                        "title": "Only sprint",
+                        "status": "done",
+                    }
+                ],
                 "items": [
                     {
                         "id": "D1.1.1",
@@ -416,11 +461,16 @@ def test_split_plan_main_detects_render_drift(
     )
 
     assert module.main() == 1
-    assert "rendered aggregate outputs changed across the split migration" in capsys.readouterr().out
+    assert (
+        "rendered aggregate outputs changed across the split migration" in capsys.readouterr().out
+    )
 
 
 def test_split_plan_main_detects_split_mismatch(
-    repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
     legacy_path = tmp_path / "PLAN.yaml"
@@ -435,8 +485,18 @@ def test_split_plan_main_detects_split_mismatch(
                     "last_updated": "2026-04-02",
                 },
                 "mission": "Fixture mission",
-                "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-                "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+                "milestones": [
+                    {"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}
+                ],
+                "sprints": [
+                    {
+                        "id": "S1.1",
+                        "type": "S",
+                        "parent": "X1",
+                        "title": "Only sprint",
+                        "status": "done",
+                    }
+                ],
                 "items": [
                     {
                         "id": "D1.1.1",
@@ -489,7 +549,9 @@ def test_split_plan_load_render_module_rejects_unloadable_script(
     repo_root: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     module = load_module("split_plan_module", repo_root / "agent-os" / "scripts" / "split-plan.py")
-    monkeypatch.setattr(module.importlib.util, "spec_from_file_location", lambda *_args, **_kwargs: None)
+    monkeypatch.setattr(
+        module.importlib.util, "spec_from_file_location", lambda *_args, **_kwargs: None
+    )
 
     with pytest.raises(module.PlanLoadError, match="Unable to load render helper"):
         module.load_render_module(repo_root / "agent-os" / "scripts")
@@ -510,8 +572,18 @@ def test_split_plan_script_entrypoint_runs(
                     "last_updated": "2026-04-02",
                 },
                 "mission": "Fixture mission",
-                "milestones": [{"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}],
-                "sprints": [{"id": "S1.1", "type": "S", "parent": "X1", "title": "Only sprint", "status": "done"}],
+                "milestones": [
+                    {"id": "X1", "type": "X", "title": "Only milestone", "status": "done"}
+                ],
+                "sprints": [
+                    {
+                        "id": "S1.1",
+                        "type": "S",
+                        "parent": "X1",
+                        "title": "Only sprint",
+                        "status": "done",
+                    }
+                ],
                 "items": [
                     {
                         "id": "D1.1.1",
@@ -549,6 +621,8 @@ def test_split_plan_script_entrypoint_runs(
     )
 
     with pytest.raises(SystemExit) as exc:
-        runpy.run_path(str(repo_root / "agent-os" / "scripts" / "split-plan.py"), run_name="__main__")
+        runpy.run_path(
+            str(repo_root / "agent-os" / "scripts" / "split-plan.py"), run_name="__main__"
+        )
 
     assert exc.value.code == 0
