@@ -1,0 +1,95 @@
+milestones:
+- id: X8
+  type: X
+  title: Adapter Layer Configuration and Repo Hygiene
+  status: done
+  note: 'Create thin adapter-layer files (CLAUDE.md, and future equivalents for Codex/Copilot/Kilo)
+    that point agents to canonical governance authorities and override adapter-specific
+    defaults that conflict with governance rules.
+
+    '
+sprints:
+- id: S8.1
+  type: S
+  parent: X8
+  title: "Sprint 1 \u2014 Claude Code adapter CLAUDE.md"
+  status: done
+items:
+- id: D8.1.1
+  parent: S8.1
+  type: D
+  title: Create CLAUDE.md as thin adapter layer pointing to canonical governance
+  actions:
+  - document
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg24
+  depends_on:
+  - C7.1.4
+  scope: .
+  artifacts_out:
+  - CLAUDE.md
+  notes: "Thin adapter-layer file for Claude Code. Points to AGENTS.md and canonical\
+    \ workflow authorities. Overrides Claude Code's default ask-before-committing\
+    \ behavior to align with the mandatory commit rule. Does not duplicate normative\
+    \ content \u2014 adapter boundary rule preserved.\n"
+- id: F8.1.2
+  parent: S8.1
+  type: F
+  title: Add .mypy_cache and workspace patterns to .gitignore
+  actions:
+  - implement
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg25
+  depends_on:
+  - D8.1.1
+  scope: .
+  artifacts_out:
+  - .gitignore
+  notes: 'Adds .mypy_cache/ and *-workspace/ patterns to .gitignore to keep eval working
+    directories and type-check caches out of version control.
+
+    '
+- id: C8.1.3
+  parent: S8.1
+  type: C
+  title: Adapter layer and repo hygiene checkpoint
+  actions:
+  - review
+  - checkpoint
+  - verify
+  status: done
+  role: reviewer
+  effort: low
+  commit_group: cg25
+  depends_on:
+  - F8.1.2
+  scope: .
+  checks:
+  - .gitignore includes .mypy_cache/ and *-workspace/ patterns
+  - validate-plan.py exits 0
+  - PLAN.md and PLAN.dot are regenerated and committed
+commit_groups:
+- id: cg24
+  title: "Adapter layer \u2014 CLAUDE.md as thin governance pointer"
+  items:
+  - D8.1.1
+  notes: 'Creates CLAUDE.md as a thin adapter-layer file for Claude Code. Points to
+    canonical governance authorities without duplicating normative content. Overrides
+    Claude Code''s default ask-before-commit behavior to align with the mandatory
+    commit rule.
+
+    '
+- id: cg25
+  title: "Repo hygiene \u2014 gitignore patterns for eval workspaces and caches"
+  items:
+  - F8.1.2
+  - C8.1.3
+  notes: 'Adds .mypy_cache/ and *-workspace/ patterns to .gitignore to keep eval working
+    data and type-check caches out of version control.
+
+    '

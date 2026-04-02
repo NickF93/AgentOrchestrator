@@ -27,18 +27,18 @@ This workspace is governed by a Level-0 control plane. Key rules:
 
 - **AGENTS.md** is the workflow authority in each repository.
 - **ARCHITECTURE.md** defines software constraints and boundaries.
-- **PLAN.yaml** is the source of truth for execution tracking.
+- **plan/PLAN-index.yaml** is the canonical plan entrypoint for execution tracking.
 - Generated views (`PLAN.md`, `PLAN.dot`) are informative only — never edit them.
 - One orchestrator owns the canonical PLAN; other agents propose, not write.
-- Track work in `PLAN.yaml` before editing non-generated files.
-- Commit-group boundaries come from `PLAN.yaml`; do not invent them at commit time.
+- Track work in `plan/PLAN-current.yaml` before editing non-generated files.
+- Commit-group boundaries come from the split plan; do not invent them at commit time.
 
 ## Authority Precedence
 
 1. Explicit human instructions
 2. AGENTS.md — workflow authority
 3. ARCHITECTURE.md — software constraints
-4. PLAN.yaml — execution tracking
+4. plan/PLAN-index.yaml — execution tracking
 5. Code and tests — implementation evidence
 6. Generated views — non-authoritative
 
@@ -54,13 +54,13 @@ Do not push (Phase A only) unless explicitly told to.
 
 ### Tracking-first execution
 
-Before modifying any non-generated file, the owning `PLAN.yaml` item must
+Before modifying any non-generated file, the owning `plan/PLAN-current.yaml` item must
 exist with a declared `commit_group`. If no item exists, create one first.
 Do not start implementation without tracking.
 
 ### Autonomous plan execution
 
-When working through `PLAN.yaml`, advance items through the lifecycle
+When working through `plan/PLAN-current.yaml`, advance items through the lifecycle
 automatically: implement, update statuses, run checks, validate, render,
 and commit each `commit_group` as it completes. Do not stop to ask between
 commit_groups unless an escalation condition from `AGENTS.md` is triggered.
@@ -79,7 +79,7 @@ commits.
 Stop and ask the human owner when:
 
 - Authority boundaries would change
-- ARCHITECTURE.md and PLAN.yaml conflict
+- ARCHITECTURE.md and plan/PLAN-index.yaml conflict
 - Schema changes would invalidate existing plan data
 - Irreversible Git automation is requested beyond the current phase
 
@@ -93,4 +93,4 @@ Stop and ask the human owner when:
 - Templates: `{{CONTROL_PLANE_ROOT}}/agent-os/templates/`
 - Validation: `{{CONTROL_PLANE_ROOT}}/agent-os/scripts/validate-plan.py`
 - Rendering: `{{CONTROL_PLANE_ROOT}}/agent-os/scripts/render-plan.py`
-- Current plan: `{{CONTROL_PLANE_ROOT}}/PLAN.yaml`
+- Current plan: `{{CONTROL_PLANE_ROOT}}/plan/PLAN-index.yaml`

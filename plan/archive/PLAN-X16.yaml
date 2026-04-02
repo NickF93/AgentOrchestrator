@@ -1,0 +1,70 @@
+milestones:
+- id: X16
+  type: X
+  title: Human-Readable TODO Checklist
+  status: done
+  note: 'Add a non-normative TODO.md checklist for the human operator to track macro-features
+    across the project. Not governance, not read by agents.
+
+    '
+sprints:
+- id: S16.1
+  type: S
+  parent: X16
+  title: "Sprint 1 \u2014 Create TODO.md"
+  status: done
+items:
+- id: D16.1.1
+  parent: S16.1
+  type: D
+  title: Create non-normative TODO.md checklist
+  actions:
+  - document
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg38
+  scope: .
+  artifacts_out:
+  - TODO.md
+  notes: 'Human-readable checklist of macro-features done and pending. Not governance,
+    not read by agents.
+
+    '
+- id: D16.1.2
+  parent: S16.1
+  type: D
+  title: Fix TODO typo from NFC to RFC for normative review section
+  actions:
+  - document
+  status: done
+  role: implementer
+  effort: low
+  commit_group: cg39
+  depends_on:
+  - D16.1.1
+  scope: .
+  artifacts_out:
+  - PLAN.yaml
+  - TODO.md
+  notes: 'Corrects the TODO heading/checkbox label typo from NFC to RFC in the non-normative
+    future-considerations section.
+
+    '
+commit_groups:
+- id: cg38
+  title: Add non-normative TODO.md checklist
+  items:
+  - D16.1.1
+  notes: 'Human-readable macro-feature checklist for the operator. Not normative,
+    not governance, not consumed by agents.
+
+    '
+- id: cg39
+  title: "TODO wording fix \u2014 NFC to RFC"
+  items:
+  - D16.1.2
+  notes: 'Tracks and closes the TODO typo correction from NFC to RFC while preserving
+    TODO.md as a non-authoritative operator checklist.
+
+    '

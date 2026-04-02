@@ -26,15 +26,18 @@ in workspaces and reused by multiple repositories.
 - `docs/design/` is reference-only and must not become runtime authority.
   Normative rules discovered in design docs must be migrated to canonical
   authorities before they carry governance weight.
-- `PLAN.yaml` is the only authoritative execution-tracking file for this repo.
+- `plan/PLAN-index.yaml` is the authoritative plan entrypoint for this repo.
+- `plan/PLAN-current.yaml` holds the active execution surface.
+- `plan/archive/PLAN-XNN.yaml` fragments hold closed milestone history.
 
 ## Planning Architecture Principle
 
 The repository planning model is designed as an execution-oriented control
 artifact, not as a passive project-management document.
 
-`PLAN.yaml` is the canonical machine-readable execution graph. Its primary
-architectural purpose is to support:
+The split plan rooted at `plan/PLAN-index.yaml` is the canonical
+machine-readable execution graph. Its primary architectural purpose is to
+support:
 - deterministic decomposition of work,
 - safe aggregation into commit and review units,
 - controlled parallel execution,
@@ -55,6 +58,7 @@ Any future extension of the planning model MUST preserve these optimization goal
   require corresponding updates in both schema and validation logic.
 - Changes to `agent-os/schemas/` should be backward-aware or include migration notes.
 - Generated plan views are downstream artifacts and should never be used as source.
+- Archive fragments must remain deterministic, append-only snapshots once written.
 - Root governance files (`AGENTS.md`, `ARCHITECTURE.md`) are authoritative for this
   repository; they are not generated from templates.
 

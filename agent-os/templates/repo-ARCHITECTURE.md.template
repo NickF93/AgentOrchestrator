@@ -28,5 +28,5 @@ Define software boundaries, module ownership, interfaces, and invariants.
 - Every active/superseded/deprecated ADR must reference related PLAN items.
 
 ## Non-Goals
-- This file does not track execution status (use PLAN.yaml).
+- This file does not track execution status (use plan/PLAN-index.yaml).
 - This file does not define workflow policy (use AGENTS.md).

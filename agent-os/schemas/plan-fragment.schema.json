@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/agent-os/schemas/plan-fragment.schema.json",
+  "title": "Agent Split Plan Fragment Schema",
+  "type": "object",
+  "required": ["milestones", "sprints", "items", "commit_groups"],
+  "properties": {
+    "milestones": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/milestone" }
+    },
+    "sprints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sprint" }
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    },
+    "commit_groups": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/commitGroup" }
+    }
+  },
+  "$defs": {
+    "milestoneId": { "type": "string", "pattern": "^X[1-9][0-9]*$" },
+    "sprintId": { "type": "string", "pattern": "^S[1-9][0-9]*\\.[1-9][0-9]*$" },
+    "itemId": {
+      "type": "string",
+      "pattern": "^[A-Z]+[1-9][0-9]*\\.[1-9][0-9]*\\.[1-9][0-9]*[a-z]?$"
+    },
+    "dependencyTarget": {
+      "oneOf": [
+        { "$ref": "#/$defs/sprintId" },
+        { "$ref": "#/$defs/itemId" }
+      ]
+    },
+    "sharedAssetId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "ready",
+        "in_progress",
+        "blocked",
+        "review",
+        "verified",
+        "done"
+      ]
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "orchestrator",
+        "implementer",
+        "tester",
+        "reviewer",
+        "documenter",
+        "researcher"
+      ]
+    },
+    "effort": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "audit",
+        "plan",
+        "design",
+        "implement",
+        "refactor",
+        "test",
+        "verify",
+        "document",
+        "review",
+        "checkpoint",
+        "decide",
+        "migrate"
+      ]
+    },
+    "sharedAssets": {
+      "type": "object",
+      "properties": {
+        "skill": { "$ref": "#/$defs/sharedAssetId" },
+        "prompt": { "$ref": "#/$defs/sharedAssetId" },
+        "profile": { "$ref": "#/$defs/sharedAssetId" },
+        "result_protocol": { "$ref": "#/$defs/sharedAssetId" },
+        "context_policy": {
+          "type": "string",
+          "enum": ["focused", "diff_only", "repo_full"]
+        },
+        "resolution_mode": {
+          "type": "string",
+          "enum": ["workspace", "vendored"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "milestone": {
+      "type": "object",
+      "required": ["id", "type", "title", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/milestoneId" },
+        "type": { "const": "X" },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "sprint": {
+      "type": "object",
+      "required": ["id", "type", "parent", "title", "status"],
+      "properties": {
+        "id": { "$ref": "#/$defs/sprintId" },
+        "type": { "const": "S" },
+        "parent": { "$ref": "#/$defs/milestoneId" },
+        "title": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "item": {
+      "type": "object",
+      "required": ["id", "type", "title", "status", "role", "effort", "actions", "parent", "commit_group"],
+      "properties": {
+        "id": { "$ref": "#/$defs/itemId" },
+        "parent": { "$ref": "#/$defs/sprintId" },
+        "type": { "type": "string", "enum": ["Q", "D", "M", "F", "T", "C"] },
+        "title": { "type": "string", "minLength": 1 },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/action" }
+        },
+        "status": { "$ref": "#/$defs/status" },
+        "role": { "$ref": "#/$defs/role" },
+        "effort": { "$ref": "#/$defs/effort" },
+        "commit_group": {
+          "type": "string",
+          "pattern": "^cg[0-9]+$"
+        },
+        "depends_on": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/dependencyTarget" }
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^(\\.|[A-Za-z0-9._/-]+)$"
+        },
+        "decision": { "type": "string" },
+        "checks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "shared_assets": { "$ref": "#/$defs/sharedAssets" },
+        "artifacts_in": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "artifacts_out": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" },
+        "triggers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "tools_profile": { "type": "string" },
+        "requires_phase": {
+          "type": "string",
+          "enum": ["A", "B", "C", "D"]
+        },
+        "approval_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "if": {
+        "properties": { "type": { "not": { "const": "Q" } } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "decision": false
+        }
+      },
+      "additionalProperties": true
+    },
+    "commitGroup": {
+      "type": "object",
+      "required": ["id", "title", "items"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^cg[0-9]+$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "items": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/itemId" }
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

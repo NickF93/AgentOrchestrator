@@ -12,7 +12,9 @@ This repository is governed by the Level-0 control plane.
 |---|---|
 | AGENTS.md | Workflow authority and operating rules |
 | ARCHITECTURE.md | Software constraints and boundaries |
-| PLAN.yaml | Active execution tracking (source of truth) |
+| plan/PLAN-index.yaml | Canonical plan entrypoint (source of truth) |
+| plan/PLAN-current.yaml | Active execution fragment |
+| plan/archive/PLAN-XNN.yaml | Closed milestone archive fragments |
 | PLAN.md | Human-readable plan view (generated) |
 | PLAN.dot | Graph plan view (generated) |
 | REPO_MAP.md | Codebase topology reference |
@@ -34,7 +36,7 @@ This repository is governed by the Level-0 control plane.
 
 ## Working Discipline
 
-- Track work in `PLAN.yaml` before editing files.
+- Track work in `plan/PLAN-current.yaml` before editing files.
 - Each git commit closes exactly one `commit_group`.
 - Tracked commits MUST include a footer of the form:
   `Refs: <PLAN item IDs>, <commit_group ID>`
@@ -42,7 +44,7 @@ This repository is governed by the Level-0 control plane.
   host-specific interpreter paths only there.
 - Runtime entrypoints such as `.github/copilot-instructions.md` are thin
   pointers only; canonical governance remains in `AGENTS.md`,
-  `ARCHITECTURE.md`, and `PLAN.yaml`.
+  `ARCHITECTURE.md`, and `plan/PLAN-index.yaml`.
 
 ## Local Hooks
 

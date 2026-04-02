@@ -18,9 +18,9 @@ across multiple commit_groups is a governance violation.
 ## Tracking-First Rule
 
 Before modifying any non-generated file, the owning item MUST already be
-tracked in `PLAN.yaml` with a declared `commit_group`. Commit-group boundaries
-are plan-time decisions, not something agents may invent during commit
-creation.
+tracked in `plan/PLAN-current.yaml` with a declared `commit_group`.
+Commit-group boundaries are plan-time decisions, not something agents may
+invent during commit creation.
 
 ## Commit Message Contract
 
@@ -91,16 +91,17 @@ until explicitly authorized by the human owner:
 Each deferred automation listed above MUST NOT be implemented unless ALL of the
 following conditions are met:
 
-1. A dedicated decision item (Q-type) exists in PLAN.yaml requesting the
+1. A dedicated decision item (Q-type) exists in the canonical plan requesting the
    phase transition.
 2. The human owner has explicitly approved the transition with documented
    sign-off.
 3. An ADR or equivalent approval reference is recorded (the item's
    `approval_ref` field MUST be populated).
 
-Items that touch deferred automation SHOULD declare a `requires_phase` field
-in PLAN.yaml. The validator enforces that items with `requires_phase` in
-ready/in_progress/review status have a valid `approval_ref`.
+Items that touch deferred automation SHOULD declare a `requires_phase`
+field in the canonical plan. The validator enforces that items with
+`requires_phase` in ready/in_progress/review status have a valid
+`approval_ref`.
 
 ## Safety Rules
 - Do not automate force-push.

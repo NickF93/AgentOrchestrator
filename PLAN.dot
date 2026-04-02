@@ -14,9 +14,9 @@ digraph PLAN {
   "X11" [label="X11 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X12" [label="X12 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X13" [label="X13 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X14" [label="X14 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X15" [label="X15 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X16" [label="X16 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X14" [label="X14 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X17" [label="X17 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X18" [label="X18 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X19" [label="X19 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
@@ -31,6 +31,7 @@ digraph PLAN {
   "X28" [label="X28 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X29" [label="X29 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X30" [label="X30 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X31" [label="X31 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -54,9 +55,9 @@ digraph PLAN {
   "S11.1" [label="S11.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S12.1" [label="S12.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S13.1" [label="S13.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S16.1" [label="S16.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S15.1" [label="S15.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S14.1" [label="S14.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S15.1" [label="S15.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S16.1" [label="S16.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S17.1" [label="S17.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S18.1" [label="S18.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S19.1" [label="S19.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -75,23 +76,10 @@ digraph PLAN {
   "S29.1" [label="S29.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S29.2" [label="S29.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S30.1" [label="S30.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  subgraph "cluster_cg7" {
-    style="rounded,dashed";
-    label="cg7: Governance compliance — propagate architectural rules to workflow docs";
-  "D2.1.1" [label="D2.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D2.1.2" [label="D2.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D2.1.3" [label="D2.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  }
-  subgraph "cluster_cg8" {
-    style="rounded,dashed";
-    label="cg8: Architecture finalization — close specification gaps G1-G5";
-  "D2.1.4" [label="D2.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D2.1.5" [label="D2.1.5 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D2.1.6" [label="D2.1.6 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D2.1.7" [label="D2.1.7 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D2.1.8" [label="D2.1.8 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "C2.1.1" [label="C2.1.1 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
-  }
+  "S31.1" [label="S31.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S31.2" [label="S31.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S31.3" [label="S31.3 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S31.4" [label="S31.4 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -101,12 +89,6 @@ digraph PLAN {
     style="rounded,dashed";
     label="cg1: Review and planning artifacts";
   "D1.1.2" [label="D1.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  }
-  subgraph "cluster_cg6" {
-    style="rounded,dashed";
-    label="cg6: Governance hardening updates";
-  "D1.1.3" [label="D1.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
-  "D1.1.4" [label="D1.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg2" {
     style="rounded,dashed";
@@ -138,6 +120,29 @@ digraph PLAN {
   "T1.1.2" [label="T1.1.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "T1.1.3" [label="T1.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C1.1.1" [label="C1.1.1 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg6" {
+    style="rounded,dashed";
+    label="cg6: Governance hardening updates";
+  "D1.1.3" [label="D1.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D1.1.4" [label="D1.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg7" {
+    style="rounded,dashed";
+    label="cg7: Governance compliance — propagate architectural rules to workflow docs";
+  "D2.1.1" [label="D2.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.2" [label="D2.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.3" [label="D2.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg8" {
+    style="rounded,dashed";
+    label="cg8: Architecture finalization — close specification gaps G1-G5";
+  "D2.1.4" [label="D2.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.5" [label="D2.1.5 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.6" [label="D2.1.6 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.7" [label="D2.1.7 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D2.1.8" [label="D2.1.8 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "C2.1.1" [label="C2.1.1 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg9" {
     style="rounded,dashed";
@@ -339,6 +344,12 @@ digraph PLAN {
     label="cg35: Portability implementation — Copilot support and Kilo realignment";
   "M14.1.2" [label="M14.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg36" {
+    style="rounded,dashed";
+    label="cg36: Portability verification and closure — validate X14 end to end";
+  "T14.1.3" [label="T14.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C14.1.4" [label="C14.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   subgraph "cluster_cg37" {
     style="rounded,dashed";
     label="cg37: Environment portability — AGENT_PYTHON env var and .env.example";
@@ -362,12 +373,6 @@ digraph PLAN {
   "D17.1.1" [label="D17.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   "T17.1.2" [label="T17.1.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C17.1.3" [label="C17.1.3 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
-  }
-  subgraph "cluster_cg36" {
-    style="rounded,dashed";
-    label="cg36: Portability verification and closure — validate X14 end to end";
-  "T14.1.3" [label="T14.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
-  "C14.1.4" [label="C14.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg41" {
     style="rounded,dashed";
@@ -510,6 +515,80 @@ digraph PLAN {
     label="cg62: TODO roadmap expansion";
   "D30.1.1" [label="D30.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg63" {
+    style="rounded,dashed";
+    label="cg63: X31 tracking bootstrap on the reserved feature branch";
+  "D31.1.1" [label="D31.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg64" {
+    style="rounded,dashed";
+    label="cg64: Split-plan model, loader, migration tooling, and repository self-migration";
+  "M31.1.2" [label="M31.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T31.1.3" [label="T31.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C31.1.4" [label="C31.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg65" {
+    style="rounded,dashed";
+    label="cg65: Aggregate validator and renderer split-plan loader refactor";
+  "M31.2.1" [label="M31.2.1 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.2.2" [label="M31.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg66" {
+    style="rounded,dashed";
+    label="cg66: Archival automation and split-plan propagation";
+  "M31.2.3" [label="M31.2.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "F31.2.4" [label="F31.2.4 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg67" {
+    style="rounded,dashed";
+    label="cg67: Split-plan validation matrix and X31 closure";
+  "T31.2.5" [label="T31.2.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C31.2.6" [label="C31.2.6 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg68" {
+    style="rounded,dashed";
+    label="cg68: X31 sprint-3 tracking bootstrap";
+  "D31.3.1" [label="D31.3.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg69" {
+    style="rounded,dashed";
+    label="cg69: Warning-strict Python gate and split-only runtime contract";
+  "M31.3.2" [label="M31.3.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.3.3" [label="M31.3.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg70" {
+    style="rounded,dashed";
+    label="cg70: Loader, split, and archive hardening loop";
+  "T31.3.4" [label="T31.3.4 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.3.5" [label="M31.3.5 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg71" {
+    style="rounded,dashed";
+    label="cg71: Validate, render, and asset-resolution hardening loop";
+  "T31.3.6" [label="T31.3.6 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.3.7" [label="M31.3.7 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg72" {
+    style="rounded,dashed";
+    label="cg72: Warning-strict gate closure for X31 sprint 3";
+  "C31.3.8" [label="C31.3.8 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg73" {
+    style="rounded,dashed";
+    label="cg73: X31 sprint-4 closure audit bootstrap";
+  "D31.4.1" [label="D31.4.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg74" {
+    style="rounded,dashed";
+    label="cg74: Deterministic generated-view isolation and closure consistency remediation";
+  "T31.4.2" [label="T31.4.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.4.3" [label="M31.4.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg75" {
+    style="rounded,dashed";
+    label="cg75: X31 final closure audit and checkpoint";
+  "C31.4.4" [label="C31.4.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -533,9 +612,9 @@ digraph PLAN {
   "X11" -> "S11.1" [style=dashed];
   "X12" -> "S12.1" [style=dashed];
   "X13" -> "S13.1" [style=dashed];
-  "X16" -> "S16.1" [style=dashed];
-  "X15" -> "S15.1" [style=dashed];
   "X14" -> "S14.1" [style=dashed];
+  "X15" -> "S15.1" [style=dashed];
+  "X16" -> "S16.1" [style=dashed];
   "X17" -> "S17.1" [style=dashed];
   "X18" -> "S18.1" [style=dashed];
   "X19" -> "S19.1" [style=dashed];
@@ -554,25 +633,30 @@ digraph PLAN {
   "X29" -> "S29.1" [style=dashed];
   "X29" -> "S29.2" [style=dashed];
   "X30" -> "S30.1" [style=dashed];
-  "S1.1" -> "D1.1.1" [style=dashed];
-  "S1.1" -> "D1.1.2" [style=dashed];
-  "S1.1" -> "D1.1.3" [style=dashed];
-  "S1.1" -> "D1.1.4" [style=dashed];
-  "S1.1" -> "Q1.1.1" [style=dashed];
-  "S1.1" -> "Q1.1.2" [style=dashed];
-  "S1.1" -> "Q1.1.3" [style=dashed];
-  "S1.1" -> "Q1.1.4" [style=dashed];
-  "S1.1" -> "Q1.1.5" [style=dashed];
-  "S1.1" -> "M1.1.1" [style=dashed];
-  "S1.1" -> "M1.1.6" [style=dashed];
-  "S1.1" -> "M1.1.2" [style=dashed];
-  "S1.1" -> "M1.1.3" [style=dashed];
-  "S1.1" -> "M1.1.4" [style=dashed];
-  "S1.1" -> "M1.1.5" [style=dashed];
-  "S1.1" -> "T1.1.1" [style=dashed];
-  "S1.1" -> "T1.1.2" [style=dashed];
-  "S1.1" -> "T1.1.3" [style=dashed];
+  "X31" -> "S31.1" [style=dashed];
+  "X31" -> "S31.2" [style=dashed];
+  "X31" -> "S31.3" [style=dashed];
+  "X31" -> "S31.4" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
+  "S1.1" -> "D1.1.1" [style=dashed];
+  "S1.1" -> "M1.1.1" [style=dashed];
+  "S1.1" -> "Q1.1.1" [style=dashed];
+  "S1.1" -> "T1.1.1" [style=dashed];
+  "S1.1" -> "D1.1.2" [style=dashed];
+  "S1.1" -> "M1.1.2" [style=dashed];
+  "S1.1" -> "Q1.1.2" [style=dashed];
+  "S1.1" -> "T1.1.2" [style=dashed];
+  "S1.1" -> "D1.1.3" [style=dashed];
+  "S1.1" -> "M1.1.3" [style=dashed];
+  "S1.1" -> "Q1.1.3" [style=dashed];
+  "S1.1" -> "T1.1.3" [style=dashed];
+  "S1.1" -> "D1.1.4" [style=dashed];
+  "S1.1" -> "M1.1.4" [style=dashed];
+  "S1.1" -> "Q1.1.4" [style=dashed];
+  "S1.1" -> "M1.1.5" [style=dashed];
+  "S1.1" -> "Q1.1.5" [style=dashed];
+  "S1.1" -> "M1.1.6" [style=dashed];
+  "S2.1" -> "C2.1.1" [style=dashed];
   "S2.1" -> "D2.1.1" [style=dashed];
   "S2.1" -> "D2.1.2" [style=dashed];
   "S2.1" -> "D2.1.3" [style=dashed];
@@ -581,7 +665,6 @@ digraph PLAN {
   "S2.1" -> "D2.1.6" [style=dashed];
   "S2.1" -> "D2.1.7" [style=dashed];
   "S2.1" -> "D2.1.8" [style=dashed];
-  "S2.1" -> "C2.1.1" [style=dashed];
   "S3.1" -> "F3.1.1" [style=dashed];
   "S3.1" -> "M3.1.2" [style=dashed];
   "S3.1" -> "D3.1.3" [style=dashed];
@@ -661,26 +744,26 @@ digraph PLAN {
   "S10.1" -> "M10.1.3" [style=dashed];
   "S10.1" -> "T10.1.4" [style=dashed];
   "S10.1" -> "C10.1.5" [style=dashed];
+  "S11.1" -> "D11.1.1" [style=dashed];
+  "S11.1" -> "M11.1.2" [style=dashed];
+  "S11.1" -> "M11.1.3" [style=dashed];
+  "S11.1" -> "T11.1.4" [style=dashed];
+  "S11.1" -> "C11.1.5" [style=dashed];
   "S12.1" -> "M12.1.1" [style=dashed];
   "S12.1" -> "T12.1.2" [style=dashed];
   "S12.1" -> "C12.1.3" [style=dashed];
   "S13.1" -> "F13.1.1" [style=dashed];
   "S13.1" -> "F13.1.2" [style=dashed];
   "S13.1" -> "C13.1.3" [style=dashed];
-  "S11.1" -> "D11.1.1" [style=dashed];
-  "S11.1" -> "M11.1.2" [style=dashed];
-  "S11.1" -> "M11.1.3" [style=dashed];
-  "S11.1" -> "T11.1.4" [style=dashed];
-  "S11.1" -> "C11.1.5" [style=dashed];
   "S14.1" -> "D14.1.1" [style=dashed];
   "S14.1" -> "M14.1.2" [style=dashed];
   "S14.1" -> "T14.1.3" [style=dashed];
   "S14.1" -> "C14.1.4" [style=dashed];
-  "S16.1" -> "D16.1.1" [style=dashed];
-  "S16.1" -> "D16.1.2" [style=dashed];
   "S15.1" -> "M15.1.1" [style=dashed];
   "S15.1" -> "T15.1.2" [style=dashed];
   "S15.1" -> "C15.1.3" [style=dashed];
+  "S16.1" -> "D16.1.1" [style=dashed];
+  "S16.1" -> "D16.1.2" [style=dashed];
   "S17.1" -> "D17.1.1" [style=dashed];
   "S17.1" -> "T17.1.2" [style=dashed];
   "S17.1" -> "C17.1.3" [style=dashed];
@@ -715,9 +798,9 @@ digraph PLAN {
   "S26.2" -> "M26.2.1" [style=dashed];
   "S26.2" -> "M26.2.2" [style=dashed];
   "S26.2" -> "D26.2.3" [style=dashed];
-  "S26.2" -> "M26.2.6" [style=dashed];
   "S26.2" -> "T26.2.4" [style=dashed];
   "S26.2" -> "C26.2.5" [style=dashed];
+  "S26.2" -> "M26.2.6" [style=dashed];
   "S27.1" -> "D27.1.1" [style=dashed];
   "S27.1" -> "M27.1.2" [style=dashed];
   "S27.1" -> "T27.1.3" [style=dashed];
@@ -737,32 +820,54 @@ digraph PLAN {
   "S29.2" -> "T29.2.4" [style=dashed];
   "S29.2" -> "C29.2.5" [style=dashed];
   "S30.1" -> "D30.1.1" [style=dashed];
-  "D1.1.2" -> "Q1.1.1";
-  "D1.1.2" -> "Q1.1.2";
-  "D1.1.2" -> "Q1.1.3";
-  "D1.1.2" -> "Q1.1.4";
-  "D1.1.2" -> "Q1.1.5";
-  "Q1.1.1" -> "M1.1.1";
-  "Q1.1.2" -> "M1.1.1";
-  "Q1.1.3" -> "M1.1.1";
-  "Q1.1.1" -> "M1.1.6";
-  "Q1.1.2" -> "M1.1.6";
-  "Q1.1.3" -> "M1.1.6";
-  "Q1.1.1" -> "M1.1.2";
-  "Q1.1.4" -> "M1.1.2";
-  "Q1.1.2" -> "M1.1.3";
-  "M1.1.1" -> "M1.1.3";
-  "M1.1.2" -> "M1.1.4";
-  "Q1.1.5" -> "M1.1.4";
-  "M1.1.3" -> "M1.1.5";
-  "Q1.1.3" -> "M1.1.5";
-  "M1.1.2" -> "T1.1.1";
-  "M1.1.4" -> "T1.1.1";
-  "M1.1.5" -> "T1.1.2";
-  "M1.1.4" -> "T1.1.3";
+  "S31.1" -> "D31.1.1" [style=dashed];
+  "S31.1" -> "M31.1.2" [style=dashed];
+  "S31.1" -> "T31.1.3" [style=dashed];
+  "S31.1" -> "C31.1.4" [style=dashed];
+  "S31.2" -> "M31.2.1" [style=dashed];
+  "S31.2" -> "M31.2.2" [style=dashed];
+  "S31.2" -> "M31.2.3" [style=dashed];
+  "S31.2" -> "F31.2.4" [style=dashed];
+  "S31.2" -> "T31.2.5" [style=dashed];
+  "S31.2" -> "C31.2.6" [style=dashed];
+  "S31.3" -> "D31.3.1" [style=dashed];
+  "S31.3" -> "M31.3.2" [style=dashed];
+  "S31.3" -> "M31.3.3" [style=dashed];
+  "S31.3" -> "T31.3.4" [style=dashed];
+  "S31.3" -> "M31.3.5" [style=dashed];
+  "S31.3" -> "T31.3.6" [style=dashed];
+  "S31.3" -> "M31.3.7" [style=dashed];
+  "S31.3" -> "C31.3.8" [style=dashed];
+  "S31.4" -> "D31.4.1" [style=dashed];
+  "S31.4" -> "T31.4.2" [style=dashed];
+  "S31.4" -> "M31.4.3" [style=dashed];
+  "S31.4" -> "C31.4.4" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
+  "Q1.1.1" -> "M1.1.1";
+  "Q1.1.2" -> "M1.1.1";
+  "Q1.1.3" -> "M1.1.1";
+  "D1.1.2" -> "Q1.1.1";
+  "M1.1.2" -> "T1.1.1";
+  "M1.1.4" -> "T1.1.1";
+  "Q1.1.1" -> "M1.1.2";
+  "Q1.1.4" -> "M1.1.2";
+  "D1.1.2" -> "Q1.1.2";
+  "M1.1.5" -> "T1.1.2";
+  "Q1.1.2" -> "M1.1.3";
+  "M1.1.1" -> "M1.1.3";
+  "D1.1.2" -> "Q1.1.3";
+  "M1.1.4" -> "T1.1.3";
+  "M1.1.2" -> "M1.1.4";
+  "Q1.1.5" -> "M1.1.4";
+  "D1.1.2" -> "Q1.1.4";
+  "M1.1.3" -> "M1.1.5";
+  "Q1.1.3" -> "M1.1.5";
+  "D1.1.2" -> "Q1.1.5";
+  "Q1.1.1" -> "M1.1.6";
+  "Q1.1.2" -> "M1.1.6";
+  "Q1.1.3" -> "M1.1.6";
   "D2.1.4" -> "C2.1.1";
   "D2.1.5" -> "C2.1.1";
   "D2.1.6" -> "C2.1.1";
@@ -875,26 +980,26 @@ digraph PLAN {
   "M10.1.2" -> "T10.1.4";
   "M10.1.3" -> "T10.1.4";
   "T10.1.4" -> "C10.1.5";
-  "C11.1.5" -> "M12.1.1";
-  "M12.1.1" -> "T12.1.2";
-  "T12.1.2" -> "C12.1.3";
-  "C12.1.3" -> "F13.1.1";
-  "F13.1.1" -> "F13.1.2";
-  "F13.1.2" -> "C13.1.3";
   "C10.1.5" -> "D11.1.1";
   "D11.1.1" -> "M11.1.2";
   "D11.1.1" -> "M11.1.3";
   "M11.1.2" -> "T11.1.4";
   "M11.1.3" -> "T11.1.4";
   "T11.1.4" -> "C11.1.5";
+  "C11.1.5" -> "M12.1.1";
+  "M12.1.1" -> "T12.1.2";
+  "T12.1.2" -> "C12.1.3";
+  "C12.1.3" -> "F13.1.1";
+  "F13.1.1" -> "F13.1.2";
+  "F13.1.2" -> "C13.1.3";
   "C13.1.3" -> "D14.1.1";
   "D14.1.1" -> "M14.1.2";
   "M14.1.2" -> "T14.1.3";
   "T14.1.3" -> "C14.1.4";
-  "D16.1.1" -> "D16.1.2";
   "C14.1.4" -> "M15.1.1";
   "M15.1.1" -> "T15.1.2";
   "T15.1.2" -> "C15.1.3";
+  "D16.1.1" -> "D16.1.2";
   "D17.1.1" -> "T17.1.2";
   "T17.1.2" -> "C17.1.3";
   "D19.1.1" -> "D19.1.2";
@@ -924,10 +1029,10 @@ digraph PLAN {
   "M26.1.3" -> "M26.2.1";
   "M26.2.1" -> "M26.2.2";
   "M26.2.2" -> "D26.2.3";
-  "D26.2.3" -> "M26.2.6";
   "D26.2.3" -> "T26.2.4";
   "M26.2.6" -> "T26.2.4";
   "T26.2.4" -> "C26.2.5";
+  "D26.2.3" -> "M26.2.6";
   "D27.1.1" -> "M27.1.2";
   "M27.1.2" -> "T27.1.3";
   "T27.1.3" -> "C27.1.4";
@@ -950,4 +1055,27 @@ digraph PLAN {
   "F29.2.2" -> "T29.2.4";
   "F29.2.3" -> "T29.2.4";
   "T29.2.4" -> "C29.2.5";
+  "D31.1.1" -> "M31.1.2";
+  "M31.1.2" -> "T31.1.3";
+  "T31.1.3" -> "C31.1.4";
+  "C31.1.4" -> "M31.2.1";
+  "C31.1.4" -> "M31.2.2";
+  "M31.2.1" -> "M31.2.3";
+  "M31.2.2" -> "M31.2.3";
+  "M31.2.3" -> "F31.2.4";
+  "F31.2.4" -> "T31.2.5";
+  "T31.2.5" -> "C31.2.6";
+  "C31.2.6" -> "D31.3.1";
+  "D31.3.1" -> "M31.3.2";
+  "D31.3.1" -> "M31.3.3";
+  "M31.3.2" -> "T31.3.4";
+  "M31.3.3" -> "T31.3.4";
+  "T31.3.4" -> "M31.3.5";
+  "M31.3.5" -> "T31.3.6";
+  "T31.3.6" -> "M31.3.7";
+  "M31.3.7" -> "C31.3.8";
+  "C31.3.8" -> "D31.4.1";
+  "D31.4.1" -> "T31.4.2";
+  "T31.4.2" -> "M31.4.3";
+  "M31.4.3" -> "C31.4.4";
 }

@@ -152,6 +152,10 @@ state of its base branch:
 The PR merge MUST be conflict-free. If the base moved between push and
 merge, repeat the synchronization.
 
+For repositories that use the split-plan layout, a completed milestone
+MUST be archived from `plan/PLAN-current.yaml` into `plan/archive/`
+and indexed in `plan/PLAN-index.yaml` before the final PR merge.
+
 ## PR Topology
 
 ### Single-PR flows (feature, bugfix)

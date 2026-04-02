@@ -94,7 +94,8 @@ render_template() {
 render_template "$TEMPLATES_DIR/repo-AGENTS.md.template" "$TARGET/AGENTS.md"
 render_template "$TEMPLATES_DIR/repo-ARCHITECTURE.md.template" "$TARGET/ARCHITECTURE.md"
 render_template "$TEMPLATES_DIR/repo-REPO_MAP.md.template" "$TARGET/REPO_MAP.md"
-render_template "$TEMPLATES_DIR/PLAN.yaml.template" "$TARGET/PLAN.yaml"
+render_template "$TEMPLATES_DIR/PLAN-index.yaml.template" "$TARGET/plan/PLAN-index.yaml"
+render_template "$TEMPLATES_DIR/PLAN-current.yaml.template" "$TARGET/plan/PLAN-current.yaml"
 render_template "$TEMPLATES_DIR/repo-README.md.template" "$TARGET/README.md"
 render_template "$TEMPLATES_DIR/repo-ADR.md.template" "$TARGET/docs/adr/ADR-0001.md"
 render_template "$TEMPLATES_DIR/repo-commit-msg.template" "$TARGET/.githooks/commit-msg"
@@ -105,6 +106,13 @@ render_template "$TEMPLATES_DIR/repo-CODEX.md.template" "$TARGET/.codex"
 render_template "$TEMPLATES_DIR/repo-GEMINI.md.template" "$TARGET/GEMINI.md"
 render_template "$TEMPLATES_DIR/repo-cursor-rules.mdc.template" "$TARGET/.cursor/rules/governance.mdc"
 render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilocode/rules/governance.md"
+
+if [[ "$DRY_RUN" -eq 1 ]]; then
+  echo "DRY-RUN: create $TARGET/plan/archive"
+else
+  mkdir -p "$TARGET/plan/archive"
+  echo "OK: created $TARGET/plan/archive"
+fi
 
 if [[ "$DRY_RUN" -eq 0 ]]; then
   for hook_path in "$TARGET/.githooks/commit-msg" "$TARGET/.githooks/pre-push"; do
@@ -119,9 +127,9 @@ fi
 if [[ "$DRY_RUN" -eq 0 ]]; then
   VALIDATE_SCRIPT="$SCRIPT_DIR/validate-plan.py"
   SCHEMA="$SCRIPT_DIR/../schemas/plan.schema.json"
-  if [[ -f "$VALIDATE_SCRIPT" && -f "$SCHEMA" && -f "$TARGET/PLAN.yaml" ]]; then
+  if [[ -f "$VALIDATE_SCRIPT" && -f "$SCHEMA" && -f "$TARGET/plan/PLAN-index.yaml" ]]; then
     echo "INFO: Running post-bootstrap validation..."
-    if "$PYTHON_BIN" "$VALIDATE_SCRIPT" "$TARGET/PLAN.yaml" --schema "$SCHEMA"; then
+    if "$PYTHON_BIN" "$VALIDATE_SCRIPT" "$TARGET/plan/PLAN-index.yaml" --schema "$SCHEMA"; then
       echo "OK: Post-bootstrap validation passed"
     else
       echo "ERROR: Post-bootstrap validation failed" >&2

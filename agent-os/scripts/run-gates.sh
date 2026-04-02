@@ -75,7 +75,64 @@ if [[ "${#PY_FILES[@]}" -gt 0 ]]; then
   run_step "python -m py_compile" "${AGENT_PYTHON_CMD[@]}" -m py_compile "${PY_FILES[@]}"
 fi
 
-run_step "pytest" "${AGENT_PYTHON_CMD[@]}" -m pytest -q
+COVERAGE_JSON="$(mktemp "${TMPDIR:-/tmp}/agent-os-coverage.XXXXXX.json")"
+cleanup() {
+  rm -f "${COVERAGE_JSON}"
+}
+trap cleanup EXIT
+
+run_step \
+  "pytest with coverage" \
+  "${AGENT_PYTHON_CMD[@]}" \
+  -m pytest \
+  --cov=agent-os/scripts \
+  --cov-branch \
+  --cov-report=term-missing \
+  --cov-report="json:${COVERAGE_JSON}"
+
+run_step \
+  "coverage per-file threshold >95%" \
+  "${AGENT_PYTHON_CMD[@]}" \
+  -c '
+import json
+import sys
+from pathlib import Path
+
+report_path = Path(sys.argv[1])
+repo_root = Path(sys.argv[2]).resolve()
+report = json.loads(report_path.read_text(encoding="utf-8"))
+files = report.get("files", {})
+
+def normalize(path_text: str) -> str:
+    path = Path(path_text)
+    resolved = path if path.is_absolute() else (repo_root / path).resolve()
+    try:
+        return resolved.relative_to(repo_root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+coverage_by_file = {
+    normalize(path_text): payload.get("summary", {}).get("percent_covered", 0.0)
+    for path_text, payload in files.items()
+}
+expected = sorted(
+    path.relative_to(repo_root).as_posix()
+    for path in (repo_root / "agent-os" / "scripts").rglob("*.py")
+)
+failing = [
+    (path_text, coverage_by_file.get(path_text, 0.0))
+    for path_text in expected
+    if coverage_by_file.get(path_text, 0.0) <= 95.0
+]
+if failing:
+    print("ERROR: per-file coverage threshold is >95% for agent-os/scripts/*.py", file=sys.stderr)
+    for path_text, percent in failing:
+        print(f"  - {path_text}: {percent:.2f}%", file=sys.stderr)
+    raise SystemExit(1)
+print("OK: all agent-os/scripts/*.py files exceed 95% coverage")
+' \
+  "${COVERAGE_JSON}" \
+  "${REPO_ROOT}"
 
 SHELL_SCRIPTS=(
   "agent-os/scripts/bootstrap-repo.sh"

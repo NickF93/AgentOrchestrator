@@ -1,0 +1,46 @@
+milestones:
+- id: X24
+  type: X
+  title: TODO Checklist Refresh After Git Flow Rollout
+  status: done
+  note: 'Refresh the non-authoritative human checklist in TODO.md so it reflects the
+    recent Git Flow governance, skill, portability, and planning-to-git mapping commits
+    without expanding it into a second source of truth.
+
+    '
+sprints:
+- id: S24.1
+  type: S
+  parent: X24
+  title: "Sprint 1 \u2014 TODO.md refresh"
+  status: done
+items:
+- id: D24.1.1
+  parent: S24.1
+  type: D
+  title: Refresh human-readable TODO.md for the recent Git Flow work
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: low
+  commit_group: cg47
+  scope: TODO.md
+  artifacts_out:
+  - PLAN.yaml
+  - TODO.md
+  notes: 'Update the non-authoritative personal checklist to reflect the recent completion
+    of the Git Flow governance extraction, gitflow-pr-only skill, discovery metadata,
+    planning-to-git mapping, and portability repair work.
+
+    '
+commit_groups:
+- id: cg47
+  title: TODO checklist refresh for recent Git Flow work
+  items:
+  - D24.1.1
+  notes: 'Refreshes the non-authoritative TODO.md checklist so it reflects the recently
+    completed Git Flow governance, skill, portability, and planning-to-git mapping
+    work without changing canonical authorities.
+
+    '

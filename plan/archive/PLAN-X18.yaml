@@ -1,0 +1,46 @@
+milestones:
+- id: X18
+  type: X
+  title: Git Flow Conflict Resolution and Operational Refinements
+  status: done
+  note: 'Add conflict resolution scenarios (single-PR and two-PR flows), operational
+    refinements (always-draft-PR, explicit staging, no agent branch deletion, release-branch
+    exception for hotfix back-merge), and branch protection requirements to the Git
+    Flow design document. These decisions were made interactively with the human owner
+    and must be captured before the governance file and skill are authored.
+
+    '
+sprints:
+- id: S18.1
+  type: S
+  parent: X18
+  title: "Sprint 1 \u2014 Conflict resolution scenarios and operational refinements"
+  status: done
+items:
+- id: D18.1.1
+  parent: S18.1
+  type: D
+  title: Add conflict resolution scenarios and operational refinements to the Git
+    Flow design doc
+  actions:
+  - document
+  status: done
+  role: documenter
+  effort: medium
+  commit_group: cg41
+  scope: docs/design
+  artifacts_out:
+  - PLAN.yaml
+  - docs/design/gitflow-pr-only-terminal-workflow.md
+  notes: 'Add new sections to the English design document covering: Scenario A (single-PR
+    conflict resolution for feature/bugfix), Scenario B (two-PR conflict resolution
+    for hotfix/release with release-branch exception), conflict classification rules
+    (trivial vs non-trivial), always-draft-PR policy, explicit staging rule (no git
+    add -A), no agent branch deletion rule, and branch protection requirements placeholder.
+
+    '
+commit_groups:
+- id: cg41
+  title: "Design doc update \u2014 conflict resolution scenarios and operational refinements"
+  items:
+  - D18.1.1

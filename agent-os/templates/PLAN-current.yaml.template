@@ -1,14 +1,3 @@
-meta:
-  repo: "{{REPO_NAME}}"
-  owner: "{{OWNER}}"
-  version: "0.1"
-  schema_version: "draft-1.0"
-  last_updated: "{{DATE}}"
-  note: "Bootstrap plan generated from Level-0 template"
-
-mission: >
-  Define initial repository governance and produce a first validated execution plan.
-
 milestones:
   - id: X1
     type: X
@@ -33,18 +22,12 @@ items:
     effort: low
     commit_group: cg1
     scope: "."
-    # shared_assets:
-    #   skill: plan-checkpoint-close
-    #   prompt: checkpoint-closure-review
-    #   profile: codex/check-medium
-    #   result_protocol: check-result-v1
-    #   context_policy: focused
-    #   resolution_mode: workspace
     artifacts_out:
       - AGENTS.md
       - ARCHITECTURE.md
       - REPO_MAP.md
-      - PLAN.yaml
+      - plan/PLAN-index.yaml
+      - plan/PLAN-current.yaml
 
 commit_groups:
   - id: cg1

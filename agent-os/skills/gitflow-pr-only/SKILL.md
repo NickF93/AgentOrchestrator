@@ -63,7 +63,7 @@ procedures belongs to exactly one of them.
 
 | Root                  | What lives there                                        |
 |-----------------------|---------------------------------------------------------|
-| `repo_root`           | The target repository: source code, tests, `PLAN.yaml`,|
+| `repo_root`           | The target repository: source code, tests, `plan/PLAN-index.yaml`,|
 |                       | `AGENTS.md` (local copy), `.git` directory              |
 | `control_plane_root`  | The Level-0 checkout: governance files, skill           |
 |                       | definitions, shared scripts, schemas                    |
@@ -343,31 +343,45 @@ ready-to-merge state to the human and stop.
 
 1. **Resolve roots** per the Two-Root Model section above.
 
-2. **Ensure the topic branch is synchronized** with its base. If the
+2. **Archive a closed milestone before merge** when the repo uses the
+   split-plan layout.
+   - If `{repo_root}/plan/PLAN-index.yaml` exists and the branch name
+     embeds an `XNN` milestone ID, run:
+     ```bash
+     python {control_plane_root}/agent-os/scripts/archive-plan.py \
+       --plan {repo_root}/plan/PLAN-index.yaml \
+       --milestone <XNN> \
+       --md {repo_root}/PLAN.md \
+       --dot {repo_root}/PLAN.dot
+     ```
+   - Only do this when the milestone is already done in the current
+     fragment. If archival fails, stop and report the blocking reason.
+
+3. **Ensure the topic branch is synchronized** with its base. If the
    base has moved since the last sync, run the `sync` action first.
 
-3. **Run the workflow content cleanliness check** for the outgoing commit
+4. **Run the workflow content cleanliness check** for the outgoing commit
    range and the PR title/body or review/comment text that may be submitted in
    this action.
 
-4. **Mark the PR as ready** (if it is still a draft).
+5. **Mark the PR as ready** (if it is still a draft).
    ```bash
    gh pr ready
    ```
 
-5. **Wait for CI checks** (if applicable).
+6. **Wait for CI checks** (if applicable).
    ```bash
    gh pr checks --watch
    ```
 
-6. **Merge the PR with a merge commit** (Workflow Invariant 7).
+7. **Merge the PR with a merge commit** (Workflow Invariant 7).
    ```bash
    gh pr merge --merge
    ```
    - Do NOT use `--delete-branch` (Forbidden Operation).
    - Do NOT use `--squash` or `--rebase` (Forbidden Operation).
 
-7. **Fast-forward the local target branch from origin** (Workflow
+8. **Fast-forward the local target branch from origin** (Workflow
    Invariant 9).
    - Determine the target:
      - `feature/*`, `bugfix/*`: `develop`
@@ -378,7 +392,7 @@ ready-to-merge state to the human and stop.
    git pull --ff-only origin <target>
    ```
 
-8. **Report** the merge result and the updated target branch.
+9. **Report** the merge result and the updated target branch.
 
 **For two-PR flows** (hotfix, release): after this action completes
 PR1, proceed to the `tag` action, then the `back-merge` action.

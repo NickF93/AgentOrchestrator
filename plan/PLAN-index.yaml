@@ -1,0 +1,149 @@
+meta:
+  repo: AgentOrchestrator
+  owner: NickF93
+  version: '0.1'
+  schema_version: draft-1.0
+  last_updated: '2026-04-02'
+  note: 'This PLAN.yaml is self-referential: it is the plan for building the very
+    system (agent-os/) that will eventually validate and render itself. The schema
+    and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
+    are complete.
+
+    '
+mission: 'Build the minimal viable Level-0 central control plane (agent-os/) inside
+  this repository. Level-0 provides: shared workflow documentation, plan schema, templates
+  for repo-local files, and render/validate scripts. This repository IS the control-plane
+  OS (Level-0). Level-1 (workspace runtime) and Level-2 (repo-local bootstrap) come
+  after. The plan is not only a progress tracker. It is the canonical execution graph
+  for agent orchestration, optimized for decomposition into independently executable
+  items, safe aggregation into reviewable commit groups, and controlled parallel execution
+  under explicit dependency, scope, and policy constraints.
+
+  '
+current_plan: PLAN-current.yaml
+archive_root: archive
+archives:
+- milestone: X1
+  title: "Level-0 MVP \u2014 Control Plane Foundation"
+  path: archive/PLAN-X1.yaml
+  digest: sha256:ede44d343d28
+- milestone: X2
+  title: Layer-0 Governance Hardening
+  path: archive/PLAN-X2.yaml
+  digest: sha256:d79a279f9dee
+- milestone: X3
+  title: Control-Plane Hardening
+  path: archive/PLAN-X3.yaml
+  digest: sha256:2c47a4ddac01
+- milestone: X4
+  title: Governance Baseline Hardening
+  path: archive/PLAN-X4.yaml
+  digest: sha256:847d03c551db
+- milestone: X5
+  title: Tracking Discipline and Canonical Consistency Hardening
+  path: archive/PLAN-X5.yaml
+  digest: sha256:28e9abac3b31
+- milestone: X6
+  title: Planning Model Execution Optimization Clarification
+  path: archive/PLAN-X6.yaml
+  digest: sha256:6cc7cabe46f7
+- milestone: X7
+  title: Skill Packaging and Cross-Layer Execution
+  path: archive/PLAN-X7.yaml
+  digest: sha256:b32c147007f3
+- milestone: X8
+  title: Adapter Layer Configuration and Repo Hygiene
+  path: archive/PLAN-X8.yaml
+  digest: sha256:8be701af4d7d
+- milestone: X9
+  title: Shared Layer-0 Asset Distribution and Two-Root Consumption
+  path: archive/PLAN-X9.yaml
+  digest: sha256:aebc43cb4de1
+- milestone: X10
+  title: Script Test Suite and Local Quality Gates
+  path: archive/PLAN-X10.yaml
+  digest: sha256:4d3c6326750f
+- milestone: X11
+  title: Runtime Portability Expansion
+  path: archive/PLAN-X11.yaml
+  digest: sha256:4152afc2aa00
+- milestone: X12
+  title: Promote Codex to First-Class Runtime
+  path: archive/PLAN-X12.yaml
+  digest: sha256:ad7d6380e11b
+- milestone: X13
+  title: Workspace Template Parity and Test Coverage Repair
+  path: archive/PLAN-X13.yaml
+  digest: sha256:dc440a86652b
+- milestone: X14
+  title: "Portability Milestone Completion \u2014 Copilot Support and Kilo Realignment"
+  path: archive/PLAN-X14.yaml
+  digest: sha256:ad586fe3a463
+- milestone: X15
+  title: "Environment Portability \u2014 Remove Hardcoded Conda Environment"
+  path: archive/PLAN-X15.yaml
+  digest: sha256:b888fed84a71
+- milestone: X16
+  title: Human-Readable TODO Checklist
+  path: archive/PLAN-X16.yaml
+  digest: sha256:9bf21b12d7e6
+- milestone: X17
+  title: Git Flow Design Doc English Translation
+  path: archive/PLAN-X17.yaml
+  digest: sha256:e7e5f80cff3d
+- milestone: X18
+  title: Git Flow Conflict Resolution and Operational Refinements
+  path: archive/PLAN-X18.yaml
+  digest: sha256:711b87280873
+- milestone: X19
+  title: Git Flow Governance Extraction
+  path: archive/PLAN-X19.yaml
+  digest: sha256:245519a43251
+- milestone: X20
+  title: Git Flow PR-Only Skill
+  path: archive/PLAN-X20.yaml
+  digest: sha256:5ba756b81c82
+- milestone: X21
+  title: Skill Discovery Table in AGENTS.md
+  path: archive/PLAN-X21.yaml
+  digest: sha256:100c1e6dcf6a
+- milestone: X22
+  title: Planning-to-Git Mapping and Branch Naming Convention
+  path: archive/PLAN-X22.yaml
+  digest: sha256:87744f6b8a94
+- milestone: X23
+  title: Git Flow Skill Portability Repairs
+  path: archive/PLAN-X23.yaml
+  digest: sha256:e1dd8791fec4
+- milestone: X24
+  title: TODO Checklist Refresh After Git Flow Rollout
+  path: archive/PLAN-X24.yaml
+  digest: sha256:7842d12126fb
+- milestone: X25
+  title: Full Runtime Parity and First-Class Promotion
+  path: archive/PLAN-X25.yaml
+  digest: sha256:46d3f51bae56
+- milestone: X26
+  title: Gemini and Cursor First-Class Portability
+  path: archive/PLAN-X26.yaml
+  digest: sha256:5ebe6929db18
+- milestone: X27
+  title: Repo Bootstrap Skill Packaging
+  path: archive/PLAN-X27.yaml
+  digest: sha256:ad8acbed127d
+- milestone: X28
+  title: Plan Validate-Render Skill Packaging
+  path: archive/PLAN-X28.yaml
+  digest: sha256:8548e8063793
+- milestone: X29
+  title: Portability and Governance Enforcement Bugfixes
+  path: archive/PLAN-X29.yaml
+  digest: sha256:5f4712fbeb7d
+- milestone: X30
+  title: TODO Roadmap Expansion
+  path: archive/PLAN-X30.yaml
+  digest: sha256:b4cdc9f94aee
+- milestone: X31
+  title: PLAN Splitting and Archival Foundation
+  path: archive/PLAN-X31.yaml
+  digest: sha256:0c92b74930cf

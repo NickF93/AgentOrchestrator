@@ -102,7 +102,8 @@ Shared asset resolution uses two distinct roots:
 
 - `control_plane_root` resolves shared assets, the registry, prompts, skills,
   profiles, protocols, and Layer-0 scripts.
-- `repo_root` resolves repo-local execution data and code such as `PLAN.yaml`,
+- `repo_root` resolves repo-local execution data and code such as
+  `plan/PLAN-index.yaml`, `plan/PLAN-current.yaml`, `plan/archive/`,
   repo tests, and source files.
 
 Layer-2 default consumption mode is `workspace`:

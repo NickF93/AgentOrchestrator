@@ -9,7 +9,7 @@ Canonical authority is bounded in:
 
 - `AGENTS.md`
 - `ARCHITECTURE.md`
-- `PLAN.yaml`
+- `plan/PLAN-index.yaml`
 - `REPO_MAP.md`
 
 ## Runtime Notes
