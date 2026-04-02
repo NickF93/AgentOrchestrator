@@ -82,8 +82,23 @@ def test_validate_plan_rejects_unknown_shared_asset(repo_root: Path, tmp_path: P
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
     current_plan = load_yaml(current_path)
-    target_item = next(item for item in current_plan["items"] if item["id"] == "C31.2.6")
-    target_item["shared_assets"]["prompt"] = "does-not-exist"
+    target_item = next(
+        (item for item in current_plan["items"] if item.get("shared_assets")),
+        None,
+    )
+    if target_item is None:
+        # Inject a shared_assets block into the first C-type item (or any item)
+        target_item = next(
+            (item for item in current_plan["items"] if item["type"] == "C"),
+            current_plan["items"][0],
+        )
+        target_item["shared_assets"] = {
+            "skill": "plan-checkpoint-close",
+            "prompt": "does-not-exist",
+            "result_protocol": "check-result-v1",
+        }
+    else:
+        target_item["shared_assets"]["prompt"] = "does-not-exist"
     write_yaml(current_path, current_plan)
 
     result = run_python_script(
@@ -800,7 +815,9 @@ def test_validate_plan_main_handles_previous_plan_failure(
     current_path = copy_split_plan(tmp_path)
     previous_path = copy_split_plan(tmp_path / "previous")
     previous_current = load_yaml(previous_path.parent / "PLAN-current.yaml")
-    target_item = next(item for item in previous_current["items"] if item["id"] == "M31.2.3")
+    # Pick any item whose status can be set to a non-terminal state to trigger
+    # a lifecycle transition failure when compared against the current plan.
+    target_item = previous_current["items"][0]
     target_item["status"] = "review"
     write_yaml(previous_path.parent / "PLAN-current.yaml", previous_current)
 

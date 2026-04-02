@@ -84,6 +84,29 @@ items:
   artifacts_out:
   - TODO.md
 
+- id: F33.1.6
+  parent: S33.1
+  type: F
+  title: Fix hardcoded milestone/item IDs in archive and validate tests
+  actions:
+  - implement
+  - test
+  status: in_progress
+  depends_on:
+  - D33.1.4
+  role: implementer
+  effort: medium
+  commit_group: cg81
+  scope: tests/
+  artifacts_out:
+  - tests/test_archive_plan.py
+  - tests/test_validate_plan.py
+  notes: >
+    Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the
+    old PLAN-current.yaml. Since copy_split_plan copies the live plan/
+    directory, the tests break whenever the active milestone changes.
+    Fix by discovering milestone and item IDs dynamically.
+
 - id: C33.1.5
   parent: S33.1
   type: C
@@ -96,6 +119,7 @@ items:
   - D33.1.2
   - D33.1.3
   - D33.1.4
+  - F33.1.6
   role: reviewer
   effort: low
   commit_group: cg80
@@ -126,6 +150,10 @@ commit_groups:
   - D33.1.2
   - D33.1.3
   - D33.1.4
+- id: cg81
+  title: Fix hardcoded test IDs
+  items:
+  - F33.1.6
 - id: cg80
   title: X33 checkpoint closure
   items:

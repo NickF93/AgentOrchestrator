@@ -874,6 +874,7 @@ Status: in_progress
 | `D33.1.3` | `D` | Integrate review suggestions into TODO.md with section priorities | done |  |
 | `D33.1.4` | `D` | Consistency-check TODO.md against codebase state and fix drift | done |  |
 | `C33.1.5` | `C` | Checkpoint closure — X33 | planned |  |
+| `F33.1.6` | `F` | Fix hardcoded milestone/item IDs in archive and validate tests | in_progress | Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically. |
 
 ## Commit Groups
 
@@ -958,6 +959,7 @@ Status: in_progress
 | cg78 | X33 tracking bootstrap | `D33.1.1` |
 | cg79 | Issue reply and TODO integration | `D33.1.2`, `D33.1.3`, `D33.1.4` |
 | cg80 | X33 checkpoint closure | `C33.1.5` |
+| cg81 | Fix hardcoded test IDs | `F33.1.6` |
 
 ## Item Details
 
@@ -3271,7 +3273,7 @@ Status: in_progress
 - **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S33.1`
 - **Actions**: checkpoint, verify
-- **Depends on**: `D33.1.2`, `D33.1.3`, `D33.1.4`
+- **Depends on**: `D33.1.2`, `D33.1.3`, `D33.1.4`, `F33.1.6`
 - **Commit group**: `cg80`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: PLAN.md, PLAN.dot
@@ -3282,3 +3284,13 @@ Status: in_progress
   - issue
   - TODO.md has per-section priorities
   - no stale or duplicate items in TODO.md
+
+### F33.1.6: Fix hardcoded milestone/item IDs in archive and validate tests
+
+- **Type**: F | **Status**: in_progress | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S33.1`
+- **Actions**: implement, test
+- **Depends on**: `D33.1.4`
+- **Commit group**: `cg81`
+- **Artifacts**: tests/test_archive_plan.py, tests/test_validate_plan.py
+- **Notes**: Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically.

@@ -28,11 +28,18 @@ def mark_current_fragment_done(current_path: Path) -> None:
     write_yaml(current_path, current_fragment)
 
 
+def active_milestone_id(plan_dir: Path) -> str:
+    """Return the first milestone ID from the current plan fragment."""
+    current = load_yaml(plan_dir / "PLAN-current.yaml")
+    return current["milestones"][0]["id"]
+
+
 def test_archive_plan_moves_done_milestone_and_updates_index(
     repo_root: Path, tmp_path: Path
 ) -> None:
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
+    ms_id = active_milestone_id(index_path.parent)
     mark_current_fragment_done(current_path)
     md_path = tmp_path / "PLAN.md"
     dot_path = tmp_path / "PLAN.dot"
@@ -42,7 +49,7 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
         "--plan",
         str(index_path),
         "--milestone",
-        "X31",
+        ms_id,
         "--md",
         str(md_path),
         "--dot",
@@ -50,7 +57,7 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
-    archive_path = tmp_path / "plan" / "archive" / "PLAN-X31.yaml"
+    archive_path = tmp_path / "plan" / "archive" / f"PLAN-{ms_id}.yaml"
     assert archive_path.exists()
     assert md_path.exists()
     assert dot_path.exists()
@@ -60,7 +67,7 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
 
     updated_index = load_yaml(index_path)
     archive_entry = next(
-        entry for entry in updated_index["archives"] if entry["milestone"] == "X31"
+        entry for entry in updated_index["archives"] if entry["milestone"] == ms_id
     )
     loader = load_module("plan_loader", repo_root / "agent-os" / "scripts" / "plan_loader.py")
     archived_fragment = load_yaml(archive_path)
@@ -71,7 +78,7 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
         "--plan",
         str(index_path),
         "--milestone",
-        "X31",
+        ms_id,
         "--md",
         str(md_path),
         "--dot",
@@ -84,6 +91,7 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
 def test_archive_plan_rejects_open_milestone(repo_root: Path, tmp_path: Path) -> None:
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
+    ms_id = active_milestone_id(index_path.parent)
     current_fragment = load_yaml(current_path)
     current_fragment["milestones"][0]["status"] = "in_progress"
     write_yaml(current_path, current_fragment)
@@ -93,7 +101,7 @@ def test_archive_plan_rejects_open_milestone(repo_root: Path, tmp_path: Path) ->
         "--plan",
         str(index_path),
         "--milestone",
-        "X31",
+        ms_id,
         "--md",
         str(tmp_path / "PLAN.md"),
         "--dot",
@@ -116,7 +124,7 @@ def test_archive_plan_main_handles_missing_plan_index(
     missing_path = tmp_path / "missing-index.yaml"
 
     monkeypatch.setattr(
-        sys, "argv", ["archive-plan.py", "--plan", str(missing_path), "--milestone", "X31"]
+        sys, "argv", ["archive-plan.py", "--plan", str(missing_path), "--milestone", "X99"]
     )
 
     assert module.main() == 2
@@ -153,6 +161,7 @@ def test_archive_plan_main_succeeds_in_process(
     )
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
+    ms_id = active_milestone_id(index_path.parent)
     mark_current_fragment_done(current_path)
     md_path = tmp_path / "PLAN.md"
     dot_path = tmp_path / "PLAN.dot"
@@ -165,7 +174,7 @@ def test_archive_plan_main_succeeds_in_process(
             "--plan",
             str(index_path),
             "--milestone",
-            "X31",
+            ms_id,
             "--md",
             str(md_path),
             "--dot",
@@ -175,10 +184,10 @@ def test_archive_plan_main_succeeds_in_process(
 
     assert module.main() == 0
     stdout = capsys.readouterr().out
-    assert "OK: archived X31" in stdout
+    assert f"OK: archived {ms_id}" in stdout
     assert md_path.exists()
     assert dot_path.exists()
-    assert (tmp_path / "plan" / "archive" / "PLAN-X31.yaml").exists()
+    assert (tmp_path / "plan" / "archive" / f"PLAN-{ms_id}.yaml").exists()
     assert load_yaml(index_path)["meta"]["last_updated"]
 
 
@@ -193,15 +202,16 @@ def test_archive_plan_main_rejects_existing_archive_target_in_process(
     )
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
+    ms_id = active_milestone_id(index_path.parent)
     mark_current_fragment_done(current_path)
-    archive_path = tmp_path / "plan" / "archive" / "PLAN-X31.yaml"
+    archive_path = tmp_path / "plan" / "archive" / f"PLAN-{ms_id}.yaml"
     archive_path.parent.mkdir(parents=True, exist_ok=True)
     archive_path.write_text("already there\n", encoding="utf-8")
 
     monkeypatch.setattr(
         sys,
         "argv",
-        ["archive-plan.py", "--plan", str(index_path), "--milestone", "X31"],
+        ["archive-plan.py", "--plan", str(index_path), "--milestone", ms_id],
     )
 
     assert module.main() == 1
@@ -246,6 +256,7 @@ def test_archive_plan_main_handles_unexpected_render_failure(
     )
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
+    ms_id = active_milestone_id(index_path.parent)
     mark_current_fragment_done(current_path)
 
     def fail_render(_script_dir: Path) -> Any:
@@ -260,7 +271,7 @@ def test_archive_plan_main_handles_unexpected_render_failure(
             "--plan",
             str(index_path),
             "--milestone",
-            "X31",
+            ms_id,
             "--md",
             str(tmp_path / "PLAN.md"),
             "--dot",
@@ -291,6 +302,7 @@ def test_archive_plan_script_entrypoint_runs(
 ) -> None:
     index_path = copy_split_plan(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
+    ms_id = active_milestone_id(index_path.parent)
     mark_current_fragment_done(current_path)
 
     monkeypatch.setattr(
@@ -301,7 +313,7 @@ def test_archive_plan_script_entrypoint_runs(
             "--plan",
             str(index_path),
             "--milestone",
-            "X31",
+            ms_id,
             "--md",
             str(tmp_path / "PLAN.md"),
             "--dot",
