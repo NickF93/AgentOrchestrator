@@ -5,7 +5,7 @@
 
 ---
 
-## Control Plane Foundation (Level 0)
+## Control Plane Foundation (Level 0) — Priority: P0 (done)
 
 - [x] Workflow model, lifecycle, taxonomy, git policy
 - [x] PLAN schema + validator + renderer
@@ -16,7 +16,7 @@
 - [x] Local quality gates (ruff, mypy, pytest, shellcheck)
 - [x] Environment portability — `AGENT_PYTHON` env var, `.env` per workstation
 
-## Runtime Portability
+## Runtime Portability — Priority: P0 (done)
 
 - [x] Runtime lifecycle tiers (experimental / supported / first-class)
 - [x] Claude — first-class (adapter, profile, workspace template, sync)
@@ -27,7 +27,7 @@
 - [x] Kilo — first-class (repo-local `.kilocode/rules/governance.md`, bootstrap template)
 - [x] Extend adapters for all runtimes (all six promoted to first-class)
 
-## Skills
+## Skills — Priority: P1
 
 - [x] `plan-checkpoint-close` — closing C items with validations and commit closure
 - [x] `gitflow-pr-only` — procedural PR-based git flow
@@ -37,35 +37,36 @@
 - [ ] `workspace-sync` — regenerate Level-1 files, report provenance drift
 - [ ] `repo-map-refresh` — refresh `REPO_MAP.md` on triggers
 - [ ] `checker-reviewer-delegation` — delegation contract once runtime roles settle
+- [ ] `quick-fix` — scaffold F-type item + commit_group in one step, reducing tracking-first friction without weakening the invariant (ref: issue #8)
 
-## Git Flow
+## Git Flow — Priority: P0 (done)
 
 - [x] Define and document the git branching/PR workflow
 - [x] Implement `gitflow-pr-only` skill
 - [x] Planning-to-git mapping and branch naming convention
 - [x] Register `gitflow-pr-only` as a portable shared asset
 
-## Shared Asset Distribution
+## Shared Asset Distribution — Priority: P1
 
 - [x] Registry, prompts, profiles, protocols model
 - [x] Two-root consumption (`control_plane_root` / `repo_root`)
 - [x] `materialize-shared-asset.sh` for vendoring into repos
 - [ ] Ensure sharing works end-to-end across Layer 0 and Layer 2
 
-## Layer 1 — Workspace Runtime
+## Layer 1 — Workspace Runtime — Priority: P2
 
 - [x] `sync-workspace.sh` renders `AGENTS.md`, `CLAUDE.md`, `.codex`
 - [x] Workspace templates with `{{CONTROL_PLANE_ROOT}}` placeholders
 - [ ] Harden Layer-1 lifecycle (drift detection, staleness checks)
 - [x] Evaluate workspace template boundaries — repo-scoped runtimes (Gemini, Cursor, Kilo, Copilot) use bootstrap templates, not workspace templates
 
-## Layer 2 — Repository-Local Governance
+## Layer 2 — Repository-Local Governance — Priority: P1
 
 - [x] `bootstrap-repo.sh` scaffolds `AGENTS.md`, `PLAN.yaml`, commit hook, and thin runtime entrypoints for Claude, Codex, Gemini, Cursor, Copilot, and Kilo
 - [ ] End-to-end bootstrap + governance validation in a real downstream repo
 - [ ] Verify Layer-2 repos can consume shared assets cleanly
 
-## Plan Scaling / Archival
+## Plan Scaling / Archival — Priority: P1
 
 - [x] Evolve beyond one ever-growing active `PLAN.yaml` without losing the current execution shape
 - [x] Separate the active plan surface from archived plan fragments
@@ -75,7 +76,17 @@
 - [ ] Add digest-style historical summaries so old work can be consulted without loading everything
 - [x] Think through append-only archive habits so plan history stays easy to trust and inspect
 
-## Runtime Execution Layer
+## Execution Gap Closure — Priority: P1
+
+> Items derived from issue #8 review analysis. These close the gap between
+> governance rules and runtime evaluation without building a full engine.
+
+- [ ] Add `--compute-ready` flag to `validate-plan.py` — read-only query that evaluates the dependency predicate and outputs ready items as JSON
+- [ ] Add `on_fail` optional metadata field to item schema — declarative failure policy per item (enum: `retry:<N>`, `escalate`, `pivot:<item_id>`, `block`)
+- [ ] Add structured `checks` format alongside prose checks — `{command, expected_exit, timeout}` for programmatic verification
+- [ ] Add `scope_exclusive` field for smarter scope collision handling — default `true` (current behavior), `false` allows overlapping prefixes
+
+## Runtime Execution Layer — Priority: P1
 
 - [ ] Sketch the runtime layer that sits below the control plane and above worker execution
 - [ ] Clarify the orchestrator role as the runtime writer/coordinator at a conceptual level
@@ -86,7 +97,7 @@
 - [ ] Add timeout, retry, cancel, and failure semantics that are simple enough for an MVP
 - [ ] Keep durable execution minimal at first: enough to survive interruptions without building a full engine
 
-## Work Units / Live Tracking
+## Work Units / Live Tracking — Priority: P2
 
 - [ ] Separate runtime work units from canonical PLAN items so live execution does not distort planning structure
 - [ ] Define convoy or work-batch concepts for grouped runtime dispatch
@@ -96,7 +107,7 @@
 - [ ] Carry budget, token, and cost metadata with runtime packets and work batches
 - [ ] Generate runtime packets with dependency awareness instead of flat item fan-out
 
-## Session Continuity / Handoff
+## Session Continuity / Handoff — Priority: P2
 
 - [ ] Design a session handoff protocol that works across interrupted or time-sliced execution
 - [ ] Define a compact session-summary structure for successor pickup
@@ -105,7 +116,7 @@
 - [ ] Keep minimal persisted memory per worker identity instead of rebuilding all context every time
 - [ ] Inject runtime context from summaries and ledgers rather than stuffing it into repo authorities
 
-## Worker Roles and Effort Routing
+## Worker Roles and Effort Routing — Priority: P2
 
 - [ ] Formalize the runtime role set: orchestrator, implementer, verifier, documenter
 - [ ] Map work type to default worker role instead of routing everything through one generic lane
@@ -114,7 +125,7 @@
 - [ ] Define runtime profile mapping for `low`, `medium`, `high`, and `xhigh` effort
 - [ ] Add file-sensitivity and scope-risk weighting so risky paths escalate earlier than safe ones
 
-## Multi-Agent / Sub-Agent
+## Multi-Agent / Sub-Agent — Priority: P2
 
 - [ ] Design the coordination layer instead of leaving multi-agent as an adapter-side placeholder
 - [ ] Define the delegation contract between orchestrator-owned planning state and worker-owned execution state
@@ -122,8 +133,9 @@
 - [ ] Treat `1 orchestrator + 1 implementer + 1 verifier/doc` as the primary operating shape to validate first
 - [ ] Make the “do not split” criteria explicit for tiny work, tightly coupled edits, or narrow scopes
 - [ ] Define the review boundary between orchestrator-owned state, worker outputs, and integrated repo changes
+- [ ] Add cross-model review advisory for C-type items — prefer different runtime for reviewer vs implementer (ref: issue #8, IBM Lessons Learned)
 
-## Merge / Integration Flow
+## Merge / Integration Flow — Priority: P2
 
 - [ ] Separate worker completion from integration acceptance so “done working” is not the same as “accepted”
 - [ ] Define the path from runtime completion to validation to commit-group closure
@@ -132,7 +144,7 @@
 - [ ] Leave room for an optional PR or merge-queue path after the simpler path works
 - [ ] Define a conflict, restack, and revalidation strategy for multi-worker integration pressure
 
-## Observability / Ops
+## Observability / Ops — Priority: P3
 
 - [ ] Add a runtime event stream that is actually useful for live execution visibility
 - [ ] Build a status view for active packets, queued work, retries, and blocked work
@@ -141,7 +153,7 @@
 - [ ] Account for cost, token spend, and retry churn at packet and convoy level
 - [ ] Report drift or mismatch between runtime state and control-plane expectations
 
-## Issue Intake
+## Issue Intake — Priority: P3
 
 - [ ] Treat issue tracker integration as intake and translation, not as the planning model itself
 - [ ] Define how upstream issues map into milestone, sprint, and item structures
@@ -150,7 +162,7 @@
 - [ ] Decide how much status sync back to the issue tracker is actually useful
 - [ ] Keep a clear human override path when imported issue structure is wrong or incomplete
 
-## Downstream Validation Matrix
+## Downstream Validation Matrix — Priority: P1
 
 - [ ] Validate the full model in a tiny toy repo with almost no legacy complexity
 - [ ] Validate in a medium real repo with normal code churn and real review pressure
@@ -159,16 +171,16 @@
 - [ ] Validate runtime portability across the supported runtime entrypoints
 - [ ] Validate low-context worker execution to see where the current startup burden is still too high
 
-## Documentation Compression / Context Economy
+## Documentation Compression / Context Economy — Priority: P1
 
-- [ ] Separate what must always load from what can stay on-demand
+- [ ] Separate always-load governance (taxonomy, lifecycle, commit contract) from on-demand content (freshness rules, portability model, skill definitions) (ref: issue #8, Tessl "What Survives")
 - [ ] Generate compact context digests for workers instead of replaying the same authorities in full
 - [ ] Reduce mandatory startup context for routine work
 - [ ] Move repetitive operational context into generated packets and runtime summaries
 - [ ] Keep normative authority centralized while shrinking runtime prompt load
 - [ ] Review `TODO`, `AGENTS`, and workflow docs periodically for duplication drift and prompt bloat
 
-## RFC — Request for Comments / Future Considerations
+## RFC — Request for Comments / Future Considerations — Priority: P3
 
 - [ ] RFC normative review pass (ensure no stale or conflicting normative content)
 - [ ] Evaluate optional external workflow engines or durable runtime backends only if the lightweight model starts to hurt

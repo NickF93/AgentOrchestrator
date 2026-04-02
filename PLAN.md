@@ -869,10 +869,10 @@ Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D33.1.1` | `D` | Track X33 milestone in PLAN-current.yaml and regenerate plan views | in_progress |  |
-| `D33.1.2` | `D` | Reply to issue | planned | GitHub issue comment only. No file changes. |
-| `D33.1.3` | `D` | Integrate review suggestions into TODO.md with section priorities | planned |  |
-| `D33.1.4` | `D` | Consistency-check TODO.md against codebase state and fix drift | planned |  |
+| `D33.1.1` | `D` | Track X33 milestone in PLAN-current.yaml and regenerate plan views | done |  |
+| `D33.1.2` | `D` | Reply to issue | done | GitHub issue comment only. No file changes. |
+| `D33.1.3` | `D` | Integrate review suggestions into TODO.md with section priorities | done |  |
+| `D33.1.4` | `D` | Consistency-check TODO.md against codebase state and fix drift | done |  |
 | `C33.1.5` | `C` | Checkpoint closure — X33 | planned |  |
 
 ## Commit Groups
@@ -3233,7 +3233,7 @@ Status: in_progress
 
 ### D33.1.1: Track X33 milestone in PLAN-current.yaml and regenerate plan views
 
-- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S33.1`
 - **Actions**: plan, document
 - **Commit group**: `cg78`
@@ -3241,7 +3241,7 @@ Status: in_progress
 
 ### D33.1.2: Reply to issue
 
-- **Type**: D | **Status**: planned | **Role**: reviewer | **Effort**: medium
+- **Type**: D | **Status**: done | **Role**: reviewer | **Effort**: medium
 - **Sprint**: `S33.1`
 - **Actions**: review, document
 - **Depends on**: `D33.1.1`
@@ -3250,7 +3250,7 @@ Status: in_progress
 
 ### D33.1.3: Integrate review suggestions into TODO.md with section priorities
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
 - **Sprint**: `S33.1`
 - **Actions**: document
 - **Depends on**: `D33.1.1`
@@ -3259,7 +3259,7 @@ Status: in_progress
 
 ### D33.1.4: Consistency-check TODO.md against codebase state and fix drift
 
-- **Type**: D | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S33.1`
 - **Actions**: review, verify
 - **Depends on**: `D33.1.3`
