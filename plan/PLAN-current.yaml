@@ -2,7 +2,7 @@ milestones:
 - id: X32
   type: X
   title: TODO Reconciliation for Plan Scaling / Archival
-  status: in_progress
+  status: done
   note: 'Reconcile the non-normative TODO checklist after the completed and archived
     X31 split-plan rollout. Keep the scope narrow to the Plan Scaling / Archival
     section so the checklist no longer claims the delivered split-plan behavior is
@@ -14,7 +14,7 @@ sprints:
   type: S
   parent: X32
   title: "Sprint 1 \u2014 Narrow TODO reconciliation for plan scaling and archival"
-  status: in_progress
+  status: done
 items:
 - id: D32.1.1
   parent: S32.1
@@ -43,7 +43,7 @@ items:
   actions:
   - document
   - review
-  status: planned
+  status: done
   depends_on:
   - D32.1.1
   role: documenter
@@ -63,7 +63,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - D32.1.2
   role: reviewer

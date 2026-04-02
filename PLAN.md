@@ -46,7 +46,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
 | X31 | X | PLAN Splitting and Archival Foundation | done |
-| X32 | X | TODO Reconciliation for Plan Scaling / Archival | in_progress |
+| X32 | X | TODO Reconciliation for Plan Scaling / Archival | done |
 
 ## Plan
 
@@ -859,19 +859,19 @@ Status: done
 
 - ID: `X32`
 - Title: TODO Reconciliation for Plan Scaling / Archival
-- Status: in_progress
+- Status: done
 - Note: Reconcile the non-normative TODO checklist after the completed and archived X31 split-plan rollout. Keep the scope narrow to the Plan Scaling / Archival section so the checklist no longer claims the delivered split-plan behavior is still undone.
 
 #### S32.1 Items
 
 Sprint: Sprint 1 — Narrow TODO reconciliation for plan scaling and archival
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D32.1.1` | `D` | Track X32 and regenerate plan views before the TODO reconciliation edit | done | Create the narrow corrective milestone, keep the work on bugfix/X32-todo-plan-reconciliation, and satisfy tracking-first governance before touching TODO.md. |
-| `D32.1.2` | `D` | Reconcile the TODO Plan Scaling / Archival checklist against the archived X31 outcome | planned | Mark only the X31-delivered split-plan archival capabilities as done, leave genuinely unimplemented future-facing bullets open, and avoid broad TODO cleanup. |
-| `C32.1.3` | `C` | Checkpoint closure — X32 TODO reconciliation | planned |  |
+| `D32.1.2` | `D` | Reconcile the TODO Plan Scaling / Archival checklist against the archived X31 outcome | done | Mark only the X31-delivered split-plan archival capabilities as done, leave genuinely unimplemented future-facing bullets open, and avoid broad TODO cleanup. |
+| `C32.1.3` | `C` | Checkpoint closure — X32 TODO reconciliation | done |  |
 
 ## Commit Groups
 
@@ -3239,7 +3239,7 @@ Status: in_progress
 
 ### D32.1.2: Reconcile the TODO Plan Scaling / Archival checklist against the archived X31 outcome
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S32.1`
 - **Actions**: document, review
 - **Depends on**: `D32.1.1`
@@ -3249,7 +3249,7 @@ Status: in_progress
 
 ### C32.1.3: Checkpoint closure — X32 TODO reconciliation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S32.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D32.1.2`

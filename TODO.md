@@ -67,13 +67,13 @@
 
 ## Plan Scaling / Archival
 
-- [ ] Evolve beyond one ever-growing active `PLAN.yaml` without losing the current execution shape
-- [ ] Separate the active plan surface from archived plan fragments
-- [ ] Add an archive index that makes closed milestones and old fragments easy to find
-- [ ] Extend validator and renderer loading to work cleanly across multiple plan files
-- [ ] Keep execution focused on the active surface while still supporting historical lookup
+- [x] Evolve beyond one ever-growing active `PLAN.yaml` without losing the current execution shape
+- [x] Separate the active plan surface from archived plan fragments
+- [x] Add an archive index that makes closed milestones and old fragments easy to find
+- [x] Extend validator and renderer loading to work cleanly across multiple plan files
+- [x] Keep execution focused on the active surface while still supporting historical lookup
 - [ ] Add digest-style historical summaries so old work can be consulted without loading everything
-- [ ] Think through append-only archive habits so plan history stays easy to trust and inspect
+- [x] Think through append-only archive habits so plan history stays easy to trust and inspect
 
 ## Runtime Execution Layer
 
