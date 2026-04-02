@@ -82,10 +82,6 @@ def main() -> int:
             )
 
         existing_entries = index.get("archives", []) or []
-        if any(entry.get("milestone") == milestone_id for entry in existing_entries):
-            raise PlanLoadError(
-                f"{milestone_id}: archive index already contains an entry for this milestone"
-            )
 
         archived_fragment = extract_fragment(current_fragment, {milestone_id})
         ensure_fragment_is_closed(archived_fragment, milestone_id)
@@ -110,8 +106,7 @@ def main() -> int:
         updated_archives.sort(key=lambda entry: int(str(entry["milestone"])[1:]))
 
         index["archives"] = updated_archives
-        if isinstance(index.get("meta"), dict):
-            index["meta"]["last_updated"] = date.today().isoformat()
+        index["meta"]["last_updated"] = date.today().isoformat()
 
         write_yaml(archive_abs_path, archived_fragment)
         write_yaml(metadata["current_path"], remaining_current)

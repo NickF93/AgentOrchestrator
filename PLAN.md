@@ -836,8 +836,8 @@ Status: in_progress
 | `D31.3.1` | `D` | Reopen X31 and record the split-only, warning-strict coverage hardening decisions | done | Sprint 3 keeps the existing feature branch, applies the >95% per-file coverage target to agent-os/scripts/*.py only, treats Python/test warnings as failures, and removes legacy aggregate PLAN.yaml runtime support from shared Python tooling while keeping split-plan.py as the one-time migration entrypoint. |
 | `M31.3.2` | `M` | Make the Python gate runnable, warning-strict, and coverage-enforced for agent-os/scripts | done | Wire pytest, pytest-cov, branch coverage reporting, warning-as-error handling, and deterministic per-file coverage enforcement into the canonical Python gate for the governed script surface. |
 | `M31.3.3` | `M` | Remove legacy aggregate PLAN.yaml runtime support from shared Python tooling | done | Shared Python runtime tooling becomes split-plan-only. split-plan.py remains the explicit legacy migration path; no compatibility shims or aggregate runtime fallbacks remain. |
-| `T31.3.4` | `T` | Add high-signal hardening coverage for plan_loader.py, split-plan.py, and archive-plan.py | planned |  |
-| `M31.3.5` | `M` | Fix runtime defects exposed by loader, split, and archive hardening tests | planned |  |
+| `T31.3.4` | `T` | Add high-signal hardening coverage for plan_loader.py, split-plan.py, and archive-plan.py | done |  |
+| `M31.3.5` | `M` | Fix runtime defects exposed by loader, split, and archive hardening tests | done |  |
 | `T31.3.6` | `T` | Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py | planned |  |
 | `M31.3.7` | `M` | Fix runtime defects exposed by validate, render, and asset-resolution hardening tests | planned |  |
 | `C31.3.8` | `C` | Checkpoint closure — X31 warning-strict coverage hardening | planned |  |
@@ -3092,7 +3092,7 @@ Status: in_progress
 
 ### T31.3.4: Add high-signal hardening coverage for plan_loader.py, split-plan.py, and archive-plan.py
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: high
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: high
 - **Sprint**: `S31.3`
 - **Actions**: test, verify
 - **Depends on**: `M31.3.2`, `M31.3.3`
@@ -3104,7 +3104,7 @@ Status: in_progress
 
 ### M31.3.5: Fix runtime defects exposed by loader, split, and archive hardening tests
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S31.3`
 - **Actions**: implement, verify
 - **Depends on**: `T31.3.4`

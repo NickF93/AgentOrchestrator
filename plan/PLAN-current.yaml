@@ -365,7 +365,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - M31.3.2
   - M31.3.3
@@ -388,7 +388,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - T31.3.4
   role: implementer
