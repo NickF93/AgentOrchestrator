@@ -7,6 +7,7 @@ filterwarnings = ["error"]
 [tool.coverage.run]
 branch = true
 source = ["agent-os/scripts"]
+data_file = "/tmp/.coverage-agent-os"
 
 [tool.coverage.report]
 precision = 2

@@ -171,17 +171,25 @@ def test_split_plan_can_remove_legacy_source(repo_root: Path, tmp_path: Path) ->
 
     legacy_path = tmp_path / "PLAN.yaml"
     legacy_path.write_text(yaml.safe_dump(legacy_plan, sort_keys=False), encoding="utf-8")
+    md_path = tmp_path / "PLAN.md"
+    dot_path = tmp_path / "PLAN.dot"
 
     result = run_python_script(
         repo_root / "agent-os" / "scripts" / "split-plan.py",
         str(legacy_path),
         "--index",
         str(tmp_path / "plan" / "PLAN-index.yaml"),
+        "--md",
+        str(md_path),
+        "--dot",
+        str(dot_path),
         "--remove-source",
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
     assert not legacy_path.exists()
+    assert md_path.exists()
+    assert dot_path.exists()
 
 
 def test_split_plan_main_handles_missing_source(

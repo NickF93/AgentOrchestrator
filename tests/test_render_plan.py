@@ -243,7 +243,13 @@ def test_render_plan_script_entrypoint_runs(
     repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     index_path = copy_split_plan(tmp_path)
-    monkeypatch.setattr(sys, "argv", ["render-plan.py", str(index_path)])
+    md_path = tmp_path / "entrypoint-PLAN.md"
+    dot_path = tmp_path / "entrypoint-PLAN.dot"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["render-plan.py", str(index_path), "--md", str(md_path), "--dot", str(dot_path)],
+    )
 
     with pytest.raises(SystemExit) as exc:
         runpy.run_path(
@@ -251,3 +257,5 @@ def test_render_plan_script_entrypoint_runs(
         )
 
     assert exc.value.code == 0
+    assert md_path.exists()
+    assert dot_path.exists()

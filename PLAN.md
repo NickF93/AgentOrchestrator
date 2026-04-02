@@ -850,8 +850,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D31.4.1` | `D` | Reopen X31 for a final closure audit and record deterministic cleanup acceptance criteria | done | Sprint 4 is closure remediation only. Acceptance requires deterministic test and gate execution, canonical PLAN.md and PLAN.dot outputs sourced from plan/PLAN-index.yaml, zero Python warnings, and a clean worktree immediately after the full closure path. |
-| `T31.4.2` | `T` | Add closure-audit regression coverage for deterministic generated-view isolation | planned |  |
-| `M31.4.3` | `M` | Fix final closure drift, consistency gaps, and deterministic generated-view behavior | planned | Keep public behavior unchanged while ensuring closure-gate execution leaves the canonical split-plan source, generated views, and tracked metadata fully aligned and review-clean. |
+| `T31.4.2` | `T` | Add closure-audit regression coverage for deterministic generated-view isolation | done |  |
+| `M31.4.3` | `M` | Fix final closure drift, consistency gaps, and deterministic generated-view behavior | done | Keep public behavior unchanged while ensuring closure-gate execution leaves the canonical split-plan source, generated views, and tracked metadata fully aligned and review-clean. |
 | `C31.4.4` | `C` | Checkpoint closure — X31 final closure audit and consistency cleanup | planned |  |
 
 ## Commit Groups
@@ -3173,7 +3173,7 @@ Status: in_progress
 
 ### T31.4.2: Add closure-audit regression coverage for deterministic generated-view isolation
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S31.4`
 - **Actions**: test, verify
 - **Depends on**: `D31.4.1`
@@ -3185,7 +3185,7 @@ Status: in_progress
 
 ### M31.4.3: Fix final closure drift, consistency gaps, and deterministic generated-view behavior
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S31.4`
 - **Actions**: implement, verify
 - **Depends on**: `T31.4.2`

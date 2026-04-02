@@ -581,8 +581,8 @@ digraph PLAN {
   subgraph "cluster_cg74" {
     style="rounded,dashed";
     label="cg74: Deterministic generated-view isolation and closure consistency remediation";
-  "T31.4.2" [label="T31.4.2 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
-  "M31.4.3" [label="M31.4.3 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "T31.4.2" [label="T31.4.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.4.3" [label="M31.4.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg75" {
     style="rounded,dashed";

@@ -507,7 +507,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - D31.4.1
   role: tester
@@ -529,7 +529,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - T31.4.2
   role: implementer
