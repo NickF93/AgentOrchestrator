@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-01
+- Last updated: 2026-04-02
 
 ## Mission
 
@@ -45,7 +45,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X28 | X | Plan Validate-Render Skill Packaging | done |
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
-| X31 | X | PLAN Splitting and Archival Foundation | done |
+| X31 | X | PLAN Splitting and Archival Foundation | in_progress |
 
 ## Plan
 
@@ -797,8 +797,8 @@ Status: done
 
 - ID: `X31`
 - Title: PLAN Splitting and Archival Foundation
-- Status: done
-- Note: Split the monolithic repo plan into a canonical plan/ entrypoint with active and archived fragments, keep aggregate validation and rendering deterministic, and propagate the new plan layout through Layer-0 tooling, skills, templates, and bootstrap flows. Sprint 3 reopens X31 to harden the split-plan runtime, remove legacy aggregate support from shared Python tooling, and bring the governed Python surface to warning-strict green gates with >95% per-file coverage for agent-os/scripts/.
+- Status: in_progress
+- Note: Split the monolithic repo plan into a canonical plan/ entrypoint with active and archived fragments, keep aggregate validation and rendering deterministic, and propagate the new plan layout through Layer-0 tooling, skills, templates, and bootstrap flows. Sprint 3 reopens X31 to harden the split-plan runtime, remove legacy aggregate support from shared Python tooling, and bring the governed Python surface to warning-strict green gates with >95% per-file coverage for agent-os/scripts/. Sprint 4 reopens X31 one final time to harden deterministic closure behavior so the canonical generated plan views stay clean, consistent, and review-ready after the full gate path.
 
 #### S31.1 Items
 
@@ -841,6 +841,18 @@ Status: done
 | `T31.3.6` | `T` | Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py | done |  |
 | `M31.3.7` | `M` | Fix runtime defects exposed by validate, render, and asset-resolution hardening tests | done |  |
 | `C31.3.8` | `C` | Checkpoint closure — X31 warning-strict coverage hardening | done |  |
+
+#### S31.4 Items
+
+Sprint: Sprint 4 — Final closure audit and consistency cleanup
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D31.4.1` | `D` | Reopen X31 for a final closure audit and record deterministic cleanup acceptance criteria | done | Sprint 4 is closure remediation only. Acceptance requires deterministic test and gate execution, canonical PLAN.md and PLAN.dot outputs sourced from plan/PLAN-index.yaml, zero Python warnings, and a clean worktree immediately after the full closure path. |
+| `T31.4.2` | `T` | Add closure-audit regression coverage for deterministic generated-view isolation | planned |  |
+| `M31.4.3` | `M` | Fix final closure drift, consistency gaps, and deterministic generated-view behavior | planned | Keep public behavior unchanged while ensuring closure-gate execution leaves the canonical split-plan source, generated views, and tracked metadata fully aligned and review-clean. |
+| `C31.4.4` | `C` | Checkpoint closure — X31 final closure audit and consistency cleanup | planned |  |
 
 ## Commit Groups
 
@@ -919,6 +931,9 @@ Status: done
 | cg70 | Loader, split, and archive hardening loop | `T31.3.4`, `M31.3.5` |
 | cg71 | Validate, render, and asset-resolution hardening loop | `T31.3.6`, `M31.3.7` |
 | cg72 | Warning-strict gate closure for X31 sprint 3 | `C31.3.8` |
+| cg73 | X31 sprint-4 closure audit bootstrap | `D31.4.1` |
+| cg74 | Deterministic generated-view isolation and closure consistency remediation | `T31.4.2`, `M31.4.3` |
+| cg75 | X31 final closure audit and checkpoint | `C31.4.4` |
 
 ## Item Details
 
@@ -3145,3 +3160,49 @@ Status: done
   - pytest passes with zero Python warnings
   - canonical Python gates pass
   - each file under agent-os/scripts/*.py exceeds 95% coverage
+
+### D31.4.1: Reopen X31 for a final closure audit and record deterministic cleanup acceptance criteria
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: medium
+- **Sprint**: `S31.4`
+- **Actions**: plan, document
+- **Depends on**: `C31.3.8`
+- **Commit group**: `cg73`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+- **Notes**: Sprint 4 is closure remediation only. Acceptance requires deterministic test and gate execution, canonical PLAN.md and PLAN.dot outputs sourced from plan/PLAN-index.yaml, zero Python warnings, and a clean worktree immediately after the full closure path.
+
+### T31.4.2: Add closure-audit regression coverage for deterministic generated-view isolation
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S31.4`
+- **Actions**: test, verify
+- **Depends on**: `D31.4.1`
+- **Commit group**: `cg74`
+- **Artifacts**: tests/test_render_plan.py, tests/test_archive_plan.py
+- **Checks**:
+  - write-capable script entrypoint tests use isolated outputs and do not dirty repo-root PLAN.md or PLAN.dot
+  - closure-audit regressions reproduce and prevent generated-view drift discovered after Sprint 3 gate execution
+
+### M31.4.3: Fix final closure drift, consistency gaps, and deterministic generated-view behavior
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S31.4`
+- **Actions**: implement, verify
+- **Depends on**: `T31.4.2`
+- **Commit group**: `cg74`
+- **Artifacts**: agent-os/scripts/render-plan.py, tests/, plan/PLAN-index.yaml, PLAN.md, PLAN.dot
+- **Notes**: Keep public behavior unchanged while ensuring closure-gate execution leaves the canonical split-plan source, generated views, and tracked metadata fully aligned and review-clean.
+
+### C31.4.4: Checkpoint closure — X31 final closure audit and consistency cleanup
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: medium
+- **Sprint**: `S31.4`
+- **Actions**: checkpoint, review, verify
+- **Depends on**: `M31.4.3`
+- **Commit group**: `cg75`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py, render-plan.py, pytest, and run-gates.sh all pass deterministically
+  - canonical PLAN.md and PLAN.dot remain clean after the full closure gate sequence
+  - X31 is consistent across plan metadata, generated outputs, and worktree state
