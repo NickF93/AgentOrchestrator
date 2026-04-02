@@ -1,11 +1,11 @@
 # PLAN.md
 
-AUTO-GENERATED from /tmp/pytest-of-niccolo/pytest-56/test_archive_plan_rejects_open0/plan/PLAN-index.yaml. Do not edit manually.
+AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-02
+- Last updated: 2026-04-01
 
 ## Mission
 
