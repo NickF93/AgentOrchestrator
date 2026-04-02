@@ -143,3 +143,7 @@ archives:
   title: TODO Roadmap Expansion
   path: archive/PLAN-X30.yaml
   digest: sha256:b4cdc9f94aee
+- milestone: X31
+  title: PLAN Splitting and Archival Foundation
+  path: archive/PLAN-X31.yaml
+  digest: sha256:0c92b74930cf
