@@ -78,9 +78,9 @@ def find_registry_asset(asset_id: str, control_plane_root: Path) -> dict:
     registry = load_registry(control_plane_root)
     assets = registry.get("assets", []) or []
     for asset in assets:
+        if not isinstance(asset, dict):
+            raise ValueError(f"Registry entry for '{asset_id}' is not a mapping")
         if asset.get("id") == asset_id:
-            if not isinstance(asset, dict):
-                raise ValueError(f"Registry entry for '{asset_id}' is not a mapping")
             return asset
     raise KeyError(f"Unknown shared asset id: {asset_id}")
 

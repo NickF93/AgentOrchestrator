@@ -564,8 +564,8 @@ digraph PLAN {
   subgraph "cluster_cg71" {
     style="rounded,dashed";
     label="cg71: Validate, render, and asset-resolution hardening loop";
-  "T31.3.6" [label="T31.3.6 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
-  "M31.3.7" [label="M31.3.7 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "T31.3.6" [label="T31.3.6 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M31.3.7" [label="M31.3.7 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg72" {
     style="rounded,dashed";

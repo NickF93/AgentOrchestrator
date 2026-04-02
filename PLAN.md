@@ -838,8 +838,8 @@ Status: in_progress
 | `M31.3.3` | `M` | Remove legacy aggregate PLAN.yaml runtime support from shared Python tooling | done | Shared Python runtime tooling becomes split-plan-only. split-plan.py remains the explicit legacy migration path; no compatibility shims or aggregate runtime fallbacks remain. |
 | `T31.3.4` | `T` | Add high-signal hardening coverage for plan_loader.py, split-plan.py, and archive-plan.py | done |  |
 | `M31.3.5` | `M` | Fix runtime defects exposed by loader, split, and archive hardening tests | done |  |
-| `T31.3.6` | `T` | Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py | planned |  |
-| `M31.3.7` | `M` | Fix runtime defects exposed by validate, render, and asset-resolution hardening tests | planned |  |
+| `T31.3.6` | `T` | Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py | done |  |
+| `M31.3.7` | `M` | Fix runtime defects exposed by validate, render, and asset-resolution hardening tests | done |  |
 | `C31.3.8` | `C` | Checkpoint closure — X31 warning-strict coverage hardening | planned |  |
 
 ## Commit Groups
@@ -3113,7 +3113,7 @@ Status: in_progress
 
 ### T31.3.6: Add high-signal hardening coverage for validate-plan.py, render-plan.py, and resolve-shared-asset.py
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: high
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: high
 - **Sprint**: `S31.3`
 - **Actions**: test, verify
 - **Depends on**: `M31.3.5`
@@ -3125,7 +3125,7 @@ Status: in_progress
 
 ### M31.3.7: Fix runtime defects exposed by validate, render, and asset-resolution hardening tests
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: high
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: high
 - **Sprint**: `S31.3`
 - **Actions**: implement, verify
 - **Depends on**: `T31.3.6`
