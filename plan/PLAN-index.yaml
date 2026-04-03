@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-04-02'
+  last_updated: '2026-04-03'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -147,3 +147,7 @@ archives:
   title: PLAN Splitting and Archival Foundation
   path: archive/PLAN-X31.yaml
   digest: sha256:0c92b74930cf
+- milestone: X33
+  title: Issue
+  path: archive/PLAN-X33.yaml
+  digest: sha256:600b31d3ad6e

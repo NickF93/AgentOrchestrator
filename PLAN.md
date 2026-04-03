@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-02
+- Last updated: 2026-04-03
 
 ## Mission
 
@@ -46,7 +46,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
 | X31 | X | PLAN Splitting and Archival Foundation | done |
-| X32 | X | TODO Reconciliation for Plan Scaling / Archival | done |
+| X33 | X | Issue | done |
 
 ## Plan
 
@@ -855,23 +855,26 @@ Status: done
 | `M31.4.3` | `M` | Fix final closure drift, consistency gaps, and deterministic generated-view behavior | done | Keep public behavior unchanged while ensuring closure-gate execution leaves the canonical split-plan source, generated views, and tracked metadata fully aligned and review-clean. |
 | `C31.4.4` | `C` | Checkpoint closure — X31 final closure audit and consistency cleanup | done |  |
 
-### X32
+### X33
 
-- ID: `X32`
-- Title: TODO Reconciliation for Plan Scaling / Archival
+- ID: `X33`
+- Title: Issue
 - Status: done
-- Note: Reconcile the non-normative TODO checklist after the completed and archived X31 split-plan rollout. Keep the scope narrow to the Plan Scaling / Archival section so the checklist no longer claims the delivered split-plan behavior is still undone.
+- Note: Respond to Gianni Massi's code review (issue #8) with a deep technical analysis, integrate actionable suggestions into the TODO roadmap with per-section priorities, and consistency-check the result.
 
-#### S32.1 Items
+#### S33.1 Items
 
-Sprint: Sprint 1 — Narrow TODO reconciliation for plan scaling and archival
+Sprint: Sprint 1 — Issue reply, TODO integration, consistency check
 Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D32.1.1` | `D` | Track X32 and regenerate plan views before the TODO reconciliation edit | done | Create the narrow corrective milestone, keep the work on bugfix/X32-todo-plan-reconciliation, and satisfy tracking-first governance before touching TODO.md. |
-| `D32.1.2` | `D` | Reconcile the TODO Plan Scaling / Archival checklist against the archived X31 outcome | done | Mark only the X31-delivered split-plan archival capabilities as done, leave genuinely unimplemented future-facing bullets open, and avoid broad TODO cleanup. |
-| `C32.1.3` | `C` | Checkpoint closure — X32 TODO reconciliation | done |  |
+| `D33.1.1` | `D` | Track X33 milestone in PLAN-current.yaml and regenerate plan views | done |  |
+| `D33.1.2` | `D` | Reply to issue | done | GitHub issue comment only. No file changes. |
+| `D33.1.3` | `D` | Integrate review suggestions into TODO.md with section priorities | done |  |
+| `D33.1.4` | `D` | Consistency-check TODO.md against codebase state and fix drift | done |  |
+| `C33.1.5` | `C` | Checkpoint closure — X33 | done |  |
+| `F33.1.6` | `F` | Fix hardcoded milestone/item IDs in archive and validate tests | done | Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically. |
 
 ## Commit Groups
 
@@ -953,8 +956,10 @@ Status: done
 | cg73 | X31 sprint-4 closure audit bootstrap | `D31.4.1` |
 | cg74 | Deterministic generated-view isolation and closure consistency remediation | `T31.4.2`, `M31.4.3` |
 | cg75 | X31 final closure audit and checkpoint | `C31.4.4` |
-| cg76 | X32 tracking bootstrap | `D32.1.1` |
-| cg77 | TODO reconciliation and X32 closure | `D32.1.2`, `C32.1.3` |
+| cg78 | X33 tracking bootstrap | `D33.1.1` |
+| cg79 | Issue reply and TODO integration | `D33.1.2`, `D33.1.3`, `D33.1.4` |
+| cg80 | X33 checkpoint closure | `C33.1.5` |
+| cg81 | Fix hardcoded test IDs | `F33.1.6` |
 
 ## Item Details
 
@@ -3228,35 +3233,64 @@ Status: done
   - canonical PLAN.md and PLAN.dot remain clean after the full closure gate sequence
   - X31 is consistent across plan metadata, generated outputs, and worktree state
 
-### D32.1.1: Track X32 and regenerate plan views before the TODO reconciliation edit
+### D33.1.1: Track X33 milestone in PLAN-current.yaml and regenerate plan views
 
 - **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
-- **Sprint**: `S32.1`
+- **Sprint**: `S33.1`
 - **Actions**: plan, document
-- **Commit group**: `cg76`
+- **Commit group**: `cg78`
 - **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
-- **Notes**: Create the narrow corrective milestone, keep the work on bugfix/X32-todo-plan-reconciliation, and satisfy tracking-first governance before touching TODO.md.
 
-### D32.1.2: Reconcile the TODO Plan Scaling / Archival checklist against the archived X31 outcome
+### D33.1.2: Reply to issue
 
-- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
-- **Sprint**: `S32.1`
-- **Actions**: document, review
-- **Depends on**: `D32.1.1`
-- **Commit group**: `cg77`
+- **Type**: D | **Status**: done | **Role**: reviewer | **Effort**: medium
+- **Sprint**: `S33.1`
+- **Actions**: review, document
+- **Depends on**: `D33.1.1`
+- **Commit group**: `cg79`
+- **Notes**: GitHub issue comment only. No file changes.
+
+### D33.1.3: Integrate review suggestions into TODO.md with section priorities
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S33.1`
+- **Actions**: document
+- **Depends on**: `D33.1.1`
+- **Commit group**: `cg79`
 - **Artifacts**: TODO.md
-- **Notes**: Mark only the X31-delivered split-plan archival capabilities as done, leave genuinely unimplemented future-facing bullets open, and avoid broad TODO cleanup.
 
-### C32.1.3: Checkpoint closure — X32 TODO reconciliation
+### D33.1.4: Consistency-check TODO.md against codebase state and fix drift
+
+- **Type**: D | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S33.1`
+- **Actions**: review, verify
+- **Depends on**: `D33.1.3`
+- **Commit group**: `cg79`
+- **Artifacts**: TODO.md
+
+### C33.1.5: Checkpoint closure — X33
 
 - **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
-- **Sprint**: `S32.1`
+- **Sprint**: `S33.1`
 - **Actions**: checkpoint, verify
-- **Depends on**: `D32.1.2`
-- **Commit group**: `cg77`
-- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, profile=codex/check-medium, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Depends on**: `D33.1.2`, `D33.1.3`, `D33.1.4`, `F33.1.6`
+- **Commit group**: `cg80`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: PLAN.md, PLAN.dot
 - **Checks**:
-  - TODO.md no longer claims the delivered X31 split-plan archival work is undone
-  - archived X31 remains unchanged
-  - generated PLAN views remain canonical and clean
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes
+  - issue
+  - TODO.md has per-section priorities
+  - no stale or duplicate items in TODO.md
+
+### F33.1.6: Fix hardcoded milestone/item IDs in archive and validate tests
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S33.1`
+- **Actions**: implement, test
+- **Depends on**: `D33.1.4`
+- **Commit group**: `cg81`
+- **Artifacts**: tests/test_archive_plan.py, tests/test_validate_plan.py
+- **Notes**: Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically.
