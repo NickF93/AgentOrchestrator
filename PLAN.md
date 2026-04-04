@@ -48,7 +48,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X31 | X | PLAN Splitting and Archival Foundation | done |
 | X33 | X | Issue #8 Review Response and TODO Roadmap Integration | done |
 | X34 | X | Make plan tests independent from active PLAN-current state | done |
-| X35 | X | YAML hash-quoting guard and data repair | in_progress |
+| X35 | X | YAML hash-quoting guard and data repair | done |
 
 ## Plan
 
@@ -902,13 +902,13 @@ Status: done
 
 - ID: `X35`
 - Title: YAML hash-quoting guard and data repair
-- Status: in_progress
+- Status: done
 - Note: Prevent data truncation caused by unquoted # in YAML plain scalars. Add a raw-text pre-load lint to validate-plan.py, repair truncated titles in PLAN-X33.yaml and PLAN-index.yaml, and add regression tests. Closes #21.
 
 #### S35.1 Items
 
 Sprint: Sprint 1 — Lint guard, data repair, regression tests
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
@@ -916,7 +916,7 @@ Status: in_progress
 | `F35.1.2` | `F` | Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml | done |  |
 | `F35.1.3` | `F` | Add raw-text unquoted-hash lint to validate-plan.py | done |  |
 | `T35.1.4` | `T` | Regression tests for hash-in-title lint and round-trip | done |  |
-| `C35.1.5` | `C` | Checkpoint closure — X35 | planned |  |
+| `C35.1.5` | `C` | Checkpoint closure — X35 | done |  |
 
 ## Commit Groups
 
@@ -3432,7 +3432,7 @@ Status: in_progress
 
 ### C35.1.5: Checkpoint closure — X35
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S35.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `F35.1.2`, `F35.1.3`, `T35.1.4`

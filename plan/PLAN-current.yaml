@@ -2,7 +2,7 @@ milestones:
 - id: X35
   type: X
   title: 'YAML hash-quoting guard and data repair'
-  status: in_progress
+  status: done
   note: >
     Prevent data truncation caused by unquoted # in YAML plain scalars.
     Add a raw-text pre-load lint to validate-plan.py, repair truncated
@@ -14,7 +14,7 @@ sprints:
   type: S
   parent: X35
   title: "Sprint 1 \u2014 Lint guard, data repair, regression tests"
-  status: in_progress
+  status: done
 
 items:
 - id: D35.1.1
@@ -91,7 +91,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - F35.1.2
   - F35.1.3
