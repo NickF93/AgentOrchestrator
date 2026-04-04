@@ -1050,3 +1050,99 @@ def test_validate_plan_script_entrypoint_runs(
         )
 
     assert exc.value.code == 0
+
+
+# ---------------------------------------------------------------------------
+# YAML unquoted-hash lint tests (issue #21)
+# ---------------------------------------------------------------------------
+
+
+def test_lint_detects_unquoted_hash_in_title(repo_root: Path, tmp_path: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    p = tmp_path / "bad.yaml"
+    p.write_text("milestones:\n- id: X99\n  title: Issue #8 Review\n  status: done\n")
+
+    errors = module.lint_yaml_unquoted_hash(p)
+    assert len(errors) == 1
+    assert "#" in errors[0]
+    assert "bad.yaml:3" in errors[0]
+
+
+def test_lint_passes_quoted_hash_in_title(repo_root: Path, tmp_path: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    p = tmp_path / "good.yaml"
+    p.write_text("milestones:\n- id: X99\n  title: 'Issue #8 Review'\n  status: done\n")
+
+    errors = module.lint_yaml_unquoted_hash(p)
+    assert errors == []
+
+
+def test_lint_ignores_block_scalars(repo_root: Path, tmp_path: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    p = tmp_path / "block.yaml"
+    p.write_text("note: >\n  This references issue #8 and is fine.\n  More text here.\nid: X1\n")
+
+    errors = module.lint_yaml_unquoted_hash(p)
+    assert errors == []
+
+
+def test_lint_ignores_full_line_comments(repo_root: Path, tmp_path: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    p = tmp_path / "comments.yaml"
+    p.write_text("# This is a comment with #hash\nid: X1\ntitle: Safe title\n")
+
+    errors = module.lint_yaml_unquoted_hash(p)
+    assert errors == []
+
+
+def test_lint_ignores_multiline_single_quoted_scalar(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    p = tmp_path / "multiline.yaml"
+    p.write_text(
+        "note: 'This is a multi-line\n"
+        "  scalar that mentions issue #25.\n"
+        "\n"
+        "  '\nid: X1\n"
+    )
+
+    errors = module.lint_yaml_unquoted_hash(p)
+    assert errors == []
+
+
+def test_validate_plan_rejects_unquoted_hash(repo_root: Path, tmp_path: Path) -> None:
+    index_path = copy_split_plan(tmp_path)
+    current_path = index_path.parent / "PLAN-current.yaml"
+    # Raw-write an unquoted # into a title (bypassing safe_dump).
+    current_path.write_text(
+        "milestones:\n- id: X99\n  type: X\n  title: Issue #21 bad title\n"
+        "  status: in_progress\nsprints: []\nitems: []\ncommit_groups: []\n",
+        encoding="utf-8",
+    )
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(index_path),
+        "--schema",
+        str(SCHEMA_PATH),
+    )
+    assert result.returncode == 1
+    combined = f"{result.stdout}\n{result.stderr}"
+    assert "unquoted '#'" in combined
+
+
+def test_roundtrip_title_with_hash(repo_root: Path, tmp_path: Path) -> None:
+    from conftest import load_yaml as _load_yaml
+
+    data = {
+        "milestones": [{"id": "X99", "title": "Issue #8 Review", "status": "done"}],
+        "sprints": [],
+        "items": [],
+        "commit_groups": [],
+    }
+    p = tmp_path / "roundtrip.yaml"
+    write_yaml(p, data)
+
+    reloaded = _load_yaml(p)
+    assert reloaded["milestones"][0]["title"] == "Issue #8 Review"

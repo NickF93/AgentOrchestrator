@@ -64,6 +64,157 @@ SHARED_ASSET_PATH_PREFIX = {
 }
 
 
+_BLOCK_SCALAR_RE = re.compile(r"^[ \t]*[^\s#][^:]*:[ \t]+[|>]")
+
+
+def _count_unescaped(line: str, quote: str) -> int:
+    """Count unescaped occurrences of *quote* in *line*.
+
+    For single-quote (``'``), YAML escapes via ``''`` (two consecutive).
+    For double-quote (``"``), YAML escapes via ``\\"``.
+    """
+    count = 0
+    i = 0
+    while i < len(line):
+        if line[i] == quote:
+            if quote == "'" and i + 1 < len(line) and line[i + 1] == "'":
+                i += 2  # escaped ''
+                continue
+            if quote == '"' and i > 0 and line[i - 1] == "\\":
+                i += 1  # escaped \"
+                continue
+            count += 1
+        i += 1
+    return count
+
+
+def _is_inside_quotes(line: str, pos: int) -> bool:
+    """Return True if the character at *pos* is inside single or double quotes."""
+    in_single = False
+    in_double = False
+    i = 0
+    while i < pos:
+        ch = line[i]
+        if ch == "'" and not in_double:
+            if in_single and i + 1 < len(line) and line[i + 1] == "'":
+                i += 2  # escaped ''
+                continue
+            in_single = not in_single
+        elif ch == '"' and not in_single:
+            if in_double and i > 0 and line[i - 1] == "\\":
+                i += 1
+                continue
+            in_double = not in_double
+        i += 1
+    return in_single or in_double
+
+
+def lint_yaml_unquoted_hash(path: Path) -> list[str]:
+    """Scan a YAML file for unquoted ``#`` in value positions.
+
+    Returns a list of human-readable error strings, one per offending line.
+    Correctly skips block scalars (``|``, ``>``) and multi-line quoted
+    scalars (single or double).
+    """
+    errors: list[str] = []
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+
+    block_scalar_indent: int | None = None
+    in_multiline_quote: str | None = None  # "'" or '"' when active
+
+    for lineno_0, raw_line in enumerate(lines, start=1):
+        stripped = raw_line.rstrip()
+
+        # Determine current indentation level.
+        content = stripped.lstrip()
+        indent = len(stripped) - len(content)
+
+        # --- Multi-line quoted scalar tracking ---
+        if in_multiline_quote is not None:
+            closes = _count_unescaped(stripped, in_multiline_quote)
+            if closes > 0:
+                in_multiline_quote = None
+            continue
+
+        if not stripped:
+            continue
+
+        # --- Block scalar tracking ---
+        if block_scalar_indent is not None:
+            if indent > block_scalar_indent or not content:
+                continue
+            block_scalar_indent = None
+
+        if _BLOCK_SCALAR_RE.match(stripped):
+            block_scalar_indent = indent
+            continue
+
+        # Skip full-line comments.
+        if content.startswith("#"):
+            continue
+
+        # Detect multi-line quoted scalars that open but don't close on
+        # this line.  Look for a value that starts with a quote character.
+        for quote_char in ("'", '"'):
+            # Match  key: 'value...  or  key: "value...
+            marker = f": {quote_char}"
+            idx = stripped.find(marker)
+            if idx != -1:
+                value_start = idx + len(marker)
+                rest = stripped[value_start:]
+                closes = _count_unescaped(rest, quote_char)
+                if closes == 0:
+                    in_multiline_quote = quote_char
+                break
+
+        if in_multiline_quote is not None:
+            continue
+
+        # Look for ` #` in the line outside of quoted spans.
+        search_start = 0
+        while True:
+            pos = stripped.find(" #", search_start)
+            if pos == -1:
+                break
+            if not _is_inside_quotes(stripped, pos + 1):
+                errors.append(
+                    f"{path}:{lineno_0}: unquoted '#' in value: {stripped.strip()}"
+                )
+                break
+            search_start = pos + 2
+
+    return errors
+
+
+def lint_yaml_unquoted_hash_all(plan_path: Path) -> list[str]:
+    """Collect all YAML files from a split-plan index and lint each one."""
+    errors: list[str] = []
+
+    # Lint the index file itself first.
+    errors.extend(lint_yaml_unquoted_hash(plan_path))
+
+    try:
+        index = yaml.safe_load(plan_path.read_text(encoding="utf-8"))
+    except Exception:
+        return errors
+
+    if not isinstance(index, dict) or "current_plan" not in index:
+        return errors
+
+    plan_dir = plan_path.parent
+    current = plan_dir / index["current_plan"]
+    if current.exists():
+        errors.extend(lint_yaml_unquoted_hash(current))
+
+    for entry in index.get("archives", []):
+        archive = plan_dir / entry.get("path", "")
+        if archive.exists():
+            errors.extend(lint_yaml_unquoted_hash(archive))
+
+    return errors
+
+
 def default_shared_asset_registry_path() -> Path:
     return Path(__file__).resolve().parents[2] / "agent-os" / "registry" / "shared-assets.yaml"
 
@@ -882,6 +1033,12 @@ def main() -> int:
     if not registry_path.exists():
         print(f"ERROR: Shared asset registry not found: {registry_path}", file=sys.stderr)
         return 2
+
+    lint_errors = lint_yaml_unquoted_hash_all(plan_path)
+    if lint_errors:
+        for err in lint_errors:
+            print(f"ERROR: {err}", file=sys.stderr)
+        return 1
 
     try:
         plan, plan_metadata = load_plan(plan_path)
