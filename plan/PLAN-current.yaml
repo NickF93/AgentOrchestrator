@@ -41,7 +41,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - D35.1.1
   role: implementer
@@ -59,7 +59,7 @@ items:
   actions:
   - implement
   - test
-  status: planned
+  status: done
   depends_on:
   - D35.1.1
   role: implementer
@@ -74,7 +74,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - F35.1.3
   role: tester

@@ -1,7 +1,7 @@
 milestones:
 - id: X33
   type: X
-  title: Issue
+  title: 'Issue #8 Review Response and TODO Roadmap Integration'
   status: done
   note: 'Respond to Gianni Massi''s code review (issue #8) with a deep technical analysis,
     integrate actionable suggestions into the TODO roadmap with per-section priorities,

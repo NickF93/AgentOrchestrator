@@ -148,9 +148,9 @@ archives:
   path: archive/PLAN-X31.yaml
   digest: sha256:0c92b74930cf
 - milestone: X33
-  title: Issue
+  title: 'Issue #8 Review Response and TODO Roadmap Integration'
   path: archive/PLAN-X33.yaml
-  digest: sha256:600b31d3ad6e
+  digest: sha256:8845ed46e172
 - milestone: X34
   title: Make plan tests independent from active PLAN-current state
   path: archive/PLAN-X34.yaml

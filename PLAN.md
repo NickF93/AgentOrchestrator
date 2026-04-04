@@ -46,7 +46,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X29 | X | Portability and Governance Enforcement Bugfixes | done |
 | X30 | X | TODO Roadmap Expansion | done |
 | X31 | X | PLAN Splitting and Archival Foundation | done |
-| X33 | X | Issue | done |
+| X33 | X | Issue #8 Review Response and TODO Roadmap Integration | done |
 | X34 | X | Make plan tests independent from active PLAN-current state | done |
 | X35 | X | YAML hash-quoting guard and data repair | in_progress |
 
@@ -860,7 +860,7 @@ Status: done
 ### X33
 
 - ID: `X33`
-- Title: Issue
+- Title: Issue #8 Review Response and TODO Roadmap Integration
 - Status: done
 - Note: Respond to Gianni Massi's code review (issue #8) with a deep technical analysis, integrate actionable suggestions into the TODO roadmap with per-section priorities, and consistency-check the result.
 
@@ -913,9 +913,9 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D35.1.1` | `D` | Track X35 milestone and regenerate plan views | done |  |
-| `F35.1.2` | `F` | Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml | planned |  |
-| `F35.1.3` | `F` | Add raw-text unquoted-hash lint to validate-plan.py | planned |  |
-| `T35.1.4` | `T` | Regression tests for hash-in-title lint and round-trip | planned |  |
+| `F35.1.2` | `F` | Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml | done |  |
+| `F35.1.3` | `F` | Add raw-text unquoted-hash lint to validate-plan.py | done |  |
+| `T35.1.4` | `T` | Regression tests for hash-in-title lint and round-trip | done |  |
 | `C35.1.5` | `C` | Checkpoint closure — X35 | planned |  |
 
 ## Commit Groups
@@ -3406,7 +3406,7 @@ Status: in_progress
 
 ### F35.1.2: Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S35.1`
 - **Actions**: implement, verify
 - **Depends on**: `D35.1.1`
@@ -3415,7 +3415,7 @@ Status: in_progress
 
 ### F35.1.3: Add raw-text unquoted-hash lint to validate-plan.py
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S35.1`
 - **Actions**: implement, test
 - **Depends on**: `D35.1.1`
@@ -3423,7 +3423,7 @@ Status: in_progress
 
 ### T35.1.4: Regression tests for hash-in-title lint and round-trip
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S35.1`
 - **Actions**: test, verify
 - **Depends on**: `F35.1.3`
