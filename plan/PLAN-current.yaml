@@ -1,4 +1,140 @@
-milestones: []
-sprints: []
-items: []
-commit_groups: []
+milestones:
+- id: X34
+  type: X
+  title: Make plan tests independent from active PLAN-current state
+  status: in_progress
+  note: >
+    Tests crash with IndexError when PLAN-current.yaml is empty after
+    archival. Root cause: copy_split_plan copies live plan/ directory and
+    tests assume non-empty active content. Fix by injecting synthetic
+    fixture data so tests are self-contained. Closes #25.
+
+sprints:
+- id: S34.1
+  type: S
+  parent: X34
+  title: "Sprint 1 \u2014 Self-contained test fixtures and empty-state coverage"
+  status: in_progress
+
+items:
+- id: D34.1.1
+  parent: S34.1
+  type: D
+  title: Track X34 milestone and regenerate plan views
+  actions:
+  - plan
+  - document
+  status: in_progress
+  role: orchestrator
+  effort: low
+  commit_group: cg82
+  scope: .
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+
+- id: F34.1.2
+  parent: S34.1
+  type: F
+  title: Add synthetic fixture helper and fix archive tests for empty-state
+  actions:
+  - implement
+  - test
+  status: planned
+  depends_on:
+  - D34.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg83
+  scope: tests/
+  artifacts_out:
+  - tests/conftest.py
+  - tests/test_archive_plan.py
+  notes: >
+    Add a synthetic_current_fragment() helper to conftest that builds a
+    minimal valid PLAN-current.yaml fixture. Replace active_milestone_id()
+    with inject_synthetic_fragment() so tests never depend on live data.
+    Add explicit empty-state test for archive-plan behavior.
+
+- id: F34.1.3
+  parent: S34.1
+  type: F
+  title: Fix validate tests for empty-state
+  actions:
+  - implement
+  - test
+  status: planned
+  depends_on:
+  - F34.1.2
+  role: implementer
+  effort: low
+  commit_group: cg83
+  scope: tests/
+  artifacts_out:
+  - tests/test_validate_plan.py
+  notes: >
+    Fix the two validate tests that index into empty items lists.
+    Use synthetic fixture data injected into the copied plan.
+
+- id: T34.1.4
+  parent: S34.1
+  type: T
+  title: Verify tests pass in both empty and non-empty PLAN-current states
+  actions:
+  - test
+  - verify
+  status: planned
+  depends_on:
+  - F34.1.3
+  role: tester
+  effort: low
+  commit_group: cg83
+  scope: tests/
+  checks:
+  - pytest passes with empty PLAN-current.yaml
+  - pytest passes with non-empty PLAN-current.yaml
+
+- id: C34.1.5
+  parent: S34.1
+  type: C
+  title: "Checkpoint closure \u2014 X34"
+  actions:
+  - checkpoint
+  - verify
+  status: planned
+  depends_on:
+  - F34.1.2
+  - F34.1.3
+  - T34.1.4
+  role: reviewer
+  effort: low
+  commit_group: cg84
+  scope: .
+  artifacts_out:
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+
+commit_groups:
+- id: cg82
+  title: X34 tracking bootstrap
+  items:
+  - D34.1.1
+- id: cg83
+  title: Self-contained test fixtures and empty-state coverage
+  items:
+  - F34.1.2
+  - F34.1.3
+  - T34.1.4
+- id: cg84
+  title: X34 checkpoint closure
+  items:
+  - C34.1.5
