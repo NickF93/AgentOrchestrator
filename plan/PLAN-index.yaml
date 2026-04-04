@@ -155,3 +155,7 @@ archives:
   title: Make plan tests independent from active PLAN-current state
   path: archive/PLAN-X34.yaml
   digest: sha256:55e949545189
+- milestone: X35
+  title: YAML hash-quoting guard and data repair
+  path: archive/PLAN-X35.yaml
+  digest: sha256:a66bde3bd41d
