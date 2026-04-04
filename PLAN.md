@@ -48,6 +48,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X31 | X | PLAN Splitting and Archival Foundation | done |
 | X33 | X | Issue | done |
 | X34 | X | Make plan tests independent from active PLAN-current state | done |
+| X35 | X | YAML hash-quoting guard and data repair | in_progress |
 
 ## Plan
 
@@ -897,6 +898,26 @@ Status: done
 | `T34.1.4` | `T` | Verify tests pass in both empty and non-empty PLAN-current states | done |  |
 | `C34.1.5` | `C` | Checkpoint closure — X34 | done |  |
 
+### X35
+
+- ID: `X35`
+- Title: YAML hash-quoting guard and data repair
+- Status: in_progress
+- Note: Prevent data truncation caused by unquoted # in YAML plain scalars. Add a raw-text pre-load lint to validate-plan.py, repair truncated titles in PLAN-X33.yaml and PLAN-index.yaml, and add regression tests. Closes #21.
+
+#### S35.1 Items
+
+Sprint: Sprint 1 — Lint guard, data repair, regression tests
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D35.1.1` | `D` | Track X35 milestone and regenerate plan views | done |  |
+| `F35.1.2` | `F` | Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml | planned |  |
+| `F35.1.3` | `F` | Add raw-text unquoted-hash lint to validate-plan.py | planned |  |
+| `T35.1.4` | `T` | Regression tests for hash-in-title lint and round-trip | planned |  |
+| `C35.1.5` | `C` | Checkpoint closure — X35 | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -984,6 +1005,9 @@ Status: done
 | cg82 | X34 tracking bootstrap | `D34.1.1` |
 | cg83 | Self-contained test fixtures and empty-state coverage | `F34.1.2`, `F34.1.3`, `T34.1.4` |
 | cg84 | X34 checkpoint closure | `C34.1.5` |
+| cg85 | X35 tracking bootstrap | `D35.1.1` |
+| cg86 | YAML hash-quoting lint and data repair | `F35.1.2`, `F35.1.3`, `T35.1.4` |
+| cg87 | X35 checkpoint closure | `C35.1.5` |
 
 ## Item Details
 
@@ -3365,6 +3389,54 @@ Status: done
 - **Actions**: checkpoint, verify
 - **Depends on**: `F34.1.2`, `F34.1.3`, `T34.1.4`
 - **Commit group**: `cg84`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes
+
+### D35.1.1: Track X35 milestone and regenerate plan views
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S35.1`
+- **Actions**: plan, document
+- **Commit group**: `cg85`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F35.1.2: Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml
+
+- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Sprint**: `S35.1`
+- **Actions**: implement, verify
+- **Depends on**: `D35.1.1`
+- **Commit group**: `cg86`
+- **Artifacts**: plan/archive/PLAN-X33.yaml, plan/PLAN-index.yaml
+
+### F35.1.3: Add raw-text unquoted-hash lint to validate-plan.py
+
+- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S35.1`
+- **Actions**: implement, test
+- **Depends on**: `D35.1.1`
+- **Commit group**: `cg86`
+
+### T35.1.4: Regression tests for hash-in-title lint and round-trip
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S35.1`
+- **Actions**: test, verify
+- **Depends on**: `F35.1.3`
+- **Commit group**: `cg86`
+- **Artifacts**: tests/test_validate_plan.py
+
+### C35.1.5: Checkpoint closure — X35
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S35.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `F35.1.2`, `F35.1.3`, `T35.1.4`
+- **Commit group**: `cg87`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: PLAN.md, PLAN.dot
 - **Checks**:

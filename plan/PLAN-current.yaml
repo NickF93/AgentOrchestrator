@@ -1,4 +1,129 @@
-milestones: []
-sprints: []
-items: []
-commit_groups: []
+milestones:
+- id: X35
+  type: X
+  title: 'YAML hash-quoting guard and data repair'
+  status: in_progress
+  note: >
+    Prevent data truncation caused by unquoted # in YAML plain scalars.
+    Add a raw-text pre-load lint to validate-plan.py, repair truncated
+    titles in PLAN-X33.yaml and PLAN-index.yaml, and add regression tests.
+    Closes #21.
+
+sprints:
+- id: S35.1
+  type: S
+  parent: X35
+  title: "Sprint 1 \u2014 Lint guard, data repair, regression tests"
+  status: in_progress
+
+items:
+- id: D35.1.1
+  parent: S35.1
+  type: D
+  title: Track X35 milestone and regenerate plan views
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg85
+  scope: .
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+
+- id: F35.1.2
+  parent: S35.1
+  type: F
+  title: 'Repair truncated title in PLAN-X33.yaml and PLAN-index.yaml'
+  actions:
+  - implement
+  - verify
+  status: planned
+  depends_on:
+  - D35.1.1
+  role: implementer
+  effort: low
+  commit_group: cg86
+  scope: plan/
+  artifacts_out:
+  - plan/archive/PLAN-X33.yaml
+  - plan/PLAN-index.yaml
+
+- id: F35.1.3
+  parent: S35.1
+  type: F
+  title: Add raw-text unquoted-hash lint to validate-plan.py
+  actions:
+  - implement
+  - test
+  status: planned
+  depends_on:
+  - D35.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg86
+  scope: agent-os/scripts/
+
+- id: T35.1.4
+  parent: S35.1
+  type: T
+  title: 'Regression tests for hash-in-title lint and round-trip'
+  actions:
+  - test
+  - verify
+  status: planned
+  depends_on:
+  - F35.1.3
+  role: tester
+  effort: medium
+  commit_group: cg86
+  scope: tests/
+  artifacts_out:
+  - tests/test_validate_plan.py
+
+- id: C35.1.5
+  parent: S35.1
+  type: C
+  title: "Checkpoint closure \u2014 X35"
+  actions:
+  - checkpoint
+  - verify
+  status: planned
+  depends_on:
+  - F35.1.2
+  - F35.1.3
+  - T35.1.4
+  role: reviewer
+  effort: low
+  commit_group: cg87
+  scope: .
+  artifacts_out:
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+
+commit_groups:
+- id: cg85
+  title: X35 tracking bootstrap
+  items:
+  - D35.1.1
+- id: cg86
+  title: 'YAML hash-quoting lint and data repair'
+  items:
+  - F35.1.2
+  - F35.1.3
+  - T35.1.4
+- id: cg87
+  title: X35 checkpoint closure
+  items:
+  - C35.1.5

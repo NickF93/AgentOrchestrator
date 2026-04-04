@@ -34,6 +34,7 @@ digraph PLAN {
   "X31" [label="X31 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X33" [label="X33 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X34" [label="X34 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X35" [label="X35 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -84,6 +85,7 @@ digraph PLAN {
   "S31.4" [label="S31.4 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S33.1" [label="S33.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S34.1" [label="S34.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S35.1" [label="S35.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -632,6 +634,23 @@ digraph PLAN {
     label="cg84: X34 checkpoint closure";
   "C34.1.5" [label="C34.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg85" {
+    style="rounded,dashed";
+    label="cg85: X35 tracking bootstrap";
+  "D35.1.1" [label="D35.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg86" {
+    style="rounded,dashed";
+    label="cg86: YAML hash-quoting lint and data repair";
+  "F35.1.2" [label="F35.1.2 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  "F35.1.3" [label="F35.1.3 | F | planned", shape=octagon, style="filled,rounded", fillcolor=lightgray];
+  "T35.1.4" [label="T35.1.4 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg87" {
+    style="rounded,dashed";
+    label="cg87: X35 checkpoint closure";
+  "C35.1.5" [label="C35.1.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -682,6 +701,7 @@ digraph PLAN {
   "X31" -> "S31.4" [style=dashed];
   "X33" -> "S33.1" [style=dashed];
   "X34" -> "S34.1" [style=dashed];
+  "X35" -> "S35.1" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -898,6 +918,11 @@ digraph PLAN {
   "S34.1" -> "F34.1.3" [style=dashed];
   "S34.1" -> "T34.1.4" [style=dashed];
   "S34.1" -> "C34.1.5" [style=dashed];
+  "S35.1" -> "D35.1.1" [style=dashed];
+  "S35.1" -> "F35.1.2" [style=dashed];
+  "S35.1" -> "F35.1.3" [style=dashed];
+  "S35.1" -> "T35.1.4" [style=dashed];
+  "S35.1" -> "C35.1.5" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1148,4 +1173,10 @@ digraph PLAN {
   "F34.1.2" -> "C34.1.5";
   "F34.1.3" -> "C34.1.5";
   "T34.1.4" -> "C34.1.5";
+  "D35.1.1" -> "F35.1.2";
+  "D35.1.1" -> "F35.1.3";
+  "F35.1.3" -> "T35.1.4";
+  "F35.1.2" -> "C35.1.5";
+  "F35.1.3" -> "C35.1.5";
+  "T35.1.4" -> "C35.1.5";
 }
