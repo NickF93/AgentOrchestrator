@@ -79,27 +79,14 @@ def test_validate_plan_accepts_current_plan(repo_root: Path) -> None:
 
 
 def test_validate_plan_rejects_unknown_shared_asset(repo_root: Path, tmp_path: Path) -> None:
+    from conftest import inject_synthetic_current
+
     index_path = copy_split_plan(tmp_path)
-    current_path = index_path.parent / "PLAN-current.yaml"
-    current_plan = load_yaml(current_path)
-    target_item = next(
-        (item for item in current_plan["items"] if item.get("shared_assets")),
-        None,
-    )
-    if target_item is None:
-        # Inject a shared_assets block into the first C-type item (or any item)
-        target_item = next(
-            (item for item in current_plan["items"] if item["type"] == "C"),
-            current_plan["items"][0],
-        )
-        target_item["shared_assets"] = {
-            "skill": "plan-checkpoint-close",
-            "prompt": "does-not-exist",
-            "result_protocol": "check-result-v1",
-        }
-    else:
-        target_item["shared_assets"]["prompt"] = "does-not-exist"
-    write_yaml(current_path, current_plan)
+    fragment = inject_synthetic_current(index_path.parent)
+    # C99.1.3 in the synthetic fragment has shared_assets
+    target_item = next(item for item in fragment["items"] if item.get("shared_assets"))
+    target_item["shared_assets"]["prompt"] = "does-not-exist"
+    write_yaml(index_path.parent / "PLAN-current.yaml", fragment)
 
     result = run_python_script(
         repo_root / "agent-os" / "scripts" / "validate-plan.py",
@@ -814,12 +801,16 @@ def test_validate_plan_main_handles_previous_plan_failure(
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     current_path = copy_split_plan(tmp_path)
     previous_path = copy_split_plan(tmp_path / "previous")
-    previous_current = load_yaml(previous_path.parent / "PLAN-current.yaml")
-    # Pick any item whose status can be set to a non-terminal state to trigger
-    # a lifecycle transition failure when compared against the current plan.
-    target_item = previous_current["items"][0]
-    target_item["status"] = "review"
-    write_yaml(previous_path.parent / "PLAN-current.yaml", previous_current)
+    from conftest import inject_synthetic_current
+
+    # Inject synthetic content into both plans so shared item IDs allow
+    # lifecycle transition comparison regardless of live PLAN-current state.
+    inject_synthetic_current(current_path.parent)
+    previous_fragment = inject_synthetic_current(previous_path.parent)
+    # Set previous item to "review" — since the current synthetic has
+    # "in_progress", validate_transitions detects backward transition.
+    previous_fragment["items"][0]["status"] = "review"
+    write_yaml(previous_path.parent / "PLAN-current.yaml", previous_fragment)
 
     monkeypatch.setattr(
         sys,

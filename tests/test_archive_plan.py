@@ -7,7 +7,14 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from conftest import copy_split_plan, load_yaml, run_python_script, write_yaml
+from conftest import (
+    SYNTHETIC_MILESTONE_ID,
+    copy_split_plan,
+    inject_synthetic_current,
+    load_yaml,
+    run_python_script,
+    write_yaml,
+)
 
 
 def load_module(module_name: str, path: Path) -> Any:
@@ -20,27 +27,29 @@ def load_module(module_name: str, path: Path) -> Any:
     return module
 
 
-def mark_current_fragment_done(current_path: Path) -> None:
-    current_fragment = load_yaml(current_path)
+def mark_fragment_done(fragment: dict) -> dict:
+    """Set every milestone, sprint, and item in a fragment dict to done."""
     for section in ("milestones", "sprints", "items"):
-        for obj in current_fragment[section]:
+        for obj in fragment[section]:
             obj["status"] = "done"
-    write_yaml(current_path, current_fragment)
+    return fragment
 
 
-def active_milestone_id(plan_dir: Path) -> str:
-    """Return the first milestone ID from the current plan fragment."""
-    current = load_yaml(plan_dir / "PLAN-current.yaml")
-    return current["milestones"][0]["id"]
+def setup_plan_with_synthetic(tmp_path: Path) -> tuple[Path, str]:
+    """Copy the live plan, inject synthetic content, return (index_path, ms_id)."""
+    index_path = copy_split_plan(tmp_path)
+    inject_synthetic_current(index_path.parent)
+    return index_path, SYNTHETIC_MILESTONE_ID
 
 
 def test_archive_plan_moves_done_milestone_and_updates_index(
     repo_root: Path, tmp_path: Path
 ) -> None:
-    index_path = copy_split_plan(tmp_path)
+    index_path, ms_id = setup_plan_with_synthetic(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
-    ms_id = active_milestone_id(index_path.parent)
-    mark_current_fragment_done(current_path)
+    fragment = load_yaml(current_path)
+    mark_fragment_done(fragment)
+    write_yaml(current_path, fragment)
     md_path = tmp_path / "PLAN.md"
     dot_path = tmp_path / "PLAN.dot"
 
@@ -89,12 +98,7 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
 
 
 def test_archive_plan_rejects_open_milestone(repo_root: Path, tmp_path: Path) -> None:
-    index_path = copy_split_plan(tmp_path)
-    current_path = index_path.parent / "PLAN-current.yaml"
-    ms_id = active_milestone_id(index_path.parent)
-    current_fragment = load_yaml(current_path)
-    current_fragment["milestones"][0]["status"] = "in_progress"
-    write_yaml(current_path, current_fragment)
+    index_path, ms_id = setup_plan_with_synthetic(tmp_path)
 
     result = run_python_script(
         repo_root / "agent-os" / "scripts" / "archive-plan.py",
@@ -159,10 +163,11 @@ def test_archive_plan_main_succeeds_in_process(
     module = load_module(
         "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
     )
-    index_path = copy_split_plan(tmp_path)
+    index_path, ms_id = setup_plan_with_synthetic(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
-    ms_id = active_milestone_id(index_path.parent)
-    mark_current_fragment_done(current_path)
+    fragment = load_yaml(current_path)
+    mark_fragment_done(fragment)
+    write_yaml(current_path, fragment)
     md_path = tmp_path / "PLAN.md"
     dot_path = tmp_path / "PLAN.dot"
 
@@ -200,10 +205,11 @@ def test_archive_plan_main_rejects_existing_archive_target_in_process(
     module = load_module(
         "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
     )
-    index_path = copy_split_plan(tmp_path)
+    index_path, ms_id = setup_plan_with_synthetic(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
-    ms_id = active_milestone_id(index_path.parent)
-    mark_current_fragment_done(current_path)
+    fragment = load_yaml(current_path)
+    mark_fragment_done(fragment)
+    write_yaml(current_path, fragment)
     archive_path = tmp_path / "plan" / "archive" / f"PLAN-{ms_id}.yaml"
     archive_path.parent.mkdir(parents=True, exist_ok=True)
     archive_path.write_text("already there\n", encoding="utf-8")
@@ -254,10 +260,11 @@ def test_archive_plan_main_handles_unexpected_render_failure(
     module = load_module(
         "archive_plan_module", repo_root / "agent-os" / "scripts" / "archive-plan.py"
     )
-    index_path = copy_split_plan(tmp_path)
+    index_path, ms_id = setup_plan_with_synthetic(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
-    ms_id = active_milestone_id(index_path.parent)
-    mark_current_fragment_done(current_path)
+    fragment = load_yaml(current_path)
+    mark_fragment_done(fragment)
+    write_yaml(current_path, fragment)
 
     def fail_render(_script_dir: Path) -> Any:
         raise RuntimeError("render failure")
@@ -300,10 +307,11 @@ def test_archive_plan_load_render_module_rejects_unloadable_script(
 def test_archive_plan_script_entrypoint_runs(
     repo_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    index_path = copy_split_plan(tmp_path)
+    index_path, ms_id = setup_plan_with_synthetic(tmp_path)
     current_path = index_path.parent / "PLAN-current.yaml"
-    ms_id = active_milestone_id(index_path.parent)
-    mark_current_fragment_done(current_path)
+    fragment = load_yaml(current_path)
+    mark_fragment_done(fragment)
+    write_yaml(current_path, fragment)
 
     monkeypatch.setattr(
         sys,
@@ -327,3 +335,26 @@ def test_archive_plan_script_entrypoint_runs(
         )
 
     assert exc.value.code == 0
+
+
+def test_archive_plan_rejects_empty_current_fragment(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    """When PLAN-current.yaml is empty after archival, archive-plan must
+    reject requests gracefully rather than crashing."""
+    index_path = copy_split_plan(tmp_path)
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "archive-plan.py",
+        "--plan",
+        str(index_path),
+        "--milestone",
+        "X999",
+        "--md",
+        str(tmp_path / "PLAN.md"),
+        "--dot",
+        str(tmp_path / "PLAN.dot"),
+    )
+
+    assert result.returncode == 1
+    assert "milestone is not present in the current fragment" in f"{result.stdout}\n{result.stderr}"

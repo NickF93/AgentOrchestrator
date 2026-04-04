@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-03
+- Last updated: 2026-04-04
 
 ## Mission
 
@@ -47,6 +47,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X30 | X | TODO Roadmap Expansion | done |
 | X31 | X | PLAN Splitting and Archival Foundation | done |
 | X33 | X | Issue | done |
+| X34 | X | Make plan tests independent from active PLAN-current state | done |
 
 ## Plan
 
@@ -876,6 +877,26 @@ Status: done
 | `C33.1.5` | `C` | Checkpoint closure — X33 | done |  |
 | `F33.1.6` | `F` | Fix hardcoded milestone/item IDs in archive and validate tests | done | Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically. |
 
+### X34
+
+- ID: `X34`
+- Title: Make plan tests independent from active PLAN-current state
+- Status: done
+- Note: Tests crash with IndexError when PLAN-current.yaml is empty after archival. Root cause: copy_split_plan copies live plan/ directory and tests assume non-empty active content. Fix by injecting synthetic fixture data so tests are self-contained. Closes #25.
+
+#### S34.1 Items
+
+Sprint: Sprint 1 — Self-contained test fixtures and empty-state coverage
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D34.1.1` | `D` | Track X34 milestone and regenerate plan views | done |  |
+| `F34.1.2` | `F` | Add synthetic fixture helper and fix archive tests for empty-state | done | Add a synthetic_current_fragment() helper to conftest that builds a minimal valid PLAN-current.yaml fixture. Replace active_milestone_id() with inject_synthetic_fragment() so tests never depend on live data. Add explicit empty-state test for archive-plan behavior. |
+| `F34.1.3` | `F` | Fix validate tests for empty-state | done | Fix the two validate tests that index into empty items lists. Use synthetic fixture data injected into the copied plan. |
+| `T34.1.4` | `T` | Verify tests pass in both empty and non-empty PLAN-current states | done |  |
+| `C34.1.5` | `C` | Checkpoint closure — X34 | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -960,6 +981,9 @@ Status: done
 | cg79 | Issue reply and TODO integration | `D33.1.2`, `D33.1.3`, `D33.1.4` |
 | cg80 | X33 checkpoint closure | `C33.1.5` |
 | cg81 | Fix hardcoded test IDs | `F33.1.6` |
+| cg82 | X34 tracking bootstrap | `D34.1.1` |
+| cg83 | Self-contained test fixtures and empty-state coverage | `F34.1.2`, `F34.1.3`, `T34.1.4` |
+| cg84 | X34 checkpoint closure | `C34.1.5` |
 
 ## Item Details
 
@@ -3294,3 +3318,56 @@ Status: done
 - **Commit group**: `cg81`
 - **Artifacts**: tests/test_archive_plan.py, tests/test_validate_plan.py
 - **Notes**: Tests hardcode X31 and item IDs like C31.2.6 and M31.2.3 from the old PLAN-current.yaml. Since copy_split_plan copies the live plan/ directory, the tests break whenever the active milestone changes. Fix by discovering milestone and item IDs dynamically.
+
+### D34.1.1: Track X34 milestone and regenerate plan views
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S34.1`
+- **Actions**: plan, document
+- **Commit group**: `cg82`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F34.1.2: Add synthetic fixture helper and fix archive tests for empty-state
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S34.1`
+- **Actions**: implement, test
+- **Depends on**: `D34.1.1`
+- **Commit group**: `cg83`
+- **Artifacts**: tests/conftest.py, tests/test_archive_plan.py
+- **Notes**: Add a synthetic_current_fragment() helper to conftest that builds a minimal valid PLAN-current.yaml fixture. Replace active_milestone_id() with inject_synthetic_fragment() so tests never depend on live data. Add explicit empty-state test for archive-plan behavior.
+
+### F34.1.3: Fix validate tests for empty-state
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S34.1`
+- **Actions**: implement, test
+- **Depends on**: `F34.1.2`
+- **Commit group**: `cg83`
+- **Artifacts**: tests/test_validate_plan.py
+- **Notes**: Fix the two validate tests that index into empty items lists. Use synthetic fixture data injected into the copied plan.
+
+### T34.1.4: Verify tests pass in both empty and non-empty PLAN-current states
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S34.1`
+- **Actions**: test, verify
+- **Depends on**: `F34.1.3`
+- **Commit group**: `cg83`
+- **Checks**:
+  - pytest passes with empty PLAN-current.yaml
+  - pytest passes with non-empty PLAN-current.yaml
+
+### C34.1.5: Checkpoint closure — X34
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S34.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `F34.1.2`, `F34.1.3`, `T34.1.4`
+- **Commit group**: `cg84`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes

@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-04-03'
+  last_updated: '2026-04-04'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -151,3 +151,7 @@ archives:
   title: Issue
   path: archive/PLAN-X33.yaml
   digest: sha256:600b31d3ad6e
+- milestone: X34
+  title: Make plan tests independent from active PLAN-current state
+  path: archive/PLAN-X34.yaml
+  digest: sha256:55e949545189
