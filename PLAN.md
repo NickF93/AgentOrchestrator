@@ -47,7 +47,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X30 | X | TODO Roadmap Expansion | done |
 | X31 | X | PLAN Splitting and Archival Foundation | done |
 | X33 | X | Issue | done |
-| X34 | X | Make plan tests independent from active PLAN-current state | in_progress |
+| X34 | X | Make plan tests independent from active PLAN-current state | done |
 
 ## Plan
 
@@ -881,13 +881,13 @@ Status: done
 
 - ID: `X34`
 - Title: Make plan tests independent from active PLAN-current state
-- Status: in_progress
+- Status: done
 - Note: Tests crash with IndexError when PLAN-current.yaml is empty after archival. Root cause: copy_split_plan copies live plan/ directory and tests assume non-empty active content. Fix by injecting synthetic fixture data so tests are self-contained. Closes #25.
 
 #### S34.1 Items
 
 Sprint: Sprint 1 — Self-contained test fixtures and empty-state coverage
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
@@ -895,7 +895,7 @@ Status: in_progress
 | `F34.1.2` | `F` | Add synthetic fixture helper and fix archive tests for empty-state | done | Add a synthetic_current_fragment() helper to conftest that builds a minimal valid PLAN-current.yaml fixture. Replace active_milestone_id() with inject_synthetic_fragment() so tests never depend on live data. Add explicit empty-state test for archive-plan behavior. |
 | `F34.1.3` | `F` | Fix validate tests for empty-state | done | Fix the two validate tests that index into empty items lists. Use synthetic fixture data injected into the copied plan. |
 | `T34.1.4` | `T` | Verify tests pass in both empty and non-empty PLAN-current states | done |  |
-| `C34.1.5` | `C` | Checkpoint closure — X34 | planned |  |
+| `C34.1.5` | `C` | Checkpoint closure — X34 | done |  |
 
 ## Commit Groups
 
@@ -3360,7 +3360,7 @@ Status: in_progress
 
 ### C34.1.5: Checkpoint closure — X34
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S34.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `F34.1.2`, `F34.1.3`, `T34.1.4`

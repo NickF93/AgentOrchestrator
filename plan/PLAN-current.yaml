@@ -2,7 +2,7 @@ milestones:
 - id: X34
   type: X
   title: Make plan tests independent from active PLAN-current state
-  status: in_progress
+  status: done
   note: >
     Tests crash with IndexError when PLAN-current.yaml is empty after
     archival. Root cause: copy_split_plan copies live plan/ directory and
@@ -14,7 +14,7 @@ sprints:
   type: S
   parent: X34
   title: "Sprint 1 \u2014 Self-contained test fixtures and empty-state coverage"
-  status: in_progress
+  status: done
 
 items:
 - id: D34.1.1
@@ -102,7 +102,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - F34.1.2
   - F34.1.3
