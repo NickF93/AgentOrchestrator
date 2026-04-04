@@ -54,6 +54,82 @@ def copy_split_plan(tmp_path: Path) -> Path:
     return tmp_path / "plan" / "PLAN-index.yaml"
 
 
+# ---------------------------------------------------------------------------
+# Synthetic fixture data — self-contained plan fragment for tests that need
+# active content in PLAN-current.yaml regardless of live repository state.
+# ---------------------------------------------------------------------------
+
+SYNTHETIC_MILESTONE_ID = "X99"
+SYNTHETIC_ITEM_PREFIX = "X99"
+
+SYNTHETIC_CURRENT_FRAGMENT: dict = {
+    "milestones": [
+        {"id": "X99", "type": "X", "title": "Synthetic test milestone", "status": "in_progress"},
+    ],
+    "sprints": [
+        {"id": "S99.1", "type": "S", "parent": "X99", "title": "Synthetic sprint", "status": "in_progress"},
+    ],
+    "items": [
+        {
+            "id": "D99.1.1",
+            "parent": "S99.1",
+            "type": "D",
+            "title": "Synthetic doc item",
+            "actions": ["document"],
+            "status": "in_progress",
+            "role": "documenter",
+            "effort": "low",
+            "commit_group": "cg990",
+            "scope": ".",
+        },
+        {
+            "id": "M99.1.2",
+            "parent": "S99.1",
+            "type": "M",
+            "title": "Synthetic impl item",
+            "actions": ["implement"],
+            "status": "in_progress",
+            "role": "implementer",
+            "effort": "medium",
+            "commit_group": "cg990",
+            "scope": "tests/",
+        },
+        {
+            "id": "C99.1.3",
+            "parent": "S99.1",
+            "type": "C",
+            "title": "Synthetic checkpoint",
+            "actions": ["checkpoint"],
+            "status": "planned",
+            "role": "reviewer",
+            "effort": "low",
+            "commit_group": "cg990",
+            "scope": ".",
+            "shared_assets": {
+                "skill": "plan-checkpoint-close",
+                "prompt": "checkpoint-closure-review",
+                "result_protocol": "check-result-v1",
+            },
+        },
+    ],
+    "commit_groups": [
+        {"id": "cg990", "title": "Synthetic commit group", "items": ["D99.1.1", "M99.1.2", "C99.1.3"]},
+    ],
+}
+
+
+def inject_synthetic_current(plan_dir: Path) -> dict:
+    """Write SYNTHETIC_CURRENT_FRAGMENT into the plan directory.
+
+    Returns the fragment dict for further manipulation by tests.
+    """
+    import copy
+
+    fragment = copy.deepcopy(SYNTHETIC_CURRENT_FRAGMENT)
+    write_yaml(plan_dir / "PLAN-current.yaml", fragment)
+    return fragment
+
+
 def run_python_script(
     script_path: Path, *args: str, cwd: Path | None = None
 ) -> subprocess.CompletedProcess[str]:

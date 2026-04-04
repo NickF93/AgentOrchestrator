@@ -24,7 +24,7 @@ items:
   actions:
   - plan
   - document
-  status: in_progress
+  status: done
   role: orchestrator
   effort: low
   commit_group: cg82
@@ -41,7 +41,7 @@ items:
   actions:
   - implement
   - test
-  status: planned
+  status: done
   depends_on:
   - D34.1.1
   role: implementer
@@ -64,7 +64,7 @@ items:
   actions:
   - implement
   - test
-  status: planned
+  status: done
   depends_on:
   - F34.1.2
   role: implementer
@@ -84,7 +84,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - F34.1.3
   role: tester

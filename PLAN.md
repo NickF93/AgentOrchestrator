@@ -891,10 +891,10 @@ Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D34.1.1` | `D` | Track X34 milestone and regenerate plan views | in_progress |  |
-| `F34.1.2` | `F` | Add synthetic fixture helper and fix archive tests for empty-state | planned | Add a synthetic_current_fragment() helper to conftest that builds a minimal valid PLAN-current.yaml fixture. Replace active_milestone_id() with inject_synthetic_fragment() so tests never depend on live data. Add explicit empty-state test for archive-plan behavior. |
-| `F34.1.3` | `F` | Fix validate tests for empty-state | planned | Fix the two validate tests that index into empty items lists. Use synthetic fixture data injected into the copied plan. |
-| `T34.1.4` | `T` | Verify tests pass in both empty and non-empty PLAN-current states | planned |  |
+| `D34.1.1` | `D` | Track X34 milestone and regenerate plan views | done |  |
+| `F34.1.2` | `F` | Add synthetic fixture helper and fix archive tests for empty-state | done | Add a synthetic_current_fragment() helper to conftest that builds a minimal valid PLAN-current.yaml fixture. Replace active_milestone_id() with inject_synthetic_fragment() so tests never depend on live data. Add explicit empty-state test for archive-plan behavior. |
+| `F34.1.3` | `F` | Fix validate tests for empty-state | done | Fix the two validate tests that index into empty items lists. Use synthetic fixture data injected into the copied plan. |
+| `T34.1.4` | `T` | Verify tests pass in both empty and non-empty PLAN-current states | done |  |
 | `C34.1.5` | `C` | Checkpoint closure — X34 | planned |  |
 
 ## Commit Groups
@@ -3321,7 +3321,7 @@ Status: in_progress
 
 ### D34.1.1: Track X34 milestone and regenerate plan views
 
-- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S34.1`
 - **Actions**: plan, document
 - **Commit group**: `cg82`
@@ -3329,7 +3329,7 @@ Status: in_progress
 
 ### F34.1.2: Add synthetic fixture helper and fix archive tests for empty-state
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S34.1`
 - **Actions**: implement, test
 - **Depends on**: `D34.1.1`
@@ -3339,7 +3339,7 @@ Status: in_progress
 
 ### F34.1.3: Fix validate tests for empty-state
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S34.1`
 - **Actions**: implement, test
 - **Depends on**: `F34.1.2`
@@ -3349,7 +3349,7 @@ Status: in_progress
 
 ### T34.1.4: Verify tests pass in both empty and non-empty PLAN-current states
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S34.1`
 - **Actions**: test, verify
 - **Depends on**: `F34.1.3`
