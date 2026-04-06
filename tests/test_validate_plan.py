@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import runpy
 import subprocess
@@ -63,6 +64,10 @@ def run_validate_plan_without_jsonschema(
         check=False,
         env=env,
     )
+
+
+def write_current_fragment(plan_dir: Path, fragment: dict) -> None:
+    write_yaml(plan_dir / "PLAN-current.yaml", fragment)
 
 
 def test_validate_plan_accepts_current_plan(repo_root: Path) -> None:
@@ -561,6 +566,325 @@ def test_collect_helpers_and_transition_skips_unknown_states(repo_root: Path) ->
         )
         == []
     )
+
+
+def test_compute_ready_items_returns_sorted_ready_candidates(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = {
+        "items": [
+            {
+                "id": "M1.1.3",
+                "type": "M",
+                "status": "planned",
+                "commit_group": "cg1",
+                "depends_on": ["T1.1.4"],
+            },
+            {
+                "id": "D1.1.1",
+                "type": "D",
+                "status": "planned",
+                "commit_group": "cg1",
+                "depends_on": [],
+            },
+            {
+                "id": "T1.1.4",
+                "type": "T",
+                "status": "verified",
+                "commit_group": "cg1",
+                "depends_on": [],
+            },
+            {
+                "id": "F1.1.2",
+                "type": "F",
+                "status": "blocked",
+                "commit_group": "cg1",
+                "depends_on": [],
+            },
+            {
+                "id": "C1.1.5",
+                "type": "C",
+                "status": "planned",
+                "commit_group": "cg2",
+                "depends_on": ["M1.1.6"],
+            },
+            {
+                "id": "M1.1.6",
+                "type": "M",
+                "status": "review",
+                "commit_group": "cg2",
+                "depends_on": [],
+            },
+        ]
+    }
+
+    assert module.unresolved_dependencies(plan["items"][0], module.collect_statuses(plan)) == []
+    assert module.compute_ready_items(plan) == [
+        {
+            "id": "D1.1.1",
+            "type": "D",
+            "status": "planned",
+            "commit_group": "cg1",
+            "unresolved_dependencies": [],
+            "unresolved_dependencies_count": 0,
+        },
+        {
+            "id": "M1.1.3",
+            "type": "M",
+            "status": "planned",
+            "commit_group": "cg1",
+            "unresolved_dependencies": [],
+            "unresolved_dependencies_count": 0,
+        },
+    ]
+
+
+def test_validate_plan_compute_ready_emits_multiple_ready_items_json(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    index_path = copy_split_plan(tmp_path)
+    write_current_fragment(
+        index_path.parent,
+        {
+            "milestones": [
+                {
+                    "id": "X99",
+                    "type": "X",
+                    "title": "Synthetic milestone",
+                    "status": "in_progress",
+                }
+            ],
+            "sprints": [
+                {
+                    "id": "S99.1",
+                    "type": "S",
+                    "parent": "X99",
+                    "title": "Synthetic sprint",
+                    "status": "in_progress",
+                }
+            ],
+            "items": [
+                {
+                    "id": "D99.1.1",
+                    "parent": "S99.1",
+                    "type": "D",
+                    "title": "Doc ready now",
+                    "actions": ["document"],
+                    "status": "planned",
+                    "role": "documenter",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                },
+                {
+                    "id": "M99.1.2",
+                    "parent": "S99.1",
+                    "type": "M",
+                    "title": "Already marked ready",
+                    "actions": ["implement"],
+                    "status": "ready",
+                    "role": "implementer",
+                    "effort": "medium",
+                    "commit_group": "cg990",
+                    "depends_on": ["T99.1.3"],
+                },
+                {
+                    "id": "T99.1.3",
+                    "parent": "S99.1",
+                    "type": "T",
+                    "title": "Verified dependency",
+                    "actions": ["verify"],
+                    "status": "verified",
+                    "role": "tester",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                },
+                {
+                    "id": "F99.1.4",
+                    "parent": "S99.1",
+                    "type": "F",
+                    "title": "Blocked by unresolved dependency",
+                    "actions": ["implement"],
+                    "status": "planned",
+                    "role": "implementer",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                    "depends_on": ["D99.1.5"],
+                },
+                {
+                    "id": "D99.1.5",
+                    "parent": "S99.1",
+                    "type": "D",
+                    "title": "Dependency still in review",
+                    "actions": ["document"],
+                    "status": "review",
+                    "role": "documenter",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                },
+                {
+                    "id": "D99.1.6",
+                    "parent": "S99.1",
+                    "type": "D",
+                    "title": "Blocked side-state item",
+                    "actions": ["document"],
+                    "status": "blocked",
+                    "role": "documenter",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                },
+                {
+                    "id": "M99.1.7",
+                    "parent": "S99.1",
+                    "type": "M",
+                    "title": "Warning-producing ready item",
+                    "actions": ["audit"],
+                    "status": "planned",
+                    "role": "implementer",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                },
+            ],
+            "commit_groups": [{"id": "cg990", "title": "Synthetic group", "items": [
+                "D99.1.1",
+                "M99.1.2",
+                "T99.1.3",
+                "F99.1.4",
+                "D99.1.5",
+                "D99.1.6",
+                "M99.1.7",
+            ]}],
+        },
+    )
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(index_path),
+        "--schema",
+        str(SCHEMA_PATH),
+        "--compute-ready",
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["ready_items"] == [
+        {
+            "commit_group": "cg990",
+            "id": "D99.1.1",
+            "status": "planned",
+            "type": "D",
+            "unresolved_dependencies": [],
+            "unresolved_dependencies_count": 0,
+        },
+        {
+            "commit_group": "cg990",
+            "id": "M99.1.2",
+            "status": "ready",
+            "type": "M",
+            "unresolved_dependencies": [],
+            "unresolved_dependencies_count": 0,
+        },
+        {
+            "commit_group": "cg990",
+            "id": "M99.1.7",
+            "status": "planned",
+            "type": "M",
+            "unresolved_dependencies": [],
+            "unresolved_dependencies_count": 0,
+        },
+    ]
+    assert any("not in recommended set for type M" in warning for warning in payload["warnings"])
+
+
+def test_validate_plan_compute_ready_emits_empty_ready_set(repo_root: Path, tmp_path: Path) -> None:
+    index_path = copy_split_plan(tmp_path)
+    write_current_fragment(
+        index_path.parent,
+        {
+            "milestones": [
+                {"id": "X99", "type": "X", "title": "Synthetic milestone", "status": "in_progress"}
+            ],
+            "sprints": [
+                {
+                    "id": "S99.1",
+                    "type": "S",
+                    "parent": "X99",
+                    "title": "Synthetic sprint",
+                    "status": "in_progress",
+                }
+            ],
+            "items": [
+                {
+                    "id": "M99.1.1",
+                    "parent": "S99.1",
+                    "type": "M",
+                    "title": "In progress item",
+                    "actions": ["implement"],
+                    "status": "in_progress",
+                    "role": "implementer",
+                    "effort": "medium",
+                    "commit_group": "cg990",
+                },
+                {
+                    "id": "T99.1.2",
+                    "parent": "S99.1",
+                    "type": "T",
+                    "title": "Still waiting on dependency",
+                    "actions": ["verify"],
+                    "status": "planned",
+                    "role": "tester",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                    "depends_on": ["M99.1.1"],
+                },
+                {
+                    "id": "D99.1.3",
+                    "parent": "S99.1",
+                    "type": "D",
+                    "title": "Blocked doc item",
+                    "actions": ["document"],
+                    "status": "blocked",
+                    "role": "documenter",
+                    "effort": "low",
+                    "commit_group": "cg990",
+                },
+            ],
+            "commit_groups": [{"id": "cg990", "title": "Synthetic group", "items": [
+                "M99.1.1",
+                "T99.1.2",
+                "D99.1.3",
+            ]}],
+        },
+    )
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(index_path),
+        "--schema",
+        str(SCHEMA_PATH),
+        "--compute-ready",
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["ready_items"] == []
+    assert isinstance(payload["warnings"], list)
+
+
+def test_validate_plan_compute_ready_preserves_failure_paths(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    missing_plan = tmp_path / "missing.yaml"
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(missing_plan),
+        "--schema",
+        str(SCHEMA_PATH),
+        "--compute-ready",
+    )
+
+    assert result.returncode == 2
+    assert result.stdout == ""
+    assert "Plan file not found" in result.stderr
 
 
 def test_commit_group_and_phase_gate_helpers_report_errors(repo_root: Path, tmp_path: Path) -> None:
