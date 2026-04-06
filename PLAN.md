@@ -49,7 +49,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X33 | X | Issue #8 Review Response and TODO Roadmap Integration | done |
 | X34 | X | Make plan tests independent from active PLAN-current state | done |
 | X35 | X | YAML hash-quoting guard and data repair | done |
-| X36 | X | Add compute-ready readiness query to validate-plan.py | in_progress |
+| X36 | X | Add compute-ready readiness query to validate-plan.py | done |
 
 ## Plan
 
@@ -923,21 +923,21 @@ Status: done
 
 - ID: `X36`
 - Title: Add compute-ready readiness query to validate-plan.py
-- Status: in_progress
+- Status: done
 - Note: Add a read-only `--compute-ready` query to the plan validator so operators can inspect the current ready-set without mutating plan state. Covers implementation, tests, docs, and checkpoint closure for issue #11.
 
 #### S36.1 Items
 
 Sprint: Sprint 1 — Tracking, ready-set query, tests, docs
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D36.1.1` | `D` | Track X36 active work and keep generated plan views in sync | verified |  |
-| `M36.1.2` | `M` | Add --compute-ready query to validate-plan.py | verified | Compute the ready-set from existing dependency semantics and emit a deterministic JSON payload without changing default validation behavior. |
-| `T36.1.3` | `T` | Add compute-ready helper and CLI regression coverage | verified |  |
-| `D36.1.4` | `D` | Document compute-ready CLI usage in README | verified |  |
-| `C36.1.5` | `C` | Checkpoint closure — X36 | planned |  |
+| `D36.1.1` | `D` | Track X36 active work and keep generated plan views in sync | done |  |
+| `M36.1.2` | `M` | Add --compute-ready query to validate-plan.py | done | Compute the ready-set from existing dependency semantics and emit a deterministic JSON payload without changing default validation behavior. |
+| `T36.1.3` | `T` | Add compute-ready helper and CLI regression coverage | done |  |
+| `D36.1.4` | `D` | Document compute-ready CLI usage in README | done |  |
+| `C36.1.5` | `C` | Checkpoint closure — X36 | done |  |
 
 ## Commit Groups
 
@@ -3469,7 +3469,7 @@ Status: in_progress
 
 ### D36.1.1: Track X36 active work and keep generated plan views in sync
 
-- **Type**: D | **Status**: verified | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S36.1`
 - **Actions**: plan, document
 - **Commit group**: `cg88`
@@ -3477,7 +3477,7 @@ Status: in_progress
 
 ### M36.1.2: Add --compute-ready query to validate-plan.py
 
-- **Type**: M | **Status**: verified | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S36.1`
 - **Actions**: implement, verify
 - **Depends on**: `D36.1.1`
@@ -3487,7 +3487,7 @@ Status: in_progress
 
 ### T36.1.3: Add compute-ready helper and CLI regression coverage
 
-- **Type**: T | **Status**: verified | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S36.1`
 - **Actions**: test, verify
 - **Depends on**: `M36.1.2`
@@ -3496,7 +3496,7 @@ Status: in_progress
 
 ### D36.1.4: Document compute-ready CLI usage in README
 
-- **Type**: D | **Status**: verified | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S36.1`
 - **Actions**: document
 - **Depends on**: `M36.1.2`
@@ -3505,7 +3505,7 @@ Status: in_progress
 
 ### C36.1.5: Checkpoint closure — X36
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S36.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `M36.1.2`, `T36.1.3`, `D36.1.4`
