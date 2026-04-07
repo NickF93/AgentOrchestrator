@@ -36,7 +36,7 @@ digraph PLAN {
   "X34" [label="X34 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X35" [label="X35 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X36" [label="X36 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X37" [label="X37 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X37" [label="X37 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -89,7 +89,7 @@ digraph PLAN {
   "S34.1" [label="S34.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S35.1" [label="S35.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S36.1" [label="S36.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S37.1" [label="S37.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S37.1" [label="S37.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -671,9 +671,9 @@ digraph PLAN {
   subgraph "cluster_cg90" {
     style="rounded,dashed";
     label="cg90: X36 gate repair and gate verification";
-  "D37.1.1" [label="D37.1.1 | D | verified", shape=note, style="filled,rounded", fillcolor=lightgreen];
-  "F37.1.2" [label="F37.1.2 | F | verified", shape=octagon, style="filled,rounded", fillcolor=lightgreen];
-  "T37.1.3" [label="T37.1.3 | T | verified", shape=ellipse, style="filled,rounded", fillcolor=lightgreen];
+  "D37.1.1" [label="D37.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "F37.1.2" [label="F37.1.2 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "T37.1.3" [label="T37.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg91" {
     style="rounded,dashed";
@@ -683,7 +683,7 @@ digraph PLAN {
   subgraph "cluster_cg92" {
     style="rounded,dashed";
     label="cg92: X37 checkpoint closure";
-  "C37.1.5" [label="C37.1.5 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  "C37.1.5" [label="C37.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];

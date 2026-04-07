@@ -2,7 +2,7 @@ milestones:
 - id: X37
   type: X
   title: X36 gate repair and archival
-  status: in_progress
+  status: done
   note: 'Verify and repair any formatter drift introduced by the X36 branch, rerun
     the quality gates, then archive the closed X36 milestone into plan/archive and
     refresh generated plan views.
@@ -13,7 +13,7 @@ sprints:
   type: S
   parent: X37
   title: "Sprint 1 \u2014 Gate repair, validation, archive X36"
-  status: in_progress
+  status: done
 items:
 - id: D37.1.1
   parent: S37.1
@@ -22,7 +22,7 @@ items:
   actions:
   - plan
   - document
-  status: verified
+  status: done
   role: orchestrator
   effort: low
   commit_group: cg90
@@ -38,7 +38,7 @@ items:
   actions:
   - implement
   - verify
-  status: verified
+  status: done
   depends_on:
   - D37.1.1
   role: implementer
@@ -59,7 +59,7 @@ items:
   actions:
   - test
   - verify
-  status: verified
+  status: done
   depends_on:
   - F37.1.2
   role: tester
@@ -96,7 +96,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - D37.1.4
   role: reviewer

@@ -50,7 +50,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X34 | X | Make plan tests independent from active PLAN-current state | done |
 | X35 | X | YAML hash-quoting guard and data repair | done |
 | X36 | X | Add compute-ready readiness query to validate-plan.py | done |
-| X37 | X | X36 gate repair and archival | in_progress |
+| X37 | X | X36 gate repair and archival | done |
 
 ## Plan
 
@@ -944,21 +944,21 @@ Status: done
 
 - ID: `X37`
 - Title: X36 gate repair and archival
-- Status: in_progress
+- Status: done
 - Note: Verify and repair any formatter drift introduced by the X36 branch, rerun the quality gates, then archive the closed X36 milestone into plan/archive and refresh generated plan views.
 
 #### S37.1 Items
 
 Sprint: Sprint 1 — Gate repair, validation, archive X36
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D37.1.1` | `D` | Track X37 follow-up work and keep generated plan views in sync | verified |  |
-| `F37.1.2` | `F` | Repair formatter drift in the X36 branch diff | verified | Limit formatting changes to files that are actually part of the branch diff unless verification shows additional branch-owned files need repair. |
-| `T37.1.3` | `T` | Re-run format-sensitive gates for the X36 branch | verified |  |
+| `D37.1.1` | `D` | Track X37 follow-up work and keep generated plan views in sync | done |  |
+| `F37.1.2` | `F` | Repair formatter drift in the X36 branch diff | done | Limit formatting changes to files that are actually part of the branch diff unless verification shows additional branch-owned files need repair. |
+| `T37.1.3` | `T` | Re-run format-sensitive gates for the X36 branch | done |  |
 | `D37.1.4` | `D` | Archive the closed X36 milestone into plan/archive | done |  |
-| `C37.1.5` | `C` | Checkpoint closure — X37 | planned |  |
+| `C37.1.5` | `C` | Checkpoint closure — X37 | done |  |
 
 ## Commit Groups
 
@@ -3543,7 +3543,7 @@ Status: in_progress
 
 ### D37.1.1: Track X37 follow-up work and keep generated plan views in sync
 
-- **Type**: D | **Status**: verified | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S37.1`
 - **Actions**: plan, document
 - **Commit group**: `cg90`
@@ -3551,7 +3551,7 @@ Status: in_progress
 
 ### F37.1.2: Repair formatter drift in the X36 branch diff
 
-- **Type**: F | **Status**: verified | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S37.1`
 - **Actions**: implement, verify
 - **Depends on**: `D37.1.1`
@@ -3561,7 +3561,7 @@ Status: in_progress
 
 ### T37.1.3: Re-run format-sensitive gates for the X36 branch
 
-- **Type**: T | **Status**: verified | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S37.1`
 - **Actions**: test, verify
 - **Depends on**: `F37.1.2`
@@ -3581,7 +3581,7 @@ Status: in_progress
 
 ### C37.1.5: Checkpoint closure — X37
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S37.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D37.1.4`
