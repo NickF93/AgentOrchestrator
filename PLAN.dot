@@ -678,7 +678,7 @@ digraph PLAN {
   subgraph "cluster_cg91" {
     style="rounded,dashed";
     label="cg91: Archive the closed X36 milestone";
-  "D37.1.4" [label="D37.1.4 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "D37.1.4" [label="D37.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg92" {
     style="rounded,dashed";

@@ -1,0 +1,123 @@
+milestones:
+- id: X36
+  type: X
+  title: Add compute-ready readiness query to validate-plan.py
+  status: done
+  note: 'Add a read-only `--compute-ready` query to the plan validator so operators
+    can inspect the current ready-set without mutating plan state. Covers implementation,
+    tests, docs, and checkpoint closure for issue #11.
+
+    '
+sprints:
+- id: S36.1
+  type: S
+  parent: X36
+  title: "Sprint 1 \u2014 Tracking, ready-set query, tests, docs"
+  status: done
+items:
+- id: D36.1.1
+  parent: S36.1
+  type: D
+  title: Track X36 active work and keep generated plan views in sync
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg88
+  scope: .
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: M36.1.2
+  parent: S36.1
+  type: M
+  title: Add --compute-ready query to validate-plan.py
+  actions:
+  - implement
+  - verify
+  status: done
+  depends_on:
+  - D36.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg88
+  scope: agent-os/scripts/
+  artifacts_out:
+  - agent-os/scripts/validate-plan.py
+  notes: 'Compute the ready-set from existing dependency semantics and emit a deterministic
+    JSON payload without changing default validation behavior.
+
+    '
+- id: T36.1.3
+  parent: S36.1
+  type: T
+  title: Add compute-ready helper and CLI regression coverage
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - M36.1.2
+  role: tester
+  effort: medium
+  commit_group: cg88
+  scope: tests/
+  artifacts_out:
+  - tests/test_validate_plan.py
+- id: D36.1.4
+  parent: S36.1
+  type: D
+  title: Document compute-ready CLI usage in README
+  actions:
+  - document
+  status: done
+  depends_on:
+  - M36.1.2
+  role: documenter
+  effort: low
+  commit_group: cg88
+  scope: README.md
+  artifacts_out:
+  - README.md
+- id: C36.1.5
+  parent: S36.1
+  type: C
+  title: "Checkpoint closure \u2014 X36"
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - M36.1.2
+  - T36.1.3
+  - D36.1.4
+  role: reviewer
+  effort: low
+  commit_group: cg89
+  scope: .
+  artifacts_out:
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+commit_groups:
+- id: cg88
+  title: Compute-ready query, tests, and documentation
+  items:
+  - D36.1.1
+  - M36.1.2
+  - T36.1.3
+  - D36.1.4
+- id: cg89
+  title: X36 checkpoint closure
+  items:
+  - C36.1.5

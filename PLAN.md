@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-04
+- Last updated: 2026-04-08
 
 ## Mission
 
@@ -957,7 +957,7 @@ Status: in_progress
 | `D37.1.1` | `D` | Track X37 follow-up work and keep generated plan views in sync | verified |  |
 | `F37.1.2` | `F` | Repair formatter drift in the X36 branch diff | verified | Limit formatting changes to files that are actually part of the branch diff unless verification shows additional branch-owned files need repair. |
 | `T37.1.3` | `T` | Re-run format-sensitive gates for the X36 branch | verified |  |
-| `D37.1.4` | `D` | Archive the closed X36 milestone into plan/archive | planned |  |
+| `D37.1.4` | `D` | Archive the closed X36 milestone into plan/archive | done |  |
 | `C37.1.5` | `C` | Checkpoint closure — X37 | planned |  |
 
 ## Commit Groups
@@ -3572,7 +3572,7 @@ Status: in_progress
 
 ### D37.1.4: Archive the closed X36 milestone into plan/archive
 
-- **Type**: D | **Status**: planned | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S37.1`
 - **Actions**: document, verify
 - **Depends on**: `T37.1.3`
