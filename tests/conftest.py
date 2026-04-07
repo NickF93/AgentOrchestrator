@@ -67,7 +67,13 @@ SYNTHETIC_CURRENT_FRAGMENT: dict = {
         {"id": "X99", "type": "X", "title": "Synthetic test milestone", "status": "in_progress"},
     ],
     "sprints": [
-        {"id": "S99.1", "type": "S", "parent": "X99", "title": "Synthetic sprint", "status": "in_progress"},
+        {
+            "id": "S99.1",
+            "type": "S",
+            "parent": "X99",
+            "title": "Synthetic sprint",
+            "status": "in_progress",
+        },
     ],
     "items": [
         {
@@ -113,7 +119,11 @@ SYNTHETIC_CURRENT_FRAGMENT: dict = {
         },
     ],
     "commit_groups": [
-        {"id": "cg990", "title": "Synthetic commit group", "items": ["D99.1.1", "M99.1.2", "C99.1.3"]},
+        {
+            "id": "cg990",
+            "title": "Synthetic commit group",
+            "items": ["D99.1.1", "M99.1.2", "C99.1.3"],
+        },
     ],
 }
 

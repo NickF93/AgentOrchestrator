@@ -179,9 +179,7 @@ def lint_yaml_unquoted_hash(path: Path) -> list[str]:
             if pos == -1:
                 break
             if not _is_inside_quotes(stripped, pos + 1):
-                errors.append(
-                    f"{path}:{lineno_0}: unquoted '#' in value: {stripped.strip()}"
-                )
+                errors.append(f"{path}:{lineno_0}: unquoted '#' in value: {stripped.strip()}")
                 break
             search_start = pos + 2
 

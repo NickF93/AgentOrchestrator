@@ -264,6 +264,46 @@ def test_validate_plan_main_handles_missing_inputs(
     assert "Schema file not found" in capsys.readouterr().err
 
 
+def test_validate_plan_main_handles_missing_registry_and_lint_failures(
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    index_path = copy_split_plan(tmp_path)
+    missing_registry = tmp_path / "missing-registry.yaml"
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "validate-plan.py",
+            str(index_path),
+            "--schema",
+            str(SCHEMA_PATH),
+            "--shared-asset-registry",
+            str(missing_registry),
+        ],
+    )
+    assert module.main() == 2
+    assert "Shared asset registry not found" in capsys.readouterr().err
+
+    current_path = index_path.parent / "PLAN-current.yaml"
+    current_path.write_text(
+        "milestones:\n- id: X99\n  type: X\n  title: Issue #21 bad title\n"
+        "  status: in_progress\nsprints: []\nitems: []\ncommit_groups: []\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH)],
+    )
+    assert module.main() == 1
+    assert "unquoted '#'" in capsys.readouterr().err
+
+
 def test_load_helpers_reject_non_mappings_and_non_objects(repo_root: Path, tmp_path: Path) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     yaml_path = tmp_path / "list.yaml"
@@ -277,6 +317,32 @@ def test_load_helpers_reject_non_mappings_and_non_objects(repo_root: Path, tmp_p
         module.load_shared_asset_registry(yaml_path)
     with pytest.raises(ValueError, match="Schema must be a JSON object"):
         module.load_schema(json_path)
+
+
+def test_is_inside_quotes_handles_escaped_single_and_double_quotes(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    single_line = "title: 'It''s #safe'\n"
+    double_line = 'title: "say \\"hi #there\\""\n'
+
+    assert module._is_inside_quotes(single_line, single_line.index("#"))
+    assert module._is_inside_quotes(double_line, double_line.index("#"))
+
+
+def test_lint_yaml_unquoted_hash_all_handles_invalid_and_partial_split_inputs(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+
+    invalid_index = tmp_path / "invalid-index.yaml"
+    invalid_index.write_text("meta: [\n", encoding="utf-8")
+    assert module.lint_yaml_unquoted_hash_all(invalid_index) == []
+
+    partial_index = tmp_path / "partial-index.yaml"
+    partial_index.write_text(
+        "current_plan: PLAN-current.yaml\narchives:\n- path: archive/missing.yaml\n",
+        encoding="utf-8",
+    )
+    assert module.lint_yaml_unquoted_hash_all(partial_index) == []
 
 
 def test_validate_shared_asset_registry_rejects_malformed_entries(
@@ -354,6 +420,36 @@ def test_validate_shared_asset_registry_rejects_missing_ids_duplicates_and_bad_d
     assert any("shared asset registry has duplicate id 'dup'" in error for error in errors)
     assert any("shared asset 'dup' has no non-empty path" in error for error in errors)
     assert any("shared asset 'dup' has non-list depends_on_assets" in error for error in errors)
+
+
+def test_validate_shared_asset_registry_checks_prefix_paths_and_dependency_entries(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    control_plane_root = tmp_path / "control"
+    registry_path = control_plane_root / "agent-os" / "registry" / "shared-assets.yaml"
+    registry_path.parent.mkdir(parents=True)
+
+    registry = {
+        "assets": [
+            {
+                "id": "asset-1",
+                "kind": "prompt",
+                "version": "1",
+                "path": "agent-os/skills/not-a-prompt/SKILL.md",
+                "compatibility": ["codex"],
+                "materializable": True,
+                "depends_on_assets": ["", "missing-asset"],
+            }
+        ]
+    }
+
+    _asset_map, errors = module.validate_shared_asset_registry(registry, registry_path)
+
+    assert any("must live under 'agent-os/prompts/'" in error for error in errors)
+    assert any("path does not exist" in error for error in errors)
+    assert any("invalid depends_on_assets entry ''" in error for error in errors)
+    assert any("references unknown asset 'missing-asset'" in error for error in errors)
 
 
 def test_validate_shared_asset_refs_rejects_bad_mapping_and_kind(repo_root: Path) -> None:
@@ -743,15 +839,21 @@ def test_validate_plan_compute_ready_emits_multiple_ready_items_json(
                     "commit_group": "cg990",
                 },
             ],
-            "commit_groups": [{"id": "cg990", "title": "Synthetic group", "items": [
-                "D99.1.1",
-                "M99.1.2",
-                "T99.1.3",
-                "F99.1.4",
-                "D99.1.5",
-                "D99.1.6",
-                "M99.1.7",
-            ]}],
+            "commit_groups": [
+                {
+                    "id": "cg990",
+                    "title": "Synthetic group",
+                    "items": [
+                        "D99.1.1",
+                        "M99.1.2",
+                        "T99.1.3",
+                        "F99.1.4",
+                        "D99.1.5",
+                        "D99.1.6",
+                        "M99.1.7",
+                    ],
+                }
+            ],
         },
     )
 
@@ -847,11 +949,17 @@ def test_validate_plan_compute_ready_emits_empty_ready_set(repo_root: Path, tmp_
                     "commit_group": "cg990",
                 },
             ],
-            "commit_groups": [{"id": "cg990", "title": "Synthetic group", "items": [
-                "M99.1.1",
-                "T99.1.2",
-                "D99.1.3",
-            ]}],
+            "commit_groups": [
+                {
+                    "id": "cg990",
+                    "title": "Synthetic group",
+                    "items": [
+                        "M99.1.1",
+                        "T99.1.2",
+                        "D99.1.3",
+                    ],
+                }
+            ],
         },
     )
 
@@ -1359,6 +1467,66 @@ def test_validate_plan_main_emits_warnings_and_freshness_errors(
     assert "freshness error" in captured.err
 
 
+def test_validate_plan_main_compute_ready_success_and_error_paths(
+    repo_root: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    index_path = copy_split_plan(tmp_path)
+    metadata = {
+        "format": "split",
+        "index_path": index_path,
+        "current_path": index_path.parent / "PLAN-current.yaml",
+        "archive_root": index_path.parent / "archive",
+        "current_fragment": {"milestones": [], "sprints": [], "items": [], "commit_groups": []},
+        "archives": [],
+    }
+    plan = {
+        "items": [
+            {
+                "id": "D1.1.1",
+                "type": "D",
+                "status": "planned",
+                "commit_group": "cg1",
+                "depends_on": [],
+            }
+        ]
+    }
+
+    monkeypatch.setattr(module, "load_plan", lambda _path: (plan, metadata))
+    monkeypatch.setattr(module, "load_schema", lambda _path: {})
+    monkeypatch.setattr(module, "load_shared_asset_registry", lambda _path: {"assets": []})
+    monkeypatch.setattr(module, "validate_plan_schema", lambda _plan, _schema: ([], "jsonschema"))
+    monkeypatch.setattr(module, "validate_shared_asset_registry", lambda _registry, _path: ({}, []))
+    monkeypatch.setattr(
+        module, "validate_custom_rules", lambda _plan, _asset_map: ([], ["warn one"])
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH), "--compute-ready"],
+    )
+
+    assert module.main() == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["ready_items"][0]["id"] == "D1.1.1"
+    assert payload["warnings"] == ["warn one"]
+
+    monkeypatch.setattr(module, "validate_custom_rules", lambda _plan, _asset_map: (["boom"], []))
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["validate-plan.py", str(index_path), "--schema", str(SCHEMA_PATH), "--compute-ready"],
+    )
+    assert module.main() == 1
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert "Governance checks failed" in captured.err
+    assert "boom" in captured.err
+
+
 def test_validate_plan_script_entrypoint_runs(
     repo_root: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -1419,17 +1587,10 @@ def test_lint_ignores_full_line_comments(repo_root: Path, tmp_path: Path) -> Non
     assert errors == []
 
 
-def test_lint_ignores_multiline_single_quoted_scalar(
-    repo_root: Path, tmp_path: Path
-) -> None:
+def test_lint_ignores_multiline_single_quoted_scalar(repo_root: Path, tmp_path: Path) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     p = tmp_path / "multiline.yaml"
-    p.write_text(
-        "note: 'This is a multi-line\n"
-        "  scalar that mentions issue #25.\n"
-        "\n"
-        "  '\nid: X1\n"
-    )
+    p.write_text("note: 'This is a multi-line\n  scalar that mentions issue #25.\n\n  '\nid: X1\n")
 
     errors = module.lint_yaml_unquoted_hash(p)
     assert errors == []

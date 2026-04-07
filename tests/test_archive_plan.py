@@ -337,9 +337,7 @@ def test_archive_plan_script_entrypoint_runs(
     assert exc.value.code == 0
 
 
-def test_archive_plan_rejects_empty_current_fragment(
-    repo_root: Path, tmp_path: Path
-) -> None:
+def test_archive_plan_rejects_empty_current_fragment(repo_root: Path, tmp_path: Path) -> None:
     """When PLAN-current.yaml is empty after archival, archive-plan must
     reject requests gracefully rather than crashing."""
     index_path = copy_split_plan(tmp_path)
