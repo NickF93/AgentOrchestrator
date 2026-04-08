@@ -92,6 +92,7 @@ digraph PLAN {
   "S36.1" [label="S36.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S37.1" [label="S37.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S38.1" [label="S38.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S38.2" [label="S38.2 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -711,6 +712,11 @@ digraph PLAN {
     label="cg96: X38 checkpoint closure";
   "C38.1.8" [label="C38.1.8 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg97" {
+    style="rounded,dashed";
+    label="cg97: Merge .kilo/.gitignore into repo";
+  "F38.2.1" [label="F38.2.1 | F | in_progress", shape=octagon, style="filled,rounded", fillcolor=lightblue];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -765,6 +771,7 @@ digraph PLAN {
   "X36" -> "S36.1" [style=dashed];
   "X37" -> "S37.1" [style=dashed];
   "X38" -> "S38.1" [style=dashed];
+  "X38" -> "S38.2" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -1004,6 +1011,7 @@ digraph PLAN {
   "S38.1" -> "T38.1.6" [style=dashed];
   "S38.1" -> "T38.1.7" [style=dashed];
   "S38.1" -> "C38.1.8" [style=dashed];
+  "S38.2" -> "F38.2.1" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";

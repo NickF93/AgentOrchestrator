@@ -984,6 +984,15 @@ Status: done
 | `T38.1.7` | `T` | Run validation gates | done |  |
 | `C38.1.8` | `C` | Checkpoint closure — X38 | done |  |
 
+#### S38.2 Items
+
+Sprint: Sprint 2 — Maintenance
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `F38.2.1` | `F` | Merge .kilo/.gitignore into repo .gitignore | in_progress | Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only. |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1083,6 +1092,7 @@ Status: done
 | cg94 | Text replacements and new .kilo entrypoint | `F38.1.3`, `F38.1.4`, `F38.1.5` |
 | cg95 | Verification and test gates | `T38.1.6`, `T38.1.7` |
 | cg96 | X38 checkpoint closure | `C38.1.8` |
+| cg97 | Merge .kilo/.gitignore into repo | `F38.2.1` |
 
 ## Item Details
 
@@ -3702,3 +3712,12 @@ Status: done
   - validate-plan.py exits 0
   - render idempotent
   - run-gates.sh passes
+
+### F38.2.1: Merge .kilo/.gitignore into repo .gitignore
+
+- **Type**: F | **Status**: in_progress | **Role**: implementer | **Effort**: low
+- **Sprint**: `S38.2`
+- **Actions**: implement
+- **Commit group**: `cg97`
+- **Artifacts**: .gitignore
+- **Notes**: Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only.

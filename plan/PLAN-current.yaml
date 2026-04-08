@@ -13,6 +13,11 @@ sprints:
   parent: X38
   title: Sprint 1 — Migration Implementation
   status: done
+- id: S38.2
+  type: S
+  parent: X38
+  title: Sprint 2 — Maintenance
+  status: in_progress
 items:
 - id: D38.1.1
   parent: S38.1
@@ -172,6 +177,22 @@ items:
     skill: plan-checkpoint-close
     prompt: checkpoint-closure-review
     result_protocol: check-result-v1
+- id: F38.2.1
+  parent: S38.2
+  type: F
+  title: Merge .kilo/.gitignore into repo .gitignore
+  actions:
+  - implement
+  status: in_progress
+  role: implementer
+  effort: low
+  commit_group: cg97
+  scope: .
+  artifacts_out:
+  - .gitignore
+  notes: 'Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only.
+
+    '
 commit_groups:
 - id: cg93
   title: Archive X37, create X38 milestone
@@ -193,3 +214,7 @@ commit_groups:
   title: X38 checkpoint closure
   items:
   - C38.1.8
+- id: cg97
+  title: Merge .kilo/.gitignore into repo
+  items:
+  - F38.2.1
