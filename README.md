@@ -69,6 +69,15 @@ $AGENT_PYTHON -m pip install -r requirements-dev.txt
 $AGENT_PYTHON agent-os/scripts/validate-plan.py plan/PLAN-index.yaml --schema agent-os/schemas/plan.schema.json
 ```
 
+### Query the current ready-set
+
+```bash
+$AGENT_PYTHON agent-os/scripts/validate-plan.py plan/PLAN-index.yaml --schema agent-os/schemas/plan.schema.json --compute-ready
+```
+
+This emits deterministic JSON with a `ready_items` array. Each entry includes
+`id`, `type`, `status`, `commit_group`, and unresolved dependency metadata.
+
 ### Render plan views
 
 ```bash

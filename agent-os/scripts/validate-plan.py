@@ -40,6 +40,7 @@ ALLOWED_STATE_TRANSITIONS = {
     "blocked": {"blocked", "ready"},
 }
 DEPENDENCY_READY_STATES = {"verified", "done"}
+READY_QUERY_STATUSES = {"planned", "ready"}
 RECOMMENDED_ACTIONS: dict[str, set[str]] = {
     "Q": {"review", "decide"},
     "D": {"plan", "document", "review", "checkpoint"},
@@ -178,9 +179,7 @@ def lint_yaml_unquoted_hash(path: Path) -> list[str]:
             if pos == -1:
                 break
             if not _is_inside_quotes(stripped, pos + 1):
-                errors.append(
-                    f"{path}:{lineno_0}: unquoted '#' in value: {stripped.strip()}"
-                )
+                errors.append(f"{path}:{lineno_0}: unquoted '#' in value: {stripped.strip()}")
                 break
             search_start = pos + 2
 
@@ -649,6 +648,52 @@ def collect_statuses(plan: dict) -> dict[str, str]:
     return id_to_status
 
 
+def unresolved_dependencies(item: dict, id_to_status: dict[str, str]) -> list[str]:
+    """Return unresolved dependency IDs for a single executable item."""
+    unresolved: list[str] = []
+    for dep in item.get("depends_on", []) or []:
+        if id_to_status.get(dep, "") not in DEPENDENCY_READY_STATES:
+            unresolved.append(dep)
+    return unresolved
+
+
+def compute_ready_items(plan: dict) -> list[dict[str, object]]:
+    """Return executable items that are ready to run now.
+
+    The ready-set is intentionally read-only and conservative:
+    - executable item types only,
+    - current item status must be ``planned`` or ``ready``,
+    - every declared dependency must already be ``verified`` or ``done``.
+    """
+    id_to_status = collect_statuses(plan)
+    ready_items: list[dict[str, object]] = []
+
+    for item in sorted(plan.get("items", []) or [], key=lambda entry: entry.get("id", "")):
+        item_type = item.get("type", "")
+        item_status = item.get("status", "")
+        if item_type not in EXECUTABLE_ITEM_TYPES:
+            continue
+        if item_status not in READY_QUERY_STATUSES:
+            continue
+
+        unresolved = unresolved_dependencies(item, id_to_status)
+        if unresolved:
+            continue
+
+        ready_items.append(
+            {
+                "id": item.get("id", ""),
+                "type": item_type,
+                "status": item_status,
+                "commit_group": item.get("commit_group", ""),
+                "unresolved_dependencies": unresolved,
+                "unresolved_dependencies_count": len(unresolved),
+            }
+        )
+
+    return ready_items
+
+
 def validate_transitions(current: dict, previous: dict) -> list[str]:
     errors: list[str] = []
     prev_status = collect_statuses(previous)
@@ -1018,6 +1063,11 @@ def main() -> int:
         default=str(default_shared_asset_registry_path()),
         help="Path to the shared asset registry YAML",
     )
+    parser.add_argument(
+        "--compute-ready",
+        action="store_true",
+        help="Emit deterministic JSON describing the current ready-set",
+    )
     args = parser.parse_args()
 
     plan_path = Path(args.plan)
@@ -1110,8 +1160,21 @@ def main() -> int:
         )
         errors.extend(check_repo_map_freshness(plan, repo_root))
 
-    if plan_metadata.get("format") == "split":
+    if plan_metadata.get("format") == "split" and not args.compute_ready:
         print_split_plan_report(plan_metadata)
+
+    if args.compute_ready:
+        if errors:
+            print("ERROR: Governance checks failed", file=sys.stderr)
+            for err in errors:
+                print(f"  - {err}", file=sys.stderr)
+            return 1
+        payload = {
+            "ready_items": compute_ready_items(plan),
+            "warnings": warnings,
+        }
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
 
     for warning in warnings:
         print(f"WARNING: {warning}")

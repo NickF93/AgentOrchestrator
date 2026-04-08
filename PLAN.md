@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-04
+- Last updated: 2026-04-08
 
 ## Mission
 
@@ -49,6 +49,8 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X33 | X | Issue #8 Review Response and TODO Roadmap Integration | done |
 | X34 | X | Make plan tests independent from active PLAN-current state | done |
 | X35 | X | YAML hash-quoting guard and data repair | done |
+| X36 | X | Add compute-ready readiness query to validate-plan.py | done |
+| X37 | X | X36 gate repair and archival | done |
 
 ## Plan
 
@@ -918,6 +920,46 @@ Status: done
 | `T35.1.4` | `T` | Regression tests for hash-in-title lint and round-trip | done |  |
 | `C35.1.5` | `C` | Checkpoint closure — X35 | done |  |
 
+### X36
+
+- ID: `X36`
+- Title: Add compute-ready readiness query to validate-plan.py
+- Status: done
+- Note: Add a read-only `--compute-ready` query to the plan validator so operators can inspect the current ready-set without mutating plan state. Covers implementation, tests, docs, and checkpoint closure for issue #11.
+
+#### S36.1 Items
+
+Sprint: Sprint 1 — Tracking, ready-set query, tests, docs
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D36.1.1` | `D` | Track X36 active work and keep generated plan views in sync | done |  |
+| `M36.1.2` | `M` | Add --compute-ready query to validate-plan.py | done | Compute the ready-set from existing dependency semantics and emit a deterministic JSON payload without changing default validation behavior. |
+| `T36.1.3` | `T` | Add compute-ready helper and CLI regression coverage | done |  |
+| `D36.1.4` | `D` | Document compute-ready CLI usage in README | done |  |
+| `C36.1.5` | `C` | Checkpoint closure — X36 | done |  |
+
+### X37
+
+- ID: `X37`
+- Title: X36 gate repair and archival
+- Status: done
+- Note: Verify and repair any formatter drift introduced by the X36 branch, rerun the quality gates, then archive the closed X36 milestone into plan/archive and refresh generated plan views.
+
+#### S37.1 Items
+
+Sprint: Sprint 1 — Gate repair, validation, archive X36
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D37.1.1` | `D` | Track X37 follow-up work and keep generated plan views in sync | done |  |
+| `F37.1.2` | `F` | Repair formatter drift in the X36 branch diff | done | Limit formatting changes to files that are actually part of the branch diff unless verification shows additional branch-owned files need repair. |
+| `T37.1.3` | `T` | Re-run format-sensitive gates for the X36 branch | done |  |
+| `D37.1.4` | `D` | Archive the closed X36 milestone into plan/archive | done |  |
+| `C37.1.5` | `C` | Checkpoint closure — X37 | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1008,6 +1050,11 @@ Status: done
 | cg85 | X35 tracking bootstrap | `D35.1.1` |
 | cg86 | YAML hash-quoting lint and data repair | `F35.1.2`, `F35.1.3`, `T35.1.4` |
 | cg87 | X35 checkpoint closure | `C35.1.5` |
+| cg88 | Compute-ready query, tests, and documentation | `D36.1.1`, `M36.1.2`, `T36.1.3`, `D36.1.4` |
+| cg89 | X36 checkpoint closure | `C36.1.5` |
+| cg90 | X36 gate repair and gate verification | `D37.1.1`, `F37.1.2`, `T37.1.3` |
+| cg91 | Archive the closed X36 milestone | `D37.1.4` |
+| cg92 | X37 checkpoint closure | `C37.1.5` |
 
 ## Item Details
 
@@ -3443,3 +3490,105 @@ Status: done
   - validate-plan.py exits 0
   - render idempotent
   - pytest passes
+
+### D36.1.1: Track X36 active work and keep generated plan views in sync
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S36.1`
+- **Actions**: plan, document
+- **Commit group**: `cg88`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### M36.1.2: Add --compute-ready query to validate-plan.py
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S36.1`
+- **Actions**: implement, verify
+- **Depends on**: `D36.1.1`
+- **Commit group**: `cg88`
+- **Artifacts**: agent-os/scripts/validate-plan.py
+- **Notes**: Compute the ready-set from existing dependency semantics and emit a deterministic JSON payload without changing default validation behavior.
+
+### T36.1.3: Add compute-ready helper and CLI regression coverage
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S36.1`
+- **Actions**: test, verify
+- **Depends on**: `M36.1.2`
+- **Commit group**: `cg88`
+- **Artifacts**: tests/test_validate_plan.py
+
+### D36.1.4: Document compute-ready CLI usage in README
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S36.1`
+- **Actions**: document
+- **Depends on**: `M36.1.2`
+- **Commit group**: `cg88`
+- **Artifacts**: README.md
+
+### C36.1.5: Checkpoint closure — X36
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S36.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `M36.1.2`, `T36.1.3`, `D36.1.4`
+- **Commit group**: `cg89`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
+  - pytest passes
+
+### D37.1.1: Track X37 follow-up work and keep generated plan views in sync
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S37.1`
+- **Actions**: plan, document
+- **Commit group**: `cg90`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F37.1.2: Repair formatter drift in the X36 branch diff
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S37.1`
+- **Actions**: implement, verify
+- **Depends on**: `D37.1.1`
+- **Commit group**: `cg90`
+- **Artifacts**: agent-os/scripts/validate-plan.py, tests/test_validate_plan.py
+- **Notes**: Limit formatting changes to files that are actually part of the branch diff unless verification shows additional branch-owned files need repair.
+
+### T37.1.3: Re-run format-sensitive gates for the X36 branch
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S37.1`
+- **Actions**: test, verify
+- **Depends on**: `F37.1.2`
+- **Commit group**: `cg90`
+- **Checks**:
+  - ruff format check passes
+  - run-gates.sh passes
+
+### D37.1.4: Archive the closed X36 milestone into plan/archive
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S37.1`
+- **Actions**: document, verify
+- **Depends on**: `T37.1.3`
+- **Commit group**: `cg91`
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X36.yaml, PLAN.md, PLAN.dot
+
+### C37.1.5: Checkpoint closure — X37
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S37.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D37.1.4`
+- **Commit group**: `cg92`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
+  - run-gates.sh passes
