@@ -977,12 +977,12 @@ Status: in_progress
 | --- | --- | --- | --- | --- |
 | `D38.1.1` | `D` | Archive X37 milestone and update PLAN-index | done |  |
 | `D38.1.2` | `D` | Create X38 milestone for Kilo migration | done |  |
-| `F38.1.3` | `F` | Replace all .kilocode text references with .kilo | in_progress | 23 occurrences across 12 files. Single sed pass. Skip generated and archived files. |
-| `F38.1.4` | `F` | Create .kilo/rules/governance.md thin entrypoint | planned | Follow thin adapter pattern from CLAUDE.md and .codex. No duplication of governance rules. |
-| `F38.1.5` | `F` | Update bootstrap template for .kilo path | planned | Update output path from .kilocode to .kilo in bootstrap-repo.sh render_template call. |
-| `T38.1.6` | `T` | Verify text replacements with grep | planned |  |
-| `T38.1.7` | `T` | Run validation gates | planned |  |
-| `C38.1.8` | `C` | Checkpoint closure — X38 | planned |  |
+| `F38.1.3` | `F` | Replace all .kilocode text references with .kilo | done | 23 occurrences across 12 files. Single sed pass. Skip generated and archived files. |
+| `F38.1.4` | `F` | Create .kilo/rules/governance.md thin entrypoint | done | Follow thin adapter pattern from CLAUDE.md and .codex. No duplication of governance rules. |
+| `F38.1.5` | `F` | Update bootstrap template for .kilo path | done | Update output path from .kilocode to .kilo in bootstrap-repo.sh render_template call. |
+| `T38.1.6` | `T` | Verify text replacements with grep | done |  |
+| `T38.1.7` | `T` | Run validation gates | done |  |
+| `C38.1.8` | `C` | Checkpoint closure — X38 | done |  |
 
 ## Commit Groups
 
@@ -3639,7 +3639,7 @@ Status: in_progress
 
 ### F38.1.3: Replace all .kilocode text references with .kilo
 
-- **Type**: F | **Status**: in_progress | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S38.1`
 - **Actions**: implement, verify
 - **Depends on**: `D38.1.2`
@@ -3649,7 +3649,7 @@ Status: in_progress
 
 ### F38.1.4: Create .kilo/rules/governance.md thin entrypoint
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S38.1`
 - **Actions**: implement
 - **Depends on**: `D38.1.2`
@@ -3659,7 +3659,7 @@ Status: in_progress
 
 ### F38.1.5: Update bootstrap template for .kilo path
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S38.1`
 - **Actions**: implement, verify
 - **Depends on**: `D38.1.2`
@@ -3669,7 +3669,7 @@ Status: in_progress
 
 ### T38.1.6: Verify text replacements with grep
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S38.1`
 - **Actions**: test, verify
 - **Depends on**: `F38.1.3`, `F38.1.4`, `F38.1.5`
@@ -3679,7 +3679,7 @@ Status: in_progress
 
 ### T38.1.7: Run validation gates
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S38.1`
 - **Actions**: test, verify
 - **Depends on**: `T38.1.6`
@@ -3691,7 +3691,7 @@ Status: in_progress
 
 ### C38.1.8: Checkpoint closure — X38
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S38.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T38.1.7`
