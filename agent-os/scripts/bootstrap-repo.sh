@@ -105,7 +105,7 @@ render_template "$TEMPLATES_DIR/repo-CLAUDE.md.template" "$TARGET/CLAUDE.md"
 render_template "$TEMPLATES_DIR/repo-CODEX.md.template" "$TARGET/.codex"
 render_template "$TEMPLATES_DIR/repo-GEMINI.md.template" "$TARGET/GEMINI.md"
 render_template "$TEMPLATES_DIR/repo-cursor-rules.mdc.template" "$TARGET/.cursor/rules/governance.mdc"
-render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilocode/rules/governance.md"
+render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilo/rules/governance.md"
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   echo "DRY-RUN: create $TARGET/plan/archive"

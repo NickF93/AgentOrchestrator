@@ -37,6 +37,7 @@ digraph PLAN {
   "X35" [label="X35 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X36" [label="X36 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X37" [label="X37 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X38" [label="X38 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -90,6 +91,8 @@ digraph PLAN {
   "S35.1" [label="S35.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S36.1" [label="S36.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S37.1" [label="S37.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S38.1" [label="S38.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S38.2" [label="S38.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -685,6 +688,40 @@ digraph PLAN {
     label="cg92: X37 checkpoint closure";
   "C37.1.5" [label="C37.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg93" {
+    style="rounded,dashed";
+    label="cg93: Archive X37, create X38 milestone";
+  "D38.1.1" [label="D38.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "D38.1.2" [label="D38.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg94" {
+    style="rounded,dashed";
+    label="cg94: Text replacements and new .kilo entrypoint";
+  "F38.1.3" [label="F38.1.3 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "F38.1.4" [label="F38.1.4 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "F38.1.5" [label="F38.1.5 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg95" {
+    style="rounded,dashed";
+    label="cg95: Verification and test gates";
+  "T38.1.6" [label="T38.1.6 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "T38.1.7" [label="T38.1.7 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg96" {
+    style="rounded,dashed";
+    label="cg96: X38 checkpoint closure";
+  "C38.1.8" [label="C38.1.8 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg97" {
+    style="rounded,dashed";
+    label="cg97: Merge .kilo/.gitignore into repo";
+  "F38.2.1" [label="F38.2.1 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg98" {
+    style="rounded,dashed";
+    label="cg98: Archive X38 and close feature";
+  "C38.2.2" [label="C38.2.2 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -738,6 +775,8 @@ digraph PLAN {
   "X35" -> "S35.1" [style=dashed];
   "X36" -> "S36.1" [style=dashed];
   "X37" -> "S37.1" [style=dashed];
+  "X38" -> "S38.1" [style=dashed];
+  "X38" -> "S38.2" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -969,6 +1008,16 @@ digraph PLAN {
   "S37.1" -> "T37.1.3" [style=dashed];
   "S37.1" -> "D37.1.4" [style=dashed];
   "S37.1" -> "C37.1.5" [style=dashed];
+  "S38.1" -> "D38.1.1" [style=dashed];
+  "S38.1" -> "D38.1.2" [style=dashed];
+  "S38.1" -> "F38.1.3" [style=dashed];
+  "S38.1" -> "F38.1.4" [style=dashed];
+  "S38.1" -> "F38.1.5" [style=dashed];
+  "S38.1" -> "T38.1.6" [style=dashed];
+  "S38.1" -> "T38.1.7" [style=dashed];
+  "S38.1" -> "C38.1.8" [style=dashed];
+  "S38.2" -> "F38.2.1" [style=dashed];
+  "S38.2" -> "C38.2.2" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1235,4 +1284,13 @@ digraph PLAN {
   "F37.1.2" -> "T37.1.3";
   "T37.1.3" -> "D37.1.4";
   "D37.1.4" -> "C37.1.5";
+  "D38.1.2" -> "F38.1.3";
+  "D38.1.2" -> "F38.1.4";
+  "D38.1.2" -> "F38.1.5";
+  "F38.1.3" -> "T38.1.6";
+  "F38.1.4" -> "T38.1.6";
+  "F38.1.5" -> "T38.1.6";
+  "T38.1.6" -> "T38.1.7";
+  "T38.1.7" -> "C38.1.8";
+  "F38.2.1" -> "C38.2.2";
 }

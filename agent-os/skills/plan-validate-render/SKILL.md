@@ -412,7 +412,7 @@ tooling and procedure apply.
 ### Kilo
 
 When invoked via Kilo, the skill is referenced from
-`.kilocode/rules/governance.md` in bootstrapped repositories. Resolve
+`.kilo/rules/governance.md` in bootstrapped repositories. Resolve
 canonical governance from `AGENTS.md` and the workflow authorities after
 the runtime entrypoint is loaded. Run the same shared validation and
 render tooling from `control_plane_root` against the target repo.

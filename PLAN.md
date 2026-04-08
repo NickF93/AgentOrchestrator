@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-08
+- Last updated: 2026-04-09
 
 ## Mission
 
@@ -51,6 +51,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X35 | X | YAML hash-quoting guard and data repair | done |
 | X36 | X | Add compute-ready readiness query to validate-plan.py | done |
 | X37 | X | X36 gate repair and archival | done |
+| X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
 
 ## Plan
 
@@ -960,6 +961,39 @@ Status: done
 | `D37.1.4` | `D` | Archive the closed X36 milestone into plan/archive | done |  |
 | `C37.1.5` | `C` | Checkpoint closure — X37 | done |  |
 
+### X38
+
+- ID: `X38`
+- Title: Kilo Entrypoint Migration (.kilocode → .kilo)
+- Status: done
+- Note: Migrate all .kilocode references to .kilo, create thin .kilo/rules/governance.md entrypoint, update bootstrap template, and verify tests pass.
+
+#### S38.1 Items
+
+Sprint: Sprint 1 — Migration Implementation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D38.1.1` | `D` | Archive X37 milestone and update PLAN-index | done |  |
+| `D38.1.2` | `D` | Create X38 milestone for Kilo migration | done |  |
+| `F38.1.3` | `F` | Replace all .kilocode text references with .kilo | done | 23 occurrences across 12 files. Single sed pass. Skip generated and archived files. |
+| `F38.1.4` | `F` | Create .kilo/rules/governance.md thin entrypoint | done | Follow thin adapter pattern from CLAUDE.md and .codex. No duplication of governance rules. |
+| `F38.1.5` | `F` | Update bootstrap template for .kilo path | done | Update output path from .kilocode to .kilo in bootstrap-repo.sh render_template call. |
+| `T38.1.6` | `T` | Verify text replacements with grep | done |  |
+| `T38.1.7` | `T` | Run validation gates | done |  |
+| `C38.1.8` | `C` | Checkpoint closure — X38 | done |  |
+
+#### S38.2 Items
+
+Sprint: Sprint 2 — Maintenance
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `F38.2.1` | `F` | Merge .kilo/.gitignore into repo .gitignore | done | Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only. |
+| `C38.2.2` | `C` | Checkpoint closure — X38 final | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1055,6 +1089,12 @@ Status: done
 | cg90 | X36 gate repair and gate verification | `D37.1.1`, `F37.1.2`, `T37.1.3` |
 | cg91 | Archive the closed X36 milestone | `D37.1.4` |
 | cg92 | X37 checkpoint closure | `C37.1.5` |
+| cg93 | Archive X37, create X38 milestone | `D38.1.1`, `D38.1.2` |
+| cg94 | Text replacements and new .kilo entrypoint | `F38.1.3`, `F38.1.4`, `F38.1.5` |
+| cg95 | Verification and test gates | `T38.1.6`, `T38.1.7` |
+| cg96 | X38 checkpoint closure | `C38.1.8` |
+| cg97 | Merge .kilo/.gitignore into repo | `F38.2.1` |
+| cg98 | Archive X38 and close feature | `C38.2.2` |
 
 ## Item Details
 
@@ -3592,3 +3632,107 @@ Status: done
   - validate-plan.py exits 0
   - render idempotent
   - run-gates.sh passes
+
+### D38.1.1: Archive X37 milestone and update PLAN-index
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: plan, document
+- **Commit group**: `cg93`
+- **Artifacts**: plan/PLAN-index.yaml, plan/archive/PLAN-X37.yaml
+
+### D38.1.2: Create X38 milestone for Kilo migration
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: plan, document
+- **Commit group**: `cg93`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F38.1.3: Replace all .kilocode text references with .kilo
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S38.1`
+- **Actions**: implement, verify
+- **Depends on**: `D38.1.2`
+- **Commit group**: `cg94`
+- **Artifacts**: README.md, TODO.md, agent-os/workflow/shared-workflow.md, agent-os/workflow/portability-model.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/repo-bootstrap/SKILL.md, agent-os/skills/plan-validate-render/SKILL.md, agent-os/skills/gitflow-pr-only/SKILL.md, agent-os/scripts/bootstrap-repo.sh, agent-os/profiles/kilo/check-medium.yaml, tests/test_shell_scripts.py
+- **Notes**: 23 occurrences across 12 files. Single sed pass. Skip generated and archived files.
+
+### F38.1.4: Create .kilo/rules/governance.md thin entrypoint
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: implement
+- **Depends on**: `D38.1.2`
+- **Commit group**: `cg94`
+- **Artifacts**: .kilo/rules/governance.md
+- **Notes**: Follow thin adapter pattern from CLAUDE.md and .codex. No duplication of governance rules.
+
+### F38.1.5: Update bootstrap template for .kilo path
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: implement, verify
+- **Depends on**: `D38.1.2`
+- **Commit group**: `cg94`
+- **Artifacts**: agent-os/templates/repo-kilo-rules.md.template
+- **Notes**: Update output path from .kilocode to .kilo in bootstrap-repo.sh render_template call.
+
+### T38.1.6: Verify text replacements with grep
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: test, verify
+- **Depends on**: `F38.1.3`, `F38.1.4`, `F38.1.5`
+- **Commit group**: `cg95`
+- **Checks**:
+  - grep -r '\.kilocode' returns no matches in non-archived, non-generated files
+
+### T38.1.7: Run validation gates
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: test, verify
+- **Depends on**: `T38.1.6`
+- **Commit group**: `cg95`
+- **Checks**:
+  - validate-plan.py exits 0
+  - run-gates.sh passes
+  - pytest passes
+
+### C38.1.8: Checkpoint closure — X38
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S38.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T38.1.7`
+- **Commit group**: `cg96`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
+  - run-gates.sh passes
+
+### F38.2.1: Merge .kilo/.gitignore into repo .gitignore
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S38.2`
+- **Actions**: implement
+- **Commit group**: `cg97`
+- **Artifacts**: .gitignore
+- **Notes**: Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only.
+
+### C38.2.2: Checkpoint closure — X38 final
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S38.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `F38.2.1`
+- **Commit group**: `cg98`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot, plan/PLAN-index.yaml
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
