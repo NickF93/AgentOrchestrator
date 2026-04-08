@@ -167,3 +167,7 @@ archives:
   title: X36 gate repair and archival
   path: archive/PLAN-X37.yaml
   digest: sha256:1344c95283ee
+- milestone: X38
+  title: "Kilo Entrypoint Migration (.kilocode \u2192 .kilo)"
+  path: archive/PLAN-X38.yaml
+  digest: sha256:792a1947c2e0

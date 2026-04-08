@@ -987,11 +987,12 @@ Status: done
 #### S38.2 Items
 
 Sprint: Sprint 2 — Maintenance
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `F38.2.1` | `F` | Merge .kilo/.gitignore into repo .gitignore | in_progress | Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only. |
+| `F38.2.1` | `F` | Merge .kilo/.gitignore into repo .gitignore | done | Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only. |
+| `C38.2.2` | `C` | Checkpoint closure — X38 final | done |  |
 
 ## Commit Groups
 
@@ -1093,6 +1094,7 @@ Status: in_progress
 | cg95 | Verification and test gates | `T38.1.6`, `T38.1.7` |
 | cg96 | X38 checkpoint closure | `C38.1.8` |
 | cg97 | Merge .kilo/.gitignore into repo | `F38.2.1` |
+| cg98 | Archive X38 and close feature | `C38.2.2` |
 
 ## Item Details
 
@@ -3715,9 +3717,22 @@ Status: in_progress
 
 ### F38.2.1: Merge .kilo/.gitignore into repo .gitignore
 
-- **Type**: F | **Status**: in_progress | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S38.2`
 - **Actions**: implement
 - **Commit group**: `cg97`
 - **Artifacts**: .gitignore
 - **Notes**: Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only.
+
+### C38.2.2: Checkpoint closure — X38 final
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S38.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `F38.2.1`
+- **Commit group**: `cg98`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: PLAN.md, PLAN.dot, plan/PLAN-index.yaml
+- **Checks**:
+  - validate-plan.py exits 0
+  - render idempotent
