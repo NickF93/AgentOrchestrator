@@ -51,7 +51,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X35 | X | YAML hash-quoting guard and data repair | done |
 | X36 | X | Add compute-ready readiness query to validate-plan.py | done |
 | X37 | X | X36 gate repair and archival | done |
-| X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | in_progress |
+| X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
 
 ## Plan
 
@@ -965,13 +965,13 @@ Status: done
 
 - ID: `X38`
 - Title: Kilo Entrypoint Migration (.kilocode → .kilo)
-- Status: in_progress
+- Status: done
 - Note: Migrate all .kilocode references to .kilo, create thin .kilo/rules/governance.md entrypoint, update bootstrap template, and verify tests pass.
 
 #### S38.1 Items
 
 Sprint: Sprint 1 — Migration Implementation
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |

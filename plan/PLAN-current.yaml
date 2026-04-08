@@ -2,7 +2,7 @@ milestones:
 - id: X38
   type: X
   title: Kilo Entrypoint Migration (.kilocode → .kilo)
-  status: in_progress
+  status: done
   note: 'Migrate all .kilocode references to .kilo, create thin .kilo/rules/governance.md
     entrypoint, update bootstrap template, and verify tests pass.
 
@@ -12,7 +12,7 @@ sprints:
   type: S
   parent: X38
   title: Sprint 1 — Migration Implementation
-  status: in_progress
+  status: done
 items:
 - id: D38.1.1
   parent: S38.1
