@@ -152,7 +152,7 @@ def test_bootstrap_repo_creates_expected_files(
     assert "AGENTS.md" in cursor_text
     assert "## Adapter Overrides" in cursor_text
 
-    kilo_rules = target_repo / ".kilocode" / "rules" / "governance.md"
+    kilo_rules = target_repo / ".kilo" / "rules" / "governance.md"
     assert kilo_rules.exists()
     kilo_text = kilo_rules.read_text(encoding="utf-8")
     assert "thin runtime entrypoint" in kilo_text
@@ -192,7 +192,7 @@ def test_sync_workspace_stamps_control_plane_root(
     assert not (workspace_root / "GEMINI.md").exists()
     assert not (workspace_root / ".cursor").exists()
     assert not (workspace_root / ".github").exists()
-    assert not (workspace_root / ".kilocode").exists()
+    assert not (workspace_root / ".kilo").exists()
     assert not (workspace_root / "KILO.md").exists()
 
 

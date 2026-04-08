@@ -594,7 +594,7 @@ governance rules.
 
 ### Kilo
 
-Kilo uses `.kilocode/rules/governance.md` as its thin repo-local
+Kilo uses `.kilo/rules/governance.md` as its thin repo-local
 entrypoint in bootstrapped repositories. Kilo agents should resolve
 canonical governance from `AGENTS.md` and the workflow authorities after
 the runtime entrypoint is loaded. Command execution follows the same

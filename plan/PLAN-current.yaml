@@ -52,7 +52,7 @@ items:
   actions:
   - implement
   - verify
-  status: in_progress
+  status: done
   depends_on:
   - D38.1.2
   role: implementer
@@ -80,7 +80,7 @@ items:
   title: Create .kilo/rules/governance.md thin entrypoint
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D38.1.2
   role: implementer
@@ -99,7 +99,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - D38.1.2
   role: implementer
@@ -118,7 +118,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - F38.1.3
   - F38.1.4
@@ -136,7 +136,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - T38.1.6
   role: tester
@@ -154,7 +154,7 @@ items:
   actions:
   - checkpoint
   - verify
-  status: planned
+  status: done
   depends_on:
   - T38.1.7
   role: reviewer

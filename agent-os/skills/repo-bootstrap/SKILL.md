@@ -60,7 +60,7 @@ procedure belongs to exactly one of them.
 | `repo_root`           | The target repository being bootstrapped: receives      |
 |                       | AGENTS.md, ARCHITECTURE.md, REPO_MAP.md, plan/,        |
 |                       | README.md, CLAUDE.md, .codex, GEMINI.md, docs/adr/,    |
-|                       | .githooks/, .github/, .cursor/, .kilocode/             |
+|                       | .githooks/, .github/, .cursor/, .kilo/             |
 | `control_plane_root`  | The Level-0 checkout: bootstrap script, templates,      |
 |                       | validation tooling, schemas, skill definitions          |
 
@@ -116,7 +116,7 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `repo-CODEX.md.template`                | `{repo_root}/.codex`                         |
 | `repo-GEMINI.md.template`               | `{repo_root}/GEMINI.md`                      |
 | `repo-cursor-rules.mdc.template`        | `{repo_root}/.cursor/rules/governance.mdc`   |
-| `repo-kilo-rules.md.template`           | `{repo_root}/.kilocode/rules/governance.md`  |
+| `repo-kilo-rules.md.template`           | `{repo_root}/.kilo/rules/governance.md`  |
 
 ## Required Inputs
 
@@ -168,7 +168,7 @@ files_created:
   - .codex: created | skipped | missing
   - GEMINI.md: created | skipped | missing
   - .cursor/rules/governance.mdc: created | skipped | missing
-  - .kilocode/rules/governance.md: created | skipped | missing
+  - .kilo/rules/governance.md: created | skipped | missing
 verification:
   - plan_valid: true | false | skipped
   - hooks_executable: true | false | skipped
@@ -307,7 +307,7 @@ Verify the expected directory structure was created:
 2. `{repo_root}/.githooks/` directory exists.
 3. `{repo_root}/.github/` directory exists.
 4. `{repo_root}/.cursor/rules/` directory exists.
-5. `{repo_root}/.kilocode/rules/` directory exists.
+5. `{repo_root}/.kilo/rules/` directory exists.
 
 Record completeness in the report.
 
@@ -449,7 +449,7 @@ and bootstrap procedure apply.
 ### Kilo
 
 When invoked via Kilo, the skill is referenced from
-`.kilocode/rules/governance.md` in bootstrapped repositories. Resolve
+`.kilo/rules/governance.md` in bootstrapped repositories. Resolve
 canonical governance from `AGENTS.md` and the workflow authorities after
 the runtime entrypoint is loaded. Run the same shared validation tooling
 from `control_plane_root` against the target repo.

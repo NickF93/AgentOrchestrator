@@ -24,7 +24,7 @@
 - [x] Gemini — first-class (repo-local `GEMINI.md`, bootstrap template)
 - [x] Cursor — first-class (repo-local `.cursor/rules/governance.mdc`, bootstrap template)
 - [x] Copilot — first-class (repo-local `.github/copilot-instructions.md`, bootstrap template)
-- [x] Kilo — first-class (repo-local `.kilocode/rules/governance.md`, bootstrap template)
+- [x] Kilo — first-class (repo-local `.kilo/rules/governance.md`, bootstrap template)
 - [x] Extend adapters for all runtimes (all six promoted to first-class)
 
 ## Skills — Priority: P1

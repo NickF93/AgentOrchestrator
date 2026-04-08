@@ -114,7 +114,7 @@ It also writes thin repo-local runtime entrypoints for:
 - `GEMINI.md`
 - `.cursor/rules/governance.mdc`
 - `.github/copilot-instructions.md`
-- `.kilocode/rules/governance.md`
+- `.kilo/rules/governance.md`
 
 Canonical governance still lives in `AGENTS.md`, `ARCHITECTURE.md`, and
 `plan/PLAN-index.yaml`.
@@ -207,7 +207,7 @@ Runtime entrypoint artifacts remain thin pointers only. In this repository:
 
 - `CLAUDE.md` and `.codex` are workspace/runtime entrypoints
 - `CLAUDE.md`, `.codex`, `GEMINI.md`, `.cursor/rules/governance.mdc`,
-  `.github/copilot-instructions.md`, and `.kilocode/rules/governance.md`
+  `.github/copilot-instructions.md`, and `.kilo/rules/governance.md`
   are bootstrapped repo-level runtime entrypoints
 
 ## License

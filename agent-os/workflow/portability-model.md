@@ -53,7 +53,7 @@ upgrade path.
 |---------|-------------|----------------------|---------|--------------------|-------------------|
 | claude  | first-class | `CLAUDE.md` (workspace + repo) | yes | yes | yes |
 | codex   | first-class | `.codex` (workspace + repo) | yes | yes | yes |
-| kilo    | first-class | `.kilocode/rules/governance.md` (repo-local) | yes | yes | n/a (repo-scoped) |
+| kilo    | first-class | `.kilo/rules/governance.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 | copilot | first-class | `.github/copilot-instructions.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 | gemini  | first-class | `GEMINI.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 | cursor  | first-class | `.cursor/rules/governance.mdc` (repo-local) | yes | yes | n/a (repo-scoped) |
@@ -141,7 +141,7 @@ These are runtime-layer extensions, not canonical governance sources. They may
 be added later only when the neutral model cannot express the needed behavior
 through prompts, skills, profiles, or thin entrypoint artifacts.
 
-Note: Kilo-specific `.kilocode/rules/` is no longer deferred — it is now the
+Note: Kilo-specific `.kilo/rules/` is no longer deferred — it is now the
 standard bootstrap entrypoint for Kilo (see Runtime Status table).
 
 ## Non-Goals
