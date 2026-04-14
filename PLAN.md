@@ -52,6 +52,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X36 | X | Add compute-ready readiness query to validate-plan.py | done |
 | X37 | X | X36 gate repair and archival | done |
 | X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
+| X39 | X | Workspace Sync Skill Packaging | in_progress |
 
 ## Plan
 
@@ -994,6 +995,25 @@ Status: done
 | `F38.2.1` | `F` | Merge .kilo/.gitignore into repo .gitignore | done | Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only. |
 | `C38.2.2` | `C` | Checkpoint closure — X38 final | done |  |
 
+### X39
+
+- ID: `X39`
+- Title: Workspace Sync Skill Packaging
+- Status: in_progress
+- Note: Package sync-workspace.sh as a portable workspace-sync skill under agent-os/skills/. Add pre-flight validation, provenance drift detection, and structured reporting. Register in the shared asset registry and propagate discovery to AGENTS.md and the repo template.
+
+#### S39.1 Items
+
+Sprint: Sprint 1 -- Skill definition, registry, and discovery propagation
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D39.1.1` | `D` | Create workspace-sync skill SKILL.md with pre-flight, execution, drift detection, and reporting | review |  |
+| `M39.1.2` | `M` | Register workspace-sync in shared asset registry and propagate discovery metadata | planned |  |
+| `T39.1.3` | `T` | Validate workspace-sync skill packaging, registry, and plan consistency | planned |  |
+| `C39.1.4` | `C` | Checkpoint closure -- X39 workspace-sync skill packaging | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1095,6 +1115,8 @@ Status: done
 | cg96 | X38 checkpoint closure | `C38.1.8` |
 | cg97 | Merge .kilo/.gitignore into repo | `F38.2.1` |
 | cg98 | Archive X38 and close feature | `C38.2.2` |
+| cg99 | Workspace sync skill -- SKILL.md authoring | `D39.1.1` |
+| cg100 | Workspace sync skill -- registry, discovery, validation, and closure | `M39.1.2`, `T39.1.3`, `C39.1.4` |
 
 ## Item Details
 
@@ -3736,3 +3758,49 @@ Status: done
 - **Checks**:
   - validate-plan.py exits 0
   - render idempotent
+
+### D39.1.1: Create workspace-sync skill SKILL.md with pre-flight, execution, drift detection, and reporting
+
+- **Type**: D | **Status**: review | **Role**: implementer | **Effort**: high
+- **Sprint**: `S39.1`
+- **Actions**: document
+- **Commit group**: `cg99`
+- **Artifacts**: agent-os/skills/workspace-sync/SKILL.md
+
+### M39.1.2: Register workspace-sync in shared asset registry and propagate discovery metadata
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Sprint**: `S39.1`
+- **Actions**: implement
+- **Depends on**: `D39.1.1`
+- **Commit group**: `cg100`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+
+### T39.1.3: Validate workspace-sync skill packaging, registry, and plan consistency
+
+- **Type**: T | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.1`
+- **Actions**: verify
+- **Depends on**: `M39.1.2`
+- **Commit group**: `cg100`
+- **Checks**:
+  - agent-os/skills/workspace-sync/SKILL.md exists with valid YAML frontmatter
+  - SKILL.md frontmatter contains id, description, owner, version, and six-entry compatibility
+  - SKILL.md body contains Purpose, Two-Root Model, Required Inputs, Expected Outputs, Procedure, Constraints, Failure Handling, and Adapter Notes
+  - Adapter Notes covers all six runtimes
+  - shared-assets.yaml contains workspace-sync entry with kind skill
+  - AGENTS.md available-skills table contains workspace-sync row
+  - repo-AGENTS.md.template available-skills table contains workspace-sync row
+  - TODO.md shows workspace-sync checked off
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### C39.1.4: Checkpoint closure -- X39 workspace-sync skill packaging
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T39.1.3`
+- **Commit group**: `cg100`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
