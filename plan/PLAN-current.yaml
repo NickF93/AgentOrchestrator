@@ -2,7 +2,7 @@ milestones:
 - id: X39
   type: X
   title: Workspace Sync Skill Packaging
-  status: in_progress
+  status: done
   note: >
     Package sync-workspace.sh as a portable workspace-sync skill under
     agent-os/skills/. Add pre-flight validation, provenance drift detection,
@@ -14,7 +14,7 @@ sprints:
   type: S
   parent: X39
   title: "Sprint 1 -- Skill definition, registry, and discovery propagation"
-  status: in_progress
+  status: done
 
 items:
 - id: D39.1.1
@@ -22,7 +22,7 @@ items:
   type: D
   title: Create workspace-sync skill SKILL.md with pre-flight, execution, drift detection, and reporting
   actions: [document]
-  status: review
+  status: done
   role: implementer
   effort: high
   commit_group: cg99
@@ -35,7 +35,7 @@ items:
   type: M
   title: Register workspace-sync in shared asset registry and propagate discovery metadata
   actions: [implement]
-  status: planned
+  status: done
   depends_on: [D39.1.1]
   role: implementer
   effort: low
@@ -52,7 +52,7 @@ items:
   type: T
   title: Validate workspace-sync skill packaging, registry, and plan consistency
   actions: [verify]
-  status: planned
+  status: done
   depends_on: [M39.1.2]
   role: reviewer
   effort: low
@@ -76,7 +76,7 @@ items:
   type: C
   title: "Checkpoint closure -- X39 workspace-sync skill packaging"
   actions: [checkpoint, verify]
-  status: planned
+  status: done
   depends_on: [T39.1.3]
   role: reviewer
   effort: low

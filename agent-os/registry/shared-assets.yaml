@@ -33,6 +33,13 @@ assets:
     depends_on_assets:
       - check-result-v1
 
+  - id: workspace-sync
+    kind: skill
+    version: "0.1.0"
+    path: agent-os/skills/workspace-sync/SKILL.md
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
+    materializable: true
+
   - id: checkpoint-closure-review
     kind: prompt
     version: "1.0.0"

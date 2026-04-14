@@ -61,6 +61,7 @@ and must not override or redefine them.
 | `gitflow-pr-only` | `agent-os/skills/gitflow-pr-only/SKILL.md` | Starting a branch (feature, bugfix, hotfix, release, support), synchronizing a topic branch, merging a PR, tagging a release/hotfix, performing a back-merge |
 | `repo-bootstrap` | `agent-os/skills/repo-bootstrap/SKILL.md` | Bootstrapping a new repo, scaffolding governance files, checking if a repo is already bootstrapped |
 | `plan-validate-render` | `agent-os/skills/plan-validate-render/SKILL.md` | Validating a plan, rendering plan views, checking for plan drift, interpreting validation warnings or errors, verifying generated plan artifacts are up to date |
+| `workspace-sync` | `agent-os/skills/workspace-sync/SKILL.md` | Syncing a workspace, regenerating Level-1 runtime files, checking workspace provenance drift, verifying workspace files are current |
 
 ## Commit Message Contract
 All commits MUST use this format:
