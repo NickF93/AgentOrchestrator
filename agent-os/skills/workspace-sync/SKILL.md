@@ -9,7 +9,7 @@ description: >
   Adds pre-flight validation, provenance drift detection, and structured
   reporting around sync-workspace.sh.
 owner: NickF93
-version: "0.1.0"
+version: "0.2.0"
 compatibility:
   - claude
   - codex
@@ -192,9 +192,14 @@ cannot be located or is incomplete, nothing else is meaningful.
 
 1. For each of the three target files (AGENTS.md, CLAUDE.md, .codex),
    check whether it already exists at `workspace_root`.
-2. For each existing file, extract the provenance metadata stamped by
-   the previous sync. The provenance lines appear near the top of each
-   file:
+
+2. **If no files exist** (first-time sync): record current provenance as
+   N/A, set drift to N/A, and skip Step 3 entirely. Proceed directly to
+   Step 4 — there is nothing to compare against.
+
+3. **If files exist**: extract the provenance metadata stamped by the
+   previous sync. The provenance lines appear in lines 5–9 of each
+   file, always in this order:
    ```
    Generated on: <date>
    Control plane: <path>
@@ -202,10 +207,16 @@ cannot be located or is incomplete, nothing else is meaningful.
    Control plane ref: <ref>
    Control plane commit: <sha>
    ```
-   Use grep or equivalent to extract these values.
-3. Record the "current provenance" as the stamps from the existing files.
-   If no files exist, record current provenance as N/A (first-time
-   sync).
+   Extract with grep:
+   ```bash
+   grep "^Generated on:"          "{workspace_root}/AGENTS.md"
+   grep "^Control plane ref:"     "{workspace_root}/AGENTS.md"
+   grep "^Control plane commit:"  "{workspace_root}/AGENTS.md"
+   ```
+   It is sufficient to read provenance from one file (AGENTS.md) since
+   all three are stamped identically by the same sync run.
+
+4. Record the extracted values as "current provenance" in the report.
 
 ### Step 3 — Provenance drift detection
 
@@ -229,15 +240,31 @@ found in Step 2.
 
 ### Step 4 — Execute sync
 
-If `dry_run` is `true`:
-1. For each template, compute what the rendered output would be (using
-   the same substitution logic as sync-workspace.sh: `{{DATE}}`,
-   `{{CONTROL_PLANE_ROOT}}`, `{{CONTROL_PLANE_REF}}`,
-   `{{CONTROL_PLANE_COMMIT}}`).
-2. Diff the rendered output against the existing files.
-3. Report the diffs without writing.
+**If `dry_run` is `true`:**
 
-If `dry_run` is `false`:
+Compute what the rendered output would be without writing anything.
+The sync script performs four `sed` substitutions on each template:
+
+| Placeholder              | Current value                  |
+|--------------------------|--------------------------------|
+| `{{DATE}}`               | today's date (YYYY-MM-DD)      |
+| `{{CONTROL_PLANE_ROOT}}` | resolved `control_plane_root`  |
+| `{{CONTROL_PLANE_REF}}`  | current git branch or "detached"|
+| `{{CONTROL_PLANE_COMMIT}}`| current short commit SHA       |
+
+To compute the dry-run diff:
+1. Read each template from
+   `{control_plane_root}/agent-os/templates/`.
+2. Substitute the four placeholders with the current values.
+3. Compare the rendered result against the existing workspace file
+   (if it exists). Show a diff or a summary of what would change.
+4. Report the diffs without writing any files.
+
+If existing files have the same provenance stamps as the new values,
+report "unchanged" for those files.
+
+**If `dry_run` is `false`:**
+
 1. Run the sync script:
    ```bash
    bash {control_plane_root}/agent-os/scripts/sync-workspace.sh {workspace_root}
@@ -246,6 +273,14 @@ If `dry_run` is `false`:
 3. If the exit code is non-zero, fail with the stderr output. Record
    the failure in the report and stop.
 4. Record the sync outcome in the report.
+
+**If the script cannot be executed** (sandbox restrictions, missing
+bash, permission errors on the workspace path): fall back to manual
+rendering. Read each template, perform the four `sed` substitutions
+above, and write the rendered content to the workspace files using
+whatever file-write mechanism is available. This produces the same
+result as the script. Record in the report that manual rendering was
+used instead of the script.
 
 ### Step 5 — Post-sync: verify file existence and provenance
 
@@ -267,14 +302,17 @@ If `dry_run` is `true`, skip this step (report all verifications as
    Expected Outputs.
 
 2. Determine the overall verdict:
-   - **pass**: sync completed, all files verified, provenance stamps
-     correct.
-   - **warn**: sync completed but provenance drift was detected
-     pre-sync (informational).
-   - **fail**: sync script returned non-zero, or post-sync verification
-     found missing files or mismatched provenance stamps.
-   - **blocked**: pre-flight failed (workspace path invalid, control
-     plane missing or incomplete).
+   - **pass**: sync completed (or dry-run computed), all files verified,
+     provenance stamps correct. No pre-sync drift detected.
+   - **warn**: sync completed and verified, but pre-sync drift was
+     detected (informational — the workspace *was* stale, now it is
+     fresh). Also use for dry-run when drift is detected.
+   - **fail**: sync script returned non-zero, manual rendering failed,
+     or post-sync verification found missing files or mismatched
+     provenance stamps. The sync was attempted but did not succeed.
+   - **blocked**: pre-flight failed before sync could be attempted
+     (workspace path invalid, control plane missing or incomplete,
+     templates not found). No sync was run.
 
 3. Include next-steps guidance (only for non-dry-run pass or warn
    verdicts):
@@ -349,6 +387,7 @@ grep "Generated on:" "$WS/AGENTS.md"
 | Provenance stamps mismatch after sync             | Fail with mismatch details                            |
 | git not available (for provenance extraction)     | Warn; skip drift detection; note in report            |
 | Existing files unparseable for provenance stamps  | Warn; treat as first-time sync; note in report        |
+| sync-workspace.sh blocked by sandbox/permissions  | Fall back to manual template rendering (see Step 4)   |
 
 ## Adapter Notes
 

@@ -1014,6 +1014,18 @@ Status: done
 | `T39.1.3` | `T` | Validate workspace-sync skill packaging, registry, and plan consistency | done |  |
 | `C39.1.4` | `C` | Checkpoint closure -- X39 workspace-sync skill packaging | done |  |
 
+#### S39.2 Items
+
+Sprint: Sprint 2 -- Skill evaluation, testing, and iteration
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `T39.2.1` | `T` | Run skill evaluation with 4 test prompts and baseline comparison | done |  |
+| `M39.2.2` | `M` | Iterate on SKILL.md based on evaluation feedback | done |  |
+| `T39.2.3` | `T` | Re-validate skill after iteration and confirm gates pass | done |  |
+| `C39.2.4` | `C` | Checkpoint closure -- S39.2 skill evaluation and iteration | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1117,6 +1129,7 @@ Status: done
 | cg98 | Archive X38 and close feature | `C38.2.2` |
 | cg99 | Workspace sync skill -- SKILL.md authoring | `D39.1.1` |
 | cg100 | Workspace sync skill -- registry, discovery, validation, and closure | `M39.1.2`, `T39.1.3`, `C39.1.4` |
+| cg101 | Workspace sync skill -- evaluation, iteration, and closure | `T39.2.1`, `M39.2.2`, `T39.2.3`, `C39.2.4` |
 
 ## Item Details
 
@@ -3803,4 +3816,42 @@ Status: done
 - **Actions**: checkpoint, verify
 - **Depends on**: `T39.1.3`
 - **Commit group**: `cg100`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### T39.2.1: Run skill evaluation with 4 test prompts and baseline comparison
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: medium
+- **Sprint**: `S39.2`
+- **Actions**: test, verify
+- **Depends on**: `C39.1.4`
+- **Commit group**: `cg101`
+
+### M39.2.2: Iterate on SKILL.md based on evaluation feedback
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S39.2`
+- **Actions**: implement, refactor
+- **Depends on**: `T39.2.1`
+- **Commit group**: `cg101`
+- **Artifacts**: agent-os/skills/workspace-sync/SKILL.md
+
+### T39.2.3: Re-validate skill after iteration and confirm gates pass
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.2`
+- **Actions**: verify
+- **Depends on**: `M39.2.2`
+- **Commit group**: `cg101`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### C39.2.4: Checkpoint closure -- S39.2 skill evaluation and iteration
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T39.2.3`
+- **Commit group**: `cg101`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace

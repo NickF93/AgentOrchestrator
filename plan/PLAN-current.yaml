@@ -16,6 +16,12 @@ sprints:
   title: "Sprint 1 -- Skill definition, registry, and discovery propagation"
   status: done
 
+- id: S39.2
+  type: S
+  parent: X39
+  title: "Sprint 2 -- Skill evaluation, testing, and iteration"
+  status: done
+
 items:
 - id: D39.1.1
   parent: S39.1
@@ -87,6 +93,64 @@ items:
     prompt: checkpoint-closure-review
     result_protocol: check-result-v1
 
+- id: T39.2.1
+  parent: S39.2
+  type: T
+  title: Run skill evaluation with 4 test prompts and baseline comparison
+  actions: [test, verify]
+  status: done
+  depends_on: [C39.1.4]
+  role: reviewer
+  effort: medium
+  commit_group: cg101
+  scope: agent-os/skills/workspace-sync/
+
+- id: M39.2.2
+  parent: S39.2
+  type: M
+  title: Iterate on SKILL.md based on evaluation feedback
+  actions: [implement, refactor]
+  status: done
+  depends_on: [T39.2.1]
+  role: implementer
+  effort: medium
+  commit_group: cg101
+  scope: agent-os/skills/workspace-sync/
+  artifacts_out:
+    - agent-os/skills/workspace-sync/SKILL.md
+
+- id: T39.2.3
+  parent: S39.2
+  type: T
+  title: Re-validate skill after iteration and confirm gates pass
+  actions: [verify]
+  status: done
+  depends_on: [M39.2.2]
+  role: reviewer
+  effort: low
+  commit_group: cg101
+  scope: .
+  checks:
+    - validate-plan.py exits 0
+    - render-plan.py produces no drift
+    - run-gates.sh passes
+
+- id: C39.2.4
+  parent: S39.2
+  type: C
+  title: "Checkpoint closure -- S39.2 skill evaluation and iteration"
+  actions: [checkpoint, verify]
+  status: done
+  depends_on: [T39.2.3]
+  role: reviewer
+  effort: low
+  commit_group: cg101
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+
 commit_groups:
 - id: cg99
   title: "Workspace sync skill -- SKILL.md authoring"
@@ -103,3 +167,10 @@ commit_groups:
     Registers workspace-sync in shared-assets.yaml, propagates skill discovery
     to AGENTS.md and repo-AGENTS.md.template, validates end-to-end packaging
     and plan consistency, and closes X39.
+
+- id: cg101
+  title: "Workspace sync skill -- evaluation, iteration, and closure"
+  items: [T39.2.1, M39.2.2, T39.2.3, C39.2.4]
+  notes: >
+    Run skill evaluation with 4 test prompts, iterate on SKILL.md based on
+    feedback, re-validate, and close sprint S39.2.
