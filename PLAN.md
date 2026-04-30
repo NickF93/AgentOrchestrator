@@ -53,6 +53,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X37 | X | X36 gate repair and archival | done |
 | X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
 | X39 | X | Workspace Sync Skill Packaging | done |
+| X40 | X | Structured Checks for Programmatic Verification | in_progress |
 
 ## Plan
 
@@ -1026,6 +1027,27 @@ Status: done
 | `T39.2.3` | `T` | Re-validate skill after iteration and confirm gates pass | done |  |
 | `C39.2.4` | `C` | Checkpoint closure -- S39.2 skill evaluation and iteration | done |  |
 
+### X40
+
+- ID: `X40`
+- Title: Structured Checks for Programmatic Verification
+- Status: in_progress
+- Note: Implement mixed prose and structured PLAN item checks for issue #13. Structured checks are validated as metadata only and are not executed by validate-plan.py.
+
+#### S40.1 Items
+
+Sprint: Sprint 1 -- Schema, validator, docs, and validation
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D40.1.1` | `D` | Create X40 tracking plan and commit groups | done |  |
+| `M40.1.2` | `M` | Add structured checks to schema and validator fallback | planned |  |
+| `T40.1.3` | `T` | Add structured check validation test coverage | planned |  |
+| `D40.1.4` | `D` | Document structured checks and update roadmap state | planned |  |
+| `T40.1.5` | `T` | Validate X40 structured checks feature | planned |  |
+| `C40.1.6` | `C` | Checkpoint closure -- X40 structured checks | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1130,6 +1152,9 @@ Status: done
 | cg99 | Workspace sync skill -- SKILL.md authoring | `D39.1.1` |
 | cg100 | Workspace sync skill -- registry, discovery, validation, and closure | `M39.1.2`, `T39.1.3`, `C39.1.4` |
 | cg101 | Workspace sync skill -- evaluation, iteration, and closure | `T39.2.1`, `M39.2.2`, `T39.2.3`, `C39.2.4` |
+| cg102 | Structured checks -- tracking plan | `D40.1.1` |
+| cg103 | Structured checks -- schema, validator, and tests | `M40.1.2`, `T40.1.3` |
+| cg104 | Structured checks -- docs, TODO, validation, and closure | `D40.1.4`, `T40.1.5`, `C40.1.6` |
 
 ## Item Details
 
@@ -3855,3 +3880,60 @@ Status: done
 - **Depends on**: `T39.2.3`
 - **Commit group**: `cg101`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### D40.1.1: Create X40 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S40.1`
+- **Actions**: plan, document
+- **Commit group**: `cg102`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### M40.1.2: Add structured checks to schema and validator fallback
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S40.1`
+- **Actions**: implement, verify
+- **Depends on**: `D40.1.1`
+- **Commit group**: `cg103`
+- **Artifacts**: agent-os/schemas/plan.schema.json, agent-os/scripts/validate-plan.py
+
+### T40.1.3: Add structured check validation test coverage
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S40.1`
+- **Actions**: test, verify
+- **Depends on**: `M40.1.2`
+- **Commit group**: `cg103`
+- **Artifacts**: tests/test_validate_plan.py
+
+### D40.1.4: Document structured checks and update roadmap state
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Sprint**: `S40.1`
+- **Actions**: document
+- **Depends on**: `T40.1.3`
+- **Commit group**: `cg104`
+- **Artifacts**: agent-os/workflow/item-taxonomy.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/registry/shared-assets.yaml, TODO.md
+
+### T40.1.5: Validate X40 structured checks feature
+
+- **Type**: T | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S40.1`
+- **Actions**: test, verify
+- **Depends on**: `D40.1.4`
+- **Commit group**: `cg104`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### C40.1.6: Checkpoint closure -- X40 structured checks
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S40.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T40.1.5`
+- **Commit group**: `cg104`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X40.yaml, PLAN.md, PLAN.dot
