@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-04-09'
+  last_updated: '2026-04-30'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -171,3 +171,7 @@ archives:
   title: "Kilo Entrypoint Migration (.kilocode \u2192 .kilo)"
   path: archive/PLAN-X38.yaml
   digest: sha256:792a1947c2e0
+- milestone: X39
+  title: Workspace Sync Skill Packaging
+  path: archive/PLAN-X39.yaml
+  digest: sha256:561228ee1d03

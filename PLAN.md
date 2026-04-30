@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-09
+- Last updated: 2026-04-30
 
 ## Mission
 
@@ -52,6 +52,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X36 | X | Add compute-ready readiness query to validate-plan.py | done |
 | X37 | X | X36 gate repair and archival | done |
 | X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
+| X39 | X | Workspace Sync Skill Packaging | done |
 
 ## Plan
 
@@ -994,6 +995,37 @@ Status: done
 | `F38.2.1` | `F` | Merge .kilo/.gitignore into repo .gitignore | done | Consolidate Kilo CLI ignores into repo .gitignore. Plan authority remains in plan/ only. |
 | `C38.2.2` | `C` | Checkpoint closure — X38 final | done |  |
 
+### X39
+
+- ID: `X39`
+- Title: Workspace Sync Skill Packaging
+- Status: done
+- Note: Package sync-workspace.sh as a portable workspace-sync skill under agent-os/skills/. Add pre-flight validation, provenance drift detection, and structured reporting. Register in the shared asset registry and propagate discovery to AGENTS.md and the repo template.
+
+#### S39.1 Items
+
+Sprint: Sprint 1 -- Skill definition, registry, and discovery propagation
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D39.1.1` | `D` | Create workspace-sync skill SKILL.md with pre-flight, execution, drift detection, and reporting | done |  |
+| `M39.1.2` | `M` | Register workspace-sync in shared asset registry and propagate discovery metadata | done |  |
+| `T39.1.3` | `T` | Validate workspace-sync skill packaging, registry, and plan consistency | done |  |
+| `C39.1.4` | `C` | Checkpoint closure -- X39 workspace-sync skill packaging | done |  |
+
+#### S39.2 Items
+
+Sprint: Sprint 2 -- Skill evaluation, testing, and iteration
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `T39.2.1` | `T` | Run skill evaluation with 4 test prompts and baseline comparison | done |  |
+| `M39.2.2` | `M` | Iterate on SKILL.md based on evaluation feedback | done |  |
+| `T39.2.3` | `T` | Re-validate skill after iteration and confirm gates pass | done |  |
+| `C39.2.4` | `C` | Checkpoint closure -- S39.2 skill evaluation and iteration | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1095,6 +1127,9 @@ Status: done
 | cg96 | X38 checkpoint closure | `C38.1.8` |
 | cg97 | Merge .kilo/.gitignore into repo | `F38.2.1` |
 | cg98 | Archive X38 and close feature | `C38.2.2` |
+| cg99 | Workspace sync skill -- SKILL.md authoring | `D39.1.1` |
+| cg100 | Workspace sync skill -- registry, discovery, validation, and closure | `M39.1.2`, `T39.1.3`, `C39.1.4` |
+| cg101 | Workspace sync skill -- evaluation, iteration, and closure | `T39.2.1`, `M39.2.2`, `T39.2.3`, `C39.2.4` |
 
 ## Item Details
 
@@ -3736,3 +3771,87 @@ Status: done
 - **Checks**:
   - validate-plan.py exits 0
   - render idempotent
+
+### D39.1.1: Create workspace-sync skill SKILL.md with pre-flight, execution, drift detection, and reporting
+
+- **Type**: D | **Status**: done | **Role**: implementer | **Effort**: high
+- **Sprint**: `S39.1`
+- **Actions**: document
+- **Commit group**: `cg99`
+- **Artifacts**: agent-os/skills/workspace-sync/SKILL.md
+
+### M39.1.2: Register workspace-sync in shared asset registry and propagate discovery metadata
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S39.1`
+- **Actions**: implement
+- **Depends on**: `D39.1.1`
+- **Commit group**: `cg100`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+
+### T39.1.3: Validate workspace-sync skill packaging, registry, and plan consistency
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.1`
+- **Actions**: verify
+- **Depends on**: `M39.1.2`
+- **Commit group**: `cg100`
+- **Checks**:
+  - agent-os/skills/workspace-sync/SKILL.md exists with valid YAML frontmatter
+  - SKILL.md frontmatter contains id, description, owner, version, and six-entry compatibility
+  - SKILL.md body contains Purpose, Two-Root Model, Required Inputs, Expected Outputs, Procedure, Constraints, Failure Handling, and Adapter Notes
+  - Adapter Notes covers all six runtimes
+  - shared-assets.yaml contains workspace-sync entry with kind skill
+  - AGENTS.md available-skills table contains workspace-sync row
+  - repo-AGENTS.md.template available-skills table contains workspace-sync row
+  - TODO.md shows workspace-sync checked off
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### C39.1.4: Checkpoint closure -- X39 workspace-sync skill packaging
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T39.1.3`
+- **Commit group**: `cg100`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+
+### T39.2.1: Run skill evaluation with 4 test prompts and baseline comparison
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: medium
+- **Sprint**: `S39.2`
+- **Actions**: test, verify
+- **Depends on**: `C39.1.4`
+- **Commit group**: `cg101`
+
+### M39.2.2: Iterate on SKILL.md based on evaluation feedback
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S39.2`
+- **Actions**: implement, refactor
+- **Depends on**: `T39.2.1`
+- **Commit group**: `cg101`
+- **Artifacts**: agent-os/skills/workspace-sync/SKILL.md
+
+### T39.2.3: Re-validate skill after iteration and confirm gates pass
+
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.2`
+- **Actions**: verify
+- **Depends on**: `M39.2.2`
+- **Commit group**: `cg101`
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### C39.2.4: Checkpoint closure -- S39.2 skill evaluation and iteration
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S39.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T39.2.3`
+- **Commit group**: `cg101`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
