@@ -1,0 +1,197 @@
+milestones:
+- id: X39
+  type: X
+  title: Workspace Sync Skill Packaging
+  status: done
+  note: 'Package sync-workspace.sh as a portable workspace-sync skill under agent-os/skills/.
+    Add pre-flight validation, provenance drift detection, and structured reporting.
+    Register in the shared asset registry and propagate discovery to AGENTS.md and
+    the repo template.
+
+    '
+sprints:
+- id: S39.1
+  type: S
+  parent: X39
+  title: Sprint 1 -- Skill definition, registry, and discovery propagation
+  status: done
+- id: S39.2
+  type: S
+  parent: X39
+  title: Sprint 2 -- Skill evaluation, testing, and iteration
+  status: done
+items:
+- id: D39.1.1
+  parent: S39.1
+  type: D
+  title: Create workspace-sync skill SKILL.md with pre-flight, execution, drift detection,
+    and reporting
+  actions:
+  - document
+  status: done
+  role: implementer
+  effort: high
+  commit_group: cg99
+  scope: agent-os/skills/
+  artifacts_out:
+  - agent-os/skills/workspace-sync/SKILL.md
+- id: M39.1.2
+  parent: S39.1
+  type: M
+  title: Register workspace-sync in shared asset registry and propagate discovery
+    metadata
+  actions:
+  - implement
+  status: done
+  depends_on:
+  - D39.1.1
+  role: implementer
+  effort: low
+  commit_group: cg100
+  scope: agent-os/registry/
+  artifacts_out:
+  - agent-os/registry/shared-assets.yaml
+  - AGENTS.md
+  - agent-os/templates/repo-AGENTS.md.template
+  - TODO.md
+- id: T39.1.3
+  parent: S39.1
+  type: T
+  title: Validate workspace-sync skill packaging, registry, and plan consistency
+  actions:
+  - verify
+  status: done
+  depends_on:
+  - M39.1.2
+  role: reviewer
+  effort: low
+  commit_group: cg100
+  scope: .
+  checks:
+  - agent-os/skills/workspace-sync/SKILL.md exists with valid YAML frontmatter
+  - SKILL.md frontmatter contains id, description, owner, version, and six-entry compatibility
+  - SKILL.md body contains Purpose, Two-Root Model, Required Inputs, Expected Outputs,
+    Procedure, Constraints, Failure Handling, and Adapter Notes
+  - Adapter Notes covers all six runtimes
+  - shared-assets.yaml contains workspace-sync entry with kind skill
+  - AGENTS.md available-skills table contains workspace-sync row
+  - repo-AGENTS.md.template available-skills table contains workspace-sync row
+  - TODO.md shows workspace-sync checked off
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+- id: C39.1.4
+  parent: S39.1
+  type: C
+  title: Checkpoint closure -- X39 workspace-sync skill packaging
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - T39.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg100
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+- id: T39.2.1
+  parent: S39.2
+  type: T
+  title: Run skill evaluation with 4 test prompts and baseline comparison
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - C39.1.4
+  role: reviewer
+  effort: medium
+  commit_group: cg101
+  scope: agent-os/skills/workspace-sync/
+- id: M39.2.2
+  parent: S39.2
+  type: M
+  title: Iterate on SKILL.md based on evaluation feedback
+  actions:
+  - implement
+  - refactor
+  status: done
+  depends_on:
+  - T39.2.1
+  role: implementer
+  effort: medium
+  commit_group: cg101
+  scope: agent-os/skills/workspace-sync/
+  artifacts_out:
+  - agent-os/skills/workspace-sync/SKILL.md
+- id: T39.2.3
+  parent: S39.2
+  type: T
+  title: Re-validate skill after iteration and confirm gates pass
+  actions:
+  - verify
+  status: done
+  depends_on:
+  - M39.2.2
+  role: reviewer
+  effort: low
+  commit_group: cg101
+  scope: .
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+- id: C39.2.4
+  parent: S39.2
+  type: C
+  title: Checkpoint closure -- S39.2 skill evaluation and iteration
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - T39.2.3
+  role: reviewer
+  effort: low
+  commit_group: cg101
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+commit_groups:
+- id: cg99
+  title: Workspace sync skill -- SKILL.md authoring
+  items:
+  - D39.1.1
+  notes: 'Creates the workspace-sync operational skill under agent-os/skills/. Wraps
+    sync-workspace.sh with pre-flight validation, provenance drift detection, and
+    structured reporting.
+
+    '
+- id: cg100
+  title: Workspace sync skill -- registry, discovery, validation, and closure
+  items:
+  - M39.1.2
+  - T39.1.3
+  - C39.1.4
+  notes: 'Registers workspace-sync in shared-assets.yaml, propagates skill discovery
+    to AGENTS.md and repo-AGENTS.md.template, validates end-to-end packaging and plan
+    consistency, and closes X39.
+
+    '
+- id: cg101
+  title: Workspace sync skill -- evaluation, iteration, and closure
+  items:
+  - T39.2.1
+  - M39.2.2
+  - T39.2.3
+  - C39.2.4
+  notes: 'Run skill evaluation with 4 test prompts, iterate on SKILL.md based on feedback,
+    re-validate, and close sprint S39.2.
+
+    '
