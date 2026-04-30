@@ -755,13 +755,13 @@ digraph PLAN {
   subgraph "cluster_cg103" {
     style="rounded,dashed";
     label="cg103: Structured checks -- schema, validator, and tests";
-  "M40.1.2" [label="M40.1.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "T40.1.3" [label="T40.1.3 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "M40.1.2" [label="M40.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T40.1.3" [label="T40.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg104" {
     style="rounded,dashed";
     label="cg104: Structured checks -- docs, TODO, validation, and closure";
-  "D40.1.4" [label="D40.1.4 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "D40.1.4" [label="D40.1.4 | D | ready", shape=note, style="filled,rounded", fillcolor=lightyellow];
   "T40.1.5" [label="T40.1.5 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
   "C40.1.6" [label="C40.1.6 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
   }

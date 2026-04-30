@@ -63,6 +63,30 @@
         { "$ref": "#/$defs/itemId" }
       ]
     },
+    "check": {
+      "oneOf": [
+        { "type": "string" },
+        { "$ref": "#/$defs/structuredCheck" }
+      ]
+    },
+    "structuredCheck": {
+      "type": "object",
+      "required": ["command", "expected_exit", "timeout"],
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "expected_exit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3600
+        }
+      },
+      "additionalProperties": false
+    },
     "sharedAssetId": {
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$"
@@ -185,7 +209,7 @@
         "decision": { "type": "string" },
         "checks": {
           "type": "array",
-          "items": { "type": "string" }
+          "items": { "$ref": "#/$defs/check" }
         },
         "shared_assets": { "$ref": "#/$defs/sharedAssets" },
         "artifacts_in": {

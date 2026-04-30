@@ -1042,9 +1042,9 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D40.1.1` | `D` | Create X40 tracking plan and commit groups | done |  |
-| `M40.1.2` | `M` | Add structured checks to schema and validator fallback | planned |  |
-| `T40.1.3` | `T` | Add structured check validation test coverage | planned |  |
-| `D40.1.4` | `D` | Document structured checks and update roadmap state | planned |  |
+| `M40.1.2` | `M` | Add structured checks to schema and validator fallback | done |  |
+| `T40.1.3` | `T` | Add structured check validation test coverage | done |  |
+| `D40.1.4` | `D` | Document structured checks and update roadmap state | ready |  |
 | `T40.1.5` | `T` | Validate X40 structured checks feature | planned |  |
 | `C40.1.6` | `C` | Checkpoint closure -- X40 structured checks | planned |  |
 
@@ -3891,7 +3891,7 @@ Status: in_progress
 
 ### M40.1.2: Add structured checks to schema and validator fallback
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S40.1`
 - **Actions**: implement, verify
 - **Depends on**: `D40.1.1`
@@ -3900,7 +3900,7 @@ Status: in_progress
 
 ### T40.1.3: Add structured check validation test coverage
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S40.1`
 - **Actions**: test, verify
 - **Depends on**: `M40.1.2`
@@ -3909,7 +3909,7 @@ Status: in_progress
 
 ### D40.1.4: Document structured checks and update roadmap state
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: ready | **Role**: documenter | **Effort**: low
 - **Sprint**: `S40.1`
 - **Actions**: document
 - **Depends on**: `T40.1.3`

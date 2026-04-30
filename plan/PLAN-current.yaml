@@ -36,7 +36,7 @@ items:
   type: M
   title: Add structured checks to schema and validator fallback
   actions: [implement, verify]
-  status: planned
+  status: done
   depends_on: [D40.1.1]
   role: implementer
   effort: medium
@@ -51,7 +51,7 @@ items:
   type: T
   title: Add structured check validation test coverage
   actions: [test, verify]
-  status: planned
+  status: done
   depends_on: [M40.1.2]
   role: tester
   effort: medium
@@ -65,7 +65,7 @@ items:
   type: D
   title: Document structured checks and update roadmap state
   actions: [document]
-  status: planned
+  status: ready
   depends_on: [T40.1.3]
   role: documenter
   effort: low

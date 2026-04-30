@@ -63,6 +63,10 @@ SHARED_ASSET_PATH_PREFIX = {
     "profile": "agent-os/profiles/",
     "protocol": "agent-os/protocols/",
 }
+CHECK_EXPECTED_EXIT_MIN = 0
+CHECK_EXPECTED_EXIT_MAX = 255
+CHECK_TIMEOUT_MIN = 1
+CHECK_TIMEOUT_MAX = 3600
 
 
 _BLOCK_SCALAR_RE = re.compile(r"^[ \t]*[^\s#][^:]*:[ \t]+[|>]")
@@ -368,6 +372,47 @@ def ensure_list(value: object, context: str, errors: list[str]) -> list | None:
     return value
 
 
+def validate_check_entry(value: object, context: str, errors: list[str]) -> None:
+    if isinstance(value, str):
+        return
+
+    if not isinstance(value, dict):
+        errors.append(f"{context}: expected string or structured check mapping")
+        return
+
+    allowed_fields = {"command", "expected_exit", "timeout"}
+    unexpected = sorted(set(value) - allowed_fields, key=str)
+    if unexpected:
+        unexpected_fields = ", ".join(str(field) for field in unexpected)
+        errors.append(f"{context}: unexpected field(s): {unexpected_fields}")
+
+    command = value.get("command")
+    if not isinstance(command, str) or not command:
+        errors.append(f"{context}.command: expected non-empty string")
+
+    expected_exit = value.get("expected_exit")
+    if not isinstance(expected_exit, int) or isinstance(expected_exit, bool):
+        errors.append(
+            f"{context}.expected_exit: expected integer "
+            f"{CHECK_EXPECTED_EXIT_MIN}..{CHECK_EXPECTED_EXIT_MAX}"
+        )
+    elif not (CHECK_EXPECTED_EXIT_MIN <= expected_exit <= CHECK_EXPECTED_EXIT_MAX):
+        errors.append(
+            f"{context}.expected_exit: expected integer "
+            f"{CHECK_EXPECTED_EXIT_MIN}..{CHECK_EXPECTED_EXIT_MAX}"
+        )
+
+    timeout = value.get("timeout")
+    if not isinstance(timeout, int) or isinstance(timeout, bool):
+        errors.append(
+            f"{context}.timeout: expected integer seconds {CHECK_TIMEOUT_MIN}..{CHECK_TIMEOUT_MAX}"
+        )
+    elif not (CHECK_TIMEOUT_MIN <= timeout <= CHECK_TIMEOUT_MAX):
+        errors.append(
+            f"{context}.timeout: expected integer seconds {CHECK_TIMEOUT_MIN}..{CHECK_TIMEOUT_MAX}"
+        )
+
+
 def validate_plan_schema_subset(plan: dict) -> list[str]:
     """Fallback schema validation when jsonschema is unavailable."""
     errors: list[str] = []
@@ -512,10 +557,12 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
             errors.append(f"{context}.scope: invalid scope '{scope}'")
 
         checks = item_map.get("checks")
-        if checks is not None and (
-            not isinstance(checks, list) or any(not isinstance(check, str) for check in checks)
-        ):
-            errors.append(f"{context}.checks: expected list of strings")
+        if checks is not None:
+            if not isinstance(checks, list):
+                errors.append(f"{context}.checks: expected list")
+            else:
+                for check_idx, check in enumerate(checks):
+                    validate_check_entry(check, f"{context}.checks[{check_idx}]", errors)
 
         artifacts_in = item_map.get("artifacts_in")
         if artifacts_in is not None and (
