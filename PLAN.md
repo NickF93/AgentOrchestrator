@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-04-30
+- Last updated: 2026-05-01
 
 ## Mission
 
@@ -53,7 +53,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X37 | X | X36 gate repair and archival | done |
 | X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
 | X39 | X | Workspace Sync Skill Packaging | done |
-| X40 | X | Structured Checks for Programmatic Verification | in_progress |
+| X40 | X | Structured Checks for Programmatic Verification | done |
 
 ## Plan
 
@@ -1031,22 +1031,22 @@ Status: done
 
 - ID: `X40`
 - Title: Structured Checks for Programmatic Verification
-- Status: in_progress
+- Status: done
 - Note: Implement mixed prose and structured PLAN item checks for issue #13. Structured checks are validated as metadata only and are not executed by validate-plan.py.
 
 #### S40.1 Items
 
 Sprint: Sprint 1 -- Schema, validator, docs, and validation
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D40.1.1` | `D` | Create X40 tracking plan and commit groups | done |  |
 | `M40.1.2` | `M` | Add structured checks to schema and validator fallback | done |  |
 | `T40.1.3` | `T` | Add structured check validation test coverage | done |  |
-| `D40.1.4` | `D` | Document structured checks and update roadmap state | ready |  |
-| `T40.1.5` | `T` | Validate X40 structured checks feature | planned |  |
-| `C40.1.6` | `C` | Checkpoint closure -- X40 structured checks | planned |  |
+| `D40.1.4` | `D` | Document structured checks and update roadmap state | done |  |
+| `T40.1.5` | `T` | Validate X40 structured checks feature | done |  |
+| `C40.1.6` | `C` | Checkpoint closure -- X40 structured checks | done |  |
 
 ## Commit Groups
 
@@ -3909,7 +3909,7 @@ Status: in_progress
 
 ### D40.1.4: Document structured checks and update roadmap state
 
-- **Type**: D | **Status**: ready | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S40.1`
 - **Actions**: document
 - **Depends on**: `T40.1.3`
@@ -3918,7 +3918,7 @@ Status: in_progress
 
 ### T40.1.5: Validate X40 structured checks feature
 
-- **Type**: T | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S40.1`
 - **Actions**: test, verify
 - **Depends on**: `D40.1.4`
@@ -3930,7 +3930,7 @@ Status: in_progress
 
 ### C40.1.6: Checkpoint closure -- X40 structured checks
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S40.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T40.1.5`

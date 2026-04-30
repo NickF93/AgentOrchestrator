@@ -2,7 +2,7 @@ version: "1.0"
 assets:
   - id: plan-checkpoint-close
     kind: skill
-    version: "0.3.0"
+    version: "0.3.1"
     path: agent-os/skills/plan-checkpoint-close/SKILL.md
     compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true

@@ -94,9 +94,12 @@ Every executable item (Q, D, M, F, T, C) must declare:
   `^(\.|[A-Za-z0-9._/-]+)$`.
 - artifacts_in
 - artifacts_out
-- checks — an array of human-readable check descriptions (e.g.
-  `validate-plan.py exits 0`, `render idempotent`). Verification is manual or
-  scripted outside the schema.
+- checks — an array of prose check descriptions or structured check metadata.
+  Prose checks remain human-readable strings (e.g. `validate-plan.py exits 0`,
+  `render idempotent`). Structured checks use `command`, `expected_exit`, and
+  `timeout` fields so closure tooling can identify programmatic checks without
+  parsing prose. `validate-plan.py` validates structured check shape but does
+  not execute check commands.
 - shared_assets — optional object for executable items that consume Layer-0
   shared assets. Supported fields:
   - `skill`

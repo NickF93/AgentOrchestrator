@@ -8,7 +8,7 @@ description: >
   checkpoint is ready to close, or wants a pre-commit closure check.
   Works at Layer 0 (control-plane repo) and Layer 2 (any governed repo).
 owner: NickF93
-version: "0.3.0"
+version: "0.3.1"
 compatibility:
   - claude
   - codex
@@ -258,7 +258,10 @@ Freshness Mechanism for the authoritative rule.)
 
 For each item in the commit_group that declares a `checks` array:
 
-1. List each check description.
+1. List each check entry. String entries are prose checks. Structured
+   entries provide `command`, `expected_exit`, and `timeout` metadata
+   for programmatic checks. `validate-plan.py` validates structured
+   check shape but does not execute check commands.
 2. Determine whether the check can be run programmatically:
    - Shared-tooling checks (e.g. "validate-plan.py exits 0") — already
      covered by Step 5; reference that result.
