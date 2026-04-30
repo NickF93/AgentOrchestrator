@@ -31,6 +31,38 @@ def load_module(module_name: str, path: Path) -> Any:
     return module
 
 
+def minimal_plan_with_checks(checks: list[object]) -> dict:
+    return {
+        "meta": {
+            "repo": "fixture",
+            "owner": "tester",
+            "version": "1",
+            "schema_version": "1",
+            "last_updated": "2026-04-30",
+        },
+        "mission": "Fixture mission",
+        "milestones": [{"id": "X1", "type": "X", "title": "Milestone", "status": "planned"}],
+        "sprints": [
+            {"id": "S1.1", "type": "S", "parent": "X1", "title": "Sprint", "status": "planned"}
+        ],
+        "items": [
+            {
+                "id": "M1.1.1",
+                "parent": "S1.1",
+                "type": "M",
+                "title": "Implement fixture",
+                "status": "planned",
+                "role": "implementer",
+                "effort": "low",
+                "actions": ["implement"],
+                "commit_group": "cg1",
+                "checks": checks,
+            }
+        ],
+        "commit_groups": [{"id": "cg1", "title": "Group", "items": ["M1.1.1"]}],
+    }
+
+
 def run_validate_plan_without_jsonschema(
     repo_root: Path, plan_path: Path, schema_path: Path, temp_path: Path
 ) -> subprocess.CompletedProcess[str]:
@@ -530,6 +562,71 @@ def test_validate_plan_schema_subset_accepts_valid_full_shape(repo_root: Path) -
     )
 
     assert errors == []
+
+
+def test_validate_plan_schema_accepts_mixed_structured_checks(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = minimal_plan_with_checks(
+        [
+            "pytest -q",
+            {
+                "command": "bash agent-os/scripts/run-gates.sh",
+                "expected_exit": 0,
+                "timeout": 300,
+            },
+        ]
+    )
+
+    subset_errors = module.validate_plan_schema_subset(plan)
+    schema_errors, _validator = module.validate_plan_schema(plan, module.load_schema(SCHEMA_PATH))
+
+    assert subset_errors == []
+    assert schema_errors == []
+
+
+def test_validate_plan_schema_rejects_malformed_structured_check(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = minimal_plan_with_checks(
+        [{"command": "pytest -q", "expected_exit": 0, "timeout": 300, "cwd": "."}]
+    )
+
+    schema_errors, validator = module.validate_plan_schema(plan, module.load_schema(SCHEMA_PATH))
+
+    assert validator == "jsonschema"
+    assert schema_errors
+    assert "cwd" in schema_errors[1]
+
+
+def test_validate_plan_schema_subset_rejects_malformed_structured_checks(
+    repo_root: Path,
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    errors = module.validate_plan_schema_subset(
+        minimal_plan_with_checks(
+            [
+                123,
+                {"command": "", "expected_exit": 0, "timeout": 300},
+                {"command": "pytest -q", "expected_exit": -1, "timeout": 300},
+                {"command": "pytest -q", "expected_exit": 256, "timeout": 300},
+                {"command": "pytest -q", "expected_exit": True, "timeout": 300},
+                {"command": "pytest -q", "expected_exit": 0, "timeout": 0},
+                {"command": "pytest -q", "expected_exit": 0, "timeout": 3601},
+                {"command": "pytest -q", "expected_exit": 0},
+                {"command": "pytest -q", "expected_exit": 0, "timeout": 300, "cwd": "."},
+                {1: "bad", "command": "pytest -q", "expected_exit": 0, "timeout": 300},
+            ]
+        )
+    )
+
+    assert any(
+        "items[0].checks[0]: expected string or structured check mapping" in error
+        for error in errors
+    )
+    assert any("items[0].checks[1].command: expected non-empty string" in error for error in errors)
+    assert sum("expected_exit: expected integer 0..255" in error for error in errors) == 3
+    assert sum("timeout: expected integer seconds 1..3600" in error for error in errors) == 3
+    assert any("items[0].checks[8]: unexpected field(s): cwd" in error for error in errors)
+    assert any("items[0].checks[9]: unexpected field(s): 1" in error for error in errors)
 
 
 def test_validate_plan_schema_subset_rejects_deep_invalid_shapes(repo_root: Path) -> None:

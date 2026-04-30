@@ -39,6 +39,7 @@ digraph PLAN {
   "X37" [label="X37 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X38" [label="X38 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X39" [label="X39 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X40" [label="X40 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -96,6 +97,7 @@ digraph PLAN {
   "S38.2" [label="S38.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S39.1" [label="S39.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S39.2" [label="S39.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S40.1" [label="S40.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -745,6 +747,24 @@ digraph PLAN {
   "T39.2.3" [label="T39.2.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C39.2.4" [label="C39.2.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg102" {
+    style="rounded,dashed";
+    label="cg102: Structured checks -- tracking plan";
+  "D40.1.1" [label="D40.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg103" {
+    style="rounded,dashed";
+    label="cg103: Structured checks -- schema, validator, and tests";
+  "M40.1.2" [label="M40.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T40.1.3" [label="T40.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg104" {
+    style="rounded,dashed";
+    label="cg104: Structured checks -- docs, TODO, validation, and closure";
+  "D40.1.4" [label="D40.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "T40.1.5" [label="T40.1.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C40.1.6" [label="C40.1.6 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -802,6 +822,7 @@ digraph PLAN {
   "X38" -> "S38.2" [style=dashed];
   "X39" -> "S39.1" [style=dashed];
   "X39" -> "S39.2" [style=dashed];
+  "X40" -> "S40.1" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -1051,6 +1072,12 @@ digraph PLAN {
   "S39.2" -> "M39.2.2" [style=dashed];
   "S39.2" -> "T39.2.3" [style=dashed];
   "S39.2" -> "C39.2.4" [style=dashed];
+  "S40.1" -> "D40.1.1" [style=dashed];
+  "S40.1" -> "M40.1.2" [style=dashed];
+  "S40.1" -> "T40.1.3" [style=dashed];
+  "S40.1" -> "D40.1.4" [style=dashed];
+  "S40.1" -> "T40.1.5" [style=dashed];
+  "S40.1" -> "C40.1.6" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1333,4 +1360,9 @@ digraph PLAN {
   "T39.2.1" -> "M39.2.2";
   "M39.2.2" -> "T39.2.3";
   "T39.2.3" -> "C39.2.4";
+  "D40.1.1" -> "M40.1.2";
+  "M40.1.2" -> "T40.1.3";
+  "T40.1.3" -> "D40.1.4";
+  "D40.1.4" -> "T40.1.5";
+  "T40.1.5" -> "C40.1.6";
 }
