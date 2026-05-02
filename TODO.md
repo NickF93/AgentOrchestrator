@@ -81,7 +81,7 @@
 > Items derived from issue #8 review analysis. These close the gap between
 > governance rules and runtime evaluation without building a full engine.
 
-- [ ] Add `--compute-ready` flag to `validate-plan.py` — read-only query that evaluates the dependency predicate and outputs ready items as JSON
+- [x] Add `--compute-ready` flag to `validate-plan.py` — read-only query that evaluates the dependency predicate and outputs ready items as JSON
 - [ ] Add `on_fail` optional metadata field to item schema — declarative failure policy per item (enum: `retry:<N>`, `escalate`, `pivot:<item_id>`, `block`)
 - [x] Add structured `checks` format alongside prose checks — `{command, expected_exit, timeout}` for programmatic verification
 - [ ] Add `scope_exclusive` field for smarter scope collision handling — default `true` (current behavior), `false` allows overlapping prefixes
