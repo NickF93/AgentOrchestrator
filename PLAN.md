@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-01
+- Last updated: 2026-05-02
 
 ## Mission
 
@@ -54,7 +54,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
 | X39 | X | Workspace Sync Skill Packaging | done |
 | X40 | X | Structured Checks for Programmatic Verification | done |
-| X41 | X | Issue and TODO Reconciliation Cleanup | in_progress |
+| X41 | X | Issue and TODO Reconciliation Cleanup | done |
 
 ## Plan
 
@@ -1053,20 +1053,20 @@ Status: done
 
 - ID: `X41`
 - Title: Issue and TODO Reconciliation Cleanup
-- Status: in_progress
+- Status: done
 - Note: Reconcile stale post-merge state after PR #32: close the completed structured checks issue and correct the human TODO checklist for already-implemented compute-ready support.
 
 #### S41.1 Items
 
 Sprint: Sprint 1 -- Tracking, reconciliation, validation, and closure
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D41.1.1` | `D` | Create X41 reconciliation tracking plan | done |  |
-| `F41.1.2` | `F` | Reconcile stale issue and TODO checklist state | planned | Close stale issue #13 externally after verifying PR #32 merged structured checks, and mark the already-implemented compute-ready TODO item as complete. |
-| `T41.1.3` | `T` | Verify reconciliation state | planned |  |
-| `C41.1.4` | `C` | Checkpoint closure -- X41 reconciliation cleanup | planned |  |
+| `F41.1.2` | `F` | Reconcile stale issue and TODO checklist state | done | Close stale issue #13 externally after verifying PR #32 merged structured checks, and mark the already-implemented compute-ready TODO item as complete. |
+| `T41.1.3` | `T` | Verify reconciliation state | done |  |
+| `C41.1.4` | `C` | Checkpoint closure -- X41 reconciliation cleanup | done |  |
 
 ## Commit Groups
 
@@ -3971,7 +3971,7 @@ Status: in_progress
 
 ### F41.1.2: Reconcile stale issue and TODO checklist state
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S41.1`
 - **Actions**: implement, verify
 - **Depends on**: `D41.1.1`
@@ -3981,7 +3981,7 @@ Status: in_progress
 
 ### T41.1.3: Verify reconciliation state
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S41.1`
 - **Actions**: test, verify
 - **Depends on**: `F41.1.2`
@@ -3994,7 +3994,7 @@ Status: in_progress
 
 ### C41.1.4: Checkpoint closure -- X41 reconciliation cleanup
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S41.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T41.1.3`
