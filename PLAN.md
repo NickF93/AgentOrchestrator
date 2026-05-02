@@ -54,6 +54,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X38 | X | Kilo Entrypoint Migration (.kilocode → .kilo) | done |
 | X39 | X | Workspace Sync Skill Packaging | done |
 | X40 | X | Structured Checks for Programmatic Verification | done |
+| X41 | X | Issue and TODO Reconciliation Cleanup | in_progress |
 
 ## Plan
 
@@ -1048,6 +1049,25 @@ Status: done
 | `T40.1.5` | `T` | Validate X40 structured checks feature | done |  |
 | `C40.1.6` | `C` | Checkpoint closure -- X40 structured checks | done |  |
 
+### X41
+
+- ID: `X41`
+- Title: Issue and TODO Reconciliation Cleanup
+- Status: in_progress
+- Note: Reconcile stale post-merge state after PR #32: close the completed structured checks issue and correct the human TODO checklist for already-implemented compute-ready support.
+
+#### S41.1 Items
+
+Sprint: Sprint 1 -- Tracking, reconciliation, validation, and closure
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D41.1.1` | `D` | Create X41 reconciliation tracking plan | done |  |
+| `F41.1.2` | `F` | Reconcile stale issue and TODO checklist state | planned | Close stale issue #13 externally after verifying PR #32 merged structured checks, and mark the already-implemented compute-ready TODO item as complete. |
+| `T41.1.3` | `T` | Verify reconciliation state | planned |  |
+| `C41.1.4` | `C` | Checkpoint closure -- X41 reconciliation cleanup | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1155,6 +1175,9 @@ Status: done
 | cg102 | Structured checks -- tracking plan | `D40.1.1` |
 | cg103 | Structured checks -- schema, validator, and tests | `M40.1.2`, `T40.1.3` |
 | cg104 | Structured checks -- docs, TODO, validation, and closure | `D40.1.4`, `T40.1.5`, `C40.1.6` |
+| cg105 | X41 reconciliation tracking | `D41.1.1` |
+| cg106 | Issue and TODO reconciliation | `F41.1.2`, `T41.1.3` |
+| cg107 | X41 checkpoint closure and archive | `C41.1.4` |
 
 ## Item Details
 
@@ -3937,3 +3960,44 @@ Status: done
 - **Commit group**: `cg104`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X40.yaml, PLAN.md, PLAN.dot
+
+### D41.1.1: Create X41 reconciliation tracking plan
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S41.1`
+- **Actions**: plan, document
+- **Commit group**: `cg105`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F41.1.2: Reconcile stale issue and TODO checklist state
+
+- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Sprint**: `S41.1`
+- **Actions**: implement, verify
+- **Depends on**: `D41.1.1`
+- **Commit group**: `cg106`
+- **Artifacts**: TODO.md
+- **Notes**: Close stale issue #13 externally after verifying PR #32 merged structured checks, and mark the already-implemented compute-ready TODO item as complete.
+
+### T41.1.3: Verify reconciliation state
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Sprint**: `S41.1`
+- **Actions**: test, verify
+- **Depends on**: `F41.1.2`
+- **Commit group**: `cg106`
+- **Checks**:
+  - issue #13 is closed
+  - TODO.md marks compute-ready as done
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+
+### C41.1.4: Checkpoint closure -- X41 reconciliation cleanup
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S41.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T41.1.3`
+- **Commit group**: `cg107`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X41.yaml, PLAN.md, PLAN.dot

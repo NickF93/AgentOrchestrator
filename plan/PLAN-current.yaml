@@ -1,4 +1,121 @@
-milestones: []
-sprints: []
-items: []
-commit_groups: []
+milestones:
+- id: X41
+  type: X
+  title: Issue and TODO Reconciliation Cleanup
+  status: in_progress
+  note: 'Reconcile stale post-merge state after PR #32: close the completed structured
+    checks issue and correct the human TODO checklist for already-implemented compute-ready
+    support.
+
+    '
+sprints:
+- id: S41.1
+  type: S
+  parent: X41
+  title: Sprint 1 -- Tracking, reconciliation, validation, and closure
+  status: in_progress
+items:
+- id: D41.1.1
+  parent: S41.1
+  type: D
+  title: Create X41 reconciliation tracking plan
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg105
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: F41.1.2
+  parent: S41.1
+  type: F
+  title: Reconcile stale issue and TODO checklist state
+  actions:
+  - implement
+  - verify
+  status: planned
+  depends_on:
+  - D41.1.1
+  role: implementer
+  effort: low
+  commit_group: cg106
+  scope: TODO.md
+  artifacts_out:
+  - TODO.md
+  notes: 'Close stale issue #13 externally after verifying PR #32 merged structured
+    checks, and mark the already-implemented compute-ready TODO item as complete.
+
+    '
+- id: T41.1.3
+  parent: S41.1
+  type: T
+  title: Verify reconciliation state
+  actions:
+  - test
+  - verify
+  status: planned
+  depends_on:
+  - F41.1.2
+  role: tester
+  effort: low
+  commit_group: cg106
+  scope: .
+  checks:
+  - 'issue #13 is closed'
+  - TODO.md marks compute-ready as done
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+- id: C41.1.4
+  parent: S41.1
+  type: C
+  title: Checkpoint closure -- X41 reconciliation cleanup
+  actions:
+  - checkpoint
+  - verify
+  status: planned
+  depends_on:
+  - T41.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg107
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X41.yaml
+  - PLAN.md
+  - PLAN.dot
+commit_groups:
+- id: cg105
+  title: X41 reconciliation tracking
+  items:
+  - D41.1.1
+  notes: 'Declares the bugfix tracking surface and commit-group boundaries before
+    repository edits.
+
+    '
+- id: cg106
+  title: Issue and TODO reconciliation
+  items:
+  - F41.1.2
+  - T41.1.3
+  notes: 'Closes stale issue #13 externally, corrects stale TODO state, and verifies
+    reconciliation.
+
+    '
+- id: cg107
+  title: X41 checkpoint closure and archive
+  items:
+  - C41.1.4
+  notes: 'Closes and archives the reconciliation milestone after validation.
+
+    '
