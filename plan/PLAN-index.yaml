@@ -187,3 +187,7 @@ archives:
   title: Declarative on_fail Policy Metadata
   path: archive/PLAN-X42.yaml
   digest: sha256:ec5facec72e6
+- milestone: X43
+  title: Dangling on_fail Pivot Warning
+  path: archive/PLAN-X43.yaml
+  digest: sha256:f203b5bfa441
