@@ -63,6 +63,12 @@ def minimal_plan_with_checks(checks: list[object]) -> dict:
     }
 
 
+def minimal_plan_with_on_fail(on_fail: object) -> dict:
+    plan = minimal_plan_with_checks(["pytest -q"])
+    plan["items"][0]["on_fail"] = on_fail
+    return plan
+
+
 def run_validate_plan_without_jsonschema(
     repo_root: Path, plan_path: Path, schema_path: Path, temp_path: Path
 ) -> subprocess.CompletedProcess[str]:
@@ -584,6 +590,69 @@ def test_validate_plan_schema_accepts_mixed_structured_checks(repo_root: Path) -
     assert schema_errors == []
 
 
+def test_validate_plan_schema_accepts_on_fail_policies(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+
+    for policy in ("retry:1", "retry:10", "escalate", "pivot:M1.1.1", "block"):
+        plan = minimal_plan_with_on_fail(policy)
+        subset_errors = module.validate_plan_schema_subset(plan)
+        schema_errors, _validator = module.validate_plan_schema(
+            plan, module.load_schema(SCHEMA_PATH)
+        )
+
+        assert subset_errors == []
+        assert schema_errors == []
+
+
+def test_validate_plan_schema_rejects_invalid_on_fail_policies(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+
+    for policy in ("retry:0", "retry:-1", "retry:x", "pivot:X1", "pivot:bad", "skip", "", 123):
+        plan = minimal_plan_with_on_fail(policy)
+        subset_errors = module.validate_plan_schema_subset(plan)
+        schema_errors, _validator = module.validate_plan_schema(
+            plan, module.load_schema(SCHEMA_PATH)
+        )
+
+        assert schema_errors
+        assert any("items[0].on_fail" in error for error in subset_errors)
+
+
+def test_plan_fragment_schema_accepts_on_fail_policy(repo_root: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads(
+        (repo_root / "agent-os" / "schemas" / "plan-fragment.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    fragment = {
+        "milestones": [{"id": "X1", "type": "X", "title": "Milestone", "status": "planned"}],
+        "sprints": [
+            {"id": "S1.1", "type": "S", "parent": "X1", "title": "Sprint", "status": "planned"}
+        ],
+        "items": [
+            {
+                "id": "M1.1.1",
+                "parent": "S1.1",
+                "type": "M",
+                "title": "Implement fixture",
+                "status": "planned",
+                "role": "implementer",
+                "effort": "low",
+                "actions": ["implement"],
+                "commit_group": "cg1",
+                "on_fail": "pivot:F1.1.2",
+            }
+        ],
+        "commit_groups": [{"id": "cg1", "title": "Group", "items": ["M1.1.1"]}],
+    }
+
+    jsonschema.validate(instance=fragment, schema=schema)
+    fragment["items"][0]["on_fail"] = "pivot:X1"
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(instance=fragment, schema=schema)
+
+
 def test_validate_plan_schema_rejects_malformed_structured_check(repo_root: Path) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     plan = minimal_plan_with_checks(
@@ -656,6 +725,7 @@ def test_validate_plan_schema_subset_rejects_deep_invalid_shapes(repo_root: Path
                     "commit_group": "bad",
                     "depends_on": "bad",
                     "scope": "?bad",
+                    "on_fail": "retry:0",
                     "checks": "bad",
                     "artifacts_in": "bad",
                     "artifacts_out": "bad",
@@ -687,6 +757,7 @@ def test_validate_plan_schema_subset_rejects_deep_invalid_shapes(repo_root: Path
     assert any(
         "items[0].shared_assets: unexpected field(s): unexpected" in error for error in errors
     )
+    assert any("items[0].on_fail: invalid value 'retry:0'" in error for error in errors)
     assert any("items[1]: missing required field 'id'" in error for error in errors)
     assert any("commit_groups[0].items: expected item IDs" in error for error in errors)
 

@@ -29,6 +29,10 @@
       "type": "string",
       "pattern": "^[A-Z]+[1-9][0-9]*\\.[1-9][0-9]*\\.[1-9][0-9]*[a-z]?$"
     },
+    "onFailPolicy": {
+      "type": "string",
+      "pattern": "^(retry:[1-9][0-9]*|escalate|pivot:[A-Z]+[1-9][0-9]*\\.[1-9][0-9]*\\.[1-9][0-9]*[a-z]?|block)$"
+    },
     "dependencyTarget": {
       "oneOf": [
         { "$ref": "#/$defs/sprintId" },
@@ -154,6 +158,7 @@
           "type": "string",
           "pattern": "^(\\.|[A-Za-z0-9._/-]+)$"
         },
+        "on_fail": { "$ref": "#/$defs/onFailPolicy" },
         "decision": { "type": "string" },
         "checks": {
           "type": "array",

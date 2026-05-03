@@ -38,7 +38,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - D42.1.1
   role: implementer
@@ -58,7 +58,7 @@ items:
   title: Document on_fail policy metadata and update roadmap state
   actions:
   - document
-  status: planned
+  status: done
   depends_on:
   - M42.1.2
   role: documenter
@@ -68,6 +68,7 @@ items:
   artifacts_out:
   - agent-os/workflow/item-taxonomy.md
   - TODO.md
+  - plan/PLAN-current.yaml
 - id: C42.1.4
   parent: S42.1
   type: C

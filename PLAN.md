@@ -1084,8 +1084,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D42.1.1` | `D` | Open X42 tracking plan and commit groups | done |  |
-| `M42.1.2` | `M` | Add on_fail schema, validator fallback, renderer, and tests | planned |  |
-| `D42.1.3` | `D` | Document on_fail policy metadata and update roadmap state | planned |  |
+| `M42.1.2` | `M` | Add on_fail schema, validator fallback, renderer, and tests | done |  |
+| `D42.1.3` | `D` | Document on_fail policy metadata and update roadmap state | done |  |
 | `C42.1.4` | `C` | Checkpoint closure -- X42 on_fail policy metadata | planned |  |
 
 ## Commit Groups
@@ -4035,7 +4035,7 @@ Status: in_progress
 
 ### M42.1.2: Add on_fail schema, validator fallback, renderer, and tests
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S42.1`
 - **Actions**: implement, verify
 - **Depends on**: `D42.1.1`
@@ -4044,12 +4044,12 @@ Status: in_progress
 
 ### D42.1.3: Document on_fail policy metadata and update roadmap state
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S42.1`
 - **Actions**: document
 - **Depends on**: `M42.1.2`
 - **Commit group**: `cg109`
-- **Artifacts**: agent-os/workflow/item-taxonomy.md, TODO.md
+- **Artifacts**: agent-os/workflow/item-taxonomy.md, TODO.md, plan/PLAN-current.yaml
 
 ### C42.1.4: Checkpoint closure -- X42 on_fail policy metadata
 

@@ -92,6 +92,11 @@ Every executable item (Q, D, M, F, T, C) must declare:
 - scope — a file or directory path prefix (e.g. `agent-os/scripts/`, `AGENTS.md`).
   Used for collision detection between concurrent items. Must match
   `^(\.|[A-Za-z0-9._/-]+)$`.
+- on_fail — optional declarative failure-policy metadata for an item. Accepted
+  forms are `retry:<N>`, `escalate`, `pivot:<item_id>`, and `block`.
+  `pivot:<item_id>` validates identifier syntax only; it does not imply runtime
+  dispatch or require the target item to exist. This field is metadata only
+  until a runtime execution layer consumes it.
 - artifacts_in
 - artifacts_out
 - checks — an array of prose check descriptions or structured check metadata.
