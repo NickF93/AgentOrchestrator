@@ -38,7 +38,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - D43.1.1
   role: implementer
@@ -54,7 +54,7 @@ items:
   title: Document dangling pivot warning semantics
   actions:
   - document
-  status: planned
+  status: done
   depends_on:
   - M43.1.2
   role: documenter

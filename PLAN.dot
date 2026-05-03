@@ -811,8 +811,8 @@ digraph PLAN {
   subgraph "cluster_cg112" {
     style="rounded,dashed";
     label="cg112: dangling pivot warning -- validator, docs, and tests";
-  "M43.1.2" [label="M43.1.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "D43.1.3" [label="D43.1.3 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "M43.1.2" [label="M43.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "D43.1.3" [label="D43.1.3 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg113" {
     style="rounded,dashed";

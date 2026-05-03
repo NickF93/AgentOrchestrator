@@ -892,6 +892,22 @@ def validate_type_action_coherence(items: list[dict]) -> list[str]:
     return warnings
 
 
+def validate_on_fail_pivot_targets(items: list[dict], id_to_type: dict[str, str]) -> list[str]:
+    """Warn when syntactically valid pivot targets do not resolve to loaded items."""
+    warnings: list[str] = []
+    for item in items:
+        on_fail = item.get("on_fail")
+        if not isinstance(on_fail, str) or not on_fail.startswith("pivot:"):
+            continue
+        target = on_fail.removeprefix("pivot:")
+        if ITEM_ID_RE.fullmatch(target) and target not in id_to_type:
+            item_id = item.get("id", "<unknown>")
+            warnings.append(
+                f"{item_id}: on_fail pivot target '{target}' does not exist in the loaded plan"
+            )
+    return warnings
+
+
 def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -992,6 +1008,9 @@ def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[
 
     # Warning-only: type/action coherence.
     warnings.extend(validate_type_action_coherence(items))
+
+    # Warning-only: syntactically valid on_fail pivot targets should resolve when possible.
+    warnings.extend(validate_on_fail_pivot_targets(items, id_to_type))
 
     # Hard-fail: shared_assets references must resolve through the canonical registry.
     errors.extend(validate_shared_asset_refs(items, asset_map))

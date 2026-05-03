@@ -1104,8 +1104,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D43.1.1` | `D` | Open X43 tracking plan and commit groups | done |  |
-| `M43.1.2` | `M` | Warn on dangling on_fail pivot targets | planned |  |
-| `D43.1.3` | `D` | Document dangling pivot warning semantics | planned |  |
+| `M43.1.2` | `M` | Warn on dangling on_fail pivot targets | done |  |
+| `D43.1.3` | `D` | Document dangling pivot warning semantics | done |  |
 | `C43.1.4` | `C` | Checkpoint closure -- X43 dangling pivot warning | planned |  |
 
 ## Commit Groups
@@ -4098,7 +4098,7 @@ Status: in_progress
 
 ### M43.1.2: Warn on dangling on_fail pivot targets
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S43.1`
 - **Actions**: implement, verify
 - **Depends on**: `D43.1.1`
@@ -4107,7 +4107,7 @@ Status: in_progress
 
 ### D43.1.3: Document dangling pivot warning semantics
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S43.1`
 - **Actions**: document
 - **Depends on**: `M43.1.2`

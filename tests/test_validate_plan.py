@@ -618,6 +618,26 @@ def test_validate_plan_schema_rejects_invalid_on_fail_policies(repo_root: Path) 
         assert any("items[0].on_fail" in error for error in subset_errors)
 
 
+def test_validate_custom_rules_warns_on_dangling_on_fail_pivot(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = minimal_plan_with_on_fail("pivot:F1.1.2")
+
+    errors, warnings = module.validate_custom_rules(plan, {})
+
+    assert errors == []
+    assert "M1.1.1: on_fail pivot target 'F1.1.2' does not exist in the loaded plan" in warnings
+
+
+def test_validate_custom_rules_accepts_existing_on_fail_pivot(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = minimal_plan_with_on_fail("pivot:M1.1.1")
+
+    errors, warnings = module.validate_custom_rules(plan, {})
+
+    assert errors == []
+    assert not any("on_fail pivot target" in warning for warning in warnings)
+
+
 def test_plan_fragment_schema_accepts_on_fail_policy(repo_root: Path) -> None:
     jsonschema = pytest.importorskip("jsonschema")
     schema = json.loads(
