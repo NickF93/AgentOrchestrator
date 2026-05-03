@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-02
+- Last updated: 2026-05-03
 
 ## Mission
 
@@ -55,7 +55,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X39 | X | Workspace Sync Skill Packaging | done |
 | X40 | X | Structured Checks for Programmatic Verification | done |
 | X41 | X | Issue and TODO Reconciliation Cleanup | done |
-| X42 | X | Declarative on_fail Policy Metadata | in_progress |
+| X42 | X | Declarative on_fail Policy Metadata | done |
 
 ## Plan
 
@@ -1073,20 +1073,20 @@ Status: done
 
 - ID: `X42`
 - Title: Declarative on_fail Policy Metadata
-- Status: in_progress
+- Status: done
 - Note: Implement optional PLAN item on_fail failure-policy metadata for issue #12. The field is declarative only; runtime retry, pivot dispatch, and worker behavior remain out of scope.
 
 #### S42.1 Items
 
 Sprint: Sprint 1 -- Schema, validator, docs, and closure
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D42.1.1` | `D` | Open X42 tracking plan and commit groups | done |  |
 | `M42.1.2` | `M` | Add on_fail schema, validator fallback, renderer, and tests | done |  |
 | `D42.1.3` | `D` | Document on_fail policy metadata and update roadmap state | done |  |
-| `C42.1.4` | `C` | Checkpoint closure -- X42 on_fail policy metadata | planned |  |
+| `C42.1.4` | `C` | Checkpoint closure -- X42 on_fail policy metadata | done |  |
 
 ## Commit Groups
 
@@ -4053,13 +4053,13 @@ Status: in_progress
 
 ### C42.1.4: Checkpoint closure -- X42 on_fail policy metadata
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S42.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D42.1.3`
 - **Commit group**: `cg110`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
-- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X42.yaml, PLAN.md, PLAN.dot
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X42.yaml, PLAN.md, PLAN.dot, tests/test_validate_plan.py
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift

@@ -625,7 +625,7 @@ def test_plan_fragment_schema_accepts_on_fail_policy(repo_root: Path) -> None:
             encoding="utf-8"
         )
     )
-    fragment = {
+    fragment: dict[str, Any] = {
         "milestones": [{"id": "X1", "type": "X", "title": "Milestone", "status": "planned"}],
         "sprints": [
             {"id": "S1.1", "type": "S", "parent": "X1", "title": "Sprint", "status": "planned"}
