@@ -152,6 +152,9 @@ def render_markdown(plan: dict, source_label: str = "plan/PLAN-index.yaml") -> s
         shared_assets = format_shared_assets(obj)
         if shared_assets:
             lines.append(f"- **Shared assets**: {shared_assets}")
+        on_fail = obj.get("on_fail", "")
+        if on_fail:
+            lines.append(f"- **On fail**: `{on_fail}`")
         artifacts = obj.get("artifacts_out", []) or []
         if artifacts:
             lines.append(f"- **Artifacts**: {', '.join(artifacts)}")

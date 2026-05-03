@@ -67,6 +67,8 @@ CHECK_EXPECTED_EXIT_MIN = 0
 CHECK_EXPECTED_EXIT_MAX = 255
 CHECK_TIMEOUT_MIN = 1
 CHECK_TIMEOUT_MAX = 3600
+ON_FAIL_RETRY_RE = re.compile(r"^retry:[1-9][0-9]*$")
+ON_FAIL_LITERAL_POLICIES = {"escalate", "block"}
 
 
 _BLOCK_SCALAR_RE = re.compile(r"^[ \t]*[^\s#][^:]*:[ \t]+[|>]")
@@ -413,6 +415,26 @@ def validate_check_entry(value: object, context: str, errors: list[str]) -> None
         )
 
 
+def validate_on_fail_policy(value: object, context: str, errors: list[str]) -> None:
+    if not isinstance(value, str) or not value:
+        errors.append(
+            f"{context}.on_fail: expected one of retry:<N>, escalate, pivot:<item_id>, block"
+        )
+        return
+
+    if value in ON_FAIL_LITERAL_POLICIES:
+        return
+    if ON_FAIL_RETRY_RE.fullmatch(value):
+        return
+    if value.startswith("pivot:") and ITEM_ID_RE.fullmatch(value.removeprefix("pivot:")):
+        return
+
+    errors.append(
+        f"{context}.on_fail: invalid value '{value}' "
+        "(expected retry:<N>, escalate, pivot:<item_id>, or block)"
+    )
+
+
 def validate_plan_schema_subset(plan: dict) -> list[str]:
     """Fallback schema validation when jsonschema is unavailable."""
     errors: list[str] = []
@@ -555,6 +577,10 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
             not isinstance(scope, str) or not re.fullmatch(r"^(\.|[A-Za-z0-9._/-]+)$", scope)
         ):
             errors.append(f"{context}.scope: invalid scope '{scope}'")
+
+        on_fail = item_map.get("on_fail")
+        if on_fail is not None:
+            validate_on_fail_policy(on_fail, context, errors)
 
         checks = item_map.get("checks")
         if checks is not None:
@@ -866,6 +892,22 @@ def validate_type_action_coherence(items: list[dict]) -> list[str]:
     return warnings
 
 
+def validate_on_fail_pivot_targets(items: list[dict], id_to_type: dict[str, str]) -> list[str]:
+    """Warn when syntactically valid pivot targets do not resolve to loaded items."""
+    warnings: list[str] = []
+    for item in items:
+        on_fail = item.get("on_fail")
+        if not isinstance(on_fail, str) or not on_fail.startswith("pivot:"):
+            continue
+        target = on_fail.removeprefix("pivot:")
+        if ITEM_ID_RE.fullmatch(target) and target not in id_to_type:
+            item_id = item.get("id", "<unknown>")
+            warnings.append(
+                f"{item_id}: on_fail pivot target '{target}' does not exist in the loaded plan"
+            )
+    return warnings
+
+
 def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -966,6 +1008,9 @@ def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[
 
     # Warning-only: type/action coherence.
     warnings.extend(validate_type_action_coherence(items))
+
+    # Warning-only: syntactically valid on_fail pivot targets should resolve when possible.
+    warnings.extend(validate_on_fail_pivot_targets(items, id_to_type))
 
     # Hard-fail: shared_assets references must resolve through the canonical registry.
     errors.extend(validate_shared_asset_refs(items, asset_map))

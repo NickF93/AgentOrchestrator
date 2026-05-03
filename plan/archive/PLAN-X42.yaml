@@ -1,0 +1,125 @@
+milestones:
+- id: X42
+  type: X
+  title: Declarative on_fail Policy Metadata
+  status: done
+  note: 'Implement optional PLAN item on_fail failure-policy metadata for issue #12.
+    The field is declarative only; runtime retry, pivot dispatch, and worker behavior
+    remain out of scope.
+
+    '
+sprints:
+- id: S42.1
+  type: S
+  parent: X42
+  title: Sprint 1 -- Schema, validator, docs, and closure
+  status: done
+items:
+- id: D42.1.1
+  parent: S42.1
+  type: D
+  title: Open X42 tracking plan and commit groups
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg108
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: M42.1.2
+  parent: S42.1
+  type: M
+  title: Add on_fail schema, validator fallback, renderer, and tests
+  actions:
+  - implement
+  - verify
+  status: done
+  depends_on:
+  - D42.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg109
+  scope: agent-os/
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  - agent-os/schemas/plan-fragment.schema.json
+  - agent-os/scripts/validate-plan.py
+  - agent-os/scripts/render-plan.py
+  - tests/test_validate_plan.py
+  - tests/test_render_plan.py
+- id: D42.1.3
+  parent: S42.1
+  type: D
+  title: Document on_fail policy metadata and update roadmap state
+  actions:
+  - document
+  status: done
+  depends_on:
+  - M42.1.2
+  role: documenter
+  effort: low
+  commit_group: cg109
+  scope: .
+  artifacts_out:
+  - agent-os/workflow/item-taxonomy.md
+  - TODO.md
+  - plan/PLAN-current.yaml
+- id: C42.1.4
+  parent: S42.1
+  type: C
+  title: Checkpoint closure -- X42 on_fail policy metadata
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D42.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg110
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X42.yaml
+  - PLAN.md
+  - PLAN.dot
+  - tests/test_validate_plan.py
+commit_groups:
+- id: cg108
+  title: on_fail policy -- tracking plan
+  items:
+  - D42.1.1
+  notes: 'Creates X42 active tracking and commit-group boundaries before implementation.
+
+    '
+- id: cg109
+  title: on_fail policy -- schema, validation, docs, and tests
+  items:
+  - M42.1.2
+  - D42.1.3
+  notes: 'Adds optional on_fail metadata support across schema, fallback validation,
+    rendering, documentation, roadmap state, and regression tests.
+
+    '
+- id: cg110
+  title: on_fail policy -- validation and closure
+  items:
+  - C42.1.4
+  notes: 'Runs validation, renders plan views, archives X42, and closes the feature
+    tracking surface.
+
+    '

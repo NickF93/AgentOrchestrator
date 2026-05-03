@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-05-02'
+  last_updated: '2026-05-03'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -183,3 +183,11 @@ archives:
   title: Issue and TODO Reconciliation Cleanup
   path: archive/PLAN-X41.yaml
   digest: sha256:6eeee32b8aac
+- milestone: X42
+  title: Declarative on_fail Policy Metadata
+  path: archive/PLAN-X42.yaml
+  digest: sha256:ec5facec72e6
+- milestone: X43
+  title: Dangling on_fail Pivot Warning
+  path: archive/PLAN-X43.yaml
+  digest: sha256:f203b5bfa441

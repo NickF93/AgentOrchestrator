@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-02
+- Last updated: 2026-05-03
 
 ## Mission
 
@@ -55,6 +55,8 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X39 | X | Workspace Sync Skill Packaging | done |
 | X40 | X | Structured Checks for Programmatic Verification | done |
 | X41 | X | Issue and TODO Reconciliation Cleanup | done |
+| X42 | X | Declarative on_fail Policy Metadata | done |
+| X43 | X | Dangling on_fail Pivot Warning | done |
 
 ## Plan
 
@@ -1068,6 +1070,44 @@ Status: done
 | `T41.1.3` | `T` | Verify reconciliation state | done |  |
 | `C41.1.4` | `C` | Checkpoint closure -- X41 reconciliation cleanup | done |  |
 
+### X42
+
+- ID: `X42`
+- Title: Declarative on_fail Policy Metadata
+- Status: done
+- Note: Implement optional PLAN item on_fail failure-policy metadata for issue #12. The field is declarative only; runtime retry, pivot dispatch, and worker behavior remain out of scope.
+
+#### S42.1 Items
+
+Sprint: Sprint 1 -- Schema, validator, docs, and closure
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D42.1.1` | `D` | Open X42 tracking plan and commit groups | done |  |
+| `M42.1.2` | `M` | Add on_fail schema, validator fallback, renderer, and tests | done |  |
+| `D42.1.3` | `D` | Document on_fail policy metadata and update roadmap state | done |  |
+| `C42.1.4` | `C` | Checkpoint closure -- X42 on_fail policy metadata | done |  |
+
+### X43
+
+- ID: `X43`
+- Title: Dangling on_fail Pivot Warning
+- Status: done
+- Note: Add warning-only validation for on_fail pivot targets that parse as item IDs but do not exist in the loaded plan. This is a root correction after X42 archival, not a legacy workaround.
+
+#### S43.1 Items
+
+Sprint: Sprint 1 -- Validator warning, docs, tests, and closure
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D43.1.1` | `D` | Open X43 tracking plan and commit groups | done |  |
+| `M43.1.2` | `M` | Warn on dangling on_fail pivot targets | done |  |
+| `D43.1.3` | `D` | Document dangling pivot warning semantics | done |  |
+| `C43.1.4` | `C` | Checkpoint closure -- X43 dangling pivot warning | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1178,6 +1218,12 @@ Status: done
 | cg105 | X41 reconciliation tracking | `D41.1.1` |
 | cg106 | Issue and TODO reconciliation | `F41.1.2`, `T41.1.3` |
 | cg107 | X41 checkpoint closure and archive | `C41.1.4` |
+| cg108 | on_fail policy -- tracking plan | `D42.1.1` |
+| cg109 | on_fail policy -- schema, validation, docs, and tests | `M42.1.2`, `D42.1.3` |
+| cg110 | on_fail policy -- validation and closure | `C42.1.4` |
+| cg111 | dangling pivot warning -- tracking plan | `D43.1.1` |
+| cg112 | dangling pivot warning -- validator, docs, and tests | `M43.1.2`, `D43.1.3` |
+| cg113 | dangling pivot warning -- validation and closure | `C43.1.4` |
 
 ## Item Details
 
@@ -4001,3 +4047,83 @@ Status: done
 - **Commit group**: `cg107`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X41.yaml, PLAN.md, PLAN.dot
+
+### D42.1.1: Open X42 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S42.1`
+- **Actions**: plan, document
+- **Commit group**: `cg108`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### M42.1.2: Add on_fail schema, validator fallback, renderer, and tests
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S42.1`
+- **Actions**: implement, verify
+- **Depends on**: `D42.1.1`
+- **Commit group**: `cg109`
+- **Artifacts**: agent-os/schemas/plan.schema.json, agent-os/schemas/plan-fragment.schema.json, agent-os/scripts/validate-plan.py, agent-os/scripts/render-plan.py, tests/test_validate_plan.py, tests/test_render_plan.py
+
+### D42.1.3: Document on_fail policy metadata and update roadmap state
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S42.1`
+- **Actions**: document
+- **Depends on**: `M42.1.2`
+- **Commit group**: `cg109`
+- **Artifacts**: agent-os/workflow/item-taxonomy.md, TODO.md, plan/PLAN-current.yaml
+
+### C42.1.4: Checkpoint closure -- X42 on_fail policy metadata
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S42.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D42.1.3`
+- **Commit group**: `cg110`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X42.yaml, PLAN.md, PLAN.dot, tests/test_validate_plan.py
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### D43.1.1: Open X43 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S43.1`
+- **Actions**: plan, document
+- **Commit group**: `cg111`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### M43.1.2: Warn on dangling on_fail pivot targets
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S43.1`
+- **Actions**: implement, verify
+- **Depends on**: `D43.1.1`
+- **Commit group**: `cg112`
+- **Artifacts**: agent-os/scripts/validate-plan.py, tests/test_validate_plan.py
+
+### D43.1.3: Document dangling pivot warning semantics
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S43.1`
+- **Actions**: document
+- **Depends on**: `M43.1.2`
+- **Commit group**: `cg112`
+- **Artifacts**: agent-os/workflow/item-taxonomy.md, plan/PLAN-current.yaml
+
+### C43.1.4: Checkpoint closure -- X43 dangling pivot warning
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S43.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D43.1.3`
+- **Commit group**: `cg113`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X43.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes

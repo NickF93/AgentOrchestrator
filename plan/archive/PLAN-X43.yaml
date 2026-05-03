@@ -1,0 +1,118 @@
+milestones:
+- id: X43
+  type: X
+  title: Dangling on_fail Pivot Warning
+  status: done
+  note: 'Add warning-only validation for on_fail pivot targets that parse as item
+    IDs but do not exist in the loaded plan. This is a root correction after X42 archival,
+    not a legacy workaround.
+
+    '
+sprints:
+- id: S43.1
+  type: S
+  parent: X43
+  title: Sprint 1 -- Validator warning, docs, tests, and closure
+  status: done
+items:
+- id: D43.1.1
+  parent: S43.1
+  type: D
+  title: Open X43 tracking plan and commit groups
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg111
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: M43.1.2
+  parent: S43.1
+  type: M
+  title: Warn on dangling on_fail pivot targets
+  actions:
+  - implement
+  - verify
+  status: done
+  depends_on:
+  - D43.1.1
+  role: implementer
+  effort: low
+  commit_group: cg112
+  scope: agent-os/scripts/
+  artifacts_out:
+  - agent-os/scripts/validate-plan.py
+  - tests/test_validate_plan.py
+- id: D43.1.3
+  parent: S43.1
+  type: D
+  title: Document dangling pivot warning semantics
+  actions:
+  - document
+  status: done
+  depends_on:
+  - M43.1.2
+  role: documenter
+  effort: low
+  commit_group: cg112
+  scope: agent-os/workflow/
+  artifacts_out:
+  - agent-os/workflow/item-taxonomy.md
+  - plan/PLAN-current.yaml
+- id: C43.1.4
+  parent: S43.1
+  type: C
+  title: Checkpoint closure -- X43 dangling pivot warning
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D43.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg113
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X43.yaml
+  - PLAN.md
+  - PLAN.dot
+commit_groups:
+- id: cg111
+  title: dangling pivot warning -- tracking plan
+  items:
+  - D43.1.1
+  notes: 'Creates X43 active tracking and commit-group boundaries before remediation.
+
+    '
+- id: cg112
+  title: dangling pivot warning -- validator, docs, and tests
+  items:
+  - M43.1.2
+  - D43.1.3
+  notes: 'Adds warning-only validation for dangling on_fail pivot targets, documents
+    the semantics, and covers the behavior with regression tests.
+
+    '
+- id: cg113
+  title: dangling pivot warning -- validation and closure
+  items:
+  - C43.1.4
+  notes: 'Runs validation, renders plan views, archives X43, and closes the remediation.
+
+    '

@@ -157,6 +157,49 @@ def test_render_markdown_handles_items_without_optional_fields(repo_root: Path) 
     assert "### D1.1.1: Only item" in markdown
 
 
+def test_render_markdown_includes_on_fail_policy(repo_root: Path) -> None:
+    render_module = load_module(
+        "render_plan", repo_root / "agent-os" / "scripts" / "render-plan.py"
+    )
+    markdown = render_module.render_markdown(
+        {
+            "meta": {
+                "repo": "fixture",
+                "owner": "tester",
+                "version": "1",
+                "last_updated": "2026-04-02",
+            },
+            "mission": "Fixture mission",
+            "milestones": [{"id": "X1", "type": "X", "title": "Milestone", "status": "done"}],
+            "sprints": [
+                {
+                    "id": "S1.1",
+                    "type": "S",
+                    "parent": "X1",
+                    "title": "Sprint",
+                    "status": "done",
+                }
+            ],
+            "items": [
+                {
+                    "id": "M1.1.1",
+                    "parent": "S1.1",
+                    "type": "M",
+                    "title": "Implement fixture",
+                    "status": "done",
+                    "role": "implementer",
+                    "effort": "low",
+                    "actions": ["implement"],
+                    "on_fail": "pivot:F1.1.2",
+                }
+            ],
+            "commit_groups": [],
+        }
+    )
+
+    assert "- **On fail**: `pivot:F1.1.2`" in markdown
+
+
 def test_render_dot_renders_orphan_items_and_dependency_edges(repo_root: Path) -> None:
     render_module = load_module(
         "render_plan", repo_root / "agent-os" / "scripts" / "render-plan.py"
