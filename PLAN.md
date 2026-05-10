@@ -1124,8 +1124,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D44.1.1` | `D` | Open X44 tracking plan and commit groups | done |  |
-| `M44.1.2` | `M` | Add scope_exclusive schema, validator, renderer, and tests | planned |  |
-| `D44.1.3` | `D` | Document scope_exclusive collision metadata and update roadmap state | planned |  |
+| `M44.1.2` | `M` | Add scope_exclusive schema, validator, renderer, and tests | done |  |
+| `D44.1.3` | `D` | Document scope_exclusive collision metadata and update roadmap state | done |  |
 | `C44.1.4` | `C` | Checkpoint closure -- X44 scope-exclusive collision metadata | planned |  |
 
 ## Commit Groups
@@ -4161,7 +4161,7 @@ Status: in_progress
 
 ### M44.1.2: Add scope_exclusive schema, validator, renderer, and tests
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S44.1`
 - **Actions**: implement, verify
 - **Depends on**: `D44.1.1`
@@ -4170,7 +4170,7 @@ Status: in_progress
 
 ### D44.1.3: Document scope_exclusive collision metadata and update roadmap state
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S44.1`
 - **Actions**: document
 - **Depends on**: `M44.1.2`

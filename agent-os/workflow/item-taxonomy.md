@@ -92,6 +92,10 @@ Every executable item (Q, D, M, F, T, C) must declare:
 - scope — a file or directory path prefix (e.g. `agent-os/scripts/`, `AGENTS.md`).
   Used for collision detection between concurrent items. Must match
   `^(\.|[A-Za-z0-9._/-]+)$`.
+- scope_exclusive — optional boolean metadata for scope-collision handling.
+  Defaults to `true` when omitted. `false` declares that the item can share
+  overlapping scope with another non-exclusive item; overlap warnings are
+  suppressed only when both colliding items explicitly set `false`.
 - on_fail — optional declarative failure-policy metadata for an item. Accepted
   forms are `retry:<N>`, `escalate`, `pivot:<item_id>`, and `block`.
   `pivot:<item_id>` validates identifier syntax and emits a warning when the

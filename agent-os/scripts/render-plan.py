@@ -152,6 +152,8 @@ def render_markdown(plan: dict, source_label: str = "plan/PLAN-index.yaml") -> s
         shared_assets = format_shared_assets(obj)
         if shared_assets:
             lines.append(f"- **Shared assets**: {shared_assets}")
+        if obj.get("scope_exclusive") is False:
+            lines.append("- **Scope exclusive**: `false`")
         on_fail = obj.get("on_fail", "")
         if on_fail:
             lines.append(f"- **On fail**: `{on_fail}`")

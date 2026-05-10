@@ -38,7 +38,7 @@ items:
   actions:
   - implement
   - verify
-  status: planned
+  status: done
   depends_on:
   - D44.1.1
   role: implementer
@@ -58,7 +58,7 @@ items:
   title: Document scope_exclusive collision metadata and update roadmap state
   actions:
   - document
-  status: planned
+  status: done
   depends_on:
   - M44.1.2
   role: documenter

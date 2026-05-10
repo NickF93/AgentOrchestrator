@@ -39,6 +39,12 @@ Scope is a repository-relative path prefix.
 If two in_progress items share a prefix, emit a warning and require explicit
 orchestrator confirmation before parallel execution.
 
+Items MAY declare `scope_exclusive: false` to mark overlapping scope as
+intentional and safe for concurrent work. Omitted `scope_exclusive` means
+`true`. A collision warning is suppressed only when both overlapping
+in_progress items explicitly declare `scope_exclusive: false`; otherwise the
+current conservative warning behavior remains in effect.
+
 ## Commit Group Closure
 A commit group MUST only be closed (committed) when ALL of the following are true:
 
