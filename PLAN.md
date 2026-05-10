@@ -58,6 +58,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X42 | X | Declarative on_fail Policy Metadata | done |
 | X43 | X | Dangling on_fail Pivot Warning | done |
 | X44 | X | Scope-Exclusive Collision Metadata | done |
+| X45 | X | Quick-Fix Skill Packaging | in_progress |
 
 ## Plan
 
@@ -1128,6 +1129,34 @@ Status: done
 | `D44.1.3` | `D` | Document scope_exclusive collision metadata and update roadmap state | done |  |
 | `C44.1.4` | `C` | Checkpoint closure -- X44 scope-exclusive collision metadata | done | Closure gate applied deterministic ruff formatting to validate-plan.py before final validation and tightened test typing for mypy. |
 
+### X45
+
+- ID: `X45`
+- Title: Quick-Fix Skill Packaging
+- Status: in_progress
+- Note: Package a procedural quick-fix skill (issue #20) that scaffolds an F-type item plus its commit_group in plan/PLAN-current.yaml before any non-generated edit. The skill keeps the tracking-first invariant intact while removing hand-crafted YAML friction. It delegates branch creation to the gitflow-pr-only skill and embeds a worked tiny-fix walkthrough so the Simulated tiny fix scenario acceptance criterion is satisfied inline.
+
+#### S45.1 Items
+
+Sprint: Sprint 1 -- Authoring and Registration
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D45.1.1` | `D` | Open X45 tracking plan and commit groups | in_progress |  |
+| `D45.1.2` | `D` | Author quick-fix SKILL.md with embedded tiny-fix walkthrough | planned |  |
+| `M45.1.3` | `M` | Register quick-fix in shared-assets and propagate skill discovery | planned |  |
+
+#### S45.2 Items
+
+Sprint: Sprint 2 -- Validation and Closure
+Status: planned
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `T45.2.1` | `T` | Validate quick-fix packaging end-to-end | planned |  |
+| `C45.2.2` | `C` | Checkpoint closure -- X45 quick-fix skill | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1247,6 +1276,9 @@ Status: done
 | cg114 | scope_exclusive metadata -- tracking plan | `D44.1.1` |
 | cg115 | scope_exclusive metadata -- schema, validation, docs, and tests | `M44.1.2`, `D44.1.3` |
 | cg116 | scope_exclusive metadata -- validation and closure | `C44.1.4` |
+| cg117 | quick-fix skill -- tracking plan | `D45.1.1` |
+| cg118 | quick-fix skill -- author SKILL.md and propagate discovery | `D45.1.2`, `M45.1.3` |
+| cg119 | quick-fix skill -- validation and closure | `T45.2.1`, `C45.2.2` |
 
 ## Item Details
 
@@ -4191,3 +4223,58 @@ Status: done
   - render-plan.py produces no drift
   - run-gates.sh passes
 - **Notes**: Closure gate applied deterministic ruff formatting to validate-plan.py before final validation and tightened test typing for mypy.
+
+### D45.1.1: Open X45 tracking plan and commit groups
+
+- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S45.1`
+- **Actions**: plan, document
+- **Commit group**: `cg117`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### D45.1.2: Author quick-fix SKILL.md with embedded tiny-fix walkthrough
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S45.1`
+- **Actions**: document
+- **Depends on**: `D45.1.1`
+- **Commit group**: `cg118`
+- **Artifacts**: agent-os/skills/quick-fix/SKILL.md
+
+### M45.1.3: Register quick-fix in shared-assets and propagate skill discovery
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Sprint**: `S45.1`
+- **Actions**: implement
+- **Depends on**: `D45.1.2`
+- **Commit group**: `cg118`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+
+### T45.2.1: Validate quick-fix packaging end-to-end
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Sprint**: `S45.2`
+- **Actions**: test, verify
+- **Depends on**: `M45.1.3`
+- **Commit group**: `cg119`
+- **Artifacts**: plan/PLAN-current.yaml
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - pytest -q passes
+  - embedded tiny-fix walkthrough traces against item-taxonomy required fields
+
+### C45.2.2: Checkpoint closure -- X45 quick-fix skill
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S45.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T45.2.1`
+- **Commit group**: `cg119`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X45.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
