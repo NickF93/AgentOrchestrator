@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-03
+- Last updated: 2026-05-10
 
 ## Mission
 
@@ -57,7 +57,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X41 | X | Issue and TODO Reconciliation Cleanup | done |
 | X42 | X | Declarative on_fail Policy Metadata | done |
 | X43 | X | Dangling on_fail Pivot Warning | done |
-| X44 | X | Scope-Exclusive Collision Metadata | in_progress |
+| X44 | X | Scope-Exclusive Collision Metadata | done |
 
 ## Plan
 
@@ -1113,20 +1113,20 @@ Status: done
 
 - ID: `X44`
 - Title: Scope-Exclusive Collision Metadata
-- Status: in_progress
+- Status: done
 - Note: Implement optional PLAN item scope_exclusive metadata for issue #14. The field controls scope-collision warning behavior only; scope language, dependency semantics, and runtime dispatch remain out of scope.
 
 #### S44.1 Items
 
 Sprint: Sprint 1 -- Schema, validator, docs, tests, and closure
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D44.1.1` | `D` | Open X44 tracking plan and commit groups | done |  |
 | `M44.1.2` | `M` | Add scope_exclusive schema, validator, renderer, and tests | done |  |
 | `D44.1.3` | `D` | Document scope_exclusive collision metadata and update roadmap state | done |  |
-| `C44.1.4` | `C` | Checkpoint closure -- X44 scope-exclusive collision metadata | planned |  |
+| `C44.1.4` | `C` | Checkpoint closure -- X44 scope-exclusive collision metadata | done | Closure gate applied deterministic ruff formatting to validate-plan.py before final validation and tightened test typing for mypy. |
 
 ## Commit Groups
 
@@ -4179,14 +4179,15 @@ Status: in_progress
 
 ### C44.1.4: Checkpoint closure -- X44 scope-exclusive collision metadata
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S44.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D44.1.3`
 - **Commit group**: `cg116`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
-- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X44.yaml, PLAN.md, PLAN.dot
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X44.yaml, agent-os/scripts/validate-plan.py, tests/test_validate_plan.py, PLAN.md, PLAN.dot
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift
   - run-gates.sh passes
+- **Notes**: Closure gate applied deterministic ruff formatting to validate-plan.py before final validation and tightened test typing for mypy.

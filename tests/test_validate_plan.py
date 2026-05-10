@@ -685,7 +685,8 @@ def test_validate_plan_schema_accepts_scope_exclusive_boolean(repo_root: Path) -
 def test_validate_plan_schema_rejects_invalid_scope_exclusive_values(repo_root: Path) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
 
-    for value in ("false", "true", 0, 1, None, [], {}):
+    invalid_values: tuple[object, ...] = ("false", "true", 0, 1, None, [], {})
+    for value in invalid_values:
         plan = minimal_plan_with_scope_exclusive(value)
         subset_errors = module.validate_plan_schema_subset(plan)
         schema_errors, _validator = module.validate_plan_schema(

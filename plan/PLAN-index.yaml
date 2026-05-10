@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-05-03'
+  last_updated: '2026-05-10'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -191,3 +191,7 @@ archives:
   title: Dangling on_fail Pivot Warning
   path: archive/PLAN-X43.yaml
   digest: sha256:f203b5bfa441
+- milestone: X44
+  title: Scope-Exclusive Collision Metadata
+  path: archive/PLAN-X44.yaml
+  digest: sha256:167921b20e6a

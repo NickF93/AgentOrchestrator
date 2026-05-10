@@ -582,9 +582,7 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
         ):
             errors.append(f"{context}.scope: invalid scope '{scope}'")
 
-        if "scope_exclusive" in item_map and not isinstance(
-            item_map.get("scope_exclusive"), bool
-        ):
+        if "scope_exclusive" in item_map and not isinstance(item_map.get("scope_exclusive"), bool):
             errors.append(f"{context}.scope_exclusive: expected boolean")
 
         on_fail = item_map.get("on_fail")
