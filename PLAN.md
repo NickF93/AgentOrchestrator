@@ -59,6 +59,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X43 | X | Dangling on_fail Pivot Warning | done |
 | X44 | X | Scope-Exclusive Collision Metadata | done |
 | X45 | X | Quick-Fix Skill Packaging | done |
+| X46 | X | quick-fix skill -- lean refinement and eval bootstrap | in_progress |
 
 ## Plan
 
@@ -1157,6 +1158,25 @@ Status: done
 | `T45.2.1` | `T` | Validate quick-fix packaging end-to-end | done |  |
 | `C45.2.2` | `C` | Checkpoint closure -- X45 quick-fix skill | done |  |
 
+### X46
+
+- ID: `X46`
+- Title: quick-fix skill -- lean refinement and eval bootstrap
+- Status: in_progress
+- Note: Apply the skill-creator improvement pass to the quick-fix SKILL.md (style and clarity only; no structural rework) and add an agent-os/skills/quick-fix/evals/ folder containing test prompts and objective assertions. No subagent runs in this milestone -- those are deferred. Maintains style consistency with the five sibling skills: SKILL.md frontmatter unchanged, body remains flat, evals/ is purely additive tooling. Also shifts the embedded walkthrough fictional IDs from F46.1.1/cg121 to F99.1.1/cg999 so they cannot collide with any real milestone in the foreseeable future.
+
+#### S46.1 Items
+
+Sprint: Sprint 1 -- Refinement, evals, closure
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D46.1.1` | `D` | Open X46 tracking plan and commit groups | done |  |
+| `D46.1.2` | `D` | Lean pass on quick-fix SKILL.md (skill-creator improvement step) | planned |  |
+| `T46.1.3` | `T` | Author quick-fix evals/evals.json with test prompts and assertions | planned |  |
+| `C46.1.4` | `C` | Checkpoint closure -- X46 quick-fix refinement and evals | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1279,6 +1299,9 @@ Status: done
 | cg117 | quick-fix skill -- tracking plan | `D45.1.1` |
 | cg118 | quick-fix skill -- author SKILL.md and propagate discovery | `D45.1.2`, `M45.1.3` |
 | cg119 | quick-fix skill -- validation and closure | `T45.2.1`, `C45.2.2` |
+| cg120 | quick-fix refinement -- tracking plan | `D46.1.1` |
+| cg121 | quick-fix refinement -- lean pass on SKILL.md | `D46.1.2` |
+| cg122 | quick-fix refinement -- evals and closure | `T46.1.3`, `C46.1.4` |
 
 ## Item Details
 
@@ -4278,3 +4301,44 @@ Status: done
   - validate-plan.py exits 0
   - render-plan.py produces no drift
   - run-gates.sh passes
+
+### D46.1.1: Open X46 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S46.1`
+- **Actions**: plan, document
+- **Commit group**: `cg120`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### D46.1.2: Lean pass on quick-fix SKILL.md (skill-creator improvement step)
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Sprint**: `S46.1`
+- **Actions**: document
+- **Depends on**: `D46.1.1`
+- **Commit group**: `cg121`
+- **Artifacts**: agent-os/skills/quick-fix/SKILL.md
+
+### T46.1.3: Author quick-fix evals/evals.json with test prompts and assertions
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Sprint**: `S46.1`
+- **Actions**: test, verify
+- **Depends on**: `D46.1.2`
+- **Commit group**: `cg122`
+- **Artifacts**: agent-os/skills/quick-fix/evals/evals.json, agent-os/skills/quick-fix/evals/README.md
+
+### C46.1.4: Checkpoint closure -- X46 quick-fix refinement and evals
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S46.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T46.1.3`
+- **Commit group**: `cg122`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X46.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - evals/evals.json is valid JSON and conforms to skill-creator evals schema
