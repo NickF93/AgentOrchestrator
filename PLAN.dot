@@ -44,7 +44,7 @@ digraph PLAN {
   "X42" [label="X42 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X43" [label="X43 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X44" [label="X44 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X45" [label="X45 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X45" [label="X45 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -108,7 +108,7 @@ digraph PLAN {
   "S43.1" [label="S43.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S44.1" [label="S44.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S45.1" [label="S45.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S45.2" [label="S45.2 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S45.2" [label="S45.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -854,8 +854,8 @@ digraph PLAN {
   subgraph "cluster_cg119" {
     style="rounded,dashed";
     label="cg119: quick-fix skill -- validation and closure";
-  "T45.2.1" [label="T45.2.1 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
-  "C45.2.2" [label="C45.2.2 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  "T45.2.1" [label="T45.2.1 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C45.2.2" [label="C45.2.2 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];

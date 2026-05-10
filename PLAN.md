@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-10
+- Last updated: 2026-05-11
 
 ## Mission
 
@@ -58,7 +58,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X42 | X | Declarative on_fail Policy Metadata | done |
 | X43 | X | Dangling on_fail Pivot Warning | done |
 | X44 | X | Scope-Exclusive Collision Metadata | done |
-| X45 | X | Quick-Fix Skill Packaging | in_progress |
+| X45 | X | Quick-Fix Skill Packaging | done |
 
 ## Plan
 
@@ -1133,7 +1133,7 @@ Status: done
 
 - ID: `X45`
 - Title: Quick-Fix Skill Packaging
-- Status: in_progress
+- Status: done
 - Note: Package a procedural quick-fix skill (issue #20) that scaffolds an F-type item plus its commit_group in plan/PLAN-current.yaml before any non-generated edit. The skill keeps the tracking-first invariant intact while removing hand-crafted YAML friction. It delegates branch creation to the gitflow-pr-only skill and embeds a worked tiny-fix walkthrough so the Simulated tiny fix scenario acceptance criterion is satisfied inline.
 
 #### S45.1 Items
@@ -1150,12 +1150,12 @@ Status: done
 #### S45.2 Items
 
 Sprint: Sprint 2 -- Validation and Closure
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `T45.2.1` | `T` | Validate quick-fix packaging end-to-end | planned |  |
-| `C45.2.2` | `C` | Checkpoint closure -- X45 quick-fix skill | planned |  |
+| `T45.2.1` | `T` | Validate quick-fix packaging end-to-end | done |  |
+| `C45.2.2` | `C` | Checkpoint closure -- X45 quick-fix skill | done |  |
 
 ## Commit Groups
 
@@ -4252,7 +4252,7 @@ Status: in_progress
 
 ### T45.2.1: Validate quick-fix packaging end-to-end
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S45.2`
 - **Actions**: test, verify
 - **Depends on**: `M45.1.3`
@@ -4267,7 +4267,7 @@ Status: in_progress
 
 ### C45.2.2: Checkpoint closure -- X45 quick-fix skill
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S45.2`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T45.2.1`
