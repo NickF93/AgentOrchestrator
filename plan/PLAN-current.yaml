@@ -16,12 +16,12 @@ sprints:
   type: S
   parent: X45
   title: Sprint 1 -- Authoring and Registration
-  status: in_progress
+  status: done
 - id: S45.2
   type: S
   parent: X45
   title: Sprint 2 -- Validation and Closure
-  status: planned
+  status: in_progress
 items:
 - id: D45.1.1
   parent: S45.1
@@ -30,7 +30,7 @@ items:
   actions:
   - plan
   - document
-  status: in_progress
+  status: done
   role: orchestrator
   effort: low
   commit_group: cg117
@@ -45,7 +45,7 @@ items:
   title: Author quick-fix SKILL.md with embedded tiny-fix walkthrough
   actions:
   - document
-  status: planned
+  status: done
   depends_on:
   - D45.1.1
   role: documenter
@@ -60,7 +60,7 @@ items:
   title: Register quick-fix in shared-assets and propagate skill discovery
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D45.1.2
   role: implementer

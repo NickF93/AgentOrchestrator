@@ -1139,18 +1139,18 @@ Status: done
 #### S45.1 Items
 
 Sprint: Sprint 1 -- Authoring and Registration
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D45.1.1` | `D` | Open X45 tracking plan and commit groups | in_progress |  |
-| `D45.1.2` | `D` | Author quick-fix SKILL.md with embedded tiny-fix walkthrough | planned |  |
-| `M45.1.3` | `M` | Register quick-fix in shared-assets and propagate skill discovery | planned |  |
+| `D45.1.1` | `D` | Open X45 tracking plan and commit groups | done |  |
+| `D45.1.2` | `D` | Author quick-fix SKILL.md with embedded tiny-fix walkthrough | done |  |
+| `M45.1.3` | `M` | Register quick-fix in shared-assets and propagate skill discovery | done |  |
 
 #### S45.2 Items
 
 Sprint: Sprint 2 -- Validation and Closure
-Status: planned
+Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
@@ -4226,7 +4226,7 @@ Status: planned
 
 ### D45.1.1: Open X45 tracking plan and commit groups
 
-- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S45.1`
 - **Actions**: plan, document
 - **Commit group**: `cg117`
@@ -4234,7 +4234,7 @@ Status: planned
 
 ### D45.1.2: Author quick-fix SKILL.md with embedded tiny-fix walkthrough
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
 - **Sprint**: `S45.1`
 - **Actions**: document
 - **Depends on**: `D45.1.1`
@@ -4243,7 +4243,7 @@ Status: planned
 
 ### M45.1.3: Register quick-fix in shared-assets and propagate skill discovery
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S45.1`
 - **Actions**: implement
 - **Depends on**: `D45.1.2`
