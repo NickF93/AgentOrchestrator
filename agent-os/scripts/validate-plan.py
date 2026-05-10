@@ -435,6 +435,10 @@ def validate_on_fail_policy(value: object, context: str, errors: list[str]) -> N
     )
 
 
+def is_scope_exclusive(item: dict) -> bool:
+    return item.get("scope_exclusive") is not False
+
+
 def validate_plan_schema_subset(plan: dict) -> list[str]:
     """Fallback schema validation when jsonschema is unavailable."""
     errors: list[str] = []
@@ -577,6 +581,9 @@ def validate_plan_schema_subset(plan: dict) -> list[str]:
             not isinstance(scope, str) or not re.fullmatch(r"^(\.|[A-Za-z0-9._/-]+)$", scope)
         ):
             errors.append(f"{context}.scope: invalid scope '{scope}'")
+
+        if "scope_exclusive" in item_map and not isinstance(item_map.get("scope_exclusive"), bool):
+            errors.append(f"{context}.scope_exclusive: expected boolean")
 
         on_fail = item_map.get("on_fail")
         if on_fail is not None:
@@ -994,6 +1001,8 @@ def validate_custom_rules(plan: dict, asset_map: dict[str, dict]) -> tuple[list[
                 or left_scope.startswith(right_scope)
                 or right_scope.startswith(left_scope)
             ):
+                if not is_scope_exclusive(left) and not is_scope_exclusive(right):
+                    continue
                 warnings.append(
                     "scope collision warning: "
                     f"{left.get('id', '<unknown>')} ({left_scope}) <-> "

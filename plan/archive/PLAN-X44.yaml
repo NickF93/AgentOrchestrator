@@ -1,0 +1,131 @@
+milestones:
+- id: X44
+  type: X
+  title: Scope-Exclusive Collision Metadata
+  status: done
+  note: 'Implement optional PLAN item scope_exclusive metadata for issue #14. The
+    field controls scope-collision warning behavior only; scope language, dependency
+    semantics, and runtime dispatch remain out of scope.
+
+    '
+sprints:
+- id: S44.1
+  type: S
+  parent: X44
+  title: Sprint 1 -- Schema, validator, docs, tests, and closure
+  status: done
+items:
+- id: D44.1.1
+  parent: S44.1
+  type: D
+  title: Open X44 tracking plan and commit groups
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg114
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: M44.1.2
+  parent: S44.1
+  type: M
+  title: Add scope_exclusive schema, validator, renderer, and tests
+  actions:
+  - implement
+  - verify
+  status: done
+  depends_on:
+  - D44.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg115
+  scope: agent-os/
+  artifacts_out:
+  - agent-os/schemas/plan.schema.json
+  - agent-os/schemas/plan-fragment.schema.json
+  - agent-os/scripts/validate-plan.py
+  - agent-os/scripts/render-plan.py
+  - tests/test_validate_plan.py
+  - tests/test_render_plan.py
+- id: D44.1.3
+  parent: S44.1
+  type: D
+  title: Document scope_exclusive collision metadata and update roadmap state
+  actions:
+  - document
+  status: done
+  depends_on:
+  - M44.1.2
+  role: documenter
+  effort: low
+  commit_group: cg115
+  scope: .
+  artifacts_out:
+  - agent-os/workflow/item-taxonomy.md
+  - agent-os/workflow/lifecycle.md
+  - TODO.md
+  - plan/PLAN-current.yaml
+- id: C44.1.4
+  parent: S44.1
+  type: C
+  title: Checkpoint closure -- X44 scope-exclusive collision metadata
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D44.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg116
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X44.yaml
+  - agent-os/scripts/validate-plan.py
+  - tests/test_validate_plan.py
+  - PLAN.md
+  - PLAN.dot
+  notes: 'Closure gate applied deterministic ruff formatting to validate-plan.py before
+    final validation and tightened test typing for mypy.
+
+    '
+commit_groups:
+- id: cg114
+  title: scope_exclusive metadata -- tracking plan
+  items:
+  - D44.1.1
+  notes: 'Creates X44 active tracking and commit-group boundaries before implementation.
+
+    '
+- id: cg115
+  title: scope_exclusive metadata -- schema, validation, docs, and tests
+  items:
+  - M44.1.2
+  - D44.1.3
+  notes: 'Adds optional scope_exclusive metadata support across schema, fallback validation,
+    rendering, documentation, roadmap state, and regression tests.
+
+    '
+- id: cg116
+  title: scope_exclusive metadata -- validation and closure
+  items:
+  - C44.1.4
+  notes: 'Runs validation, renders plan views, archives X44, and closes the feature
+    tracking surface.
+
+    '

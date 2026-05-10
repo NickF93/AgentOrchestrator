@@ -20,6 +20,8 @@ from conftest import (
     write_yaml,
 )
 
+OMITTED = object()
+
 
 def load_module(module_name: str, path: Path) -> Any:
     spec = importlib.util.spec_from_file_location(module_name, path)
@@ -66,6 +68,54 @@ def minimal_plan_with_checks(checks: list[object]) -> dict:
 def minimal_plan_with_on_fail(on_fail: object) -> dict:
     plan = minimal_plan_with_checks(["pytest -q"])
     plan["items"][0]["on_fail"] = on_fail
+    return plan
+
+
+def minimal_plan_with_scope_exclusive(scope_exclusive: object) -> dict:
+    plan = minimal_plan_with_checks(["pytest -q"])
+    plan["items"][0]["scope_exclusive"] = scope_exclusive
+    return plan
+
+
+def scope_collision_plan(
+    left_scope_exclusive: object = OMITTED,
+    right_scope_exclusive: object = OMITTED,
+) -> dict:
+    plan = minimal_plan_with_checks(["pytest -q"])
+    plan["items"] = [
+        {
+            "id": "M1.1.1",
+            "parent": "S1.1",
+            "type": "M",
+            "title": "Implement first fixture",
+            "status": "in_progress",
+            "role": "implementer",
+            "effort": "low",
+            "actions": ["implement"],
+            "commit_group": "cg1",
+            "scope": "pkg/src",
+        },
+        {
+            "id": "M1.1.2",
+            "parent": "S1.1",
+            "type": "M",
+            "title": "Implement second fixture",
+            "status": "in_progress",
+            "role": "implementer",
+            "effort": "low",
+            "actions": ["implement"],
+            "commit_group": "cg2",
+            "scope": "pkg",
+        },
+    ]
+    if left_scope_exclusive is not OMITTED:
+        plan["items"][0]["scope_exclusive"] = left_scope_exclusive
+    if right_scope_exclusive is not OMITTED:
+        plan["items"][1]["scope_exclusive"] = right_scope_exclusive
+    plan["commit_groups"] = [
+        {"id": "cg1", "title": "Group one", "items": ["M1.1.1"]},
+        {"id": "cg2", "title": "Group two", "items": ["M1.1.2"]},
+    ]
     return plan
 
 
@@ -618,6 +668,35 @@ def test_validate_plan_schema_rejects_invalid_on_fail_policies(repo_root: Path) 
         assert any("items[0].on_fail" in error for error in subset_errors)
 
 
+def test_validate_plan_schema_accepts_scope_exclusive_boolean(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+
+    for value in (True, False):
+        plan = minimal_plan_with_scope_exclusive(value)
+        subset_errors = module.validate_plan_schema_subset(plan)
+        schema_errors, _validator = module.validate_plan_schema(
+            plan, module.load_schema(SCHEMA_PATH)
+        )
+
+        assert subset_errors == []
+        assert schema_errors == []
+
+
+def test_validate_plan_schema_rejects_invalid_scope_exclusive_values(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+
+    invalid_values: tuple[object, ...] = ("false", "true", 0, 1, None, [], {})
+    for value in invalid_values:
+        plan = minimal_plan_with_scope_exclusive(value)
+        subset_errors = module.validate_plan_schema_subset(plan)
+        schema_errors, _validator = module.validate_plan_schema(
+            plan, module.load_schema(SCHEMA_PATH)
+        )
+
+        assert schema_errors
+        assert "items[0].scope_exclusive: expected boolean" in subset_errors
+
+
 def test_validate_custom_rules_warns_on_dangling_on_fail_pivot(repo_root: Path) -> None:
     module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
     plan = minimal_plan_with_on_fail("pivot:F1.1.2")
@@ -636,6 +715,41 @@ def test_validate_custom_rules_accepts_existing_on_fail_pivot(repo_root: Path) -
 
     assert errors == []
     assert not any("on_fail pivot target" in warning for warning in warnings)
+
+
+def test_validate_custom_rules_scope_collision_defaults_to_exclusive(repo_root: Path) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = scope_collision_plan()
+
+    errors, warnings = module.validate_custom_rules(plan, {})
+
+    assert errors == []
+    assert any("scope collision warning" in warning for warning in warnings)
+
+
+def test_validate_custom_rules_scope_collision_warns_when_only_one_item_opts_out(
+    repo_root: Path,
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+
+    for right_scope_exclusive in (True, OMITTED):
+        plan = scope_collision_plan(False, right_scope_exclusive)
+        errors, warnings = module.validate_custom_rules(plan, {})
+
+        assert errors == []
+        assert any("scope collision warning" in warning for warning in warnings)
+
+
+def test_validate_custom_rules_scope_collision_allows_declared_non_exclusive_overlap(
+    repo_root: Path,
+) -> None:
+    module = load_module("validate_plan", repo_root / "agent-os" / "scripts" / "validate-plan.py")
+    plan = scope_collision_plan(False, False)
+
+    errors, warnings = module.validate_custom_rules(plan, {})
+
+    assert errors == []
+    assert not any("scope collision warning" in warning for warning in warnings)
 
 
 def test_plan_fragment_schema_accepts_on_fail_policy(repo_root: Path) -> None:
@@ -661,6 +775,7 @@ def test_plan_fragment_schema_accepts_on_fail_policy(repo_root: Path) -> None:
                 "effort": "low",
                 "actions": ["implement"],
                 "commit_group": "cg1",
+                "scope_exclusive": False,
                 "on_fail": "pivot:F1.1.2",
             }
         ],
@@ -669,6 +784,11 @@ def test_plan_fragment_schema_accepts_on_fail_policy(repo_root: Path) -> None:
 
     jsonschema.validate(instance=fragment, schema=schema)
     fragment["items"][0]["on_fail"] = "pivot:X1"
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(instance=fragment, schema=schema)
+
+    fragment["items"][0]["on_fail"] = "pivot:F1.1.2"
+    fragment["items"][0]["scope_exclusive"] = "false"
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(instance=fragment, schema=schema)
 
