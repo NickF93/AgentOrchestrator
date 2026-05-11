@@ -40,6 +40,13 @@ assets:
     compatibility: [claude, codex, gemini, cursor, kilo, copilot]
     materializable: true
 
+  - id: quick-fix
+    kind: skill
+    version: "0.1.0"
+    path: agent-os/skills/quick-fix/SKILL.md
+    compatibility: [claude, codex, gemini, cursor, kilo, copilot]
+    materializable: true
+
   - id: checkpoint-closure-review
     kind: prompt
     version: "1.0.0"

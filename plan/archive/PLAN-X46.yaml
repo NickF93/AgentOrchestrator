@@ -1,0 +1,126 @@
+milestones:
+- id: X46
+  type: X
+  title: quick-fix skill -- lean refinement and eval bootstrap
+  status: done
+  note: 'Apply the skill-creator improvement pass to the quick-fix SKILL.md (style
+    and clarity only; no structural rework) and add an agent-os/skills/quick-fix/evals/
+    folder containing test prompts and objective assertions. No subagent runs in this
+    milestone -- those are deferred. Maintains style consistency with the five sibling
+    skills: SKILL.md frontmatter unchanged, body remains flat, evals/ is purely additive
+    tooling. Also shifts the embedded walkthrough fictional IDs from F46.1.1/cg121
+    to F99.1.1/cg999 so they cannot collide with any real milestone in the foreseeable
+    future.
+
+    '
+sprints:
+- id: S46.1
+  type: S
+  parent: X46
+  title: Sprint 1 -- Refinement, evals, closure
+  status: done
+items:
+- id: D46.1.1
+  parent: S46.1
+  type: D
+  title: Open X46 tracking plan and commit groups
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg120
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: D46.1.2
+  parent: S46.1
+  type: D
+  title: Lean pass on quick-fix SKILL.md (skill-creator improvement step)
+  actions:
+  - document
+  status: done
+  depends_on:
+  - D46.1.1
+  role: documenter
+  effort: low
+  commit_group: cg121
+  scope: agent-os/skills/quick-fix/
+  artifacts_out:
+  - agent-os/skills/quick-fix/SKILL.md
+- id: T46.1.3
+  parent: S46.1
+  type: T
+  title: Author quick-fix evals/evals.json with test prompts and assertions
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - D46.1.2
+  role: tester
+  effort: low
+  commit_group: cg122
+  scope: agent-os/skills/quick-fix/evals/
+  artifacts_out:
+  - agent-os/skills/quick-fix/evals/evals.json
+  - agent-os/skills/quick-fix/evals/README.md
+- id: C46.1.4
+  parent: S46.1
+  type: C
+  title: Checkpoint closure -- X46 quick-fix refinement and evals
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - T46.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg122
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - evals/evals.json is valid JSON and conforms to skill-creator evals schema
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X46.yaml
+  - PLAN.md
+  - PLAN.dot
+commit_groups:
+- id: cg120
+  title: quick-fix refinement -- tracking plan
+  items:
+  - D46.1.1
+  notes: 'Creates X46 active tracking and commit-group boundaries before refinement.
+
+    '
+- id: cg121
+  title: quick-fix refinement -- lean pass on SKILL.md
+  items:
+  - D46.1.2
+  notes: 'Applies the skill-creator improvement step to the quick-fix SKILL.md: trims
+    lines that are not pulling their weight, reframes rigid MUSTs as why-explanations
+    where it improves comprehension, and shifts walkthrough fictional IDs to F99.1.1/cg999.
+
+    '
+- id: cg122
+  title: quick-fix refinement -- evals and closure
+  items:
+  - T46.1.3
+  - C46.1.4
+  notes: 'Adds agent-os/skills/quick-fix/evals/ with evals.json (test prompts plus
+    objective assertions, no subagent runs) and a short README explaining the format.
+    Runs all gates, archives X46, and closes.
+
+    '

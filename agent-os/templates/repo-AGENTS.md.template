@@ -66,6 +66,7 @@ rules and must not override or redefine them.
 | `repo-bootstrap` | `agent-os/skills/repo-bootstrap/SKILL.md` | Bootstrapping a new repo, scaffolding governance files, checking if a repo is already bootstrapped |
 | `plan-validate-render` | `agent-os/skills/plan-validate-render/SKILL.md` | Validating a plan, rendering plan views, checking for plan drift, interpreting validation warnings or errors, verifying generated plan artifacts are up to date |
 | `workspace-sync` | `agent-os/skills/workspace-sync/SKILL.md` | Syncing a workspace, regenerating Level-1 runtime files, checking workspace provenance drift, verifying workspace files are current |
+| `quick-fix` | `agent-os/skills/quick-fix/SKILL.md` | Scaffolding an F-type item + commit_group before a tiny fix, packaging a one-or-two-file patch under tracking-first discipline, refusing to edit on develop/main, satisfying the predeclaration rule without manual YAML drafting |
 
 ## Commit Message Contract
 All commits MUST use:

@@ -37,7 +37,7 @@
 - [x] `workspace-sync` — regenerate Level-1 files, report provenance drift
 - [ ] `repo-map-refresh` — refresh `REPO_MAP.md` on triggers
 - [ ] `checker-reviewer-delegation` — delegation contract once runtime roles settle
-- [ ] `quick-fix` — scaffold F-type item + commit_group in one step, reducing tracking-first friction without weakening the invariant (ref: issue #8)
+- [x] `quick-fix` — scaffold F-type item + commit_group in one step, reducing tracking-first friction without weakening the invariant (ref: issue #8)
 
 ## Git Flow — Priority: P0 (done)
 
