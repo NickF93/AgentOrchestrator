@@ -43,7 +43,7 @@ items:
   title: Lean pass on quick-fix SKILL.md (skill-creator improvement step)
   actions:
   - document
-  status: planned
+  status: done
   depends_on:
   - D46.1.1
   role: documenter

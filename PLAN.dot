@@ -867,7 +867,7 @@ digraph PLAN {
   subgraph "cluster_cg121" {
     style="rounded,dashed";
     label="cg121: quick-fix refinement -- lean pass on SKILL.md";
-  "D46.1.2" [label="D46.1.2 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  "D46.1.2" [label="D46.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg122" {
     style="rounded,dashed";

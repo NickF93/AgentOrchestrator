@@ -1173,7 +1173,7 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D46.1.1` | `D` | Open X46 tracking plan and commit groups | done |  |
-| `D46.1.2` | `D` | Lean pass on quick-fix SKILL.md (skill-creator improvement step) | planned |  |
+| `D46.1.2` | `D` | Lean pass on quick-fix SKILL.md (skill-creator improvement step) | done |  |
 | `T46.1.3` | `T` | Author quick-fix evals/evals.json with test prompts and assertions | planned |  |
 | `C46.1.4` | `C` | Checkpoint closure -- X46 quick-fix refinement and evals | planned |  |
 
@@ -4312,7 +4312,7 @@ Status: in_progress
 
 ### D46.1.2: Lean pass on quick-fix SKILL.md (skill-creator improvement step)
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S46.1`
 - **Actions**: document
 - **Depends on**: `D46.1.1`
