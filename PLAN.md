@@ -59,7 +59,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X43 | X | Dangling on_fail Pivot Warning | done |
 | X44 | X | Scope-Exclusive Collision Metadata | done |
 | X45 | X | Quick-Fix Skill Packaging | done |
-| X46 | X | quick-fix skill -- lean refinement and eval bootstrap | in_progress |
+| X46 | X | quick-fix skill -- lean refinement and eval bootstrap | done |
 
 ## Plan
 
@@ -1162,20 +1162,20 @@ Status: done
 
 - ID: `X46`
 - Title: quick-fix skill -- lean refinement and eval bootstrap
-- Status: in_progress
+- Status: done
 - Note: Apply the skill-creator improvement pass to the quick-fix SKILL.md (style and clarity only; no structural rework) and add an agent-os/skills/quick-fix/evals/ folder containing test prompts and objective assertions. No subagent runs in this milestone -- those are deferred. Maintains style consistency with the five sibling skills: SKILL.md frontmatter unchanged, body remains flat, evals/ is purely additive tooling. Also shifts the embedded walkthrough fictional IDs from F46.1.1/cg121 to F99.1.1/cg999 so they cannot collide with any real milestone in the foreseeable future.
 
 #### S46.1 Items
 
 Sprint: Sprint 1 -- Refinement, evals, closure
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D46.1.1` | `D` | Open X46 tracking plan and commit groups | done |  |
 | `D46.1.2` | `D` | Lean pass on quick-fix SKILL.md (skill-creator improvement step) | done |  |
-| `T46.1.3` | `T` | Author quick-fix evals/evals.json with test prompts and assertions | planned |  |
-| `C46.1.4` | `C` | Checkpoint closure -- X46 quick-fix refinement and evals | planned |  |
+| `T46.1.3` | `T` | Author quick-fix evals/evals.json with test prompts and assertions | done |  |
+| `C46.1.4` | `C` | Checkpoint closure -- X46 quick-fix refinement and evals | done |  |
 
 ## Commit Groups
 
@@ -4321,7 +4321,7 @@ Status: in_progress
 
 ### T46.1.3: Author quick-fix evals/evals.json with test prompts and assertions
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: low
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: low
 - **Sprint**: `S46.1`
 - **Actions**: test, verify
 - **Depends on**: `D46.1.2`
@@ -4330,7 +4330,7 @@ Status: in_progress
 
 ### C46.1.4: Checkpoint closure -- X46 quick-fix refinement and evals
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S46.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T46.1.3`

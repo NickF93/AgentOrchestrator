@@ -199,3 +199,7 @@ archives:
   title: Quick-Fix Skill Packaging
   path: archive/PLAN-X45.yaml
   digest: sha256:0f8c93bb0535
+- milestone: X46
+  title: quick-fix skill -- lean refinement and eval bootstrap
+  path: archive/PLAN-X46.yaml
+  digest: sha256:7023c01eddf6
