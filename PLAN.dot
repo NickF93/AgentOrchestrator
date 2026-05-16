@@ -46,7 +46,7 @@ digraph PLAN {
   "X44" [label="X44 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X45" [label="X45 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X46" [label="X46 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X47" [label="X47 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X47" [label="X47 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -112,7 +112,7 @@ digraph PLAN {
   "S45.1" [label="S45.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S45.2" [label="S45.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S46.1" [label="S46.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S47.1" [label="S47.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S47.1" [label="S47.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -891,7 +891,7 @@ digraph PLAN {
   subgraph "cluster_cg125" {
     style="rounded,dashed";
     label="cg125: downstream bootstrap validation -- closure";
-  "C47.1.4" [label="C47.1.4 | C | ready", shape=doubleoctagon, style="filled,rounded", fillcolor=lightyellow];
+  "C47.1.4" [label="C47.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
