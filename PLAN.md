@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-11
+- Last updated: 2026-05-16
 
 ## Mission
 
@@ -60,6 +60,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X44 | X | Scope-Exclusive Collision Metadata | done |
 | X45 | X | Quick-Fix Skill Packaging | done |
 | X46 | X | quick-fix skill -- lean refinement and eval bootstrap | done |
+| X47 | X | Downstream Bootstrap Governance Validation | done |
 
 ## Plan
 
@@ -1177,6 +1178,25 @@ Status: done
 | `T46.1.3` | `T` | Author quick-fix evals/evals.json with test prompts and assertions | done |  |
 | `C46.1.4` | `C` | Checkpoint closure -- X46 quick-fix refinement and evals | done |  |
 
+### X47
+
+- ID: `X47`
+- Title: Downstream Bootstrap Governance Validation
+- Status: done
+- Note: Validate issue #18 against the public AgentOrchestrator-Test downstream repo with reproducible evidence and follow-up issue links for any discovered gaps.
+
+#### S47.1 Items
+
+Sprint: Sprint 1 -- Downstream validation and closure
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D47.1.1` | `D` | Open X47 tracking plan and commit groups | done |  |
+| `T47.1.2` | `T` | Validate AgentOrchestrator-Test bootstrap and governance behavior | done |  |
+| `D47.1.3` | `D` | Document downstream findings and roadmap state | done |  |
+| `C47.1.4` | `C` | Checkpoint closure -- X47 downstream bootstrap validation | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1302,6 +1322,9 @@ Status: done
 | cg120 | quick-fix refinement -- tracking plan | `D46.1.1` |
 | cg121 | quick-fix refinement -- lean pass on SKILL.md | `D46.1.2` |
 | cg122 | quick-fix refinement -- evals and closure | `T46.1.3`, `C46.1.4` |
+| cg123 | downstream bootstrap validation -- tracking plan | `D47.1.1` |
+| cg124 | downstream bootstrap validation -- evidence and roadmap state | `T47.1.2`, `D47.1.3` |
+| cg125 | downstream bootstrap validation -- closure | `C47.1.4` |
 
 ## Item Details
 
@@ -4342,3 +4365,52 @@ Status: done
   - render-plan.py produces no drift
   - run-gates.sh passes
   - evals/evals.json is valid JSON and conforms to skill-creator evals schema
+
+### D47.1.1: Open X47 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S47.1`
+- **Actions**: plan, document
+- **Commit group**: `cg123`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### T47.1.2: Validate AgentOrchestrator-Test bootstrap and governance behavior
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S47.1`
+- **Actions**: test, verify
+- **Depends on**: `D47.1.1`
+- **Commit group**: `cg124`
+- **Artifacts**: docs/design/X47-downstream-bootstrap-validation.md
+- **Checks**:
+  - AgentOrchestrator-Test bootstraps from Level-0 templates
+  - target hooks enforce commit-message and protected-branch push checks
+  - target plan validates and renders with Level-0 tooling
+  - downstream branch is pushed and merged through PR if checks pass
+
+### D47.1.3: Document downstream findings and roadmap state
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S47.1`
+- **Actions**: document, review
+- **Depends on**: `T47.1.2`
+- **Commit group**: `cg124`
+- **Artifacts**: docs/design/X47-downstream-bootstrap-validation.md, plan/PLAN-current.yaml, TODO.md
+- **Checks**:
+  - reproducible command transcript documented
+  - any discovered gaps are linked to follow-up issues
+  - TODO.md marks issue #18 row complete only when acceptance is satisfied
+
+### C47.1.4: Checkpoint closure -- X47 downstream bootstrap validation
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S47.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D47.1.3`
+- **Commit group**: `cg125`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X47.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes

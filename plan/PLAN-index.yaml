@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-05-11'
+  last_updated: '2026-05-16'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -203,3 +203,7 @@ archives:
   title: quick-fix skill -- lean refinement and eval bootstrap
   path: archive/PLAN-X46.yaml
   digest: sha256:7023c01eddf6
+- milestone: X47
+  title: Downstream Bootstrap Governance Validation
+  path: archive/PLAN-X47.yaml
+  digest: sha256:6c5147507a6f
