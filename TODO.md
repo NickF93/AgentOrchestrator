@@ -63,7 +63,8 @@
 ## Layer 2 — Repository-Local Governance — Priority: P1
 
 - [x] `bootstrap-repo.sh` scaffolds `AGENTS.md`, `PLAN.yaml`, commit hook, and thin runtime entrypoints for Claude, Codex, Gemini, Cursor, Copilot, and Kilo
-- [ ] End-to-end bootstrap + governance validation in a real downstream repo
+- [x] End-to-end bootstrap + governance validation in a real downstream repo
+- [ ] Preserve or document `plan/archive/` behavior after downstream bootstrap commit (ref: issue #38)
 - [ ] Verify Layer-2 repos can consume shared assets cleanly
 
 ## Plan Scaling / Archival — Priority: P1

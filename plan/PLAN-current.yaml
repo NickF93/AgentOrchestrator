@@ -36,7 +36,7 @@ items:
     actions:
       - test
       - verify
-    status: ready
+    status: done
     depends_on:
       - D47.1.1
     role: tester
@@ -57,7 +57,7 @@ items:
     actions:
       - document
       - review
-    status: planned
+    status: done
     depends_on:
       - T47.1.2
     role: documenter
@@ -66,6 +66,7 @@ items:
     scope: .
     artifacts_out:
       - docs/design/X47-downstream-bootstrap-validation.md
+      - plan/PLAN-current.yaml
       - TODO.md
     checks:
       - reproducible command transcript documented
@@ -78,7 +79,7 @@ items:
     actions:
       - checkpoint
       - verify
-    status: planned
+    status: ready
     depends_on:
       - D47.1.3
     role: reviewer

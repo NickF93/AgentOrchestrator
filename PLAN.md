@@ -1193,9 +1193,9 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D47.1.1` | `D` | Open X47 tracking plan and commit groups | done |  |
-| `T47.1.2` | `T` | Validate AgentOrchestrator-Test bootstrap and governance behavior | ready |  |
-| `D47.1.3` | `D` | Document downstream findings and roadmap state | planned |  |
-| `C47.1.4` | `C` | Checkpoint closure -- X47 downstream bootstrap validation | planned |  |
+| `T47.1.2` | `T` | Validate AgentOrchestrator-Test bootstrap and governance behavior | done |  |
+| `D47.1.3` | `D` | Document downstream findings and roadmap state | done |  |
+| `C47.1.4` | `C` | Checkpoint closure -- X47 downstream bootstrap validation | ready |  |
 
 ## Commit Groups
 
@@ -4376,7 +4376,7 @@ Status: in_progress
 
 ### T47.1.2: Validate AgentOrchestrator-Test bootstrap and governance behavior
 
-- **Type**: T | **Status**: ready | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S47.1`
 - **Actions**: test, verify
 - **Depends on**: `D47.1.1`
@@ -4390,12 +4390,12 @@ Status: in_progress
 
 ### D47.1.3: Document downstream findings and roadmap state
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S47.1`
 - **Actions**: document, review
 - **Depends on**: `T47.1.2`
 - **Commit group**: `cg124`
-- **Artifacts**: docs/design/X47-downstream-bootstrap-validation.md, TODO.md
+- **Artifacts**: docs/design/X47-downstream-bootstrap-validation.md, plan/PLAN-current.yaml, TODO.md
 - **Checks**:
   - reproducible command transcript documented
   - any discovered gaps are linked to follow-up issues
@@ -4403,7 +4403,7 @@ Status: in_progress
 
 ### C47.1.4: Checkpoint closure -- X47 downstream bootstrap validation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: ready | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S47.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D47.1.3`
