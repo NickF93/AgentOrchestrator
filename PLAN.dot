@@ -46,6 +46,7 @@ digraph PLAN {
   "X44" [label="X44 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X45" [label="X45 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X46" [label="X46 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X47" [label="X47 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -111,6 +112,7 @@ digraph PLAN {
   "S45.1" [label="S45.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S45.2" [label="S45.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S46.1" [label="S46.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S47.1" [label="S47.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -875,6 +877,22 @@ digraph PLAN {
   "T46.1.3" [label="T46.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C46.1.4" [label="C46.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg123" {
+    style="rounded,dashed";
+    label="cg123: downstream bootstrap validation -- tracking plan";
+  "D47.1.1" [label="D47.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg124" {
+    style="rounded,dashed";
+    label="cg124: downstream bootstrap validation -- evidence and roadmap state";
+  "T47.1.2" [label="T47.1.2 | T | ready", shape=ellipse, style="filled,rounded", fillcolor=lightyellow];
+  "D47.1.3" [label="D47.1.3 | D | planned", shape=note, style="filled,rounded", fillcolor=lightgray];
+  }
+  subgraph "cluster_cg125" {
+    style="rounded,dashed";
+    label="cg125: downstream bootstrap validation -- closure";
+  "C47.1.4" [label="C47.1.4 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -940,6 +958,7 @@ digraph PLAN {
   "X45" -> "S45.1" [style=dashed];
   "X45" -> "S45.2" [style=dashed];
   "X46" -> "S46.1" [style=dashed];
+  "X47" -> "S47.1" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -1220,6 +1239,10 @@ digraph PLAN {
   "S46.1" -> "D46.1.2" [style=dashed];
   "S46.1" -> "T46.1.3" [style=dashed];
   "S46.1" -> "C46.1.4" [style=dashed];
+  "S47.1" -> "D47.1.1" [style=dashed];
+  "S47.1" -> "T47.1.2" [style=dashed];
+  "S47.1" -> "D47.1.3" [style=dashed];
+  "S47.1" -> "C47.1.4" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1526,4 +1549,7 @@ digraph PLAN {
   "D46.1.1" -> "D46.1.2";
   "D46.1.2" -> "T46.1.3";
   "T46.1.3" -> "C46.1.4";
+  "D47.1.1" -> "T47.1.2";
+  "T47.1.2" -> "D47.1.3";
+  "D47.1.3" -> "C47.1.4";
 }
