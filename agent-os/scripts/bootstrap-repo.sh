@@ -102,7 +102,7 @@ render_template "$TEMPLATES_DIR/repo-commit-msg.template" "$TARGET/.githooks/com
 render_template "$TEMPLATES_DIR/repo-pre-push.template" "$TARGET/.githooks/pre-push"
 render_template "$TEMPLATES_DIR/repo-copilot-instructions.md.template" "$TARGET/.github/copilot-instructions.md"
 render_template "$TEMPLATES_DIR/repo-CLAUDE.md.template" "$TARGET/CLAUDE.md"
-render_template "$TEMPLATES_DIR/repo-CODEX.md.template" "$TARGET/.codex"
+render_template "$TEMPLATES_DIR/repo-codex-config.toml.template" "$TARGET/.codex/config.toml"
 render_template "$TEMPLATES_DIR/repo-GEMINI.md.template" "$TARGET/GEMINI.md"
 render_template "$TEMPLATES_DIR/repo-cursor-rules.mdc.template" "$TARGET/.cursor/rules/governance.mdc"
 render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilo/rules/governance.md"

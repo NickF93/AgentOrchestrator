@@ -78,6 +78,7 @@ def test_bootstrap_repo_dry_run_reports_creates(
     assert "DRY-RUN: create" in result.stdout
     assert "plan/PLAN-index.yaml" in result.stdout
     assert "plan/archive" in result.stdout
+    assert ".codex/config.toml" in result.stdout
     assert ".githooks/pre-push" in result.stdout
     assert not target_repo.exists()
 
@@ -129,14 +130,14 @@ def test_bootstrap_repo_creates_expected_files(
     assert "plan/PLAN-index.yaml" in claude_text
     assert "## Adapter Overrides" in claude_text
 
-    codex_file = target_repo / ".codex"
-    assert codex_file.exists()
-    codex_text = codex_file.read_text(encoding="utf-8")
-    assert "thin runtime entrypoint for Codex" in codex_text
+    codex_config = target_repo / ".codex" / "config.toml"
+    assert (target_repo / ".codex").is_dir()
+    assert codex_config.exists()
+    codex_text = codex_config.read_text(encoding="utf-8")
+    assert "Codex project configuration" in codex_text
     assert "AGENTS.md" in codex_text
-    assert "AGENT_PYTHON" in codex_text
-    assert "plan/PLAN-index.yaml" in codex_text
-    assert "Canonical authority is bounded in" in codex_text
+    assert "Host-local trust" in codex_text
+    assert "thin runtime entrypoint" not in codex_text
 
     gemini_file = target_repo / "GEMINI.md"
     assert gemini_file.exists()
@@ -183,11 +184,11 @@ def test_sync_workspace_stamps_control_plane_root(
     assert str(repo_root) in workspace_claude
     assert "## Adapter Overrides" in workspace_claude
 
-    workspace_codex = (workspace_root / ".codex").read_text(encoding="utf-8")
+    workspace_codex = (workspace_root / ".codex" / "config.toml").read_text(encoding="utf-8")
     assert "CONTROL_PLANE_ROOT:" in workspace_codex
     assert str(repo_root) in workspace_codex
-    assert "thin workspace runtime entrypoint for Codex" in workspace_codex
-    assert "AGENT_PYTHON" in workspace_codex
+    assert "Codex workspace project configuration" in workspace_codex
+    assert "Host-local trust" in workspace_codex
 
     assert not (workspace_root / "GEMINI.md").exists()
     assert not (workspace_root / ".cursor").exists()

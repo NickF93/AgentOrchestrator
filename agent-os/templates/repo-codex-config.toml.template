@@ -1,0 +1,9 @@
+# AUTO-GENERATED from Level-0 template. Do not edit manually.
+#
+# Codex project configuration for {{REPO_NAME}}.
+#
+# Project instructions and governance live in AGENTS.md. Do not duplicate
+# governance rules or runtime procedure text in this file.
+#
+# Host-local trust, personal defaults, MCP servers, and workstation-specific
+# settings belong in ~/.codex/config.toml, not in repository config.

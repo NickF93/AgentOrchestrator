@@ -34,6 +34,7 @@ render_workspace_template() {
   local src="$1"
   local dst="$2"
 
+  mkdir -p "$(dirname "$dst")"
   sed \
     -e "s|{{DATE}}|$DATE_UTC|g" \
     -e "s|{{CONTROL_PLANE_ROOT}}|$CONTROL_PLANE_ROOT|g" \
@@ -49,11 +50,11 @@ render_workspace_template \
   "$TEMPLATES_DIR/workspace-CLAUDE.md.template" \
   "$WORKSPACE_ROOT/CLAUDE.md"
 render_workspace_template \
-  "$TEMPLATES_DIR/workspace-CODEX.md.template" \
-  "$WORKSPACE_ROOT/.codex"
+  "$TEMPLATES_DIR/workspace-codex-config.toml.template" \
+  "$WORKSPACE_ROOT/.codex/config.toml"
 
 echo "OK: generated $WORKSPACE_ROOT/AGENTS.md"
 echo "OK: generated $WORKSPACE_ROOT/CLAUDE.md"
-echo "OK: generated $WORKSPACE_ROOT/.codex"
+echo "OK: generated $WORKSPACE_ROOT/.codex/config.toml"
 echo "INFO: shared assets resolve from CONTROL_PLANE_ROOT in workspace mode"
 echo "INFO: vendoring remains optional and explicit via materialize-shared-asset.sh"

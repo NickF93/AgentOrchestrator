@@ -32,7 +32,7 @@ def load_yaml(path: Path) -> dict:
 
 def parse_workspace_control_plane_root(repo_root: Path) -> Path | None:
     workspace_root = repo_root.parent
-    for name in ("AGENTS.md", "CLAUDE.md", ".codex"):
+    for name in ("AGENTS.md", "CLAUDE.md"):
         candidate = workspace_root / name
         if not candidate.exists():
             continue
