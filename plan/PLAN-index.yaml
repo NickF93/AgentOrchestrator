@@ -211,3 +211,7 @@ archives:
   title: Codex Project Config Realignment
   path: archive/PLAN-X48.yaml
   digest: sha256:97e61166b89b
+- milestone: X49
+  title: Codex Host-Local Trust Helper
+  path: archive/PLAN-X49.yaml
+  digest: sha256:638fbb8a9ce7

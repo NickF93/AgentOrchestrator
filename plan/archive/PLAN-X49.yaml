@@ -1,0 +1,139 @@
+milestones:
+- id: X49
+  type: X
+  title: Codex Host-Local Trust Helper
+  status: done
+  note: Add an explicit, opt-in helper for local Codex trust entries without committing
+    host trust decisions to repository config.
+sprints:
+- id: S49.1
+  type: S
+  parent: X49
+  title: Sprint 1 -- Host-local trust helper
+  status: done
+items:
+- id: D49.1.1
+  parent: S49.1
+  type: D
+  title: Open X49 host-local trust implementation boundary
+  actions:
+  - plan
+  - document
+  status: done
+  depends_on:
+  - C48.1.5
+  role: orchestrator
+  effort: low
+  commit_group: cg129
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+- id: F49.1.2
+  parent: S49.1
+  type: F
+  title: Add opt-in Codex trusted-project helper
+  actions:
+  - implement
+  status: done
+  depends_on:
+  - D49.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg130
+  scope: agent-os/scripts/
+  artifacts_out:
+  - agent-os/scripts/trust-codex-project.py
+  - agent-os/scripts/bootstrap-repo.sh
+  - agent-os/scripts/sync-workspace.sh
+  checks:
+  - helper writes only host-local Codex config
+  - helper is idempotent for already trusted projects
+  - layer scripts mutate trust only when explicitly requested
+- id: T49.1.3
+  parent: S49.1
+  type: T
+  title: Verify Codex trust helper safety and idempotence
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - F49.1.2
+  role: tester
+  effort: medium
+  commit_group: cg130
+  scope: tests/
+  artifacts_out:
+  - tests/test_trust_codex_project.py
+  - tests/test_shell_scripts.py
+  checks:
+  - dry-run performs no writes
+  - missing config is created under CODEX_HOME
+  - existing config is backed up before modification
+  - existing trust entries are updated or left unchanged deterministically
+- id: D49.1.4
+  parent: S49.1
+  type: D
+  title: Document host-local Codex trust usage
+  actions:
+  - document
+  - review
+  status: done
+  depends_on:
+  - T49.1.3
+  role: documenter
+  effort: low
+  commit_group: cg131
+  scope: .
+  artifacts_out:
+  - README.md
+  - agent-os/skills/repo-bootstrap/SKILL.md
+  - agent-os/skills/workspace-sync/SKILL.md
+- id: C49.1.5
+  parent: S49.1
+  type: C
+  title: Checkpoint closure -- X49 trust helper and feature archive
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D49.1.4
+  role: reviewer
+  effort: low
+  commit_group: cg131
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X49.yaml
+  - PLAN.md
+  - PLAN.dot
+  - tests/test_trust_codex_project.py
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+commit_groups:
+- id: cg129
+  title: codex trust helper -- tracking boundary
+  items:
+  - D49.1.1
+  notes: Activates the separate trust-helper milestone boundary after X48 closes.
+- id: cg130
+  title: codex trust helper -- implementation tests
+  items:
+  - F49.1.2
+  - T49.1.3
+  notes: Adds the opt-in host-local trusted-project helper and safety tests.
+- id: cg131
+  title: codex trust helper -- docs closure archive
+  items:
+  - D49.1.4
+  - C49.1.5
+  notes: Documents host-local trust usage, archives X49, empties the current plan
+    surface, and refreshes generated plan views.

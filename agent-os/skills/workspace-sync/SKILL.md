@@ -114,6 +114,7 @@ After a successful sync, `workspace_root` will contain these files:
 | `control_plane_root`   | string | (resolved)    | Root of the Level-0 control-plane checkout           |
 | `dry_run`              | bool   | `false`       | If true, compare what would change without writing   |
 | `check_drift`          | bool   | `true`        | If true, check provenance drift on existing files    |
+| `trust_codex_project`  | bool   | `false`       | If true, add the workspace path to host-local Codex trust config |
 
 ## Expected Outputs
 
@@ -152,7 +153,9 @@ provenance:
 files_generated:
   - AGENTS.md: created | updated | unchanged | skipped
   - CLAUDE.md: created | updated | unchanged | skipped
-  - .codex: created | updated | unchanged | skipped
+  - .codex/config.toml: created | updated | unchanged | skipped
+host_local:
+  codex_trust: trusted | unchanged | skipped
 commands_run:
   - `bash <cp>/agent-os/scripts/sync-workspace.sh <workspace>` -> exit <code>
 next_steps:
@@ -267,8 +270,11 @@ report "unchanged" for those files.
 
 1. Run the sync script:
    ```bash
-   bash {control_plane_root}/agent-os/scripts/sync-workspace.sh {workspace_root}
+   bash {control_plane_root}/agent-os/scripts/sync-workspace.sh \
+     [--trust-codex-project] \
+     {workspace_root}
    ```
+   Include `--trust-codex-project` only if `trust_codex_project` is `true`.
 2. Capture stdout, stderr, and exit code.
 3. If the exit code is non-zero, fail with the stderr output. Record
    the failure in the report and stop.
@@ -341,6 +347,9 @@ git -C "$CP" rev-parse --short HEAD
 
 # 3. Run sync
 bash "$CP/agent-os/scripts/sync-workspace.sh" "$WS"
+
+# Optional: trust the workspace path in host-local Codex config
+bash "$CP/agent-os/scripts/sync-workspace.sh" --trust-codex-project "$WS"
 
 # 4. Verify provenance stamps in generated files
 grep "Control plane ref:" "$WS/AGENTS.md"

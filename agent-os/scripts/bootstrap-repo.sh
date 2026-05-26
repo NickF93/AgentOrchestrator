@@ -2,7 +2,7 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 [--dry-run] [--owner <name>] [--ref <branch|tag|sha>] <target-repo-path>"
+  echo "Usage: $0 [--dry-run] [--owner <name>] [--ref <branch|tag|sha>] [--trust-codex-project] <target-repo-path>"
 }
 
 DRY_RUN=0

@@ -9,7 +9,6 @@ import re
 import shutil
 from pathlib import Path
 
-
 TRUST_LINE = 'trust_level = "trusted"'
 
 

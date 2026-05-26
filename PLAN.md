@@ -62,7 +62,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X46 | X | quick-fix skill -- lean refinement and eval bootstrap | done |
 | X47 | X | Downstream Bootstrap Governance Validation | done |
 | X48 | X | Codex Project Config Realignment | done |
-| X49 | X | Codex Host-Local Trust Helper | planned |
+| X49 | X | Codex Host-Local Trust Helper | done |
 
 ## Plan
 
@@ -1223,21 +1223,21 @@ Status: done
 
 - ID: `X49`
 - Title: Codex Host-Local Trust Helper
-- Status: planned
+- Status: done
 - Note: Add an explicit, opt-in helper for local Codex trust entries without committing host trust decisions to repository config.
 
 #### S49.1 Items
 
 Sprint: Sprint 1 -- Host-local trust helper
-Status: planned
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D49.1.1` | `D` | Open X49 host-local trust implementation boundary | planned |  |
-| `F49.1.2` | `F` | Add opt-in Codex trusted-project helper | planned |  |
-| `T49.1.3` | `T` | Verify Codex trust helper safety and idempotence | planned |  |
-| `D49.1.4` | `D` | Document host-local Codex trust usage | planned |  |
-| `C49.1.5` | `C` | Checkpoint closure -- X49 trust helper and feature archive | planned |  |
+| `D49.1.1` | `D` | Open X49 host-local trust implementation boundary | done |  |
+| `F49.1.2` | `F` | Add opt-in Codex trusted-project helper | done |  |
+| `T49.1.3` | `T` | Verify Codex trust helper safety and idempotence | done |  |
+| `D49.1.4` | `D` | Document host-local Codex trust usage | done |  |
+| `C49.1.5` | `C` | Checkpoint closure -- X49 trust helper and feature archive | done |  |
 
 ## Commit Groups
 
@@ -4517,7 +4517,7 @@ Status: planned
 
 ### D49.1.1: Open X49 host-local trust implementation boundary
 
-- **Type**: D | **Status**: planned | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S49.1`
 - **Actions**: plan, document
 - **Depends on**: `C48.1.5`
@@ -4526,7 +4526,7 @@ Status: planned
 
 ### F49.1.2: Add opt-in Codex trusted-project helper
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S49.1`
 - **Actions**: implement
 - **Depends on**: `D49.1.1`
@@ -4539,7 +4539,7 @@ Status: planned
 
 ### T49.1.3: Verify Codex trust helper safety and idempotence
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S49.1`
 - **Actions**: test, verify
 - **Depends on**: `F49.1.2`
@@ -4553,7 +4553,7 @@ Status: planned
 
 ### D49.1.4: Document host-local Codex trust usage
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S49.1`
 - **Actions**: document, review
 - **Depends on**: `T49.1.3`
@@ -4562,13 +4562,13 @@ Status: planned
 
 ### C49.1.5: Checkpoint closure -- X49 trust helper and feature archive
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S49.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D49.1.4`
 - **Commit group**: `cg131`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
-- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X48.yaml, plan/archive/PLAN-X49.yaml, PLAN.md, PLAN.dot
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X49.yaml, PLAN.md, PLAN.dot, tests/test_trust_codex_project.py
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift

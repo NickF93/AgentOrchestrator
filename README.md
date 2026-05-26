@@ -102,6 +102,10 @@ bash agent-os/scripts/run-gates.sh
 bash agent-os/scripts/bootstrap-repo.sh --owner <name> --ref <branch|tag> <target-path>
 ```
 
+To trust the target path in the host-local Codex config, add
+`--trust-codex-project`. This writes only to `$CODEX_HOME/config.toml`
+or `~/.codex/config.toml`; nothing is committed to the target repo.
+
 The bootstrap also writes both local hooks into the target repository:
 
 - `.githooks/commit-msg`
@@ -132,6 +136,9 @@ chmod +x <target-path>/.githooks/commit-msg <target-path>/.githooks/pre-push
 ```bash
 bash agent-os/scripts/sync-workspace.sh <workspace-root-path>
 ```
+
+To trust the workspace path in host-local Codex config, add
+`--trust-codex-project`.
 
 ## Testing and Gates
 
