@@ -39,7 +39,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - D51.1.1
   role: tester

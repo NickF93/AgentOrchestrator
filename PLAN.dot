@@ -960,7 +960,7 @@ digraph PLAN {
   subgraph "cluster_cg136" {
     style="rounded,dashed";
     label="cg136: shared asset validation -- hermetic E2E";
-  "T51.1.2" [label="T51.1.2 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "T51.1.2" [label="T51.1.2 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg137" {
     style="rounded,dashed";

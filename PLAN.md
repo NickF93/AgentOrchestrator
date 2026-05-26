@@ -1276,7 +1276,7 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D51.1.1` | `D` | Open X51 validation tracking | done |  |
-| `T51.1.2` | `T` | Add hermetic L0 to L2 shared asset E2E coverage | planned |  |
+| `T51.1.2` | `T` | Add hermetic L0 to L2 shared asset E2E coverage | done |  |
 | `T51.1.3` | `T` | Capture disposable real-repo shared asset evidence | planned |  |
 | `D51.1.4` | `D` | Update roadmap state for shared asset validation | planned |  |
 | `C51.1.5` | `C` | Checkpoint closure -- X51 shared asset validation | planned |  |
@@ -4693,7 +4693,7 @@ Status: in_progress
 
 ### T51.1.2: Add hermetic L0 to L2 shared asset E2E coverage
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S51.1`
 - **Actions**: test, verify
 - **Depends on**: `D51.1.1`
