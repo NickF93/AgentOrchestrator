@@ -37,7 +37,7 @@ This skill operates between Layer 0 and Layer 1:
   script, workspace templates, and git metadata used for provenance
   stamps.
 - **Layer 1 (target)**: the workspace directory receives the rendered
-  runtime files (AGENTS.md, CLAUDE.md, .codex).
+  runtime files and config (AGENTS.md, CLAUDE.md, .codex/config.toml).
 
 This skill is procedural. All normative rules it enforces are defined in
 the canonical tooling and templates. When a specific rule must be
@@ -49,7 +49,7 @@ Canonical authorities (paths relative to `control_plane_root`):
 - `agent-os/scripts/sync-workspace.sh` — the wrapped sync script
 - `agent-os/templates/workspace-AGENTS.md.template`
 - `agent-os/templates/workspace-CLAUDE.md.template`
-- `agent-os/templates/workspace-CODEX.md.template`
+- `agent-os/templates/workspace-codex-config.toml.template`
 - `agent-os/workflow/shared-workflow.md` — three-layer model, workspace
   topology
 
@@ -61,7 +61,7 @@ procedure belongs to exactly one of them.
 | Root                  | What lives there                                        |
 |-----------------------|---------------------------------------------------------|
 | `workspace_root`      | The workspace directory receiving generated runtime     |
-|                       | files: AGENTS.md, CLAUDE.md, .codex                     |
+|                       | files/config: AGENTS.md, CLAUDE.md, .codex/config.toml  |
 | `control_plane_root`  | The Level-0 checkout: sync script, workspace templates, |
 |                       | git metadata for provenance stamps                      |
 
@@ -94,7 +94,7 @@ missing.
 - `{control_plane_root}/agent-os/scripts/sync-workspace.sh`
 - `{control_plane_root}/agent-os/templates/workspace-AGENTS.md.template`
 - `{control_plane_root}/agent-os/templates/workspace-CLAUDE.md.template`
-- `{control_plane_root}/agent-os/templates/workspace-CODEX.md.template`
+- `{control_plane_root}/agent-os/templates/workspace-codex-config.toml.template`
 
 ### Workspace data (from `workspace_root`)
 
@@ -104,7 +104,7 @@ After a successful sync, `workspace_root` will contain these files:
 |-----------------------------------------|--------------------------------|
 | `workspace-AGENTS.md.template`          | `{workspace_root}/AGENTS.md`  |
 | `workspace-CLAUDE.md.template`          | `{workspace_root}/CLAUDE.md`  |
-| `workspace-CODEX.md.template`           | `{workspace_root}/.codex`     |
+| `workspace-codex-config.toml.template`  | `{workspace_root}/.codex/config.toml` |
 
 ## Required Inputs
 
@@ -174,7 +174,7 @@ which case, collect all failures before stopping).
    the three workspace templates:
    - `workspace-AGENTS.md.template`
    - `workspace-CLAUDE.md.template`
-   - `workspace-CODEX.md.template`
+   - `workspace-codex-config.toml.template`
 4. Record `control_plane_root` in the report header.
 
 This step must succeed before any other step runs. If the control plane
@@ -190,7 +190,7 @@ cannot be located or is incomplete, nothing else is meaningful.
 
 ### Step 2 — Pre-flight: check for existing workspace files
 
-1. For each of the three target files (AGENTS.md, CLAUDE.md, .codex),
+1. For each of the three target files (AGENTS.md, CLAUDE.md, .codex/config.toml),
    check whether it already exists at `workspace_root`.
 
 2. **If no files exist** (first-time sync): record current provenance as
@@ -287,7 +287,7 @@ used instead of the script.
 If `dry_run` is `true`, skip this step (report all verifications as
 "skipped").
 
-1. For each of the three target files (AGENTS.md, CLAUDE.md, .codex),
+1. For each of the three target files (AGENTS.md, CLAUDE.md, .codex/config.toml),
    verify it exists at its expected path under `workspace_root`.
 2. For each existing file, extract the provenance stamps and verify
    they match the current control plane state:

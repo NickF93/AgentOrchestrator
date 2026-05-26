@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-05-16'
+  last_updated: '2026-05-26'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -207,3 +207,7 @@ archives:
   title: Downstream Bootstrap Governance Validation
   path: archive/PLAN-X47.yaml
   digest: sha256:6c5147507a6f
+- milestone: X48
+  title: Codex Project Config Realignment
+  path: archive/PLAN-X48.yaml
+  digest: sha256:97e61166b89b

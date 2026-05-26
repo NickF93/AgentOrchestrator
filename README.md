@@ -110,11 +110,13 @@ The bootstrap also writes both local hooks into the target repository:
 It also writes thin repo-local runtime entrypoints for:
 
 - `CLAUDE.md`
-- `.codex`
 - `GEMINI.md`
 - `.cursor/rules/governance.mdc`
 - `.github/copilot-instructions.md`
 - `.kilo/rules/governance.md`
+
+It also writes Codex repo-local configuration to `.codex/config.toml`.
+Codex instructions remain in `AGENTS.md`; the TOML file is config-only.
 
 Canonical governance still lives in `AGENTS.md`, `ARCHITECTURE.md`, and
 `plan/PLAN-index.yaml`.
@@ -146,7 +148,8 @@ with this precedence: exported `AGENT_PYTHON`, then `.env`, then `python3`.
 `sync-workspace.sh` materializes runtime files from the current local
 control-plane checkout. It does not pull from the remote automatically.
 It currently renders only the workspace-scoped runtime entrypoints
-(`AGENTS.md`, `CLAUDE.md`, `.codex`).
+(`AGENTS.md`, `CLAUDE.md`) and Codex workspace config
+(`.codex/config.toml`).
 If you want the latest `origin/main` first, run:
 
 ```bash
@@ -205,8 +208,10 @@ printf "docs(workflow): missing refs\n\n" > /tmp/bad-msg.txt
 
 Runtime entrypoint artifacts remain thin pointers only. In this repository:
 
-- `CLAUDE.md` and `.codex` are workspace/runtime entrypoints
-- `CLAUDE.md`, `.codex`, `GEMINI.md`, `.cursor/rules/governance.mdc`,
+- `CLAUDE.md` is a workspace/runtime entrypoint
+- `.codex/config.toml` is Codex workspace/repo configuration; `AGENTS.md`
+  remains the Codex instruction authority
+- `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/governance.mdc`,
   `.github/copilot-instructions.md`, and `.kilo/rules/governance.md`
   are bootstrapped repo-level runtime entrypoints
 

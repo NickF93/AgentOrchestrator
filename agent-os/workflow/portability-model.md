@@ -52,7 +52,7 @@ upgrade path.
 | Runtime | Tier         | Entrypoint Artifacts | Profile | Bootstrap Template | Workspace Template |
 |---------|-------------|----------------------|---------|--------------------|-------------------|
 | claude  | first-class | `CLAUDE.md` (workspace + repo) | yes | yes | yes |
-| codex   | first-class | `.codex` (workspace + repo) | yes | yes | yes |
+| codex   | first-class | `AGENTS.md` instructions + `.codex/config.toml` config (workspace + repo) | yes | yes | yes |
 | kilo    | first-class | `.kilo/rules/governance.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 | copilot | first-class | `.github/copilot-instructions.md` (repo-local) | yes | yes | n/a (repo-scoped) |
 | gemini  | first-class | `GEMINI.md` (repo-local) | yes | yes | n/a (repo-scoped) |
@@ -61,7 +61,9 @@ upgrade path.
 ## Runtime Entrypoint Artifacts
 
 Runtime entrypoint artifacts are runtime-specific, non-authoritative files that
-point agents back to the canonical governance authorities.
+point agents back to the canonical governance authorities. For Codex,
+`AGENTS.md` is the instruction authority and `.codex/config.toml` is
+configuration-only.
 
 - Entry point artifacts MUST stay thin and MUST NOT duplicate or redefine
   workflow, architecture, or plan semantics.

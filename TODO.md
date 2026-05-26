@@ -20,7 +20,7 @@
 
 - [x] Runtime lifecycle tiers (experimental / supported / first-class)
 - [x] Claude — first-class (adapter, profile, workspace template, sync)
-- [ ] Codex — first-class config realignment (`AGENTS.md` instructions + `.codex/config.toml` config)
+- [x] Codex — first-class config realignment (`AGENTS.md` instructions + `.codex/config.toml` config)
 - [x] Gemini — first-class (repo-local `GEMINI.md`, bootstrap template)
 - [x] Cursor — first-class (repo-local `.cursor/rules/governance.mdc`, bootstrap template)
 - [x] Copilot — first-class (repo-local `.github/copilot-instructions.md`, bootstrap template)
@@ -55,14 +55,14 @@
 
 ## Layer 1 — Workspace Runtime — Priority: P2
 
-- [ ] `sync-workspace.sh` renders `AGENTS.md`, `CLAUDE.md`, `.codex/config.toml`
+- [x] `sync-workspace.sh` renders `AGENTS.md`, `CLAUDE.md`, `.codex/config.toml`
 - [x] Workspace templates with `{{CONTROL_PLANE_ROOT}}` placeholders
 - [ ] Harden Layer-1 lifecycle (drift detection, staleness checks)
 - [x] Evaluate workspace template boundaries — repo-scoped runtimes (Gemini, Cursor, Kilo, Copilot) use bootstrap templates, not workspace templates
 
 ## Layer 2 — Repository-Local Governance — Priority: P1
 
-- [x] `bootstrap-repo.sh` scaffolds `AGENTS.md`, `PLAN.yaml`, commit hook, and thin runtime entrypoints for Claude, Codex, Gemini, Cursor, Copilot, and Kilo
+- [x] `bootstrap-repo.sh` scaffolds `AGENTS.md`, `PLAN.yaml`, commit hook, thin runtime entrypoints for Claude, Gemini, Cursor, Copilot, and Kilo, and Codex config at `.codex/config.toml`
 - [x] End-to-end bootstrap + governance validation in a real downstream repo
 - [ ] Preserve or document `plan/archive/` behavior after downstream bootstrap commit (ref: issue #38)
 - [ ] Verify Layer-2 repos can consume shared assets cleanly

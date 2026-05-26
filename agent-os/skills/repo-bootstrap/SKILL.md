@@ -59,7 +59,7 @@ procedure belongs to exactly one of them.
 |-----------------------|---------------------------------------------------------|
 | `repo_root`           | The target repository being bootstrapped: receives      |
 |                       | AGENTS.md, ARCHITECTURE.md, REPO_MAP.md, plan/,        |
-|                       | README.md, CLAUDE.md, .codex, GEMINI.md, docs/adr/,    |
+|                       | README.md, CLAUDE.md, .codex/config.toml, GEMINI.md, docs/adr/, |
 |                       | .githooks/, .github/, .cursor/, .kilo/             |
 | `control_plane_root`  | The Level-0 checkout: bootstrap script, templates,      |
 |                       | validation tooling, schemas, skill definitions          |
@@ -113,7 +113,7 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `repo-pre-push.template`                | `{repo_root}/.githooks/pre-push`             |
 | `repo-copilot-instructions.md.template` | `{repo_root}/.github/copilot-instructions.md`|
 | `repo-CLAUDE.md.template`               | `{repo_root}/CLAUDE.md`                      |
-| `repo-CODEX.md.template`                | `{repo_root}/.codex`                         |
+| `repo-codex-config.toml.template`       | `{repo_root}/.codex/config.toml`             |
 | `repo-GEMINI.md.template`               | `{repo_root}/GEMINI.md`                      |
 | `repo-cursor-rules.mdc.template`        | `{repo_root}/.cursor/rules/governance.mdc`   |
 | `repo-kilo-rules.md.template`           | `{repo_root}/.kilo/rules/governance.md`  |
