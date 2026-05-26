@@ -64,6 +64,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X48 | X | Codex Project Config Realignment | done |
 | X49 | X | Codex Host-Local Trust Helper | done |
 | X50 | X | Downstream plan archive persistence | done |
+| X51 | X | Shared Asset Layer 0 to Layer 2 Validation | in_progress |
 
 ## Plan
 
@@ -1260,6 +1261,26 @@ Status: done
 | `D50.1.4` | `D` | Document persisted archive placeholder behavior | done |  |
 | `C50.1.5` | `C` | Checkpoint closure -- X50 archive persistence | done |  |
 
+### X51
+
+- ID: `X51`
+- Title: Shared Asset Layer 0 to Layer 2 Validation
+- Status: in_progress
+- Note: Validate issue #17 with automated and disposable real-repo evidence that shared assets resolve and materialize from Layer 0 into Layer 2 without duplicating authority.
+
+#### S51.1 Items
+
+Sprint: Sprint 1 -- Shared asset validation evidence
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D51.1.1` | `D` | Open X51 validation tracking | done |  |
+| `T51.1.2` | `T` | Add hermetic L0 to L2 shared asset E2E coverage | planned |  |
+| `T51.1.3` | `T` | Capture disposable real-repo shared asset evidence | planned |  |
+| `D51.1.4` | `D` | Update roadmap state for shared asset validation | planned |  |
+| `C51.1.5` | `C` | Checkpoint closure -- X51 shared asset validation | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1397,6 +1418,9 @@ Status: done
 | cg132 | archive placeholder -- tracking boundary | `D50.1.1` |
 | cg133 | archive placeholder -- implementation tests | `F50.1.2`, `T50.1.3` |
 | cg134 | archive placeholder -- docs closure archive | `D50.1.4`, `C50.1.5` |
+| cg135 | shared asset validation -- tracking boundary | `D51.1.1` |
+| cg136 | shared asset validation -- hermetic E2E | `T51.1.2` |
+| cg137 | shared asset validation -- evidence docs closure | `T51.1.3`, `D51.1.4`, `C51.1.5` |
 
 ## Item Details
 
@@ -4652,6 +4676,69 @@ Status: done
 - **Commit group**: `cg134`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X50.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### D51.1.1: Open X51 validation tracking
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S51.1`
+- **Actions**: plan, document
+- **Commit group**: `cg135`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - X51 active plan declares implementation and closure commit groups
+
+### T51.1.2: Add hermetic L0 to L2 shared asset E2E coverage
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S51.1`
+- **Actions**: test, verify
+- **Depends on**: `D51.1.1`
+- **Commit group**: `cg136`
+- **Artifacts**: tests/test_shared_asset_e2e.py
+- **Checks**:
+  - temp workspace sync stamps CONTROL_PLANE_ROOT
+  - temp Layer-2 bootstrap creates runtime entrypoints and plan archive placeholder
+  - workspace-mode resolver finds a shared skill from Layer 2 without explicit root
+  - explicit materialization writes a vendored snapshot and provenance
+  - vendored-mode resolver reads the materialized snapshot
+
+### T51.1.3: Capture disposable real-repo shared asset evidence
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S51.1`
+- **Actions**: test, verify
+- **Depends on**: `T51.1.2`
+- **Commit group**: `cg137`
+- **Artifacts**: docs/design/X51-shared-asset-l0-l2-validation.md
+- **Checks**:
+  - AgentOrchestrator-Test validation uses a disposable local clone or copy
+  - evidence includes workspace-mode resolve, materialization, and vendored-mode resolve
+  - evidence report remains explicitly non-authoritative
+
+### D51.1.4: Update roadmap state for shared asset validation
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Sprint**: `S51.1`
+- **Actions**: document, review
+- **Depends on**: `T51.1.3`
+- **Commit group**: `cg137`
+- **Artifacts**: TODO.md
+- **Checks**:
+  - TODO.md marks Layer 0 to Layer 2 shared asset validation complete only after evidence exists
+
+### C51.1.5: Checkpoint closure -- X51 shared asset validation
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S51.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D51.1.4`
+- **Commit group**: `cg137`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X51.yaml, PLAN.md, PLAN.dot
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift
