@@ -2,7 +2,7 @@ milestones:
 - id: X49
   type: X
   title: Codex Host-Local Trust Helper
-  status: planned
+  status: in_progress
   note: Add an explicit, opt-in helper for local Codex trust entries without committing
     host trust decisions to repository config.
 sprints:
@@ -10,7 +10,7 @@ sprints:
   type: S
   parent: X49
   title: Sprint 1 -- Host-local trust helper
-  status: planned
+  status: in_progress
 items:
 - id: D49.1.1
   parent: S49.1
@@ -19,7 +19,7 @@ items:
   actions:
   - plan
   - document
-  status: planned
+  status: done
   depends_on:
   - C48.1.5
   role: orchestrator
