@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-16
+- Last updated: 2026-05-26
 
 ## Mission
 
@@ -61,6 +61,8 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X45 | X | Quick-Fix Skill Packaging | done |
 | X46 | X | quick-fix skill -- lean refinement and eval bootstrap | done |
 | X47 | X | Downstream Bootstrap Governance Validation | done |
+| X48 | X | Codex Project Config Realignment | done |
+| X49 | X | Codex Host-Local Trust Helper | done |
 
 ## Plan
 
@@ -1197,6 +1199,46 @@ Status: done
 | `D47.1.3` | `D` | Document downstream findings and roadmap state | done |  |
 | `C47.1.4` | `C` | Checkpoint closure -- X47 downstream bootstrap validation | done |  |
 
+### X48
+
+- ID: `X48`
+- Title: Codex Project Config Realignment
+- Status: done
+- Note: Replace obsolete .codex file adapters with modern .codex/config.toml config layers while keeping AGENTS.md as the Codex instruction authority.
+
+#### S48.1 Items
+
+Sprint: Sprint 1 -- Config path migration and authority cleanup
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D48.1.1` | `D` | Open X48/X49 tracking plan and commit groups | done |  |
+| `M48.1.2` | `M` | Migrate Codex generated config from .codex file to .codex/config.toml | done |  |
+| `T48.1.3` | `T` | Verify Codex config path migration | done |  |
+| `D48.1.4` | `D` | Align Codex runtime docs and skills with config-only TOML | done |  |
+| `C48.1.5` | `C` | Checkpoint closure -- X48 Codex config realignment | done |  |
+
+### X49
+
+- ID: `X49`
+- Title: Codex Host-Local Trust Helper
+- Status: done
+- Note: Add an explicit, opt-in helper for local Codex trust entries without committing host trust decisions to repository config.
+
+#### S49.1 Items
+
+Sprint: Sprint 1 -- Host-local trust helper
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D49.1.1` | `D` | Open X49 host-local trust implementation boundary | done |  |
+| `F49.1.2` | `F` | Add opt-in Codex trusted-project helper | done |  |
+| `T49.1.3` | `T` | Verify Codex trust helper safety and idempotence | done |  |
+| `D49.1.4` | `D` | Document host-local Codex trust usage | done |  |
+| `C49.1.5` | `C` | Checkpoint closure -- X49 trust helper and feature archive | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1325,6 +1367,12 @@ Status: done
 | cg123 | downstream bootstrap validation -- tracking plan | `D47.1.1` |
 | cg124 | downstream bootstrap validation -- evidence and roadmap state | `T47.1.2`, `D47.1.3` |
 | cg125 | downstream bootstrap validation -- closure | `C47.1.4` |
+| cg126 | codex config realignment -- tracking plan | `D48.1.1` |
+| cg127 | codex config realignment -- templates scripts tests | `M48.1.2`, `T48.1.3` |
+| cg128 | codex config realignment -- docs and checkpoint | `D48.1.4`, `C48.1.5` |
+| cg129 | codex trust helper -- tracking boundary | `D49.1.1` |
+| cg130 | codex trust helper -- implementation tests | `F49.1.2`, `T49.1.3` |
+| cg131 | codex trust helper -- docs closure archive | `D49.1.4`, `C49.1.5` |
 
 ## Item Details
 
@@ -4410,6 +4458,117 @@ Status: done
 - **Commit group**: `cg125`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X47.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### D48.1.1: Open X48/X49 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S48.1`
+- **Actions**: plan, document
+- **Commit group**: `cg126`
+- **Artifacts**: plan/PLAN-current.yaml, TODO.md
+
+### M48.1.2: Migrate Codex generated config from .codex file to .codex/config.toml
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S48.1`
+- **Actions**: migrate, implement
+- **Depends on**: `D48.1.1`
+- **Commit group**: `cg127`
+- **Artifacts**: .codex/config.toml, agent-os/templates/repo-codex-config.toml.template, agent-os/templates/workspace-codex-config.toml.template, agent-os/scripts/bootstrap-repo.sh, agent-os/scripts/sync-workspace.sh, agent-os/scripts/resolve-shared-asset.py
+
+### T48.1.3: Verify Codex config path migration
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S48.1`
+- **Actions**: test, verify
+- **Depends on**: `M48.1.2`
+- **Commit group**: `cg127`
+- **Artifacts**: tests/test_shell_scripts.py, tests/test_resolve_shared_asset.py
+- **Checks**:
+  - bootstrap-repo.sh creates .codex/config.toml and no .codex file adapter
+  - sync-workspace.sh creates .codex/config.toml and no .codex file adapter
+  - shared asset discovery no longer depends on a .codex workspace marker
+
+### D48.1.4: Align Codex runtime docs and skills with config-only TOML
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S48.1`
+- **Actions**: document, review
+- **Depends on**: `T48.1.3`
+- **Commit group**: `cg128`
+- **Artifacts**: README.md, TODO.md, agent-os/workflow/portability-model.md, agent-os/workflow/shared-workflow.md, agent-os/skills/repo-bootstrap/SKILL.md, agent-os/skills/workspace-sync/SKILL.md
+
+### C48.1.5: Checkpoint closure -- X48 Codex config realignment
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S48.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D48.1.4`
+- **Commit group**: `cg128`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X48.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+
+### D49.1.1: Open X49 host-local trust implementation boundary
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S49.1`
+- **Actions**: plan, document
+- **Depends on**: `C48.1.5`
+- **Commit group**: `cg129`
+- **Artifacts**: plan/PLAN-current.yaml
+
+### F49.1.2: Add opt-in Codex trusted-project helper
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S49.1`
+- **Actions**: implement
+- **Depends on**: `D49.1.1`
+- **Commit group**: `cg130`
+- **Artifacts**: agent-os/scripts/trust-codex-project.py, agent-os/scripts/bootstrap-repo.sh, agent-os/scripts/sync-workspace.sh
+- **Checks**:
+  - helper writes only host-local Codex config
+  - helper is idempotent for already trusted projects
+  - layer scripts mutate trust only when explicitly requested
+
+### T49.1.3: Verify Codex trust helper safety and idempotence
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S49.1`
+- **Actions**: test, verify
+- **Depends on**: `F49.1.2`
+- **Commit group**: `cg130`
+- **Artifacts**: tests/test_trust_codex_project.py, tests/test_shell_scripts.py
+- **Checks**:
+  - dry-run performs no writes
+  - missing config is created under CODEX_HOME
+  - existing config is backed up before modification
+  - existing trust entries are updated or left unchanged deterministically
+
+### D49.1.4: Document host-local Codex trust usage
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S49.1`
+- **Actions**: document, review
+- **Depends on**: `T49.1.3`
+- **Commit group**: `cg131`
+- **Artifacts**: README.md, agent-os/skills/repo-bootstrap/SKILL.md, agent-os/skills/workspace-sync/SKILL.md
+
+### C49.1.5: Checkpoint closure -- X49 trust helper and feature archive
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S49.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D49.1.4`
+- **Commit group**: `cg131`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X49.yaml, PLAN.md, PLAN.dot, tests/test_trust_codex_project.py
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift

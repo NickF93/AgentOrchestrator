@@ -2,12 +2,13 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: $0 [--dry-run] [--owner <name>] [--ref <branch|tag|sha>] <target-repo-path>"
+  echo "Usage: $0 [--dry-run] [--owner <name>] [--ref <branch|tag|sha>] [--trust-codex-project] <target-repo-path>"
 }
 
 DRY_RUN=0
 OWNER_ARG=""
 REF_ARG=""
+TRUST_CODEX_PROJECT=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -22,6 +23,10 @@ while [[ $# -gt 0 ]]; do
     --ref)
       REF_ARG="${2:-}"
       shift 2
+      ;;
+    --trust-codex-project)
+      TRUST_CODEX_PROJECT=1
+      shift
       ;;
     -*)
       echo "ERROR: Unknown option: $1" >&2
@@ -102,7 +107,7 @@ render_template "$TEMPLATES_DIR/repo-commit-msg.template" "$TARGET/.githooks/com
 render_template "$TEMPLATES_DIR/repo-pre-push.template" "$TARGET/.githooks/pre-push"
 render_template "$TEMPLATES_DIR/repo-copilot-instructions.md.template" "$TARGET/.github/copilot-instructions.md"
 render_template "$TEMPLATES_DIR/repo-CLAUDE.md.template" "$TARGET/CLAUDE.md"
-render_template "$TEMPLATES_DIR/repo-CODEX.md.template" "$TARGET/.codex"
+render_template "$TEMPLATES_DIR/repo-codex-config.toml.template" "$TARGET/.codex/config.toml"
 render_template "$TEMPLATES_DIR/repo-GEMINI.md.template" "$TARGET/GEMINI.md"
 render_template "$TEMPLATES_DIR/repo-cursor-rules.mdc.template" "$TARGET/.cursor/rules/governance.mdc"
 render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilo/rules/governance.md"
@@ -142,6 +147,14 @@ if [[ "$DRY_RUN" -eq 0 ]]; then
   echo "INFO: Enable repo-local hooks with: git -C \"$TARGET\" config core.hooksPath .githooks"
   echo "INFO: Shared assets resolve from CONTROL_PLANE_ROOT in workspace mode"
   echo "INFO: Optional vendoring is explicit via materialize-shared-asset.sh; bootstrap does not auto-vendor"
+fi
+
+if [[ "$TRUST_CODEX_PROJECT" -eq 1 ]]; then
+  TRUST_ARGS=()
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    TRUST_ARGS+=(--dry-run)
+  fi
+  "$PYTHON_BIN" "$SCRIPT_DIR/trust-codex-project.py" "${TRUST_ARGS[@]}" "$TARGET"
 fi
 
 echo "Done."

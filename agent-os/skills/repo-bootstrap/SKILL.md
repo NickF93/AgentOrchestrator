@@ -59,7 +59,7 @@ procedure belongs to exactly one of them.
 |-----------------------|---------------------------------------------------------|
 | `repo_root`           | The target repository being bootstrapped: receives      |
 |                       | AGENTS.md, ARCHITECTURE.md, REPO_MAP.md, plan/,        |
-|                       | README.md, CLAUDE.md, .codex, GEMINI.md, docs/adr/,    |
+|                       | README.md, CLAUDE.md, .codex/config.toml, GEMINI.md, docs/adr/, |
 |                       | .githooks/, .github/, .cursor/, .kilo/             |
 | `control_plane_root`  | The Level-0 checkout: bootstrap script, templates,      |
 |                       | validation tooling, schemas, skill definitions          |
@@ -113,7 +113,7 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `repo-pre-push.template`                | `{repo_root}/.githooks/pre-push`             |
 | `repo-copilot-instructions.md.template` | `{repo_root}/.github/copilot-instructions.md`|
 | `repo-CLAUDE.md.template`               | `{repo_root}/CLAUDE.md`                      |
-| `repo-CODEX.md.template`                | `{repo_root}/.codex`                         |
+| `repo-codex-config.toml.template`       | `{repo_root}/.codex/config.toml`             |
 | `repo-GEMINI.md.template`               | `{repo_root}/GEMINI.md`                      |
 | `repo-cursor-rules.mdc.template`        | `{repo_root}/.cursor/rules/governance.mdc`   |
 | `repo-kilo-rules.md.template`           | `{repo_root}/.kilo/rules/governance.md`  |
@@ -128,6 +128,7 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `control_plane_root`   | string | (resolved)    | Root of the Level-0 control-plane checkout       |
 | `dry_run`              | bool   | `false`       | If true, run bootstrap in dry-run mode           |
 | `init_git`             | bool   | `false`       | If true, run `git init` when target is not a git repo |
+| `trust_codex_project`  | bool   | `false`       | If true, add the target path to host-local Codex trust config |
 
 ## Expected Outputs
 
@@ -165,10 +166,12 @@ files_created:
   - .githooks/pre-push: created | skipped | missing
   - .github/copilot-instructions.md: created | skipped | missing
   - CLAUDE.md: created | skipped | missing
-  - .codex: created | skipped | missing
+  - .codex/config.toml: created | skipped | missing
   - GEMINI.md: created | skipped | missing
   - .cursor/rules/governance.mdc: created | skipped | missing
   - .kilo/rules/governance.md: created | skipped | missing
+host_local:
+  codex_trust: trusted | unchanged | skipped
 verification:
   - plan_valid: true | false | skipped
   - hooks_executable: true | false | skipped
@@ -238,11 +241,13 @@ cannot be located or is incomplete, nothing else is meaningful.
      [--dry-run] \
      [--owner <owner>] \
      [--ref <ref>] \
+     [--trust-codex-project] \
      {repo_root}
    ```
    - Include `--dry-run` if `dry_run` is `true`.
    - Include `--owner <owner>` if `owner` is provided and not empty.
    - Include `--ref <ref>` if `ref` is provided and not empty.
+   - Include `--trust-codex-project` only if `trust_codex_project` is `true`.
 
 2. Run the command and capture stdout, stderr, and exit code.
 
@@ -332,8 +337,9 @@ Record completeness in the report.
      `export CONTROL_PLANE_ROOT=<control_plane_root>`"
    - "Or run sync-workspace.sh to stamp the workspace."
    - "Review and customize plan/PLAN-index.yaml and plan/PLAN-current.yaml for project-specific milestones."
-   - "Shared assets resolve from CONTROL_PLANE_ROOT in workspace mode.
+  - "Shared assets resolve from CONTROL_PLANE_ROOT in workspace mode.
      Optional vendoring is explicit via materialize-shared-asset.sh."
+   - "Codex trust is host-local. Use --trust-codex-project only when the operator wants this target added to $CODEX_HOME/config.toml or ~/.codex/config.toml."
 
 ## Common-Case Command Sequence
 

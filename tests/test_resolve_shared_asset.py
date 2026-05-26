@@ -210,7 +210,7 @@ def test_discover_control_plane_root_uses_stamped_workspace(
     assert module.discover_control_plane_root(repo_clone, None) == repo_root.resolve()
 
 
-def test_parse_workspace_control_plane_root_reads_codex_marker(
+def test_parse_workspace_control_plane_root_ignores_codex_config_marker(
     repo_root: Path, tmp_path: Path
 ) -> None:
     module = load_module(
@@ -220,9 +220,11 @@ def test_parse_workspace_control_plane_root_reads_codex_marker(
     workspace_root.mkdir()
     repo_clone = workspace_root / "repo"
     repo_clone.mkdir()
-    (workspace_root / ".codex").write_text(f"Control plane: {repo_root}\n", encoding="utf-8")
+    codex_config = workspace_root / ".codex" / "config.toml"
+    codex_config.parent.mkdir()
+    codex_config.write_text(f"# Control plane: {repo_root}\n", encoding="utf-8")
 
-    assert module.parse_workspace_control_plane_root(repo_clone) == repo_root.resolve()
+    assert module.parse_workspace_control_plane_root(repo_clone) is None
 
 
 def test_find_registry_asset_rejects_non_mapping_entries(
