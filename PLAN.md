@@ -65,7 +65,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X49 | X | Codex Host-Local Trust Helper | done |
 | X50 | X | Downstream plan archive persistence | done |
 | X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
-| X52 | X | Stale Tracker Cleanup | in_progress |
+| X52 | X | Stale Tracker Cleanup | done |
 
 ## Plan
 
@@ -1286,19 +1286,19 @@ Status: done
 
 - ID: `X52`
 - Title: Stale Tracker Cleanup
-- Status: in_progress
+- Status: done
 - Note: Close stale issue-tracker state and align TODO wording with the split-plan bootstrap implementation.
 
 #### S52.1 Items
 
 Sprint: Sprint 1 -- Tracker and TODO drift cleanup
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D52.1.1` | `D` | Open X52 stale tracker cleanup tracking | done |  |
-| `F52.1.2` | `F` | Align TODO bootstrap wording with split-plan files | planned |  |
-| `C52.1.3` | `C` | Checkpoint closure -- X52 stale tracker cleanup | planned |  |
+| `F52.1.2` | `F` | Align TODO bootstrap wording with split-plan files | done |  |
+| `C52.1.3` | `C` | Checkpoint closure -- X52 stale tracker cleanup | done |  |
 
 ## Commit Groups
 
@@ -4775,7 +4775,7 @@ Status: in_progress
 
 ### F52.1.2: Align TODO bootstrap wording with split-plan files
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S52.1`
 - **Actions**: implement
 - **Depends on**: `D52.1.1`
@@ -4786,7 +4786,7 @@ Status: in_progress
 
 ### C52.1.3: Checkpoint closure -- X52 stale tracker cleanup
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S52.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `F52.1.2`
