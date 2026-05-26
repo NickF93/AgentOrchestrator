@@ -1,0 +1,143 @@
+milestones:
+- id: X51
+  type: X
+  title: Shared Asset Layer 0 to Layer 2 Validation
+  status: done
+  note: 'Validate issue #17 with automated and disposable real-repo evidence that
+    shared assets resolve and materialize from Layer 0 into Layer 2 without duplicating
+    authority.'
+sprints:
+- id: S51.1
+  type: S
+  parent: X51
+  title: Sprint 1 -- Shared asset validation evidence
+  status: done
+items:
+- id: D51.1.1
+  parent: S51.1
+  type: D
+  title: Open X51 validation tracking
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg135
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - X51 active plan declares implementation and closure commit groups
+- id: T51.1.2
+  parent: S51.1
+  type: T
+  title: Add hermetic L0 to L2 shared asset E2E coverage
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - D51.1.1
+  role: tester
+  effort: medium
+  commit_group: cg136
+  scope: tests/
+  artifacts_out:
+  - tests/test_shared_asset_e2e.py
+  checks:
+  - temp workspace sync stamps CONTROL_PLANE_ROOT
+  - temp Layer-2 bootstrap creates runtime entrypoints and plan archive placeholder
+  - workspace-mode resolver finds a shared skill from Layer 2 without explicit root
+  - explicit materialization writes a vendored snapshot and provenance
+  - vendored-mode resolver reads the materialized snapshot
+- id: T51.1.3
+  parent: S51.1
+  type: T
+  title: Capture disposable real-repo shared asset evidence
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - T51.1.2
+  role: tester
+  effort: medium
+  commit_group: cg137
+  scope: docs/design/
+  artifacts_out:
+  - docs/design/X51-shared-asset-l0-l2-validation.md
+  checks:
+  - AgentOrchestrator-Test validation uses a disposable local clone or copy
+  - evidence includes workspace-mode resolve, materialization, and vendored-mode resolve
+  - evidence report remains explicitly non-authoritative
+- id: D51.1.4
+  parent: S51.1
+  type: D
+  title: Update roadmap state for shared asset validation
+  actions:
+  - document
+  - review
+  status: done
+  depends_on:
+  - T51.1.3
+  role: documenter
+  effort: low
+  commit_group: cg137
+  scope: TODO.md
+  artifacts_out:
+  - TODO.md
+  checks:
+  - TODO.md marks Layer 0 to Layer 2 shared asset validation complete only after evidence
+    exists
+- id: C51.1.5
+  parent: S51.1
+  type: C
+  title: Checkpoint closure -- X51 shared asset validation
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D51.1.4
+  role: reviewer
+  effort: low
+  commit_group: cg137
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X51.yaml
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+commit_groups:
+- id: cg135
+  title: shared asset validation -- tracking boundary
+  items:
+  - D51.1.1
+  notes: Opens X51 active tracking and declares validation, evidence, and closure
+    commit-group boundaries before implementation changes.
+- id: cg136
+  title: shared asset validation -- hermetic E2E
+  items:
+  - T51.1.2
+  notes: Adds deterministic test coverage for workspace sync, Layer-2 bootstrap, workspace-mode
+    shared asset resolution, explicit materialization, and vendored resolution.
+- id: cg137
+  title: shared asset validation -- evidence docs closure
+  items:
+  - T51.1.3
+  - D51.1.4
+  - C51.1.5
+  notes: Records disposable real-repo evidence, updates roadmap state, archives X51,
+    and refreshes generated plan views.

@@ -51,7 +51,7 @@
 - [x] Registry, prompts, profiles, protocols model
 - [x] Two-root consumption (`control_plane_root` / `repo_root`)
 - [x] `materialize-shared-asset.sh` for vendoring into repos
-- [ ] Ensure sharing works end-to-end across Layer 0 and Layer 2
+- [x] Ensure sharing works end-to-end across Layer 0 and Layer 2
 
 ## Layer 1 — Workspace Runtime — Priority: P2
 
@@ -65,7 +65,7 @@
 - [x] `bootstrap-repo.sh` scaffolds `AGENTS.md`, `PLAN.yaml`, commit hook, thin runtime entrypoints for Claude, Gemini, Cursor, Copilot, and Kilo, and Codex config at `.codex/config.toml`
 - [x] End-to-end bootstrap + governance validation in a real downstream repo
 - [x] Preserve or document `plan/archive/` behavior after downstream bootstrap commit (ref: issue #38)
-- [ ] Verify Layer-2 repos can consume shared assets cleanly
+- [x] Verify Layer-2 repos can consume shared assets cleanly
 
 ## Plan Scaling / Archival — Priority: P1
 

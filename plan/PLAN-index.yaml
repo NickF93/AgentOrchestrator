@@ -219,3 +219,7 @@ archives:
   title: Downstream plan archive persistence
   path: archive/PLAN-X50.yaml
   digest: sha256:b974e8b508dc
+- milestone: X51
+  title: Shared Asset Layer 0 to Layer 2 Validation
+  path: archive/PLAN-X51.yaml
+  digest: sha256:1b1d0ee7eb22
