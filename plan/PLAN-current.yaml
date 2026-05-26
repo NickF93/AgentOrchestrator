@@ -34,7 +34,7 @@ items:
   title: Add opt-in Codex trusted-project helper
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D49.1.1
   role: implementer
@@ -56,7 +56,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - F49.1.2
   role: tester

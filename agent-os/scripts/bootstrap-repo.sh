@@ -8,6 +8,7 @@ usage() {
 DRY_RUN=0
 OWNER_ARG=""
 REF_ARG=""
+TRUST_CODEX_PROJECT=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -22,6 +23,10 @@ while [[ $# -gt 0 ]]; do
     --ref)
       REF_ARG="${2:-}"
       shift 2
+      ;;
+    --trust-codex-project)
+      TRUST_CODEX_PROJECT=1
+      shift
       ;;
     -*)
       echo "ERROR: Unknown option: $1" >&2
@@ -142,6 +147,14 @@ if [[ "$DRY_RUN" -eq 0 ]]; then
   echo "INFO: Enable repo-local hooks with: git -C \"$TARGET\" config core.hooksPath .githooks"
   echo "INFO: Shared assets resolve from CONTROL_PLANE_ROOT in workspace mode"
   echo "INFO: Optional vendoring is explicit via materialize-shared-asset.sh; bootstrap does not auto-vendor"
+fi
+
+if [[ "$TRUST_CODEX_PROJECT" -eq 1 ]]; then
+  TRUST_ARGS=()
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    TRUST_ARGS+=(--dry-run)
+  fi
+  "$PYTHON_BIN" "$SCRIPT_DIR/trust-codex-project.py" "${TRUST_ARGS[@]}" "$TARGET"
 fi
 
 echo "Done."

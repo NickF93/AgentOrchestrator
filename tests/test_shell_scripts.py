@@ -161,6 +161,32 @@ def test_bootstrap_repo_creates_expected_files(
     assert "## Adapter Overrides" in kilo_text
 
 
+def test_bootstrap_repo_trust_codex_project_is_explicit(
+    repo_root: Path,
+    tmp_path: Path,
+    script_env: dict[str, str],
+) -> None:
+    target_repo = tmp_path / "BootRepo"
+    codex_home = tmp_path / "codex-home"
+    env = {**script_env, "CODEX_HOME": str(codex_home)}
+
+    result = run_shell_script(
+        repo_root / "agent-os" / "scripts" / "bootstrap-repo.sh",
+        "--owner",
+        "tester",
+        "--ref",
+        "main",
+        "--trust-codex-project",
+        str(target_repo),
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    content = (codex_home / "config.toml").read_text(encoding="utf-8")
+    assert f'[projects."{target_repo.resolve().as_posix()}"]' in content
+    assert 'trust_level = "trusted"' in content
+
+
 def test_sync_workspace_stamps_control_plane_root(
     repo_root: Path,
     tmp_path: Path,
@@ -195,6 +221,28 @@ def test_sync_workspace_stamps_control_plane_root(
     assert not (workspace_root / ".github").exists()
     assert not (workspace_root / ".kilo").exists()
     assert not (workspace_root / "KILO.md").exists()
+
+
+def test_sync_workspace_trust_codex_project_is_explicit(
+    repo_root: Path,
+    tmp_path: Path,
+    script_env: dict[str, str],
+) -> None:
+    workspace_root = tmp_path / "workspace"
+    codex_home = tmp_path / "codex-home"
+    env = {**script_env, "CODEX_HOME": str(codex_home)}
+
+    result = run_shell_script(
+        repo_root / "agent-os" / "scripts" / "sync-workspace.sh",
+        "--trust-codex-project",
+        str(workspace_root),
+        env=env,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    content = (codex_home / "config.toml").read_text(encoding="utf-8")
+    assert f'[projects."{workspace_root.resolve().as_posix()}"]' in content
+    assert 'trust_level = "trusted"' in content
 
 
 def test_materialize_shared_asset_writes_snapshot_and_provenance(
