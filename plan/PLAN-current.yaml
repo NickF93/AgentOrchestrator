@@ -34,7 +34,7 @@ items:
   title: Add bootstrapped plan archive placeholder
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D50.1.1
   role: implementer
@@ -54,7 +54,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - F50.1.2
   role: tester

@@ -1255,8 +1255,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D50.1.1` | `D` | Open X50 archive persistence tracking | done |  |
-| `F50.1.2` | `F` | Add bootstrapped plan archive placeholder | planned |  |
-| `T50.1.3` | `T` | Verify archive placeholder persistence and archive-tool compatibility | planned |  |
+| `F50.1.2` | `F` | Add bootstrapped plan archive placeholder | done |  |
+| `T50.1.3` | `T` | Verify archive placeholder persistence and archive-tool compatibility | done |  |
 | `D50.1.4` | `D` | Document persisted archive placeholder behavior | planned |  |
 | `C50.1.5` | `C` | Checkpoint closure -- X50 archive persistence | planned |  |
 
@@ -4608,7 +4608,7 @@ Status: in_progress
 
 ### F50.1.2: Add bootstrapped plan archive placeholder
 
-- **Type**: F | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S50.1`
 - **Actions**: implement
 - **Depends on**: `D50.1.1`
@@ -4620,7 +4620,7 @@ Status: in_progress
 
 ### T50.1.3: Verify archive placeholder persistence and archive-tool compatibility
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S50.1`
 - **Actions**: test, verify
 - **Depends on**: `F50.1.2`

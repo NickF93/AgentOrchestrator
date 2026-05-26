@@ -101,6 +101,7 @@ render_template "$TEMPLATES_DIR/repo-ARCHITECTURE.md.template" "$TARGET/ARCHITEC
 render_template "$TEMPLATES_DIR/repo-REPO_MAP.md.template" "$TARGET/REPO_MAP.md"
 render_template "$TEMPLATES_DIR/PLAN-index.yaml.template" "$TARGET/plan/PLAN-index.yaml"
 render_template "$TEMPLATES_DIR/PLAN-current.yaml.template" "$TARGET/plan/PLAN-current.yaml"
+render_template "$TEMPLATES_DIR/PLAN-archive-gitkeep.template" "$TARGET/plan/archive/.gitkeep"
 render_template "$TEMPLATES_DIR/repo-README.md.template" "$TARGET/README.md"
 render_template "$TEMPLATES_DIR/repo-ADR.md.template" "$TARGET/docs/adr/ADR-0001.md"
 render_template "$TEMPLATES_DIR/repo-commit-msg.template" "$TARGET/.githooks/commit-msg"
@@ -111,13 +112,6 @@ render_template "$TEMPLATES_DIR/repo-codex-config.toml.template" "$TARGET/.codex
 render_template "$TEMPLATES_DIR/repo-GEMINI.md.template" "$TARGET/GEMINI.md"
 render_template "$TEMPLATES_DIR/repo-cursor-rules.mdc.template" "$TARGET/.cursor/rules/governance.mdc"
 render_template "$TEMPLATES_DIR/repo-kilo-rules.md.template" "$TARGET/.kilo/rules/governance.md"
-
-if [[ "$DRY_RUN" -eq 1 ]]; then
-  echo "DRY-RUN: create $TARGET/plan/archive"
-else
-  mkdir -p "$TARGET/plan/archive"
-  echo "OK: created $TARGET/plan/archive"
-fi
 
 if [[ "$DRY_RUN" -eq 0 ]]; then
   for hook_path in "$TARGET/.githooks/commit-msg" "$TARGET/.githooks/pre-push"; do
