@@ -107,6 +107,7 @@ After a successful bootstrap, `repo_root` will contain these files:
 | `repo-REPO_MAP.md.template`             | `{repo_root}/REPO_MAP.md`                    |
 | `PLAN-index.yaml.template`              | `{repo_root}/plan/PLAN-index.yaml`          |
 | `PLAN-current.yaml.template`            | `{repo_root}/plan/PLAN-current.yaml`        |
+| `PLAN-archive-gitkeep.template`         | `{repo_root}/plan/archive/.gitkeep`         |
 | `repo-README.md.template`              | `{repo_root}/README.md`                      |
 | `repo-ADR.md.template`                  | `{repo_root}/docs/adr/ADR-0001.md`           |
 | `repo-commit-msg.template`              | `{repo_root}/.githooks/commit-msg`           |
@@ -159,7 +160,7 @@ files_created:
   - REPO_MAP.md: created | skipped | missing
   - plan/PLAN-index.yaml: created | skipped | missing
   - plan/PLAN-current.yaml: created | skipped | missing
-  - plan/archive/: created | skipped | missing
+  - plan/archive/.gitkeep: created | skipped | missing
   - README.md: created | skipped | missing
   - docs/adr/ADR-0001.md: created | skipped | missing
   - .githooks/commit-msg: created | skipped | missing
@@ -308,11 +309,13 @@ If `dry_run` is `true`, skip this step.
 
 Verify the expected directory structure was created:
 
-1. `{repo_root}/docs/adr/` directory exists.
-2. `{repo_root}/.githooks/` directory exists.
-3. `{repo_root}/.github/` directory exists.
-4. `{repo_root}/.cursor/rules/` directory exists.
-5. `{repo_root}/.kilo/rules/` directory exists.
+1. `{repo_root}/plan/archive/` directory exists.
+2. `{repo_root}/plan/archive/.gitkeep` file exists.
+3. `{repo_root}/docs/adr/` directory exists.
+4. `{repo_root}/.githooks/` directory exists.
+5. `{repo_root}/.github/` directory exists.
+6. `{repo_root}/.cursor/rules/` directory exists.
+7. `{repo_root}/.kilo/rules/` directory exists.
 
 Record completeness in the report.
 

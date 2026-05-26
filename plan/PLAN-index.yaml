@@ -215,3 +215,7 @@ archives:
   title: Codex Host-Local Trust Helper
   path: archive/PLAN-X49.yaml
   digest: sha256:638fbb8a9ce7
+- milestone: X50
+  title: Downstream plan archive persistence
+  path: archive/PLAN-X50.yaml
+  digest: sha256:b974e8b508dc

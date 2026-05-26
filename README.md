@@ -28,6 +28,7 @@ repositories. It does not host product code.
 | `ARCHITECTURE.md` | Structural constraints and boundary rules |
 | `plan/PLAN-index.yaml` | Canonical plan entrypoint (source of truth) |
 | `plan/PLAN-current.yaml` | Active execution fragment |
+| `plan/archive/.gitkeep` | Tracked placeholder preserving the archive directory before first archive |
 | `plan/archive/PLAN-XNN.yaml` | Closed milestone archive fragments |
 | `PLAN.md` | Human-readable plan view (generated) |
 | `PLAN.dot` | Graph plan view (generated) |

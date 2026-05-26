@@ -63,7 +63,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X47 | X | Downstream Bootstrap Governance Validation | done |
 | X48 | X | Codex Project Config Realignment | done |
 | X49 | X | Codex Host-Local Trust Helper | done |
-| X50 | X | Downstream plan archive persistence | in_progress |
+| X50 | X | Downstream plan archive persistence | done |
 
 ## Plan
 
@@ -1244,21 +1244,21 @@ Status: done
 
 - ID: `X50`
 - Title: Downstream plan archive persistence
-- Status: in_progress
+- Status: done
 - Note: Preserve the bootstrapped plan/archive directory in committed downstream repositories so bootstrap verification matches fresh checkout state.
 
 #### S50.1 Items
 
 Sprint: Sprint 1 -- Bootstrap archive placeholder
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D50.1.1` | `D` | Open X50 archive persistence tracking | done |  |
 | `F50.1.2` | `F` | Add bootstrapped plan archive placeholder | done |  |
 | `T50.1.3` | `T` | Verify archive placeholder persistence and archive-tool compatibility | done |  |
-| `D50.1.4` | `D` | Document persisted archive placeholder behavior | planned |  |
-| `C50.1.5` | `C` | Checkpoint closure -- X50 archive persistence | planned |  |
+| `D50.1.4` | `D` | Document persisted archive placeholder behavior | done |  |
+| `C50.1.5` | `C` | Checkpoint closure -- X50 archive persistence | done |  |
 
 ## Commit Groups
 
@@ -4633,7 +4633,7 @@ Status: in_progress
 
 ### D50.1.4: Document persisted archive placeholder behavior
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S50.1`
 - **Actions**: document, review
 - **Depends on**: `T50.1.3`
@@ -4645,7 +4645,7 @@ Status: in_progress
 
 ### C50.1.5: Checkpoint closure -- X50 archive persistence
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S50.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D50.1.4`

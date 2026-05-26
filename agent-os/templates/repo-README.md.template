@@ -14,6 +14,7 @@ This repository is governed by the Level-0 control plane.
 | ARCHITECTURE.md | Software constraints and boundaries |
 | plan/PLAN-index.yaml | Canonical plan entrypoint (source of truth) |
 | plan/PLAN-current.yaml | Active execution fragment |
+| plan/archive/.gitkeep | Tracked placeholder preserving the archive directory before first archive |
 | plan/archive/PLAN-XNN.yaml | Closed milestone archive fragments |
 | PLAN.md | Human-readable plan view (generated) |
 | PLAN.dot | Graph plan view (generated) |
