@@ -20,7 +20,7 @@
 
 - [x] Runtime lifecycle tiers (experimental / supported / first-class)
 - [x] Claude — first-class (adapter, profile, workspace template, sync)
-- [x] Codex — first-class (adapter, profile, workspace template, sync)
+- [ ] Codex — first-class config realignment (`AGENTS.md` instructions + `.codex/config.toml` config)
 - [x] Gemini — first-class (repo-local `GEMINI.md`, bootstrap template)
 - [x] Cursor — first-class (repo-local `.cursor/rules/governance.mdc`, bootstrap template)
 - [x] Copilot — first-class (repo-local `.github/copilot-instructions.md`, bootstrap template)
@@ -55,7 +55,7 @@
 
 ## Layer 1 — Workspace Runtime — Priority: P2
 
-- [x] `sync-workspace.sh` renders `AGENTS.md`, `CLAUDE.md`, `.codex`
+- [ ] `sync-workspace.sh` renders `AGENTS.md`, `CLAUDE.md`, `.codex/config.toml`
 - [x] Workspace templates with `{{CONTROL_PLANE_ROOT}}` placeholders
 - [ ] Harden Layer-1 lifecycle (drift detection, staleness checks)
 - [x] Evaluate workspace template boundaries — repo-scoped runtimes (Gemini, Cursor, Kilo, Copilot) use bootstrap templates, not workspace templates
