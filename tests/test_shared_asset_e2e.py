@@ -76,12 +76,7 @@ def test_shared_asset_l0_to_l2_workspace_and_vendored_flow(
     assert materialize.returncode == 0, materialize.stdout + materialize.stderr
 
     vendored_asset = (
-        layer2_repo
-        / ".agent-os"
-        / "vendor"
-        / "skill"
-        / "plan-checkpoint-close"
-        / "SKILL.md"
+        layer2_repo / ".agent-os" / "vendor" / "skill" / "plan-checkpoint-close" / "SKILL.md"
     )
     provenance = vendored_asset.with_name("provenance.yaml")
     assert vendored_asset.exists()

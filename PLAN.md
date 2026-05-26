@@ -64,7 +64,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X48 | X | Codex Project Config Realignment | done |
 | X49 | X | Codex Host-Local Trust Helper | done |
 | X50 | X | Downstream plan archive persistence | done |
-| X51 | X | Shared Asset Layer 0 to Layer 2 Validation | in_progress |
+| X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
 
 ## Plan
 
@@ -1265,21 +1265,21 @@ Status: done
 
 - ID: `X51`
 - Title: Shared Asset Layer 0 to Layer 2 Validation
-- Status: in_progress
+- Status: done
 - Note: Validate issue #17 with automated and disposable real-repo evidence that shared assets resolve and materialize from Layer 0 into Layer 2 without duplicating authority.
 
 #### S51.1 Items
 
 Sprint: Sprint 1 -- Shared asset validation evidence
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D51.1.1` | `D` | Open X51 validation tracking | done |  |
 | `T51.1.2` | `T` | Add hermetic L0 to L2 shared asset E2E coverage | done |  |
-| `T51.1.3` | `T` | Capture disposable real-repo shared asset evidence | planned |  |
-| `D51.1.4` | `D` | Update roadmap state for shared asset validation | planned |  |
-| `C51.1.5` | `C` | Checkpoint closure -- X51 shared asset validation | planned |  |
+| `T51.1.3` | `T` | Capture disposable real-repo shared asset evidence | done |  |
+| `D51.1.4` | `D` | Update roadmap state for shared asset validation | done |  |
+| `C51.1.5` | `C` | Checkpoint closure -- X51 shared asset validation | done |  |
 
 ## Commit Groups
 
@@ -4708,7 +4708,7 @@ Status: in_progress
 
 ### T51.1.3: Capture disposable real-repo shared asset evidence
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S51.1`
 - **Actions**: test, verify
 - **Depends on**: `T51.1.2`
@@ -4721,7 +4721,7 @@ Status: in_progress
 
 ### D51.1.4: Update roadmap state for shared asset validation
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S51.1`
 - **Actions**: document, review
 - **Depends on**: `T51.1.3`
@@ -4732,7 +4732,7 @@ Status: in_progress
 
 ### C51.1.5: Checkpoint closure -- X51 shared asset validation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S51.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D51.1.4`
