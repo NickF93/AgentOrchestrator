@@ -65,6 +65,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X49 | X | Codex Host-Local Trust Helper | done |
 | X50 | X | Downstream plan archive persistence | done |
 | X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
+| X52 | X | Stale Tracker Cleanup | done |
 
 ## Plan
 
@@ -1281,6 +1282,24 @@ Status: done
 | `D51.1.4` | `D` | Update roadmap state for shared asset validation | done |  |
 | `C51.1.5` | `C` | Checkpoint closure -- X51 shared asset validation | done |  |
 
+### X52
+
+- ID: `X52`
+- Title: Stale Tracker Cleanup
+- Status: done
+- Note: Close stale issue-tracker state and align TODO wording with the split-plan bootstrap implementation.
+
+#### S52.1 Items
+
+Sprint: Sprint 1 -- Tracker and TODO drift cleanup
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D52.1.1` | `D` | Open X52 stale tracker cleanup tracking | done |  |
+| `F52.1.2` | `F` | Align TODO bootstrap wording with split-plan files | done |  |
+| `C52.1.3` | `C` | Checkpoint closure -- X52 stale tracker cleanup | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1421,6 +1440,8 @@ Status: done
 | cg135 | shared asset validation -- tracking boundary | `D51.1.1` |
 | cg136 | shared asset validation -- hermetic E2E | `T51.1.2` |
 | cg137 | shared asset validation -- evidence docs closure | `T51.1.3`, `D51.1.4`, `C51.1.5` |
+| cg138 | stale cleanup -- tracking boundary | `D52.1.1` |
+| cg139 | stale cleanup -- TODO closure archive | `F52.1.2`, `C52.1.3` |
 
 ## Item Details
 
@@ -4743,3 +4764,36 @@ Status: done
   - validate-plan.py exits 0
   - render-plan.py produces no drift
   - run-gates.sh passes
+
+### D52.1.1: Open X52 stale tracker cleanup tracking
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S52.1`
+- **Actions**: plan, document
+- **Commit group**: `cg138`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F52.1.2: Align TODO bootstrap wording with split-plan files
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S52.1`
+- **Actions**: implement
+- **Depends on**: `D52.1.1`
+- **Commit group**: `cg139`
+- **Artifacts**: TODO.md
+- **Checks**:
+  - Layer-2 bootstrap TODO row names plan/PLAN-index.yaml, plan/PLAN-current.yaml, and plan/archive/.gitkeep instead of legacy PLAN.yaml
+
+### C52.1.3: Checkpoint closure -- X52 stale tracker cleanup
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S52.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `F52.1.2`
+- **Commit group**: `cg139`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X52.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - git diff --check passes

@@ -51,6 +51,7 @@ digraph PLAN {
   "X49" [label="X49 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X50" [label="X50 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X51" [label="X51 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X52" [label="X52 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -121,6 +122,7 @@ digraph PLAN {
   "S49.1" [label="S49.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S50.1" [label="S50.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S51.1" [label="S51.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S52.1" [label="S52.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -969,6 +971,17 @@ digraph PLAN {
   "D51.1.4" [label="D51.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   "C51.1.5" [label="C51.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg138" {
+    style="rounded,dashed";
+    label="cg138: stale cleanup -- tracking boundary";
+  "D52.1.1" [label="D52.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg139" {
+    style="rounded,dashed";
+    label="cg139: stale cleanup -- TODO closure archive";
+  "F52.1.2" [label="F52.1.2 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "C52.1.3" [label="C52.1.3 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -1039,6 +1052,7 @@ digraph PLAN {
   "X49" -> "S49.1" [style=dashed];
   "X50" -> "S50.1" [style=dashed];
   "X51" -> "S51.1" [style=dashed];
+  "X52" -> "S52.1" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -1343,6 +1357,9 @@ digraph PLAN {
   "S51.1" -> "T51.1.3" [style=dashed];
   "S51.1" -> "D51.1.4" [style=dashed];
   "S51.1" -> "C51.1.5" [style=dashed];
+  "S52.1" -> "D52.1.1" [style=dashed];
+  "S52.1" -> "F52.1.2" [style=dashed];
+  "S52.1" -> "C52.1.3" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1669,4 +1686,6 @@ digraph PLAN {
   "T51.1.2" -> "T51.1.3";
   "T51.1.3" -> "D51.1.4";
   "D51.1.4" -> "C51.1.5";
+  "D52.1.1" -> "F52.1.2";
+  "F52.1.2" -> "C52.1.3";
 }

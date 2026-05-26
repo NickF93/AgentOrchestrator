@@ -223,3 +223,7 @@ archives:
   title: Shared Asset Layer 0 to Layer 2 Validation
   path: archive/PLAN-X51.yaml
   digest: sha256:1b1d0ee7eb22
+- milestone: X52
+  title: Stale Tracker Cleanup
+  path: archive/PLAN-X52.yaml
+  digest: sha256:9d8d6fb58a0a
