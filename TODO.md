@@ -64,7 +64,7 @@
 
 - [x] `bootstrap-repo.sh` scaffolds `AGENTS.md`, `PLAN.yaml`, commit hook, thin runtime entrypoints for Claude, Gemini, Cursor, Copilot, and Kilo, and Codex config at `.codex/config.toml`
 - [x] End-to-end bootstrap + governance validation in a real downstream repo
-- [ ] Preserve or document `plan/archive/` behavior after downstream bootstrap commit (ref: issue #38)
+- [x] Preserve or document `plan/archive/` behavior after downstream bootstrap commit (ref: issue #38)
 - [ ] Verify Layer-2 repos can consume shared assets cleanly
 
 ## Plan Scaling / Archival — Priority: P1

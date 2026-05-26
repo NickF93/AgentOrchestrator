@@ -63,6 +63,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X47 | X | Downstream Bootstrap Governance Validation | done |
 | X48 | X | Codex Project Config Realignment | done |
 | X49 | X | Codex Host-Local Trust Helper | done |
+| X50 | X | Downstream plan archive persistence | done |
 
 ## Plan
 
@@ -1239,6 +1240,26 @@ Status: done
 | `D49.1.4` | `D` | Document host-local Codex trust usage | done |  |
 | `C49.1.5` | `C` | Checkpoint closure -- X49 trust helper and feature archive | done |  |
 
+### X50
+
+- ID: `X50`
+- Title: Downstream plan archive persistence
+- Status: done
+- Note: Preserve the bootstrapped plan/archive directory in committed downstream repositories so bootstrap verification matches fresh checkout state.
+
+#### S50.1 Items
+
+Sprint: Sprint 1 -- Bootstrap archive placeholder
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D50.1.1` | `D` | Open X50 archive persistence tracking | done |  |
+| `F50.1.2` | `F` | Add bootstrapped plan archive placeholder | done |  |
+| `T50.1.3` | `T` | Verify archive placeholder persistence and archive-tool compatibility | done |  |
+| `D50.1.4` | `D` | Document persisted archive placeholder behavior | done |  |
+| `C50.1.5` | `C` | Checkpoint closure -- X50 archive persistence | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1373,6 +1394,9 @@ Status: done
 | cg129 | codex trust helper -- tracking boundary | `D49.1.1` |
 | cg130 | codex trust helper -- implementation tests | `F49.1.2`, `T49.1.3` |
 | cg131 | codex trust helper -- docs closure archive | `D49.1.4`, `C49.1.5` |
+| cg132 | archive placeholder -- tracking boundary | `D50.1.1` |
+| cg133 | archive placeholder -- implementation tests | `F50.1.2`, `T50.1.3` |
+| cg134 | archive placeholder -- docs closure archive | `D50.1.4`, `C50.1.5` |
 
 ## Item Details
 
@@ -4569,6 +4593,65 @@ Status: done
 - **Commit group**: `cg131`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
 - **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X49.yaml, PLAN.md, PLAN.dot, tests/test_trust_codex_project.py
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### D50.1.1: Open X50 archive persistence tracking
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S50.1`
+- **Actions**: plan, document
+- **Commit group**: `cg132`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### F50.1.2: Add bootstrapped plan archive placeholder
+
+- **Type**: F | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S50.1`
+- **Actions**: implement
+- **Depends on**: `D50.1.1`
+- **Commit group**: `cg133`
+- **Artifacts**: agent-os/templates/PLAN-archive-gitkeep.template, agent-os/scripts/bootstrap-repo.sh
+- **Checks**:
+  - bootstrap creates plan/archive/.gitkeep
+  - dry-run reports plan/archive/.gitkeep
+
+### T50.1.3: Verify archive placeholder persistence and archive-tool compatibility
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S50.1`
+- **Actions**: test, verify
+- **Depends on**: `F50.1.2`
+- **Commit group**: `cg133`
+- **Artifacts**: tests/test_shell_scripts.py, tests/test_split_plan.py
+- **Checks**:
+  - committed downstream bootstrap includes plan/archive/.gitkeep
+  - archive-plan.py succeeds with .gitkeep present
+  - validate-plan.py ignores non-indexed archive placeholders
+
+### D50.1.4: Document persisted archive placeholder behavior
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
+- **Sprint**: `S50.1`
+- **Actions**: document, review
+- **Depends on**: `T50.1.3`
+- **Commit group**: `cg134`
+- **Artifacts**: README.md, agent-os/templates/repo-README.md.template, agent-os/skills/repo-bootstrap/SKILL.md, TODO.md
+- **Checks**:
+  - downstream docs describe plan/archive/.gitkeep as a persistence placeholder
+  - TODO.md issue #38 row is complete
+
+### C50.1.5: Checkpoint closure -- X50 archive persistence
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S50.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D50.1.4`
+- **Commit group**: `cg134`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X50.yaml, PLAN.md, PLAN.dot
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift

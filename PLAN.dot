@@ -49,6 +49,7 @@ digraph PLAN {
   "X47" [label="X47 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X48" [label="X48 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X49" [label="X49 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X50" [label="X50 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -117,6 +118,7 @@ digraph PLAN {
   "S47.1" [label="S47.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S48.1" [label="S48.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S49.1" [label="S49.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S50.1" [label="S50.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -931,6 +933,23 @@ digraph PLAN {
   "D49.1.4" [label="D49.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   "C49.1.5" [label="C49.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg132" {
+    style="rounded,dashed";
+    label="cg132: archive placeholder -- tracking boundary";
+  "D50.1.1" [label="D50.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg133" {
+    style="rounded,dashed";
+    label="cg133: archive placeholder -- implementation tests";
+  "F50.1.2" [label="F50.1.2 | F | done", shape=octagon, style="filled,rounded", fillcolor=darkseagreen1];
+  "T50.1.3" [label="T50.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg134" {
+    style="rounded,dashed";
+    label="cg134: archive placeholder -- docs closure archive";
+  "D50.1.4" [label="D50.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "C50.1.5" [label="C50.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -999,6 +1018,7 @@ digraph PLAN {
   "X47" -> "S47.1" [style=dashed];
   "X48" -> "S48.1" [style=dashed];
   "X49" -> "S49.1" [style=dashed];
+  "X50" -> "S50.1" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -1293,6 +1313,11 @@ digraph PLAN {
   "S49.1" -> "T49.1.3" [style=dashed];
   "S49.1" -> "D49.1.4" [style=dashed];
   "S49.1" -> "C49.1.5" [style=dashed];
+  "S50.1" -> "D50.1.1" [style=dashed];
+  "S50.1" -> "F50.1.2" [style=dashed];
+  "S50.1" -> "T50.1.3" [style=dashed];
+  "S50.1" -> "D50.1.4" [style=dashed];
+  "S50.1" -> "C50.1.5" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1611,4 +1636,8 @@ digraph PLAN {
   "F49.1.2" -> "T49.1.3";
   "T49.1.3" -> "D49.1.4";
   "D49.1.4" -> "C49.1.5";
+  "D50.1.1" -> "F50.1.2";
+  "F50.1.2" -> "T50.1.3";
+  "T50.1.3" -> "D50.1.4";
+  "D50.1.4" -> "C50.1.5";
 }

@@ -1,0 +1,141 @@
+milestones:
+- id: X50
+  type: X
+  title: Downstream plan archive persistence
+  status: done
+  note: Preserve the bootstrapped plan/archive directory in committed downstream repositories
+    so bootstrap verification matches fresh checkout state.
+sprints:
+- id: S50.1
+  type: S
+  parent: X50
+  title: Sprint 1 -- Bootstrap archive placeholder
+  status: done
+items:
+- id: D50.1.1
+  parent: S50.1
+  type: D
+  title: Open X50 archive persistence tracking
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg132
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: F50.1.2
+  parent: S50.1
+  type: F
+  title: Add bootstrapped plan archive placeholder
+  actions:
+  - implement
+  status: done
+  depends_on:
+  - D50.1.1
+  role: implementer
+  effort: low
+  commit_group: cg133
+  scope: agent-os/
+  artifacts_out:
+  - agent-os/templates/PLAN-archive-gitkeep.template
+  - agent-os/scripts/bootstrap-repo.sh
+  checks:
+  - bootstrap creates plan/archive/.gitkeep
+  - dry-run reports plan/archive/.gitkeep
+- id: T50.1.3
+  parent: S50.1
+  type: T
+  title: Verify archive placeholder persistence and archive-tool compatibility
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - F50.1.2
+  role: tester
+  effort: medium
+  commit_group: cg133
+  scope: tests/
+  artifacts_out:
+  - tests/test_shell_scripts.py
+  - tests/test_split_plan.py
+  checks:
+  - committed downstream bootstrap includes plan/archive/.gitkeep
+  - archive-plan.py succeeds with .gitkeep present
+  - validate-plan.py ignores non-indexed archive placeholders
+- id: D50.1.4
+  parent: S50.1
+  type: D
+  title: Document persisted archive placeholder behavior
+  actions:
+  - document
+  - review
+  status: done
+  depends_on:
+  - T50.1.3
+  role: documenter
+  effort: low
+  commit_group: cg134
+  scope: .
+  artifacts_out:
+  - README.md
+  - agent-os/templates/repo-README.md.template
+  - agent-os/skills/repo-bootstrap/SKILL.md
+  - TODO.md
+  checks:
+  - downstream docs describe plan/archive/.gitkeep as a persistence placeholder
+  - 'TODO.md issue #38 row is complete'
+- id: C50.1.5
+  parent: S50.1
+  type: C
+  title: Checkpoint closure -- X50 archive persistence
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - D50.1.4
+  role: reviewer
+  effort: low
+  commit_group: cg134
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X50.yaml
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+commit_groups:
+- id: cg132
+  title: archive placeholder -- tracking boundary
+  items:
+  - D50.1.1
+  notes: Opens X50 active tracking and declares commit-group boundaries before implementation
+    changes.
+- id: cg133
+  title: archive placeholder -- implementation tests
+  items:
+  - F50.1.2
+  - T50.1.3
+  notes: Adds the tracked plan/archive placeholder to bootstrap output and verifies
+    persistence plus archive-tool compatibility.
+- id: cg134
+  title: archive placeholder -- docs closure archive
+  items:
+  - D50.1.4
+  - C50.1.5
+  notes: 'Documents the persisted placeholder behavior, closes issue #38 roadmap state,
+    archives X50, and refreshes generated plan views.'

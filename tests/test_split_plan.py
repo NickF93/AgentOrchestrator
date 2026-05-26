@@ -138,6 +138,99 @@ def test_split_plan_preserves_aggregate_content_and_outputs(
     assert '"cluster_cg1"' in dot_path.read_text(encoding="utf-8")
 
 
+def test_archive_plan_ignores_archive_placeholder(repo_root: Path, tmp_path: Path) -> None:
+    plan_dir = tmp_path / "plan"
+    archive_dir = plan_dir / "archive"
+    archive_dir.mkdir(parents=True)
+    (archive_dir / ".gitkeep").write_text(
+        "# Keeps plan/archive/ present before the first PLAN-XNN.yaml archive.\n",
+        encoding="utf-8",
+    )
+    index_path = plan_dir / "PLAN-index.yaml"
+    current_path = plan_dir / "PLAN-current.yaml"
+    md_path = tmp_path / "PLAN.md"
+    dot_path = tmp_path / "PLAN.dot"
+
+    current_path.write_text(
+        yaml.safe_dump(
+            {
+                "milestones": [
+                    {"id": "X1", "type": "X", "title": "Closed milestone", "status": "done"}
+                ],
+                "sprints": [
+                    {
+                        "id": "S1.1",
+                        "type": "S",
+                        "parent": "X1",
+                        "title": "Closed sprint",
+                        "status": "done",
+                    }
+                ],
+                "items": [
+                    {
+                        "id": "D1.1.1",
+                        "parent": "S1.1",
+                        "type": "D",
+                        "title": "Closed item",
+                        "actions": ["document"],
+                        "status": "done",
+                        "role": "documenter",
+                        "effort": "low",
+                        "commit_group": "cg1",
+                        "scope": ".",
+                    }
+                ],
+                "commit_groups": [{"id": "cg1", "title": "Closed work", "items": ["D1.1.1"]}],
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+    index_path.write_text(
+        yaml.safe_dump(
+            {
+                "meta": {
+                    "repo": "fixture",
+                    "owner": "tester",
+                    "version": "1",
+                    "schema_version": "1",
+                    "last_updated": "2026-05-26",
+                },
+                "mission": "Fixture mission",
+                "current_plan": "PLAN-current.yaml",
+                "archive_root": "archive",
+                "archives": [],
+            },
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
+
+    archive_result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "archive-plan.py",
+        "--plan",
+        str(index_path),
+        "--milestone",
+        "X1",
+        "--md",
+        str(md_path),
+        "--dot",
+        str(dot_path),
+    )
+    validate_result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "validate-plan.py",
+        str(index_path),
+        "--schema",
+        str(repo_root / "agent-os" / "schemas" / "plan.schema.json"),
+    )
+
+    assert archive_result.returncode == 0, archive_result.stdout + archive_result.stderr
+    assert validate_result.returncode == 0, validate_result.stdout + validate_result.stderr
+    assert (archive_dir / ".gitkeep").exists()
+    assert (archive_dir / "PLAN-X1.yaml").exists()
+    assert "PLAN-X1.yaml" in index_path.read_text(encoding="utf-8")
+
+
 def test_split_plan_can_remove_legacy_source(repo_root: Path, tmp_path: Path) -> None:
     legacy_plan = {
         "meta": {

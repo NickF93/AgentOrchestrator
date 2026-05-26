@@ -77,7 +77,7 @@ def test_bootstrap_repo_dry_run_reports_creates(
     assert result.returncode == 0, result.stdout + result.stderr
     assert "DRY-RUN: create" in result.stdout
     assert "plan/PLAN-index.yaml" in result.stdout
-    assert "plan/archive" in result.stdout
+    assert "plan/archive/.gitkeep" in result.stdout
     assert ".codex/config.toml" in result.stdout
     assert ".githooks/pre-push" in result.stdout
     assert not target_repo.exists()
@@ -104,6 +104,7 @@ def test_bootstrap_repo_creates_expected_files(
     assert (target_repo / "plan" / "PLAN-index.yaml").exists()
     assert (target_repo / "plan" / "PLAN-current.yaml").exists()
     assert (target_repo / "plan" / "archive").is_dir()
+    assert (target_repo / "plan" / "archive" / ".gitkeep").exists()
     assert not (target_repo / "PLAN.yaml").exists()
     assert (target_repo / ".githooks" / "commit-msg").exists()
     assert (target_repo / ".githooks" / "pre-push").exists()
@@ -159,6 +160,58 @@ def test_bootstrap_repo_creates_expected_files(
     assert "thin runtime entrypoint" in kilo_text
     assert "AGENTS.md" in kilo_text
     assert "## Adapter Overrides" in kilo_text
+
+
+def test_bootstrap_repo_archive_placeholder_is_git_persisted(
+    repo_root: Path,
+    tmp_path: Path,
+    script_env: dict[str, str],
+) -> None:
+    target_repo = tmp_path / "BootRepo"
+    result = run_shell_script(
+        repo_root / "agent-os" / "scripts" / "bootstrap-repo.sh",
+        "--owner",
+        "tester",
+        "--ref",
+        "main",
+        str(target_repo),
+        env=script_env,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    git_ok(target_repo, "init")
+    git_ok(target_repo, "config", "user.name", "Tester")
+    git_ok(target_repo, "config", "user.email", "tester@example.com")
+    git_ok(
+        target_repo,
+        "add",
+        "AGENTS.md",
+        "ARCHITECTURE.md",
+        "REPO_MAP.md",
+        "plan/PLAN-index.yaml",
+        "plan/PLAN-current.yaml",
+        "plan/archive/.gitkeep",
+        "README.md",
+        "docs/adr/ADR-0001.md",
+        ".githooks/commit-msg",
+        ".githooks/pre-push",
+        ".github/copilot-instructions.md",
+        "CLAUDE.md",
+        ".codex/config.toml",
+        "GEMINI.md",
+        ".cursor/rules/governance.mdc",
+        ".kilo/rules/governance.md",
+    )
+    git_ok(
+        target_repo,
+        "commit",
+        "-m",
+        "chore(repo): bootstrap governance",
+        "-m",
+        "Refs: D1.1.1, cg1",
+    )
+
+    assert "plan/archive/.gitkeep" in git_ok(target_repo, "ls-files").splitlines()
 
 
 def test_bootstrap_repo_trust_codex_project_is_explicit(
