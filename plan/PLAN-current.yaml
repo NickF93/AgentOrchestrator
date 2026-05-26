@@ -1,4 +1,90 @@
-milestones: []
-sprints: []
-items: []
-commit_groups: []
+milestones:
+- id: X52
+  type: X
+  title: Stale Tracker Cleanup
+  status: in_progress
+  note: Close stale issue-tracker state and align TODO wording with the split-plan
+    bootstrap implementation.
+sprints:
+- id: S52.1
+  type: S
+  parent: X52
+  title: Sprint 1 -- Tracker and TODO drift cleanup
+  status: in_progress
+items:
+- id: D52.1.1
+  parent: S52.1
+  type: D
+  title: Open X52 stale tracker cleanup tracking
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg138
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: F52.1.2
+  parent: S52.1
+  type: F
+  title: Align TODO bootstrap wording with split-plan files
+  actions:
+  - implement
+  status: planned
+  depends_on:
+  - D52.1.1
+  role: implementer
+  effort: low
+  commit_group: cg139
+  scope: TODO.md
+  artifacts_out:
+  - TODO.md
+  checks:
+  - Layer-2 bootstrap TODO row names plan/PLAN-index.yaml, plan/PLAN-current.yaml,
+    and plan/archive/.gitkeep instead of legacy PLAN.yaml
+- id: C52.1.3
+  parent: S52.1
+  type: C
+  title: Checkpoint closure -- X52 stale tracker cleanup
+  actions:
+  - checkpoint
+  - verify
+  status: planned
+  depends_on:
+  - F52.1.2
+  role: reviewer
+  effort: low
+  commit_group: cg139
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X52.yaml
+  - PLAN.md
+  - PLAN.dot
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - git diff --check passes
+commit_groups:
+- id: cg138
+  title: stale cleanup -- tracking boundary
+  items:
+  - D52.1.1
+  notes: Opens X52 active tracking and declares the cleanup commit boundary before
+    non-generated files are edited.
+- id: cg139
+  title: stale cleanup -- TODO closure archive
+  items:
+  - F52.1.2
+  - C52.1.3
+  notes: Aligns the stale TODO wording, validates the plan, archives X52, and refreshes
+    generated plan views.
