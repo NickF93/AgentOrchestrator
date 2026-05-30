@@ -6,9 +6,9 @@ This digest is a non-authoritative lookup aid. Canonical history remains in `pla
 
 ## Summary
 
-- Archived milestones: 51
-- Archived items: 307
-- Archived commit groups: 138
+- Archived milestones: 52
+- Archived items: 312
+- Archived commit groups: 141
 
 ## Milestones
 
@@ -65,3 +65,4 @@ This digest is a non-authoritative lookup aid. Canonical history remains in `pla
 | `X50` | Downstream plan archive persistence | `archive/PLAN-X50.yaml` | `sha256:b974e8b508dc` | 1 | 5 | 3 | C:1, D:2, F:1, T:1 | `.`, `agent-os/`, `plan/`, `tests/` |
 | `X51` | Shared Asset Layer 0 to Layer 2 Validation | `archive/PLAN-X51.yaml` | `sha256:1b1d0ee7eb22` | 1 | 5 | 3 | C:1, D:2, T:2 | `.`, `TODO.md`, `docs/design/`, `plan/`, `tests/` |
 | `X52` | Stale Tracker Cleanup | `archive/PLAN-X52.yaml` | `sha256:9d8d6fb58a0a` | 1 | 3 | 2 | C:1, D:1, F:1 | `.`, `TODO.md`, `plan/` |
+| `X53` | Archive Digest Summaries | `archive/PLAN-X53.yaml` | `sha256:41743eed6e67` | 1 | 5 | 3 | C:1, D:2, M:1, T:1 | `.`, `agent-os/scripts/`, `plan/`, `tests/` |

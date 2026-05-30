@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-05-26'
+  last_updated: '2026-05-30'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -227,3 +227,7 @@ archives:
   title: Stale Tracker Cleanup
   path: archive/PLAN-X52.yaml
   digest: sha256:9d8d6fb58a0a
+- milestone: X53
+  title: Archive Digest Summaries
+  path: archive/PLAN-X53.yaml
+  digest: sha256:41743eed6e67

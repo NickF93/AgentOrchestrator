@@ -2,7 +2,7 @@
 id: plan-validate-render
 description: >
   Validate the canonical plan entrypoint and render its generated views (PLAN.md,
-  PLAN.dot). Use this skill whenever the task involves validating a
+  PLAN.dot, plan/archive/DIGEST.md). Use this skill whenever the task involves validating a
   plan, rendering plan views, checking for plan drift, interpreting
   validation warnings or errors, or verifying that generated plan
   artifacts are up to date. Also use it when the operator asks to
@@ -26,7 +26,8 @@ compatibility:
 
 Provide a repeatable, execution-layer procedure for validating the
 canonical plan entrypoint and rendering its generated views. This skill wraps
-two existing scripts — `validate-plan.py` and `render-plan.py` — with
+existing scripts — `validate-plan.py`, `render-plan.py`, and
+`render-archive-digest.py` — with
 structured reporting, warning/error classification, and render drift
 detection. It does not define governance rules. It applies the
 validation and rendering logic already implemented in canonical tooling
@@ -48,6 +49,7 @@ Canonical authorities (paths relative to `control_plane_root`):
 
 - `agent-os/scripts/validate-plan.py` — plan validation (17 checks)
 - `agent-os/scripts/render-plan.py` — plan view rendering
+- `agent-os/scripts/render-archive-digest.py` — archive digest rendering
 - `agent-os/schemas/plan.schema.json` — PLAN schema for validation
 - `agent-os/workflow/lifecycle.md` — lifecycle states and transitions
 - `agent-os/workflow/item-taxonomy.md` — item types and required fields
@@ -60,7 +62,7 @@ procedure belongs to exactly one of them.
 | Root                  | What lives there                                        |
 |-----------------------|---------------------------------------------------------|
 | `repo_root`           | The target repository: `plan/PLAN-index.yaml`, `PLAN.md`,         |
-|                       | `PLAN.dot`, `REPO_MAP.md`, repo code and tests         |
+|                       | `PLAN.dot`, `plan/archive/DIGEST.md`, `REPO_MAP.md`, repo code and tests |
 | `control_plane_root`  | The Level-0 checkout: validation and render scripts,    |
 |                       | schema, shared asset registry, skill definitions        |
 
@@ -92,6 +94,7 @@ missing.
 
 - `{control_plane_root}/agent-os/scripts/validate-plan.py`
 - `{control_plane_root}/agent-os/scripts/render-plan.py`
+- `{control_plane_root}/agent-os/scripts/render-archive-digest.py`
 - `{control_plane_root}/agent-os/schemas/plan.schema.json`
 - `{control_plane_root}/agent-os/registry/shared-assets.yaml`
 
@@ -100,6 +103,7 @@ missing.
 - `{repo_root}/plan/PLAN-index.yaml` (or `plan_path` if overridden)
 - `{repo_root}/PLAN.md` (generated view — may or may not exist yet)
 - `{repo_root}/PLAN.dot` (generated view — may or may not exist yet)
+- `{repo_root}/plan/archive/DIGEST.md` (generated archive lookup summary — may or may not exist yet)
 - `{repo_root}/REPO_MAP.md` (optional — used by `--check-freshness`)
 
 ## Required Inputs
@@ -113,7 +117,7 @@ missing.
 | `shared_asset_registry`  | string | (auto-resolved from `control_plane_root`)   | Path to shared asset registry YAML                             |
 | `repo_root`              | string | `.`                                         | Root of the target repository                                  |
 | `control_plane_root`     | string | (resolved)                                  | Root of the Level-0 control-plane checkout                     |
-| `render`                 | bool   | `true`                                      | If true, render PLAN.md and PLAN.dot after validation          |
+| `render`                 | bool   | `true`                                      | If true, render PLAN.md, PLAN.dot, and plan/archive/DIGEST.md after validation |
 | `check_drift`            | bool   | `true`                                      | If true, check for render drift after rendering                |
 
 ## Expected Outputs
@@ -133,12 +137,14 @@ evidence:
   - plan_path: <resolved path>
   - schema_path: <resolved path>
   - validate_exit_code: <0|1|2>
-  - render_exit_code: <0|2|skipped>
+  - render_plan_exit_code: <0|2|skipped>
+  - render_archive_digest_exit_code: <0|2|skipped>
   - render_drift: <true|false|skipped>
 commands_run:
   - `python <cp>/agent-os/scripts/validate-plan.py <plan> --schema <schema> [flags]` -> exit <code>
   - `python <cp>/agent-os/scripts/render-plan.py <plan>` -> exit <code>
-  - `git diff PLAN.md PLAN.dot` -> <clean|dirty>
+  - `python <cp>/agent-os/scripts/render-archive-digest.py <plan>` -> exit <code>
+  - `git diff PLAN.md PLAN.dot plan/archive/DIGEST.md` -> <clean|dirty>
 ready_to_close: true | false
 follow_up:
   - <optional next action>
@@ -152,7 +158,7 @@ follow_up:
 | validate-plan.py exits 0, warnings only, render drift acceptable | **warn** |
 | validate-plan.py exits 1 (validation failure) | **fail** |
 | validate-plan.py exits 2 (system error), or scripts missing | **blocked** |
-| render-plan.py exits non-zero | **fail** |
+| render-plan.py or render-archive-digest.py exits non-zero | **fail** |
 | Render drift detected and `check_drift` is true | **warn** (drift is flagged, not blocking by itself) |
 
 ## Procedure
@@ -168,10 +174,12 @@ which case, collect all failures before stopping).
    exists.
 3. Verify `{control_plane_root}/agent-os/scripts/render-plan.py`
    exists.
-4. Verify `{control_plane_root}/{schema_path}` exists.
-5. Resolve `plan_path` to an absolute path under `repo_root`.
-6. Verify the plan file exists.
-7. Record both roots in the report header.
+4. Verify `{control_plane_root}/agent-os/scripts/render-archive-digest.py`
+   exists.
+5. Verify `{control_plane_root}/{schema_path}` exists.
+6. Resolve `plan_path` to an absolute path under `repo_root`.
+7. Verify the plan file exists.
+8. Record both roots in the report header.
 
 This step must succeed before any other step runs. If the control plane
 cannot be located or required files are missing, nothing else is
@@ -236,7 +244,7 @@ Parse the output from Step 1 to classify findings:
 If `render` is `false`, skip this step and record render as "skipped"
 in the report.
 
-1. Run the render command:
+1. Run the plan view render command:
    ```bash
    python {control_plane_root}/agent-os/scripts/render-plan.py \
      {repo_root}/{plan_path} \
@@ -244,12 +252,18 @@ in the report.
      --dot {repo_root}/PLAN.dot
    ```
 
-2. Capture stdout, stderr, and exit code.
+2. Run the archive digest render command:
+   ```bash
+   python {control_plane_root}/agent-os/scripts/render-archive-digest.py \
+     {repo_root}/{plan_path}
+   ```
 
-3. If the exit code is non-zero, record the failure. This is a blocking
+3. Capture stdout, stderr, and exit code for both commands.
+
+4. If either exit code is non-zero, record the failure. This is a blocking
    error — the generated views could not be produced.
 
-4. Record the render outcome in the report.
+5. Record the render outcome in the report.
 
 ### Step 4 — Detect render drift
 
@@ -265,7 +279,7 @@ this step and record drift check as "skipped" in the report.
 
 2. Run git diff on the generated files:
    ```bash
-   git -C {repo_root} diff -- PLAN.md PLAN.dot
+   git -C {repo_root} diff -- PLAN.md PLAN.dot plan/archive/DIGEST.md
    ```
 
 3. Interpret the result:
@@ -278,7 +292,8 @@ this step and record drift check as "skipped" in the report.
      render was just run and the new output has not yet been committed.
 
 4. Record whether drift was detected and, if so, the summary of changed
-   lines (e.g., "+N/-M in PLAN.md, +N/-M in PLAN.dot").
+   lines (e.g., "+N/-M in PLAN.md, +N/-M in PLAN.dot,
+   +N/-M in plan/archive/DIGEST.md").
 
 ### Step 5 — Assemble report
 
@@ -291,7 +306,7 @@ this step and record drift check as "skipped" in the report.
    - `false` if verdict is `fail` or `blocked`.
 
 4. If render drift was detected, add a follow-up entry:
-   "Stage and commit PLAN.md and PLAN.dot to resolve render drift."
+   "Stage and commit generated plan views to resolve render drift."
 
 5. If validation warnings were present, add follow-up entries noting
    the advisory findings for human review.
@@ -309,7 +324,8 @@ this step and record drift check as "skipped" in the report.
   the plan. It does not modify plan content. Status transitions
   and item updates are outside this skill's scope.
 - **Rendering overwrites generated files**: `render-plan.py` writes
-  PLAN.md and PLAN.dot in place. This is expected behavior — these
+  PLAN.md and PLAN.dot in place, and `render-archive-digest.py` writes
+  plan/archive/DIGEST.md in place. This is expected behavior — these
   are generated artifacts, not authored files.
 - **No auto-commit**: the skill renders files but does not stage or
   commit them. The operator (or a checkpoint closure skill) handles
@@ -329,11 +345,13 @@ this step and record drift check as "skipped" in the report.
 | Control plane root not resolvable            | Fail with resolution instructions                         |
 | validate-plan.py not found                   | Fail with "validate-plan.py not found at `<path>`"        |
 | render-plan.py not found                     | Fail with "render-plan.py not found at `<path>`"          |
+| render-archive-digest.py not found           | Fail with "render-archive-digest.py not found at `<path>`" |
 | Schema file not found                        | Fail with "plan.schema.json not found at `<path>`"        |
 | Plan entrypoint not found                   | Fail with "Plan file not found: `<path>`"                 |
 | validate-plan.py exits 1 (validation fail)   | Report all errors with categories; verdict **fail**       |
 | validate-plan.py exits 2 (system error)      | Report system error details; verdict **blocked**          |
 | render-plan.py exits non-zero                | Report render error; verdict **fail**                     |
+| render-archive-digest.py exits non-zero      | Report archive digest render error; verdict **fail**      |
 | Python not available                         | Fail with "Python not available — cannot run tooling"     |
 | Git not available (for drift check)          | Warn; skip drift detection; note in report                |
 | Render drift detected                        | Warn; include drift summary; suggest commit               |
@@ -362,9 +380,11 @@ python "$CP/agent-os/scripts/validate-plan.py" \
 # 3. Render plan views (shared tooling, repo data)
 python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml" \
   --md "$REPO/PLAN.md" --dot "$REPO/PLAN.dot"
+python "$CP/agent-os/scripts/render-archive-digest.py" \
+  "$REPO/plan/PLAN-index.yaml"
 
 # 4. Check for render drift (in repo)
-git -C "$REPO" diff -- PLAN.md PLAN.dot
+git -C "$REPO" diff -- PLAN.md PLAN.dot plan/archive/DIGEST.md
 ```
 
 For Layer 0 (control plane validating its own plan), replace both

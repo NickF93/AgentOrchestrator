@@ -34,7 +34,9 @@ def summarize_scopes(items: list[dict[str, Any]]) -> str:
     return code_list(scopes)
 
 
-def render_archive_digest(metadata: dict[str, Any], source_label: str = "plan/PLAN-index.yaml") -> str:
+def render_archive_digest(
+    metadata: dict[str, Any], source_label: str = "plan/PLAN-index.yaml"
+) -> str:
     archive_details = list(metadata.get("archives", []) or [])
 
     lines: list[str] = []

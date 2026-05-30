@@ -16,6 +16,7 @@ This repository is governed by the Level-0 control plane.
 | plan/PLAN-current.yaml | Active execution fragment |
 | plan/archive/.gitkeep | Tracked placeholder preserving the archive directory before first archive |
 | plan/archive/PLAN-XNN.yaml | Closed milestone archive fragments |
+| plan/archive/DIGEST.md | Generated archive lookup summary |
 | PLAN.md | Human-readable plan view (generated) |
 | PLAN.dot | Graph plan view (generated) |
 | REPO_MAP.md | Codebase topology reference |

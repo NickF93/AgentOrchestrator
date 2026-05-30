@@ -135,8 +135,8 @@ def main() -> int:
         )
         Path(args.dot).write_text(render_module.render_dot(split_plan), encoding="utf-8")
         digest_module = load_archive_digest_module(script_dir)
-        digest_path = Path(args.digest) if args.digest else digest_module.default_digest_path(
-            split_metadata
+        digest_path = (
+            Path(args.digest) if args.digest else digest_module.default_digest_path(split_metadata)
         )
         digest_path.parent.mkdir(parents=True, exist_ok=True)
         digest_path.write_text(

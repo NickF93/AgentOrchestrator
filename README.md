@@ -30,6 +30,7 @@ repositories. It does not host product code.
 | `plan/PLAN-current.yaml` | Active execution fragment |
 | `plan/archive/.gitkeep` | Tracked placeholder preserving the archive directory before first archive |
 | `plan/archive/PLAN-XNN.yaml` | Closed milestone archive fragments |
+| `plan/archive/DIGEST.md` | Generated archive lookup summary |
 | `PLAN.md` | Human-readable plan view (generated) |
 | `PLAN.dot` | Graph plan view (generated) |
 
@@ -83,6 +84,12 @@ This emits deterministic JSON with a `ready_items` array. Each entry includes
 
 ```bash
 $AGENT_PYTHON agent-os/scripts/render-plan.py plan/PLAN-index.yaml
+```
+
+### Render archive digest
+
+```bash
+$AGENT_PYTHON agent-os/scripts/render-archive-digest.py plan/PLAN-index.yaml
 ```
 
 ### Run script tests

@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-26
+- Last updated: 2026-05-30
 
 ## Mission
 
@@ -66,7 +66,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X50 | X | Downstream plan archive persistence | done |
 | X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
 | X52 | X | Stale Tracker Cleanup | done |
-| X53 | X | Archive Digest Summaries | in_progress |
+| X53 | X | Archive Digest Summaries | done |
 
 ## Plan
 
@@ -1305,21 +1305,21 @@ Status: done
 
 - ID: `X53`
 - Title: Archive Digest Summaries
-- Status: in_progress
+- Status: done
 - Note: Add generated, non-authoritative archive digest summaries so closed milestone history can be scanned without loading every archive fragment.
 
 #### S53.1 Items
 
 Sprint: Sprint 1 -- Archive digest generation and lookup workflow
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D53.1.1` | `D` | Open X53 archive digest tracking | done |  |
 | `M53.1.2` | `M` | Add deterministic archive digest generation | done |  |
 | `T53.1.3` | `T` | Verify archive digest generation and archive integration | done |  |
-| `D53.1.4` | `D` | Document archive digest convention and lookup workflow | planned |  |
-| `C53.1.5` | `C` | Checkpoint closure -- X53 archive digest summaries | planned |  |
+| `D53.1.4` | `D` | Document archive digest convention and lookup workflow | done |  |
+| `C53.1.5` | `C` | Checkpoint closure -- X53 archive digest summaries | done |  |
 
 ## Commit Groups
 
@@ -4858,12 +4858,12 @@ Status: in_progress
 
 ### D53.1.4: Document archive digest convention and lookup workflow
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S53.1`
 - **Actions**: document, review
 - **Depends on**: `T53.1.3`
 - **Commit group**: `cg142`
-- **Artifacts**: agent-os/workflow/shared-workflow.md, README.md, TODO.md, agent-os/skills/plan-validate-render/SKILL.md
+- **Artifacts**: AGENTS.md, ARCHITECTURE.md, agent-os/workflow/shared-workflow.md, README.md, TODO.md, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/plan-validate-render/SKILL.md, agent-os/templates/repo-AGENTS.md.template, agent-os/templates/repo-README.md.template, agent-os/templates/workspace-AGENTS.md.template, agent-os/templates/workspace-CLAUDE.md.template
 - **Checks**:
   - documentation states archive digest summaries are generated and non-authoritative
   - lookup workflow points from digest rows back to indexed archive fragments
@@ -4871,16 +4871,17 @@ Status: in_progress
 
 ### C53.1.5: Checkpoint closure -- X53 archive digest summaries
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S53.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D53.1.4`
 - **Commit group**: `cg142`
 - **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
-- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X53.yaml, plan/archive/DIGEST.md, PLAN.md, PLAN.dot
+- **Artifacts**: agent-os/scripts/archive-plan.py, agent-os/scripts/render-archive-digest.py, tests/test_archive_digest.py, plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X53.yaml, plan/archive/DIGEST.md, PLAN.md, PLAN.dot
 - **Checks**:
   - validate-plan.py exits 0
   - render-plan.py produces no drift
   - render-archive-digest.py produces no drift
   - git diff --check passes
+  - closure gate formatting and coverage findings are remediated before commit
   - run-gates.sh passes

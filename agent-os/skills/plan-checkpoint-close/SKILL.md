@@ -73,6 +73,7 @@ workspace parent).
 
 - `{control_plane_root}/agent-os/scripts/validate-plan.py`
 - `{control_plane_root}/agent-os/scripts/render-plan.py`
+- `{control_plane_root}/agent-os/scripts/render-archive-digest.py`
 - `{control_plane_root}/agent-os/schemas/plan.schema.json`
 
 ### Target repo data (from `repo_root`)
@@ -137,6 +138,7 @@ evidence:
 commands_run:
   - `python <cp>/agent-os/scripts/validate-plan.py <plan> --schema <cp>/agent-os/schemas/plan.schema.json` -> exit 0
   - `python <cp>/agent-os/scripts/render-plan.py <plan>` -> exit 0
+  - `python <cp>/agent-os/scripts/render-archive-digest.py <plan>` -> exit 0
 ready_to_close: true | false
 proposed_commit_message: |
   <type>(<scope>): <description>
@@ -232,12 +234,14 @@ Run from `repo_root`, using shared tooling from `control_plane_root`:
 ```bash
 python {control_plane_root}/agent-os/scripts/render-plan.py \
   {repo_root}/{plan_path}
+python {control_plane_root}/agent-os/scripts/render-archive-digest.py \
+  {repo_root}/{plan_path}
 ```
 
 After rendering, check `git diff` on the generated files (`PLAN.md`,
-`PLAN.dot`) inside `repo_root`. If the diff is non-empty, the generated
-views were stale. This is not necessarily blocking, but flag it: the render
-output should be included in the commit.
+`PLAN.dot`, `plan/archive/DIGEST.md`) inside `repo_root`. If the diff is
+non-empty, the generated views were stale. This is not necessarily blocking,
+but flag it: the render output should be included in the commit.
 
 ### Step 7 — REPO_MAP freshness (if applicable)
 
@@ -373,16 +377,18 @@ python "$CP/agent-os/scripts/validate-plan.py" \
 
 # 3. Render plan views (shared tooling, repo data)
 python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml"
+python "$CP/agent-os/scripts/render-archive-digest.py" "$REPO/plan/PLAN-index.yaml"
 
 # 4. Check for render drift (in repo)
-git -C "$REPO" diff PLAN.md PLAN.dot
+git -C "$REPO" diff PLAN.md PLAN.dot plan/archive/DIGEST.md
 
 # 5. Run repo-local tests (in repo)
 cd "$REPO" && <repo test commands>
 
 # 6. Stage and commit (only if all checks pass and allow_commit is true)
 cd "$REPO"
-git add <plan files updated in commit_group> PLAN.md PLAN.dot <other files in commit_group>
+git add <plan files updated in commit_group> PLAN.md PLAN.dot plan/archive/DIGEST.md \
+  <other files in commit_group>
 git commit -m "<prepared message>"
 ```
 

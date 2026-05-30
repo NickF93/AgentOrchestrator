@@ -61,6 +61,7 @@ workspace/                          <- Layer 1 (workspace runtime)
 | `plan/PLAN-index.yaml`             | Layer 2 (each governed repo)      | Canonical plan entrypoint                   |
 | `plan/PLAN-current.yaml`           | Layer 2 (each governed repo)      | Active execution tracking                   |
 | `plan/archive/PLAN-XNN.yaml`       | Layer 2 (each governed repo)      | Closed milestone history                    |
+| `plan/archive/DIGEST.md`           | Layer 2 (each governed repo)      | Generated archive lookup summary            |
 | AGENTS.md (commit contract)        | Layer 2 (each governed repo)      | Repo-local copy from bootstrap              |
 | REPO_MAP.md                        | Layer 2 (each governed repo)      | Repo-local topology                         |
 | Vendored shared assets             | Layer 2 (`.agent-os/vendor/`)     | Optional portability snapshots only         |
@@ -123,6 +124,7 @@ One concern must have exactly one canonical authority. Duplication is forbidden.
 | Active execution tracking | `plan/PLAN-index.yaml` |
 | Human-readable plan view | `PLAN.md` (generated) |
 | Graph plan view | `PLAN.dot` / `PLAN.svg` (generated) |
+| Archive digest view | `plan/archive/DIGEST.md` (generated) |
 | Decision rationale | `docs/adr/*` |
 | Practical codebase map | `REPO_MAP.md` |
 | Git branching model and merge policy | `agent-os/workflow/git-flow-policy.md` |
@@ -136,13 +138,14 @@ Priority order for conflict resolution:
 3. `ARCHITECTURE.md` / `docs/architecture/*` — software constraints
 4. `plan/PLAN-index.yaml` — active execution tracking
 5. Code, tests, and real artifacts — implementation evidence
-6. Generated views (`PLAN.md`, `PLAN.dot`) — informative, not authoritative
+6. Generated views (`PLAN.md`, `PLAN.dot`, `plan/archive/DIGEST.md`) — informative, not authoritative
 
 ## Non-Duplication Rule
 
 - `AGENTS.md` may reference `ARCHITECTURE.md` but must not duplicate its detailed content.
 - `plan/PLAN-index.yaml` may reference architectural decisions but must not become a technical constitution.
-- `PLAN.md` and `PLAN.dot` must contain only content derivable from the split plan rooted at `plan/PLAN-index.yaml`.
+- Generated plan views must contain only content derivable from the split plan rooted
+  at `plan/PLAN-index.yaml`.
 - Each concern lives in exactly one authority; cross-referencing is allowed, copying is not.
 
 ## Planning and Execution
@@ -155,6 +158,22 @@ Priority order for conflict resolution:
   other agents may propose changes or produce evidence but must not write directly
   to the canonical PLAN. Enforcement is governance-based (code review and escalation),
   not automated. No validator check exists for single-writer compliance.
+
+### Archive Digest Summaries
+
+`plan/archive/DIGEST.md` is a generated, non-authoritative lookup summary
+rendered from `plan/PLAN-index.yaml` and the archive fragments listed there.
+It summarizes each archived milestone by title, archive path, stored fragment
+digest, sprint/item/commit-group counts, item type counts, and declared scope
+prefixes.
+
+Historical lookup workflow:
+
+1. Search `plan/archive/DIGEST.md` by milestone ID, title, item type, or scope.
+2. Use the row's archive path to open the indexed `plan/archive/PLAN-XNN.yaml`
+   fragment.
+3. Treat the archive fragment and `plan/PLAN-index.yaml` entry as authoritative;
+   the digest is only a compressed navigation aid.
 
 ## Planning Model Optimization
 
@@ -413,7 +432,8 @@ a future milestone along with the other hook enhancements.
 ## Canonical-Authority Conflict Recovery
 
 Conflict examples:
-- non-canonical edits made to generated files (`PLAN.md`, `PLAN.dot`),
+- non-canonical edits made to generated files (`PLAN.md`, `PLAN.dot`,
+  `plan/archive/DIGEST.md`),
 - workflow policy edits made outside canonical authority,
 - divergent duplicated normative rules across authorities.
 

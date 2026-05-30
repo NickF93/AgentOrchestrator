@@ -12,7 +12,7 @@
 - Workflow authority: AGENTS.md (this file)
 - Software constraints: ARCHITECTURE.md
 - Execution tracking source: plan/PLAN-index.yaml
-- Generated views: PLAN.md, PLAN.dot (non-authoritative)
+- Generated views: PLAN.md, PLAN.dot, plan/archive/DIGEST.md (non-authoritative)
 - Repo topology reference: REPO_MAP.md
 
 ## Canonical Source Rule
