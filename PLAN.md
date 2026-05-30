@@ -66,6 +66,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X50 | X | Downstream plan archive persistence | done |
 | X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
 | X52 | X | Stale Tracker Cleanup | done |
+| X53 | X | Archive Digest Summaries | in_progress |
 
 ## Plan
 
@@ -1300,6 +1301,26 @@ Status: done
 | `F52.1.2` | `F` | Align TODO bootstrap wording with split-plan files | done |  |
 | `C52.1.3` | `C` | Checkpoint closure -- X52 stale tracker cleanup | done |  |
 
+### X53
+
+- ID: `X53`
+- Title: Archive Digest Summaries
+- Status: in_progress
+- Note: Add generated, non-authoritative archive digest summaries so closed milestone history can be scanned without loading every archive fragment.
+
+#### S53.1 Items
+
+Sprint: Sprint 1 -- Archive digest generation and lookup workflow
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D53.1.1` | `D` | Open X53 archive digest tracking | done |  |
+| `M53.1.2` | `M` | Add deterministic archive digest generation | planned |  |
+| `T53.1.3` | `T` | Verify archive digest generation and archive integration | planned |  |
+| `D53.1.4` | `D` | Document archive digest convention and lookup workflow | planned |  |
+| `C53.1.5` | `C` | Checkpoint closure -- X53 archive digest summaries | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1442,6 +1463,9 @@ Status: done
 | cg137 | shared asset validation -- evidence docs closure | `T51.1.3`, `D51.1.4`, `C51.1.5` |
 | cg138 | stale cleanup -- tracking boundary | `D52.1.1` |
 | cg139 | stale cleanup -- TODO closure archive | `F52.1.2`, `C52.1.3` |
+| cg140 | archive digest -- tracking boundary | `D53.1.1` |
+| cg141 | archive digest -- generator tests | `M53.1.2`, `T53.1.3` |
+| cg142 | archive digest -- docs closure archive | `D53.1.4`, `C53.1.5` |
 
 ## Item Details
 
@@ -4797,3 +4821,66 @@ Status: done
   - validate-plan.py exits 0
   - render-plan.py produces no drift
   - git diff --check passes
+
+### D53.1.1: Open X53 archive digest tracking
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S53.1`
+- **Actions**: plan, document
+- **Commit group**: `cg140`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - X53 active plan declares implementation, test, documentation, and closure commit groups before non-generated implementation files are edited
+
+### M53.1.2: Add deterministic archive digest generation
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S53.1`
+- **Actions**: implement
+- **Depends on**: `D53.1.1`
+- **Commit group**: `cg141`
+- **Artifacts**: agent-os/scripts/render-archive-digest.py, agent-os/scripts/archive-plan.py, plan/archive/DIGEST.md
+- **Checks**:
+  - render-archive-digest.py writes plan/archive/DIGEST.md from plan/PLAN-index.yaml
+  - archive-plan.py regenerates plan/archive/DIGEST.md after archiving a milestone
+  - digest output is deterministic and derived only from split-plan archive data
+
+### T53.1.3: Verify archive digest generation and archive integration
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S53.1`
+- **Actions**: test, verify
+- **Depends on**: `M53.1.2`
+- **Commit group**: `cg141`
+- **Artifacts**: tests/test_archive_digest.py, tests/test_archive_plan.py
+- **Checks**:
+  - tests cover digest rendering, default output path, missing input handling, empty archives, markdown escaping, and archive-plan digest regeneration
+
+### D53.1.4: Document archive digest convention and lookup workflow
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Sprint**: `S53.1`
+- **Actions**: document, review
+- **Depends on**: `T53.1.3`
+- **Commit group**: `cg142`
+- **Artifacts**: agent-os/workflow/shared-workflow.md, README.md, TODO.md, agent-os/skills/plan-validate-render/SKILL.md
+- **Checks**:
+  - documentation states archive digest summaries are generated and non-authoritative
+  - lookup workflow points from digest rows back to indexed archive fragments
+  - TODO.md marks digest-style historical summaries complete
+
+### C53.1.5: Checkpoint closure -- X53 archive digest summaries
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S53.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D53.1.4`
+- **Commit group**: `cg142`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X53.yaml, plan/archive/DIGEST.md, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - render-archive-digest.py produces no drift
+  - git diff --check passes
+  - run-gates.sh passes
