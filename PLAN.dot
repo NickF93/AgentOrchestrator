@@ -1037,8 +1037,8 @@ digraph PLAN {
   subgraph "cluster_cg148" {
     style="rounded,dashed";
     label="cg148: repo-map-refresh skill -- evaluation, refinement, and closure";
-  "T55.2.1" [label="T55.2.1 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
-  "M55.2.2" [label="M55.2.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
+  "T55.2.1" [label="T55.2.1 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M55.2.2" [label="M55.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   "C55.2.3" [label="C55.2.3 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
   }
   "X1" -> "S1.1" [style=dashed];

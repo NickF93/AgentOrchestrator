@@ -15,7 +15,7 @@ description: >
   validate-plan.py --check-freshness. It does not redefine the freshness
   policy — it applies it.
 owner: NickF93
-version: "0.1.0"
+version: "0.2.0"
 compatibility:
   - claude
   - codex
@@ -114,6 +114,10 @@ Use this skill when **any** of these holds for `{repo_root}`:
   **missing `last_validated_on`**.
 - A checkpoint (`C`-item) is blocked from `verified → done` because the map
   is out of date.
+- The repo was **just bootstrapped** and its map is still the empty template
+  (blank `last_validated_on`, placeholder section stubs). A first
+  post-bootstrap validation pass is a refresh trigger: a blank
+  `last_validated_on` is stale by definition.
 
 Do **not** use this skill to create a brand-new map (delegate to
 `repo-bootstrap`) or to commit/push (that is the operator's step, optionally
@@ -221,6 +225,19 @@ a section cannot be determined, say so and leave it for the operator.
   (`tests/`, `test/`, `**/__tests__/`, `*_test.*`, `spec/`, language-specific
   conventions).
 
+Two derivation details that matter, especially right after bootstrap:
+
+- **Placeholder blanks vs. factual blanks.** The template seeds stub labels
+  (`module_a`/`module_b`/`module_c`, `hot_path_1`, `fragile_area_1`). When you
+  re-derive, replace those stub labels with the real findings, and where a
+  section genuinely has nothing (e.g. a governance-only repo with no `src/` or
+  `tests/`), record it explicitly as "none" — a factual blank is information,
+  a leftover stub label is noise. Never leave `module_a:` style placeholders in
+  a validated map.
+- **No source/tests is a valid result.** If the repo has no detectable entry
+  points, modules, or tests yet, that is the correct, honest answer — report
+  "none", do not invent structure to fill the template.
+
 ### Step 4 — Propose deltas for the judgment sections (no fabrication)
 
 `Hot Paths` and `Fragile Areas` require human judgment and cannot be inferred
@@ -229,6 +246,12 @@ confirmation; do not write fabricated entries. Useful signals to *propose*
 from (not to assert): high-churn files (`git log` frequency), files with many
 dependents, dense `TODO`/`FIXME`/`HACK` clusters, and whatever the existing
 map already records. Mark every judgment delta as "proposed — confirm".
+
+When the signals are absent — a freshly bootstrapped or single-commit repo has
+no churn history, and a structure-only repo has no clear hot paths — do not
+manufacture proposals. Record the judgment sections as "undetermined — no basis
+for a proposal yet; populate once the repo accrues history" and move on. An
+empty, honest judgment section is correct; a guessed one is a liability.
 
 ### Step 5 — Apply confirmed updates and stamp freshness
 

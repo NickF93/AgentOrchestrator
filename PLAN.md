@@ -1368,8 +1368,8 @@ Status: planned
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `T55.2.1` | `T` | Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end | planned |  |
-| `M55.2.2` | `M` | Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional) | planned | Included only if the skill-creator eval loop or operator review surfaces concrete defects. If applied, bump the skill version and sync shared-assets.yaml; otherwise close with note "no refinement required". |
+| `T55.2.1` | `T` | Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end | done |  |
+| `M55.2.2` | `M` | Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional) | done | Applied. The bootstrapped empty-template smoke run surfaced four concrete gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped 0.1.0 -> 0.2.0 and synced in shared-assets.yaml. |
 | `C55.2.3` | `C` | Checkpoint closure -- X55 repo-map-refresh skill | planned |  |
 
 ## Commit Groups
@@ -5036,7 +5036,7 @@ Status: planned
 
 ### T55.2.1: Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S55.2`
 - **Actions**: test, verify
 - **Depends on**: `M55.1.3`
@@ -5052,13 +5052,13 @@ Status: planned
 
 ### M55.2.2: Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional)
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S55.2`
 - **Actions**: implement
 - **Depends on**: `T55.2.1`
 - **Commit group**: `cg148`
 - **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md
-- **Notes**: Included only if the skill-creator eval loop or operator review surfaces concrete defects. If applied, bump the skill version and sync shared-assets.yaml; otherwise close with note "no refinement required".
+- **Notes**: Applied. The bootstrapped empty-template smoke run surfaced four concrete gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped 0.1.0 -> 0.2.0 and synced in shared-assets.yaml.
 
 ### C55.2.3: Checkpoint closure -- X55 repo-map-refresh skill
 

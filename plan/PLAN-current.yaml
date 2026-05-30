@@ -84,7 +84,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - M55.1.3
   role: tester
@@ -106,16 +106,19 @@ items:
   title: Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional)
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - T55.2.1
   role: implementer
   effort: low
   commit_group: cg148
   scope: agent-os/skills/repo-map-refresh/
-  notes: 'Included only if the skill-creator eval loop or operator review surfaces
-    concrete defects. If applied, bump the skill version and sync shared-assets.yaml;
-    otherwise close with note "no refinement required".
+  notes: 'Applied. The bootstrapped empty-template smoke run surfaced four concrete
+    gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a
+    refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank
+    derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result
+    note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped
+    0.1.0 -> 0.2.0 and synced in shared-assets.yaml.
 
     '
   artifacts_out:
