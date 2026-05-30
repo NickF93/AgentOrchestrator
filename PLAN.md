@@ -67,6 +67,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
 | X52 | X | Stale Tracker Cleanup | done |
 | X53 | X | Archive Digest Summaries | done |
+| X54 | X | Render Path Determinism Remediation | in_progress |
 
 ## Plan
 
@@ -1321,6 +1322,26 @@ Status: done
 | `D53.1.4` | `D` | Document archive digest convention and lookup workflow | done |  |
 | `C53.1.5` | `C` | Checkpoint closure -- X53 archive digest summaries | done |  |
 
+### X54
+
+- ID: `X54`
+- Title: Render Path Determinism Remediation
+- Status: in_progress
+- Note: Remediate X53 audit findings so render tooling is deterministic across absolute paths and Layer-2 procedures always write generated files into the target repo.
+
+#### S54.1 Items
+
+Sprint: Sprint 1 -- Render path determinism and two-root safety
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D54.1.1` | `D` | Open X54 render determinism remediation tracking | done |  |
+| `M54.1.2` | `M` | Make generated source labels path-stable | planned |  |
+| `T54.1.3` | `T` | Verify render path determinism and explicit output safety | planned |  |
+| `D54.1.4` | `D` | Align render skill procedures with explicit target outputs | planned |  |
+| `C54.1.5` | `C` | Checkpoint closure -- X54 render determinism remediation | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1466,6 +1487,9 @@ Status: done
 | cg140 | archive digest -- tracking boundary | `D53.1.1` |
 | cg141 | archive digest -- generator tests | `M53.1.2`, `T53.1.3` |
 | cg142 | archive digest -- docs closure archive | `D53.1.4`, `C53.1.5` |
+| cg143 | render determinism remediation -- tracking boundary | `D54.1.1` |
+| cg144 | render determinism remediation -- implementation tests | `M54.1.2`, `T54.1.3` |
+| cg145 | render determinism remediation -- docs closure archive | `D54.1.4`, `C54.1.5` |
 
 ## Item Details
 
@@ -4884,4 +4908,69 @@ Status: done
   - render-archive-digest.py produces no drift
   - git diff --check passes
   - closure gate formatting and coverage findings are remediated before commit
+  - run-gates.sh passes
+
+### D54.1.1: Open X54 render determinism remediation tracking
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S54.1`
+- **Actions**: plan, document
+- **Commit group**: `cg143`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - X54 active plan declares script, test, skill documentation, and closure boundaries before non-generated remediation files are edited
+
+### M54.1.2: Make generated source labels path-stable
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S54.1`
+- **Actions**: implement
+- **Depends on**: `D54.1.1`
+- **Commit group**: `cg144`
+- **Artifacts**: agent-os/scripts/plan_loader.py, agent-os/scripts/render-plan.py, agent-os/scripts/render-archive-digest.py, agent-os/scripts/archive-plan.py
+- **Checks**:
+  - render-plan.py emits a repo-relative generated source label when invoked with an absolute canonical plan path
+  - render-archive-digest.py emits a repo-relative generated source label when invoked with an absolute canonical plan path
+  - archive-plan.py uses the same deterministic generated source label convention
+
+### T54.1.3: Verify render path determinism and explicit output safety
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S54.1`
+- **Actions**: test, verify
+- **Depends on**: `M54.1.2`
+- **Commit group**: `cg144`
+- **Artifacts**: tests/test_render_plan.py, tests/test_archive_digest.py, tests/test_archive_plan.py
+- **Checks**:
+  - tests prove absolute canonical plan paths do not leak host-specific paths into generated headers
+  - tests prove explicit output paths prevent generated files from being written to the caller working directory
+  - archive-plan.py tests cover stable headers for generated outputs
+
+### D54.1.4: Align render skill procedures with explicit target outputs
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Sprint**: `S54.1`
+- **Actions**: document, review
+- **Depends on**: `T54.1.3`
+- **Commit group**: `cg145`
+- **Artifacts**: agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/plan-validate-render/SKILL.md, agent-os/skills/gitflow-pr-only/SKILL.md, agent-os/skills/quick-fix/SKILL.md
+- **Checks**:
+  - Layer-2 render examples pass explicit PLAN.md, PLAN.dot, and plan/archive/DIGEST.md output paths under repo_root
+  - authoritative skill procedures no longer teach bare cross-root render commands
+
+### C54.1.5: Checkpoint closure -- X54 render determinism remediation
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S54.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `D54.1.4`
+- **Commit group**: `cg145`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: agent-os/scripts/plan_loader.py, agent-os/scripts/render-plan.py, agent-os/scripts/render-archive-digest.py, agent-os/scripts/archive-plan.py, tests/test_render_plan.py, tests/test_archive_digest.py, tests/test_archive_plan.py, agent-os/skills/plan-checkpoint-close/SKILL.md, agent-os/skills/plan-validate-render/SKILL.md, agent-os/skills/gitflow-pr-only/SKILL.md, agent-os/skills/quick-fix/SKILL.md, plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X54.yaml, plan/archive/DIGEST.md, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - render-archive-digest.py produces no drift
+  - git diff --check passes
+  - targeted renderer and archive tests pass
   - run-gates.sh passes
