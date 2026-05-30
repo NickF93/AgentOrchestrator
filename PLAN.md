@@ -1316,8 +1316,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D53.1.1` | `D` | Open X53 archive digest tracking | done |  |
-| `M53.1.2` | `M` | Add deterministic archive digest generation | planned |  |
-| `T53.1.3` | `T` | Verify archive digest generation and archive integration | planned |  |
+| `M53.1.2` | `M` | Add deterministic archive digest generation | done |  |
+| `T53.1.3` | `T` | Verify archive digest generation and archive integration | done |  |
 | `D53.1.4` | `D` | Document archive digest convention and lookup workflow | planned |  |
 | `C53.1.5` | `C` | Checkpoint closure -- X53 archive digest summaries | planned |  |
 
@@ -4834,7 +4834,7 @@ Status: in_progress
 
 ### M53.1.2: Add deterministic archive digest generation
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S53.1`
 - **Actions**: implement
 - **Depends on**: `D53.1.1`
@@ -4847,7 +4847,7 @@ Status: in_progress
 
 ### T53.1.3: Verify archive digest generation and archive integration
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S53.1`
 - **Actions**: test, verify
 - **Depends on**: `M53.1.2`

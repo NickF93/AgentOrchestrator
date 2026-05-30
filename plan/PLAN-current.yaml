@@ -37,7 +37,7 @@ items:
   title: Add deterministic archive digest generation
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D53.1.1
   role: implementer
@@ -59,7 +59,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - M53.1.2
   role: tester
