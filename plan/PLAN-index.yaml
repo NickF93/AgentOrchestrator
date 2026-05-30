@@ -231,3 +231,7 @@ archives:
   title: Archive Digest Summaries
   path: archive/PLAN-X53.yaml
   digest: sha256:41743eed6e67
+- milestone: X54
+  title: Render Path Determinism Remediation
+  path: archive/PLAN-X54.yaml
+  digest: sha256:c8ba28a358fc

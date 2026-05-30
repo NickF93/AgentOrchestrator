@@ -352,7 +352,8 @@ ready-to-merge state to the human and stop.
        --plan {repo_root}/plan/PLAN-index.yaml \
        --milestone <XNN> \
        --md {repo_root}/PLAN.md \
-       --dot {repo_root}/PLAN.dot
+       --dot {repo_root}/PLAN.dot \
+       --digest {repo_root}/plan/archive/DIGEST.md
      ```
    - Only do this when the milestone is already done in the current
      fragment. If archival fails, stop and report the blocking reason.

@@ -255,7 +255,8 @@ in the report.
 2. Run the archive digest render command:
    ```bash
    python {control_plane_root}/agent-os/scripts/render-archive-digest.py \
-     {repo_root}/{plan_path}
+     {repo_root}/{plan_path} \
+     --output {repo_root}/plan/archive/DIGEST.md
    ```
 
 3. Capture stdout, stderr, and exit code for both commands.
@@ -381,7 +382,8 @@ python "$CP/agent-os/scripts/validate-plan.py" \
 python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml" \
   --md "$REPO/PLAN.md" --dot "$REPO/PLAN.dot"
 python "$CP/agent-os/scripts/render-archive-digest.py" \
-  "$REPO/plan/PLAN-index.yaml"
+  "$REPO/plan/PLAN-index.yaml" \
+  --output "$REPO/plan/archive/DIGEST.md"
 
 # 4. Check for render drift (in repo)
 git -C "$REPO" diff -- PLAN.md PLAN.dot plan/archive/DIGEST.md

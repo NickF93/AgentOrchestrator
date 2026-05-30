@@ -75,12 +75,10 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
     plan_md = md_path.read_text(encoding="utf-8")
     digest = digest_path.read_text(encoding="utf-8")
     assert (
-        plan_md.splitlines()[2]
-        == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
+        plan_md.splitlines()[2] == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
     )
     assert (
-        digest.splitlines()[2]
-        == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
+        digest.splitlines()[2] == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
     )
     assert f"`{ms_id}`" in digest
     assert f"`archive/PLAN-{ms_id}.yaml`" in digest

@@ -67,7 +67,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X51 | X | Shared Asset Layer 0 to Layer 2 Validation | done |
 | X52 | X | Stale Tracker Cleanup | done |
 | X53 | X | Archive Digest Summaries | done |
-| X54 | X | Render Path Determinism Remediation | in_progress |
+| X54 | X | Render Path Determinism Remediation | done |
 
 ## Plan
 
@@ -1326,21 +1326,21 @@ Status: done
 
 - ID: `X54`
 - Title: Render Path Determinism Remediation
-- Status: in_progress
+- Status: done
 - Note: Remediate X53 audit findings so render tooling is deterministic across absolute paths and Layer-2 procedures always write generated files into the target repo.
 
 #### S54.1 Items
 
 Sprint: Sprint 1 -- Render path determinism and two-root safety
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D54.1.1` | `D` | Open X54 render determinism remediation tracking | done |  |
 | `M54.1.2` | `M` | Make generated source labels path-stable | done |  |
 | `T54.1.3` | `T` | Verify render path determinism and explicit output safety | done |  |
-| `D54.1.4` | `D` | Align render skill procedures with explicit target outputs | planned |  |
-| `C54.1.5` | `C` | Checkpoint closure -- X54 render determinism remediation | planned |  |
+| `D54.1.4` | `D` | Align render skill procedures with explicit target outputs | done |  |
+| `C54.1.5` | `C` | Checkpoint closure -- X54 render determinism remediation | done |  |
 
 ## Commit Groups
 
@@ -4948,7 +4948,7 @@ Status: in_progress
 
 ### D54.1.4: Align render skill procedures with explicit target outputs
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: low
 - **Sprint**: `S54.1`
 - **Actions**: document, review
 - **Depends on**: `T54.1.3`
@@ -4960,7 +4960,7 @@ Status: in_progress
 
 ### C54.1.5: Checkpoint closure -- X54 render determinism remediation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S54.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `D54.1.4`
