@@ -74,7 +74,7 @@
 - [x] Add an archive index that makes closed milestones and old fragments easy to find
 - [x] Extend validator and renderer loading to work cleanly across multiple plan files
 - [x] Keep execution focused on the active surface while still supporting historical lookup
-- [ ] Add digest-style historical summaries so old work can be consulted without loading everything
+- [x] Add digest-style historical summaries so old work can be consulted without loading everything
 - [x] Think through append-only archive habits so plan history stays easy to trust and inspect
 
 ## Execution Gap Closure — Priority: P1

@@ -32,7 +32,7 @@ Priority order for conflict resolution:
 3. `ARCHITECTURE.md` — software constraints and boundaries
 4. `plan/PLAN-index.yaml` — active execution tracking
 5. Code, tests, and real artifacts — implementation evidence
-6. Generated views (`PLAN.md`, `PLAN.dot`) — informative, not authoritative
+6. Generated views (`PLAN.md`, `PLAN.dot`, `plan/archive/DIGEST.md`) — informative, not authoritative
 
 ## Canonical Concern Split
 
@@ -43,6 +43,7 @@ Priority order for conflict resolution:
 | Active execution tracking | `plan/PLAN-index.yaml` |
 | Human-readable plan view | `PLAN.md` (generated) |
 | Graph plan view | `PLAN.dot` (generated) |
+| Archive digest view | `plan/archive/DIGEST.md` (generated) |
 | Codebase topology | `REPO_MAP.md` |
 
 ## Single-Writer Rule

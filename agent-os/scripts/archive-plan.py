@@ -13,6 +13,7 @@ from plan_loader import (
     PlanLoadError,
     compute_fragment_digest,
     extract_fragment,
+    generated_source_label,
     load_split_plan,
     load_yaml_mapping,
     write_yaml,
@@ -24,6 +25,16 @@ def load_render_module(script_dir: Path) -> Any:
     spec = importlib.util.spec_from_file_location("render_plan_module", render_path)
     if spec is None or spec.loader is None:
         raise PlanLoadError(f"Unable to load render helper from {render_path}")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_archive_digest_module(script_dir: Path) -> Any:
+    digest_path = script_dir / "render-archive-digest.py"
+    spec = importlib.util.spec_from_file_location("render_archive_digest_module", digest_path)
+    if spec is None or spec.loader is None:
+        raise PlanLoadError(f"Unable to load archive digest helper from {digest_path}")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -54,6 +65,10 @@ def main() -> int:
     )
     parser.add_argument("--md", default="PLAN.md", help="Output markdown path")
     parser.add_argument("--dot", default="PLAN.dot", help="Output dot path")
+    parser.add_argument(
+        "--digest",
+        help="Output archive digest path; defaults to <archive_root>/DIGEST.md",
+    )
     args = parser.parse_args()
 
     index_path = Path(args.plan)
@@ -112,19 +127,31 @@ def main() -> int:
         write_yaml(metadata["current_path"], remaining_current)
         write_yaml(index_path, index)
 
-        split_plan, _ = load_split_plan(index_path)
-        render_module = load_render_module(Path(__file__).resolve().parent)
+        split_plan, split_metadata = load_split_plan(index_path)
+        script_dir = Path(__file__).resolve().parent
+        render_module = load_render_module(script_dir)
+        source_label = generated_source_label(index_path)
         Path(args.md).write_text(
-            render_module.render_markdown(split_plan, source_label=str(index_path)),
+            render_module.render_markdown(split_plan, source_label=source_label),
             encoding="utf-8",
         )
         Path(args.dot).write_text(render_module.render_dot(split_plan), encoding="utf-8")
+        digest_module = load_archive_digest_module(script_dir)
+        digest_path = (
+            Path(args.digest) if args.digest else digest_module.default_digest_path(split_metadata)
+        )
+        digest_path.parent.mkdir(parents=True, exist_ok=True)
+        digest_path.write_text(
+            digest_module.render_archive_digest(split_metadata, source_label=source_label),
+            encoding="utf-8",
+        )
 
         print(f"OK: archived {milestone_id} to {archive_abs_path}")
         print(f"OK: updated {metadata['current_path']}")
         print(f"OK: updated {index_path}")
         print(f"OK: wrote {args.md}")
         print(f"OK: wrote {args.dot}")
+        print(f"OK: wrote {digest_path}")
     except PlanLoadError as exc:
         print(f"ERROR: {exc}")
         return 1

@@ -28,7 +28,8 @@ This workspace is governed by a Level-0 control plane. Key rules:
 - **AGENTS.md** is the workflow authority in each repository.
 - **ARCHITECTURE.md** defines software constraints and boundaries.
 - **plan/PLAN-index.yaml** is the canonical plan entrypoint for execution tracking.
-- Generated views (`PLAN.md`, `PLAN.dot`) are informative only — never edit them.
+- Generated views (`PLAN.md`, `PLAN.dot`, `plan/archive/DIGEST.md`) are
+  informative only — never edit them.
 - One orchestrator owns the canonical PLAN; other agents propose, not write.
 - Track work in `plan/PLAN-current.yaml` before editing non-generated files.
 - Commit-group boundaries come from the split plan; do not invent them at commit time.

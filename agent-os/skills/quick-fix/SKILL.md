@@ -305,7 +305,9 @@ the final commit:
 
 ```bash
 python {control_plane_root}/agent-os/scripts/render-plan.py \
-  {repo_root}/plan/PLAN-index.yaml
+  {repo_root}/plan/PLAN-index.yaml \
+  --md {repo_root}/PLAN.md \
+  --dot {repo_root}/PLAN.dot
 ```
 
 ### Step 7 — Assemble closure expectations
@@ -401,7 +403,8 @@ and `in_progress` is optional).
 ### Operator commits the cg999 commit_group
 
 ```
-$ python {control_plane_root}/agent-os/scripts/render-plan.py plan/PLAN-index.yaml
+$ python {control_plane_root}/agent-os/scripts/render-plan.py plan/PLAN-index.yaml \
+  --md PLAN.md --dot PLAN.dot
 $ git add agent-os/workflow/lifecycle.md plan/PLAN-current.yaml PLAN.md PLAN.dot
 $ git commit -m "$(cat <<'EOF'
 fix(workflow): correct typo in lifecycle status list
@@ -450,7 +453,8 @@ python "$CP/agent-os/scripts/validate-plan.py" \
   --schema "$CP/agent-os/schemas/plan.schema.json"
 
 # 5. Render plan views
-python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml"
+python "$CP/agent-os/scripts/render-plan.py" "$REPO/plan/PLAN-index.yaml" \
+  --md "$REPO/PLAN.md" --dot "$REPO/PLAN.dot"
 
 # 6. Operator applies the fix, advances F-item status,
 #    then commits with the prepared message.

@@ -29,6 +29,8 @@ in workspaces and reused by multiple repositories.
 - `plan/PLAN-index.yaml` is the authoritative plan entrypoint for this repo.
 - `plan/PLAN-current.yaml` holds the active execution surface.
 - `plan/archive/PLAN-XNN.yaml` fragments hold closed milestone history.
+- `plan/archive/DIGEST.md` is a generated, non-authoritative lookup summary
+  derived from indexed archive fragments.
 
 ## Planning Architecture Principle
 

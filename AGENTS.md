@@ -24,7 +24,8 @@ Priority order:
 3. `ARCHITECTURE.md` for structural and boundary constraints
 4. `plan/PLAN-index.yaml` for active execution tracking
 5. Code and tests as implementation evidence
-6. Generated plan views (`PLAN.md`, `PLAN.dot`) as non-authoritative outputs
+6. Generated plan views (`PLAN.md`, `PLAN.dot`, `plan/archive/DIGEST.md`) as
+   non-authoritative outputs
 
 ## Working Rules
 - Treat `plan/PLAN-index.yaml` as source of truth for planning status and dependencies.
@@ -38,7 +39,8 @@ Priority order:
   `commit_group` membership is declared in the split plan before implementation
   starts and is the mandatory git commit boundary.
 - Keep startup/design documents in `docs/design/`; do not use them as runtime authority.
-- Do not hand-edit generated artifacts (`PLAN.md`, `PLAN.dot`) once render scripts exist.
+- Do not hand-edit generated artifacts (`PLAN.md`, `PLAN.dot`,
+  `plan/archive/DIGEST.md`) once render scripts exist.
 - Preserve determinism in generated outputs and script behavior.
 - Prefer additive, minimal changes with explicit checkpoints.
 - **Hard rule:** NO signatures, trailers, comments, PR text, or other traces attributable to generative AI or code generation are allowed in code, commits, PRs, reviews, or comments.

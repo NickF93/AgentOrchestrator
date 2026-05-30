@@ -70,6 +70,18 @@ def test_archive_plan_moves_done_milestone_and_updates_index(
     assert archive_path.exists()
     assert md_path.exists()
     assert dot_path.exists()
+    digest_path = tmp_path / "plan" / "archive" / "DIGEST.md"
+    assert digest_path.exists()
+    plan_md = md_path.read_text(encoding="utf-8")
+    digest = digest_path.read_text(encoding="utf-8")
+    assert (
+        plan_md.splitlines()[2] == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
+    )
+    assert (
+        digest.splitlines()[2] == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
+    )
+    assert f"`{ms_id}`" in digest
+    assert f"`archive/PLAN-{ms_id}.yaml`" in digest
 
     updated_current = load_yaml(current_path)
     assert updated_current == {"milestones": [], "sprints": [], "items": [], "commit_groups": []}
@@ -193,6 +205,7 @@ def test_archive_plan_main_succeeds_in_process(
     assert md_path.exists()
     assert dot_path.exists()
     assert (tmp_path / "plan" / "archive" / f"PLAN-{ms_id}.yaml").exists()
+    assert (tmp_path / "plan" / "archive" / "DIGEST.md").exists()
     assert load_yaml(index_path)["meta"]["last_updated"]
 
 
