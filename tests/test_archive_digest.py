@@ -62,6 +62,46 @@ def test_render_archive_digest_is_deterministic(repo_root: Path, tmp_path: Path)
     assert first_path.read_text(encoding="utf-8") == second_path.read_text(encoding="utf-8")
 
 
+def test_render_archive_digest_uses_repo_relative_source_label_for_absolute_index(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    index_path = copy_split_plan(tmp_path)
+    output_path = tmp_path / "absolute-DIGEST.md"
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "render-archive-digest.py",
+        str(index_path.resolve()),
+        "--output",
+        str(output_path),
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    header = output_path.read_text(encoding="utf-8").splitlines()[2]
+    assert header == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
+
+
+def test_render_archive_digest_explicit_output_does_not_write_to_caller_cwd(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    target_root = tmp_path / "target"
+    caller_cwd = tmp_path / "caller"
+    target_root.mkdir()
+    caller_cwd.mkdir()
+    index_path = copy_split_plan(target_root)
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "render-archive-digest.py",
+        str(index_path.resolve()),
+        "--output",
+        str(target_root / "plan" / "archive" / "DIGEST.md"),
+        cwd=caller_cwd,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert (target_root / "plan" / "archive" / "DIGEST.md").exists()
+    assert not (caller_cwd / "plan" / "archive" / "DIGEST.md").exists()
+
+
 def test_render_archive_digest_handles_empty_archives(repo_root: Path, tmp_path: Path) -> None:
     plan_dir = tmp_path / "plan"
     archive_dir = plan_dir / "archive"

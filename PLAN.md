@@ -1337,8 +1337,8 @@ Status: in_progress
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D54.1.1` | `D` | Open X54 render determinism remediation tracking | done |  |
-| `M54.1.2` | `M` | Make generated source labels path-stable | planned |  |
-| `T54.1.3` | `T` | Verify render path determinism and explicit output safety | planned |  |
+| `M54.1.2` | `M` | Make generated source labels path-stable | done |  |
+| `T54.1.3` | `T` | Verify render path determinism and explicit output safety | done |  |
 | `D54.1.4` | `D` | Align render skill procedures with explicit target outputs | planned |  |
 | `C54.1.5` | `C` | Checkpoint closure -- X54 render determinism remediation | planned |  |
 
@@ -4922,7 +4922,7 @@ Status: in_progress
 
 ### M54.1.2: Make generated source labels path-stable
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S54.1`
 - **Actions**: implement
 - **Depends on**: `D54.1.1`
@@ -4935,7 +4935,7 @@ Status: in_progress
 
 ### T54.1.3: Verify render path determinism and explicit output safety
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S54.1`
 - **Actions**: test, verify
 - **Depends on**: `M54.1.2`

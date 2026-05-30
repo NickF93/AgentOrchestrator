@@ -8,7 +8,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from plan_loader import PlanLoadError, load_split_plan
+from plan_loader import PlanLoadError, generated_source_label, load_split_plan
 
 
 def markdown_escape(value: Any) -> str:
@@ -123,7 +123,7 @@ def main() -> int:
 
     try:
         _plan, metadata = load_split_plan(plan_path)
-        digest_text = render_archive_digest(metadata, source_label=str(plan_path))
+        digest_text = render_archive_digest(metadata, source_label=generated_source_label(plan_path))
         output_path = Path(args.output) if args.output else default_digest_path(metadata)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(digest_text, encoding="utf-8")

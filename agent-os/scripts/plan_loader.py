@@ -44,6 +44,16 @@ def write_yaml(path: Path, data: dict[str, Any]) -> None:
     path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
 
 
+def generated_source_label(plan_path: Path) -> str:
+    """Return a host-stable label for generated plan artifacts."""
+    path = Path(plan_path)
+    if len(path.parts) >= 2 and path.parts[-2:] == ("plan", "PLAN-index.yaml"):
+        return "plan/PLAN-index.yaml"
+    if not path.is_absolute():
+        return path.as_posix()
+    return path.name
+
+
 def is_aggregate_plan(data: dict[str, Any]) -> bool:
     return all(key in data for key in AGGREGATE_PLAN_KEYS)
 

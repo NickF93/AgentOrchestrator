@@ -37,7 +37,7 @@ items:
   title: Make generated source labels path-stable
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D54.1.1
   role: implementer
@@ -62,7 +62,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - M54.1.2
   role: tester

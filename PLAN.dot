@@ -1011,8 +1011,8 @@ digraph PLAN {
   subgraph "cluster_cg144" {
     style="rounded,dashed";
     label="cg144: render determinism remediation -- implementation tests";
-  "M54.1.2" [label="M54.1.2 | M | planned", shape=box, style="filled,rounded", fillcolor=lightgray];
-  "T54.1.3" [label="T54.1.3 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "M54.1.2" [label="M54.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T54.1.3" [label="T54.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   }
   subgraph "cluster_cg145" {
     style="rounded,dashed";

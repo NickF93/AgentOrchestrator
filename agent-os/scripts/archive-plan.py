@@ -13,6 +13,7 @@ from plan_loader import (
     PlanLoadError,
     compute_fragment_digest,
     extract_fragment,
+    generated_source_label,
     load_split_plan,
     load_yaml_mapping,
     write_yaml,
@@ -129,8 +130,9 @@ def main() -> int:
         split_plan, split_metadata = load_split_plan(index_path)
         script_dir = Path(__file__).resolve().parent
         render_module = load_render_module(script_dir)
+        source_label = generated_source_label(index_path)
         Path(args.md).write_text(
-            render_module.render_markdown(split_plan, source_label=str(index_path)),
+            render_module.render_markdown(split_plan, source_label=source_label),
             encoding="utf-8",
         )
         Path(args.dot).write_text(render_module.render_dot(split_plan), encoding="utf-8")
@@ -140,7 +142,7 @@ def main() -> int:
         )
         digest_path.parent.mkdir(parents=True, exist_ok=True)
         digest_path.write_text(
-            digest_module.render_archive_digest(split_metadata, source_label=str(index_path)),
+            digest_module.render_archive_digest(split_metadata, source_label=source_label),
             encoding="utf-8",
         )
 

@@ -53,7 +53,9 @@ def test_render_plan_generates_outputs(repo_root: Path, tmp_path: Path) -> None:
     assert split_result.returncode == 0, split_result.stdout + split_result.stderr
     assert split_md.exists()
     assert split_dot.exists()
-    expected_md = render_module.render_markdown(aggregate_plan, source_label=str(index_path))
+    expected_md = render_module.render_markdown(
+        aggregate_plan, source_label=loader.generated_source_label(index_path)
+    )
     expected_dot = render_module.render_dot(aggregate_plan)
     assert normalize_generated_markdown(
         split_md.read_text(encoding="utf-8")
@@ -61,6 +63,53 @@ def test_render_plan_generates_outputs(repo_root: Path, tmp_path: Path) -> None:
     assert split_dot.read_text(encoding="utf-8") == expected_dot
     assert "Shared assets" in split_md.read_text(encoding="utf-8")
     assert "cluster_cg27" in split_dot.read_text(encoding="utf-8")
+
+
+def test_render_plan_uses_repo_relative_source_label_for_absolute_index(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    index_path = copy_split_plan(tmp_path)
+    md_path = tmp_path / "absolute-PLAN.md"
+    dot_path = tmp_path / "absolute-PLAN.dot"
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "render-plan.py",
+        str(index_path.resolve()),
+        "--md",
+        str(md_path),
+        "--dot",
+        str(dot_path),
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    header = md_path.read_text(encoding="utf-8").splitlines()[2]
+    assert header == "AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually."
+
+
+def test_render_plan_explicit_outputs_do_not_write_to_caller_cwd(
+    repo_root: Path, tmp_path: Path
+) -> None:
+    target_root = tmp_path / "target"
+    caller_cwd = tmp_path / "caller"
+    target_root.mkdir()
+    caller_cwd.mkdir()
+    index_path = copy_split_plan(target_root)
+
+    result = run_python_script(
+        repo_root / "agent-os" / "scripts" / "render-plan.py",
+        str(index_path.resolve()),
+        "--md",
+        str(target_root / "PLAN.md"),
+        "--dot",
+        str(target_root / "PLAN.dot"),
+        cwd=caller_cwd,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert (target_root / "PLAN.md").exists()
+    assert (target_root / "PLAN.dot").exists()
+    assert not (caller_cwd / "PLAN.md").exists()
+    assert not (caller_cwd / "PLAN.dot").exists()
 
 
 def test_render_plan_rejects_legacy_aggregate_input(repo_root: Path, tmp_path: Path) -> None:

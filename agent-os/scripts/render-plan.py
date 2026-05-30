@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from plan_loader import PlanLoadError, load_plan
+from plan_loader import PlanLoadError, generated_source_label, load_plan
 
 
 def source_order(items: list[dict] | None) -> list[dict]:
@@ -303,7 +303,7 @@ def main() -> int:
         print(f"ERROR: Failed to load plan: {exc}")
         return 2
 
-    md_text = render_markdown(plan, source_label=str(plan_path))
+    md_text = render_markdown(plan, source_label=generated_source_label(plan_path))
     dot_text = render_dot(plan)
 
     Path(args.md).write_text(md_text, encoding="utf-8")
