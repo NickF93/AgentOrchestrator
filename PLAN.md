@@ -68,6 +68,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X52 | X | Stale Tracker Cleanup | done |
 | X53 | X | Archive Digest Summaries | done |
 | X54 | X | Render Path Determinism Remediation | done |
+| X55 | X | repo-map-refresh Skill Packaging | in_progress |
 
 ## Plan
 
@@ -1342,6 +1343,35 @@ Status: done
 | `D54.1.4` | `D` | Align render skill procedures with explicit target outputs | done |  |
 | `C54.1.5` | `C` | Checkpoint closure -- X54 render determinism remediation | done |  |
 
+### X55
+
+- ID: `X55`
+- Title: repo-map-refresh Skill Packaging
+- Status: in_progress
+- Note: Package a procedural repo-map-refresh skill (issue #16) that refreshes a downstream repository's REPO_MAP.md when a freshness trigger fires or the map is stale. The skill wraps the existing freshness contract: it re-derives the objective map sections (Entry Points, Main Modules, Test Map) from the live repository, surfaces proposed deltas for the judgment sections (Hot Paths, Fragile Areas) for operator confirmation, stamps last_validated_on/validated_by, and re-verifies with validate-plan.py --check-freshness. It does not redefine governance, delegates a missing map to repo-bootstrap, and embeds a worked dry-run walkthrough so the dry-run acceptance criterion is satisfied inline. The skill is validated through the skill-creator eval loop before closure.
+
+#### S55.1 Items
+
+Sprint: Sprint 1 -- Authoring and Registration
+Status: in_progress
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D55.1.1` | `D` | Open X55 tracking plan and commit groups | in_progress |  |
+| `D55.1.2` | `D` | Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough | planned |  |
+| `M55.1.3` | `M` | Register repo-map-refresh in shared-assets and propagate skill discovery | planned |  |
+
+#### S55.2 Items
+
+Sprint: Sprint 2 -- Evaluation and Closure
+Status: planned
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `T55.2.1` | `T` | Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end | planned |  |
+| `M55.2.2` | `M` | Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional) | planned | Included only if the skill-creator eval loop or operator review surfaces concrete defects. If applied, bump the skill version and sync shared-assets.yaml; otherwise close with note "no refinement required". |
+| `C55.2.3` | `C` | Checkpoint closure -- X55 repo-map-refresh skill | planned |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1490,6 +1520,9 @@ Status: done
 | cg143 | render determinism remediation -- tracking boundary | `D54.1.1` |
 | cg144 | render determinism remediation -- implementation tests | `M54.1.2`, `T54.1.3` |
 | cg145 | render determinism remediation -- docs closure archive | `D54.1.4`, `C54.1.5` |
+| cg146 | repo-map-refresh skill -- tracking plan | `D55.1.1` |
+| cg147 | repo-map-refresh skill -- author SKILL.md, evals, and propagate discovery | `D55.1.2`, `M55.1.3` |
+| cg148 | repo-map-refresh skill -- evaluation, refinement, and closure | `T55.2.1`, `M55.2.2`, `C55.2.3` |
 
 ## Item Details
 
@@ -4973,4 +5006,70 @@ Status: done
   - render-archive-digest.py produces no drift
   - git diff --check passes
   - targeted renderer and archive tests pass
+  - run-gates.sh passes
+
+### D55.1.1: Open X55 tracking plan and commit groups
+
+- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S55.1`
+- **Actions**: plan, document
+- **Commit group**: `cg146`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### D55.1.2: Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough
+
+- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S55.1`
+- **Actions**: document
+- **Depends on**: `D55.1.1`
+- **Commit group**: `cg147`
+- **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md, agent-os/skills/repo-map-refresh/evals/evals.json
+
+### M55.1.3: Register repo-map-refresh in shared-assets and propagate skill discovery
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Sprint**: `S55.1`
+- **Actions**: implement
+- **Depends on**: `D55.1.2`
+- **Commit group**: `cg147`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+
+### T55.2.1: Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end
+
+- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Sprint**: `S55.2`
+- **Actions**: test, verify
+- **Depends on**: `M55.1.3`
+- **Commit group**: `cg148`
+- **Artifacts**: plan/PLAN-current.yaml
+- **Checks**:
+  - skill-creator eval loop run (with-skill vs baseline) and benchmark produced
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - pytest -q passes
+  - embedded dry-run walkthrough traces against repo-REPO_MAP.md.template and check_repo_map_freshness
+
+### M55.2.2: Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional)
+
+- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Sprint**: `S55.2`
+- **Actions**: implement
+- **Depends on**: `T55.2.1`
+- **Commit group**: `cg148`
+- **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md
+- **Notes**: Included only if the skill-creator eval loop or operator review surfaces concrete defects. If applied, bump the skill version and sync shared-assets.yaml; otherwise close with note "no refinement required".
+
+### C55.2.3: Checkpoint closure -- X55 repo-map-refresh skill
+
+- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S55.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `M55.2.2`
+- **Commit group**: `cg148`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X55.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
   - run-gates.sh passes
