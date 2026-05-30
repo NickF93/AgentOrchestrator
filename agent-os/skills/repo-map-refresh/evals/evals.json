@@ -1,0 +1,151 @@
+{
+  "skill_name": "repo-map-refresh",
+  "schema_version": "skill-creator/evals/v1",
+  "notes": "Test prompts and objective assertions for the repo-map-refresh skill. Prompts reproduce phrasings a real operator would use without naming the skill. Eval 1 (happy path) and eval 3 (dry-run) run against a synthesized throwaway fixture repo with known files and stale metadata so the inferred sections and the stamped date are deterministically checkable. Eval 2 (missing map) is a pure-refusal/delegation case. Eval 4 (fresh no-op) verifies the skill does not rewrite a map that is still within its window. The synthesized fixture is built fresh per run inside the eval workspace; a complementary realistic smoke test points repo_root at the already-bootstrapped ../AgentOrchestrator-Test, whose REPO_MAP.md exercises the empty-template path.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "stale-map-refresh-happy-path",
+      "prompt": "Our repo at ./acme-widgets is overdue for a REPO_MAP update — the map's last_validated_on is 45 days ago and the window is 30. We just refactored: the CLI moved into src/widgets/cli/ and a new HTTP API lives in src/widgets/api/, and there's now a tests/integration/ dir. Can you refresh REPO_MAP.md and re-verify it? Use validated_by: orchestrator.",
+      "expected_output": "The skill detects staleness (45 > 30), re-derives the objective sections from the live fixture (Entry Points incl. the new CLI and API entries; Main Modules incl. cli and api; Test Map incl. tests/unit and tests/integration), proposes Hot Paths / Fragile Areas deltas as items to confirm rather than fabricating them, writes REPO_MAP.md with last_validated_on set to today and validated_by: orchestrator, and runs validate-plan.py --check-freshness against the fixture's plan. It does not commit.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "skill_was_triggered",
+          "text": "The agent consulted the repo-map-refresh SKILL.md before acting (it did not ad-hoc edit REPO_MAP.md without following the detect/re-derive/stamp/verify procedure)."
+        },
+        {
+          "name": "staleness_detected_with_numbers",
+          "text": "The agent's report states the map is stale and shows the age (≈45 days) against the freshness_window_days (30)."
+        },
+        {
+          "name": "objective_entry_points_rederived",
+          "text": "The refreshed REPO_MAP.md Entry Points section names the CLI entry under src/widgets/cli/ and the API entry under src/widgets/api/, in addition to the pre-existing main entry."
+        },
+        {
+          "name": "objective_modules_rederived",
+          "text": "The Main Modules section lists the cli and api modules alongside core, reflecting the actual top-level source layout of the fixture."
+        },
+        {
+          "name": "objective_test_map_rederived",
+          "text": "The Test Map section lists both tests/unit and tests/integration as present in the fixture."
+        },
+        {
+          "name": "judgment_sections_not_fabricated",
+          "text": "Hot Paths and Fragile Areas are either presented as proposed deltas to confirm or left as-is — the agent does not silently invent concrete hot-path/fragile-area entries as established fact."
+        },
+        {
+          "name": "last_validated_on_stamped_today",
+          "text": "REPO_MAP.md last_validated_on is updated to today's date in YYYY-MM-DD form."
+        },
+        {
+          "name": "validated_by_stamped",
+          "text": "REPO_MAP.md validated_by is set to 'orchestrator' as supplied."
+        },
+        {
+          "name": "freshness_window_preserved",
+          "text": "freshness_window_days remains 30 — the skill did not change the window."
+        },
+        {
+          "name": "reverify_command_run",
+          "text": "The agent ran validate-plan.py with --check-freshness pointed at the fixture's plan/PLAN-index.yaml to re-verify."
+        },
+        {
+          "name": "no_commit_created",
+          "text": "git log in the fixture shows no new commit created by the skill — committing REPO_MAP.md is left to the operator."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "missing-map-delegates-to-bootstrap",
+      "prompt": "Can you refresh the REPO_MAP.md in ./fresh-service for me? It's a repo we just cloned and I want the map current. validated_by: nick.",
+      "expected_output": "The skill finds no REPO_MAP.md in the target repo, refuses to fabricate one, and points the operator to repo-bootstrap (which renders REPO_MAP.md from the Level-0 template). No file is created or written.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "skill_was_triggered",
+          "text": "The agent consulted the repo-map-refresh SKILL.md before responding."
+        },
+        {
+          "name": "verdict_blocked",
+          "text": "The agent's report verdict is 'blocked' (not refreshed/fresh)."
+        },
+        {
+          "name": "delegates_to_repo_bootstrap",
+          "text": "The response names repo-bootstrap as the correct tool to create the missing REPO_MAP.md."
+        },
+        {
+          "name": "no_map_fabricated",
+          "text": "No REPO_MAP.md file is created in the target repo — the skill does not invent a map with no provenance."
+        },
+        {
+          "name": "explains_why_no_fabrication",
+          "text": "The response explains that a map without provenance is worse than none / that creation is repo-bootstrap's responsibility, not an arbitrary refusal."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "dry-run-writes-nothing",
+      "prompt": "Before I let you touch anything, show me what a REPO_MAP refresh on ./acme-widgets would change — don't write the file yet. The map is stale (45 days, window 30) and we moved the CLI to src/widgets/cli/ and added src/widgets/api/. validated_by would be orchestrator.",
+      "expected_output": "The skill performs the full detect + re-derive computation and reports the proposed objective section deltas, the proposed judgment deltas, and the exact metadata that WOULD be stamped (last_validated_on -> today, validated_by -> orchestrator), but writes nothing. REPO_MAP.md is byte-for-byte unchanged and verdict is dry-run.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "skill_was_triggered",
+          "text": "The agent consulted the repo-map-refresh SKILL.md before responding."
+        },
+        {
+          "name": "verdict_dry_run",
+          "text": "The agent's report verdict is 'dry-run'."
+        },
+        {
+          "name": "repo_map_unchanged",
+          "text": "REPO_MAP.md in the fixture is byte-for-byte identical before and after the invocation (no write occurred)."
+        },
+        {
+          "name": "reports_would_be_metadata",
+          "text": "The report shows the metadata that WOULD be written, including last_validated_on -> today's date and validated_by -> orchestrator, framed as a proposal not an applied change."
+        },
+        {
+          "name": "reports_objective_deltas",
+          "text": "The report enumerates the proposed objective section deltas (the new cli/api entry points and modules, the integration test dir)."
+        },
+        {
+          "name": "no_commit_created",
+          "text": "No commit is created and no other file is modified."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "fresh-map-noop",
+      "prompt": "Quick check on ./acme-widgets — is the REPO_MAP fresh, and if so leave it alone? It was validated only a few days ago. No specific trigger, I just want to be sure we're not closing a checkpoint on a stale map.",
+      "expected_output": "The skill computes staleness, finds the map within its freshness window, reports verdict fresh with the age vs window, and does NOT rewrite the map or re-stamp last_validated_on.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "skill_was_triggered",
+          "text": "The agent consulted the repo-map-refresh SKILL.md before responding."
+        },
+        {
+          "name": "verdict_fresh",
+          "text": "The agent's report verdict is 'fresh'."
+        },
+        {
+          "name": "reports_age_vs_window",
+          "text": "The report states the map's age in days and compares it against freshness_window_days, showing it is within the window."
+        },
+        {
+          "name": "map_not_rewritten",
+          "text": "REPO_MAP.md is unchanged — last_validated_on is NOT bumped to today, because no refresh was needed."
+        },
+        {
+          "name": "no_commit_created",
+          "text": "No commit is created as a result of the invocation."
+        }
+      ]
+    }
+  ]
+}

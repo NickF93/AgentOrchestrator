@@ -20,7 +20,7 @@ sprints:
   type: S
   parent: X55
   title: Sprint 1 -- Authoring and Registration
-  status: in_progress
+  status: done
 - id: S55.2
   type: S
   parent: X55
@@ -34,7 +34,7 @@ items:
   actions:
   - plan
   - document
-  status: in_progress
+  status: done
   role: orchestrator
   effort: low
   commit_group: cg146
@@ -49,7 +49,7 @@ items:
   title: Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough
   actions:
   - document
-  status: planned
+  status: done
   depends_on:
   - D55.1.1
   role: documenter
@@ -65,7 +65,7 @@ items:
   title: Register repo-map-refresh in shared-assets and propagate skill discovery
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D55.1.2
   role: implementer

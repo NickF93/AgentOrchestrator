@@ -35,7 +35,7 @@
 - [x] `repo-bootstrap` — wrapper around `bootstrap-repo.sh` + post-bootstrap checks
 - [x] `plan-validate-render` — validate + render + interpret failures/warnings
 - [x] `workspace-sync` — regenerate Level-1 files, report provenance drift
-- [ ] `repo-map-refresh` — refresh `REPO_MAP.md` on triggers
+- [x] `repo-map-refresh` — refresh `REPO_MAP.md` on triggers
 - [ ] `checker-reviewer-delegation` — delegation contract once runtime roles settle
 - [x] `quick-fix` — scaffold F-type item + commit_group in one step, reducing tracking-first friction without weakening the invariant (ref: issue #8)
 

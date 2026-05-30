@@ -1353,13 +1353,13 @@ Status: done
 #### S55.1 Items
 
 Sprint: Sprint 1 -- Authoring and Registration
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D55.1.1` | `D` | Open X55 tracking plan and commit groups | in_progress |  |
-| `D55.1.2` | `D` | Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough | planned |  |
-| `M55.1.3` | `M` | Register repo-map-refresh in shared-assets and propagate skill discovery | planned |  |
+| `D55.1.1` | `D` | Open X55 tracking plan and commit groups | done |  |
+| `D55.1.2` | `D` | Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough | done |  |
+| `M55.1.3` | `M` | Register repo-map-refresh in shared-assets and propagate skill discovery | done |  |
 
 #### S55.2 Items
 
@@ -5010,7 +5010,7 @@ Status: planned
 
 ### D55.1.1: Open X55 tracking plan and commit groups
 
-- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S55.1`
 - **Actions**: plan, document
 - **Commit group**: `cg146`
@@ -5018,7 +5018,7 @@ Status: planned
 
 ### D55.1.2: Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough
 
-- **Type**: D | **Status**: planned | **Role**: documenter | **Effort**: medium
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
 - **Sprint**: `S55.1`
 - **Actions**: document
 - **Depends on**: `D55.1.1`
@@ -5027,7 +5027,7 @@ Status: planned
 
 ### M55.1.3: Register repo-map-refresh in shared-assets and propagate skill discovery
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: low
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
 - **Sprint**: `S55.1`
 - **Actions**: implement
 - **Depends on**: `D55.1.2`
