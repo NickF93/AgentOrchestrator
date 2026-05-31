@@ -15,7 +15,7 @@ description: >
   validate-plan.py --check-freshness. It does not redefine the freshness
   policy — it applies it.
 owner: NickF93
-version: "0.2.0"
+version: "0.3.0"
 compatibility:
   - claude
   - codex
@@ -208,8 +208,9 @@ actually re-verified today, so it must come last.
 
 Inspect the live repository read-only (Glob / Grep / Read) and re-derive the
 three sections that can be determined from the code itself. Report each as
-added / removed / unchanged relative to the current map. **Never guess** — if
-a section cannot be determined, say so and leave it for the operator.
+added / removed / unchanged relative to the current map. **Never guess** — a
+genuinely empty section is `none`; a section you cannot resolve is
+`undetermined` (see the vocabulary below).
 
 - **Entry Points** — the program's ways in:
   - main app entry (e.g. `__main__.py`, `main.go`, `src/index.*`, `app.*`,
@@ -225,44 +226,70 @@ a section cannot be determined, say so and leave it for the operator.
   (`tests/`, `test/`, `**/__tests__/`, `*_test.*`, `spec/`, language-specific
   conventions).
 
+**Two values for an empty section — use them consistently:**
+
+- **`none`** — derivation *succeeded* and the section is genuinely empty (e.g. a
+  governance-only repo with no `src/` or `tests/`). This is a factual finding
+  and is **written into the map** as `none`.
+- **`undetermined`** — derivation could *not* be completed (an unfamiliar layout
+  the inspection could not resolve). This needs operator input; report it and do
+  not write a guessed value. Never silently leave a field blank.
+
 Two derivation details that matter, especially right after bootstrap:
 
-- **Placeholder blanks vs. factual blanks.** The template seeds stub labels
-  (`module_a`/`module_b`/`module_c`, `hot_path_1`, `fragile_area_1`). When you
-  re-derive, replace those stub labels with the real findings, and where a
-  section genuinely has nothing (e.g. a governance-only repo with no `src/` or
-  `tests/`), record it explicitly as "none" — a factual blank is information,
-  a leftover stub label is noise. Never leave `module_a:` style placeholders in
-  a validated map.
+- **Replace stub labels.** The template seeds stubs (`module_a`/`module_b`/
+  `module_c`, `hot_path_1`, `fragile_area_1`). Replace them with the real
+  findings, or with `none` where the section is genuinely empty — never leave a
+  `module_a:` style placeholder in a validated map.
 - **No source/tests is a valid result.** If the repo has no detectable entry
-  points, modules, or tests yet, that is the correct, honest answer — report
-  "none", do not invent structure to fill the template.
+  points, modules, or tests yet, that is the correct, honest answer — record
+  `none`; do not invent structure to fill the template.
 
-### Step 4 — Propose deltas for the judgment sections (no fabrication)
+### Step 4 — Propose deltas for the judgment sections (report-only)
 
 `Hot Paths` and `Fragile Areas` require human judgment and cannot be inferred
-reliably from static structure. Surface **candidate** deltas for operator
-confirmation; do not write fabricated entries. Useful signals to *propose*
-from (not to assert): high-churn files (`git log` frequency), files with many
-dependents, dense `TODO`/`FIXME`/`HACK` clusters, and whatever the existing
-map already records. Mark every judgment delta as "proposed — confirm".
+reliably from static structure. Surface **candidate** deltas in the **refresh
+report only** — under `proposed_section_deltas.judgment` and `next_steps`. These
+proposals are **never written into `REPO_MAP.md`**: the map is a validated
+artifact and must contain only confirmed content (see Step 5 and the ownership
+split in `shared-workflow.md` — the orchestrator *stamps* freshness, reviewers
+*propose* deltas). Do not insert `"proposed"`/`"confirm"` placeholder text into
+the file.
+
+Useful signals to *propose* from (not to assert): high-churn files (`git log`
+frequency), files with many dependents, dense `TODO`/`FIXME`/`HACK` clusters,
+and whatever the existing map already records.
 
 When the signals are absent — a freshly bootstrapped or single-commit repo has
 no churn history, and a structure-only repo has no clear hot paths — do not
-manufacture proposals. Record the judgment sections as "undetermined — no basis
-for a proposal yet; populate once the repo accrues history" and move on. An
-empty, honest judgment section is correct; a guessed one is a liability.
+manufacture proposals. Say so in the report ("no basis for a judgment proposal
+yet; populate once the repo accrues history") and leave the map's judgment
+sections at their last confirmed value. An honest empty report is correct; a
+guessed proposal is a liability.
 
-### Step 5 — Apply confirmed updates and stamp freshness
+### Step 5 — Write confirmed content and stamp freshness
 
-Only after the objective sections are re-derived and any judgment deltas are
-confirmed:
+The map must only ever contain confirmed content, so write in this order:
 
-1. Write the confirmed section updates into `{repo_root}/REPO_MAP.md`.
-2. Stamp `last_validated_on: <today>` (ISO `YYYY-MM-DD`) and
-   `validated_by: <validated_by input>`.
-3. Leave `freshness_window_days` unchanged unless the operator explicitly
-   adjusts it.
+1. **Objective sections** — write the re-derived Entry Points / Main Modules /
+   Test Map. These are confirmed *by derivation* from the live repo, so they go
+   in directly (record genuine emptiness as `none`; never invent — see Step 3).
+2. **Judgment sections** — write **only operator-confirmed** deltas. If the
+   operator has not confirmed anything in this run (the common autonomous case),
+   **carry the prior confirmed values forward unchanged** — do not overwrite them
+   and do not insert the Step 4 proposals. The proposals live in the report, not
+   the file.
+3. **Stamp** `last_validated_on: <today>` (ISO `YYYY-MM-DD`) and
+   `validated_by: <validated_by input>`. Leave `freshness_window_days` unchanged
+   unless the operator explicitly adjusts it.
+
+**What the stamp attests.** `last_validated_on` certifies that the map was
+re-verified against the live repo today and that **every line it contains is
+confirmed** — objective sections freshly re-derived, judgment sections holding
+their most recent operator confirmation. Because no unconfirmed proposal is ever
+written, the stamp is honest under `lifecycle.md` ("last confirmed accurate")
+even in a fully autonomous run. The order is load-bearing: stamp last, after the
+content is written.
 
 If `dry_run` is `true`, **skip all writes**: report the section deltas and the
 exact metadata that *would* be stamped, and set the verdict to `dry-run`.
@@ -339,12 +366,17 @@ test_map:
   - end-to-end tests:                              (still none — report, do not invent)
 ```
 
-**Step 4 — judgment deltas (proposed, await confirmation):**
+**Step 4 — judgment deltas (proposed in the report only, never written):**
 
 ```
 hot_paths:     proposed: src/widgets/core/dispatch.py (highest churn, 22 commits/30d) — confirm
 fragile_areas: proposed: src/widgets/api/server.py (new, no integration coverage) — confirm
 ```
+
+These two lines are part of the **report**. A real (non-dry-run) run would write
+the objective re-derivation into `REPO_MAP.md` and **carry the map's existing
+`Hot Paths`/`Fragile Areas` forward unchanged** until the operator confirms these
+proposals — it would not write the `proposed … — confirm` text into the file.
 
 **Step 5 — metadata that WOULD be stamped (dry-run, not written):**
 
@@ -377,8 +409,10 @@ would still fail until the operator re-runs without `dry_run`.
   `last_validated_on`. Stamping a date you did not actually validate defeats
   the entire freshness contract.
 - **No fabrication of judgment sections**: `Hot Paths` and `Fragile Areas`
-  deltas are proposals requiring operator confirmation. Leave undetermined
-  objective fields blank with a note rather than guessing.
+  deltas are report-only proposals requiring operator confirmation; they are
+  never written into the map speculatively. Record a genuinely empty objective
+  section as `none`; report a section you could not resolve as `undetermined`
+  rather than guessing.
 - **Refuse to invent a missing map**: delegate creation to `repo-bootstrap`.
 - **No auto-commit, no push**: the operator commits `REPO_MAP.md` (Phase A);
   routing to a branch/PR is `gitflow-pr-only`'s job.
@@ -394,9 +428,10 @@ would still fail until the operator re-runs without `dry_run`.
 | Freshness metadata unparseable / header malformed         | Report what was parsed; treat unknown fields as stale; do not guess      |
 | `last_validated_on` malformed (not `YYYY-MM-DD`)          | Treat as stale (matches the validator); flag for operator correction     |
 | `freshness_window_days` non-integer or absent             | Default to 30 (matches the validator); note the assumption               |
-| Repo has no detectable entry points / modules / tests     | Report the section as undetermined; leave blank; never invent            |
+| Repo genuinely has no entry points / modules / tests      | Record the section as `none` (factual empty); never invent               |
+| Section layout cannot be resolved by inspection           | Report as `undetermined` and ask the operator; do not write a guess      |
 | `validated_by` not provided but a write is requested      | Fail (`blocked`): refuse to stamp an unattributed validation             |
-| Operator declines proposed judgment deltas                | Stamp only the confirmed objective updates; record the declined deltas   |
+| Operator declines / does not confirm proposed judgment deltas | Write objective updates, carry judgment sections forward unchanged, stamp; record the proposals in the report only |
 | `--check-freshness` still reports stale after refresh     | Fail (`fail`): inspect the written date (likely malformed) and re-stamp  |
 | Map already within window and no trigger supplied          | Stop (`fresh`); report age vs window; no rewrite                         |
 | Target repo has no `plan/PLAN-index.yaml` to re-verify     | Refresh and stamp the map; report the re-verify as `n/a` with the reason |

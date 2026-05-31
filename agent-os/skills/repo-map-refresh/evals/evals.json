@@ -1,7 +1,7 @@
 {
   "skill_name": "repo-map-refresh",
   "schema_version": "skill-creator/evals/v1",
-  "notes": "Test prompts and objective assertions for the repo-map-refresh skill. Prompts reproduce phrasings a real operator would use without naming the skill. Eval 1 (happy path) and eval 3 (dry-run) run against a synthesized throwaway fixture repo with known files and stale metadata so the inferred sections and the stamped date are deterministically checkable. Eval 2 (missing map) is a pure-refusal/delegation case. Eval 4 (fresh no-op) verifies the skill does not rewrite a map that is still within its window. The synthesized fixture is built fresh per run inside the eval workspace; a complementary realistic smoke test points repo_root at the already-bootstrapped ../AgentOrchestrator-Test, whose REPO_MAP.md exercises the empty-template path.",
+  "notes": "Test prompts and objective assertions for the repo-map-refresh skill. Prompts reproduce phrasings a real operator would use without naming the skill. All five evals run against self-contained, synthesized throwaway fixtures built fresh per run inside the eval workspace, so they are reproducible by anyone with no external repo dependency. Eval 1 (happy path) and eval 3 (dry-run) use a stale-map fixture with known files so the inferred sections and the stamped date are deterministically checkable. Eval 2 (missing map) is a pure-refusal/delegation case. Eval 4 (fresh no-op) verifies the skill does not rewrite a map still within its window. Eval 5 (bootstrapped empty template) uses a freshly bootstrapped fixture whose REPO_MAP.md is the empty template (blank last_validated_on, stub section labels) and verifies the first-validation-pass behavior. Across evals 1, 3, and 5 the assertions enforce the core contract: judgment-section proposals appear only in the report, never as written content in REPO_MAP.md, and genuinely empty objective sections are recorded as 'none'.",
   "evals": [
     {
       "id": 1,
@@ -31,8 +31,12 @@
           "text": "The Test Map section lists both tests/unit and tests/integration as present in the fixture."
         },
         {
-          "name": "judgment_sections_not_fabricated",
-          "text": "Hot Paths and Fragile Areas are either presented as proposed deltas to confirm or left as-is — the agent does not silently invent concrete hot-path/fragile-area entries as established fact."
+          "name": "judgment_proposals_in_report_only",
+          "text": "The agent's report presents Hot Paths / Fragile Areas as proposed deltas for the operator to confirm (it does not assert them as established fact)."
+        },
+        {
+          "name": "map_has_no_unconfirmed_judgment_text",
+          "text": "The written REPO_MAP.md contains no 'proposed' / '— confirm' placeholder text in its Hot Paths or Fragile Areas sections — proposals stay in the report, and the map's judgment sections are either operator-confirmed or carried forward unchanged."
         },
         {
           "name": "last_validated_on_stamped_today",
@@ -113,6 +117,10 @@
           "text": "The report enumerates the proposed objective section deltas (the new cli/api entry points and modules, the integration test dir)."
         },
         {
+          "name": "judgment_proposals_in_report_only",
+          "text": "Hot Paths / Fragile Areas are surfaced as proposals in the report (framed for operator confirmation), consistent with the rule that they would never be written into REPO_MAP.md as unconfirmed content."
+        },
+        {
           "name": "no_commit_created",
           "text": "No commit is created and no other file is modified."
         }
@@ -144,6 +152,35 @@
         {
           "name": "no_commit_created",
           "text": "No commit is created as a result of the invocation."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "bootstrapped-empty-template",
+      "prompt": "We just bootstrapped ./toy-gov — it's a governance-only repo with no src/ and no tests/ yet, just plan/ and docs. Its REPO_MAP.md is still the empty bootstrap template with a blank last_validated_on. Can you do the first validation pass and stamp it? validated_by: orchestrator.",
+      "expected_output": "The skill treats the blank last_validated_on as stale (first post-bootstrap validation is a refresh trigger), re-derives the objective sections, finds the repo genuinely has no entry points / modules / tests, records each as 'none' (not a guess, not a leftover module_a stub), does not manufacture Hot Paths / Fragile Areas, stamps last_validated_on to today with validated_by orchestrator, and re-verifies with validate-plan.py --check-freshness exiting 0.",
+      "files": [],
+      "assertions": [
+        {
+          "name": "skill_was_triggered",
+          "text": "The agent consulted the repo-map-refresh SKILL.md and treated the blank last_validated_on as a stale, first-post-bootstrap refresh trigger."
+        },
+        {
+          "name": "objective_emptiness_recorded_as_none",
+          "text": "Entry Points, Main Modules, and Test Map are each recorded as 'none' because the repo genuinely has no src/ or tests/ — the agent does not invent structure and does not leave module_a/module_b/module_c stub labels in the map."
+        },
+        {
+          "name": "no_fabricated_judgment",
+          "text": "Hot Paths and Fragile Areas are not fabricated; with no churn history the agent reports no basis for a proposal rather than inventing entries, and no 'proposed' / '— confirm' text is written into the map."
+        },
+        {
+          "name": "freshness_stamped_today",
+          "text": "REPO_MAP.md last_validated_on is stamped to today's date (YYYY-MM-DD) and validated_by is set to 'orchestrator'."
+        },
+        {
+          "name": "reverify_exits_zero",
+          "text": "Running validate-plan.py --check-freshness against the fixture's plan after the stamp exits 0."
         }
       ]
     }
