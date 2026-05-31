@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-30
+- Last updated: 2026-05-31
 
 ## Mission
 
@@ -68,7 +68,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X52 | X | Stale Tracker Cleanup | done |
 | X53 | X | Archive Digest Summaries | done |
 | X54 | X | Render Path Determinism Remediation | done |
-| X55 | X | repo-map-refresh Skill Packaging | in_progress |
+| X55 | X | repo-map-refresh Skill Packaging | done |
 
 ## Plan
 
@@ -1347,7 +1347,7 @@ Status: done
 
 - ID: `X55`
 - Title: repo-map-refresh Skill Packaging
-- Status: in_progress
+- Status: done
 - Note: Package a procedural repo-map-refresh skill (issue #16) that refreshes a downstream repository's REPO_MAP.md when a freshness trigger fires or the map is stale. The skill wraps the existing freshness contract: it re-derives the objective map sections (Entry Points, Main Modules, Test Map) from the live repository, surfaces proposed deltas for the judgment sections (Hot Paths, Fragile Areas) for operator confirmation, stamps last_validated_on/validated_by, and re-verifies with validate-plan.py --check-freshness. It does not redefine governance, delegates a missing map to repo-bootstrap, and embeds a worked dry-run walkthrough so the dry-run acceptance criterion is satisfied inline. The skill is validated through the skill-creator eval loop before closure.
 
 #### S55.1 Items
@@ -1364,13 +1364,13 @@ Status: done
 #### S55.2 Items
 
 Sprint: Sprint 2 -- Evaluation and Closure
-Status: planned
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `T55.2.1` | `T` | Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end | done |  |
 | `M55.2.2` | `M` | Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional) | done | Applied. The bootstrapped empty-template smoke run surfaced four concrete gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped 0.1.0 -> 0.2.0 and synced in shared-assets.yaml. |
-| `C55.2.3` | `C` | Checkpoint closure -- X55 repo-map-refresh skill | planned |  |
+| `C55.2.3` | `C` | Checkpoint closure -- X55 repo-map-refresh skill | done |  |
 | `M55.2.4` | `M` | Root-cause remediation of eval-review findings in repo-map-refresh | done | Remediates four eval-review findings from the root. (1) Judgment-section deltas (Hot Paths / Fragile Areas) are surfaced in the refresh report only and are never written into REPO_MAP.md; Step 5 stamps last_validated_on only over confirmed content (objective re-derivation + carried-forward or operator-confirmed judgment), removing the impossible "judgment confirmed" precondition and aligning with lifecycle.md and shared-workflow.md. (2) Normalizes objective-section vocabulary: "none" for confirmed-empty, "undetermined" for derivation-failed; eliminates "leave blank". (3) Adds a self-contained bootstrapped-empty-template eval and rewrites evals.json notes to match the committed eval set. (4) Tightens evals 1/3 assertions to enforce that the written map carries no proposed/confirm text. Bumps the skill to 0.3.0 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
 | `T55.2.5` | `T` | Re-validate repo-map-refresh after report-only remediation (iteration-2) | done | Done. skill-creator iteration-2 ran all five evals with-skill and baseline (10 runs). Benchmark: with-skill 100% vs baseline 58.4% pass rate (delta +0.42), consistent with iteration-1 (100% vs 57%) -- no regression. The remediation is confirmed on disk: every with-skill REPO_MAP.md has zero proposed/confirm text, judgment sections are carried forward unchanged or recorded as "none", and the bootstrapped empty-template case records all objective sections as "none" and stamps cleanly (re-verify exit 0). Discriminators held: baseline fabricated a map for the missing-map case (0%) and asserted judgment as fact on the happy path. Local gates green (194 tests, 97.66% coverage). Viewer: review-iteration-2.html (gitignored workspace). |
 
@@ -5064,7 +5064,7 @@ Status: planned
 
 ### C55.2.3: Checkpoint closure -- X55 repo-map-refresh skill
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S55.2`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T55.2.5`

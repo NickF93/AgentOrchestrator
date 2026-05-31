@@ -3,7 +3,7 @@ meta:
   owner: NickF93
   version: '0.1'
   schema_version: draft-1.0
-  last_updated: '2026-05-30'
+  last_updated: '2026-05-31'
   note: 'This PLAN.yaml is self-referential: it is the plan for building the very
     system (agent-os/) that will eventually validate and render itself. The schema
     and tooling defined here will be used to validate this file once M1.1.2 and M1.1.4
@@ -235,3 +235,7 @@ archives:
   title: Render Path Determinism Remediation
   path: archive/PLAN-X54.yaml
   digest: sha256:c8ba28a358fc
+- milestone: X55
+  title: repo-map-refresh Skill Packaging
+  path: archive/PLAN-X55.yaml
+  digest: sha256:dbe0b9b161c2
