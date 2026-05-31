@@ -1040,7 +1040,7 @@ digraph PLAN {
   "T55.2.1" [label="T55.2.1 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "M55.2.2" [label="M55.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   "M55.2.4" [label="M55.2.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
-  "T55.2.5" [label="T55.2.5 | T | planned", shape=ellipse, style="filled,rounded", fillcolor=lightgray];
+  "T55.2.5" [label="T55.2.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
   "C55.2.3" [label="C55.2.3 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
   }
   "X1" -> "S1.1" [style=dashed];

@@ -1372,7 +1372,7 @@ Status: planned
 | `M55.2.2` | `M` | Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional) | done | Applied. The bootstrapped empty-template smoke run surfaced four concrete gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped 0.1.0 -> 0.2.0 and synced in shared-assets.yaml. |
 | `C55.2.3` | `C` | Checkpoint closure -- X55 repo-map-refresh skill | planned |  |
 | `M55.2.4` | `M` | Root-cause remediation of eval-review findings in repo-map-refresh | done | Remediates four eval-review findings from the root. (1) Judgment-section deltas (Hot Paths / Fragile Areas) are surfaced in the refresh report only and are never written into REPO_MAP.md; Step 5 stamps last_validated_on only over confirmed content (objective re-derivation + carried-forward or operator-confirmed judgment), removing the impossible "judgment confirmed" precondition and aligning with lifecycle.md and shared-workflow.md. (2) Normalizes objective-section vocabulary: "none" for confirmed-empty, "undetermined" for derivation-failed; eliminates "leave blank". (3) Adds a self-contained bootstrapped-empty-template eval and rewrites evals.json notes to match the committed eval set. (4) Tightens evals 1/3 assertions to enforce that the written map carries no proposed/confirm text. Bumps the skill to 0.3.0 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
-| `T55.2.5` | `T` | Re-validate repo-map-refresh after report-only remediation (iteration-2) | planned |  |
+| `T55.2.5` | `T` | Re-validate repo-map-refresh after report-only remediation (iteration-2) | done | Done. skill-creator iteration-2 ran all five evals with-skill and baseline (10 runs). Benchmark: with-skill 100% vs baseline 58.4% pass rate (delta +0.42), consistent with iteration-1 (100% vs 57%) -- no regression. The remediation is confirmed on disk: every with-skill REPO_MAP.md has zero proposed/confirm text, judgment sections are carried forward unchanged or recorded as "none", and the bootstrapped empty-template case records all objective sections as "none" and stamps cleanly (re-verify exit 0). Discriminators held: baseline fabricated a map for the missing-map case (0%) and asserted judgment as fact on the happy path. Local gates green (194 tests, 97.66% coverage). Viewer: review-iteration-2.html (gitignored workspace). |
 
 ## Commit Groups
 
@@ -5088,7 +5088,7 @@ Status: planned
 
 ### T55.2.5: Re-validate repo-map-refresh after report-only remediation (iteration-2)
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S55.2`
 - **Actions**: test, verify
 - **Depends on**: `M55.2.4`
@@ -5101,3 +5101,4 @@ Status: planned
   - render-plan.py produces no drift
   - run-gates.sh passes
   - pytest -q passes
+- **Notes**: Done. skill-creator iteration-2 ran all five evals with-skill and baseline (10 runs). Benchmark: with-skill 100% vs baseline 58.4% pass rate (delta +0.42), consistent with iteration-1 (100% vs 57%) -- no regression. The remediation is confirmed on disk: every with-skill REPO_MAP.md has zero proposed/confirm text, judgment sections are carried forward unchanged or recorded as "none", and the bootstrapped empty-template case records all objective sections as "none" and stamps cleanly (re-verify exit 0). Discriminators held: baseline fabricated a map for the missing-map case (0%) and asserted judgment as fact on the happy path. Local gates green (194 tests, 97.66% coverage). Viewer: review-iteration-2.html (gitignored workspace).

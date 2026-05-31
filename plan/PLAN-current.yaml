@@ -162,7 +162,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - M55.2.4
   role: tester
@@ -178,6 +178,18 @@ items:
   - render-plan.py produces no drift
   - run-gates.sh passes
   - pytest -q passes
+  notes: 'Done. skill-creator iteration-2 ran all five evals with-skill and baseline
+    (10 runs). Benchmark: with-skill 100% vs baseline 58.4% pass rate (delta +0.42),
+    consistent with iteration-1 (100% vs 57%) -- no regression. The remediation is
+    confirmed on disk: every with-skill REPO_MAP.md has zero proposed/confirm text,
+    judgment sections are carried forward unchanged or recorded as "none", and the
+    bootstrapped empty-template case records all objective sections as "none" and
+    stamps cleanly (re-verify exit 0). Discriminators held: baseline fabricated a
+    map for the missing-map case (0%) and asserted judgment as fact on the happy
+    path. Local gates green (194 tests, 97.66% coverage). Viewer:
+    review-iteration-2.html (gitignored workspace).
+
+    '
   artifacts_out:
   - plan/PLAN-current.yaml
 - id: C55.2.3
