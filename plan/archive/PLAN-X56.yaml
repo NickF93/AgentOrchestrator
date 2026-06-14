@@ -1,0 +1,158 @@
+milestones:
+- id: X56
+  type: X
+  title: repo-map-refresh Placeholder-Stub Remediation
+  status: done
+  note: 'Root-cause fix for a defect introduced by the X55 cg148 report-only remediation:
+    the Step 5 rule "carry the prior confirmed values forward unchanged" preserves
+    unfilled judgment template stubs (hot_path_N / fragile_area_N), so a stamped,
+    "validated" REPO_MAP.md can still contain template placeholders. Make Step 5 symmetric
+    with Step 3 (an unfilled stub is the absence of a confirmed value -> record "none";
+    carry forward only real prior values), and strengthen the evals.json assertions
+    that missed the leak. Bumps the skill to 0.3.1 and re-validates via the skill-creator
+    eval loop. Authority files (lifecycle.md, shared-workflow.md) are not modified.
+
+    '
+sprints:
+- id: S56.1
+  type: S
+  parent: X56
+  title: Sprint 1 -- Stub-Leak Remediation and Closure
+  status: done
+items:
+- id: D56.1.1
+  parent: S56.1
+  type: D
+  title: Open X56 tracking plan and commit groups
+  actions:
+  - plan
+  - document
+  status: done
+  role: orchestrator
+  effort: low
+  commit_group: cg149
+  scope: plan/
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - PLAN.md
+  - PLAN.dot
+- id: M56.1.2
+  parent: S56.1
+  type: M
+  title: Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions
+  actions:
+  - implement
+  status: done
+  depends_on:
+  - D56.1.1
+  role: implementer
+  effort: medium
+  commit_group: cg150
+  scope: .
+  notes: 'Root cause: the X55 Step 5 rule "carry the prior confirmed values forward
+    unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md
+    could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5
+    symmetric with Step 3: a real prior judgment value is carried forward, but an
+    unfilled stub is the absence of a confirmed value and is recorded as "none". The
+    invariant ("a validated map never contains a placeholder stub; every line is a
+    confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests
+    note, the worked example, Constraints, and the failure table. Strengthens the
+    evals 1/5 assertions that previously only grepped proposed/confirm text and missed
+    bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files
+    (lifecycle.md, shared-workflow.md) are not modified.
+
+    '
+  artifacts_out:
+  - agent-os/skills/repo-map-refresh/SKILL.md
+  - agent-os/skills/repo-map-refresh/evals/evals.json
+  - agent-os/registry/shared-assets.yaml
+- id: T56.1.3
+  parent: S56.1
+  type: T
+  title: Re-validate repo-map-refresh after stub-leak fix (iteration-3)
+  actions:
+  - test
+  - verify
+  status: done
+  depends_on:
+  - M56.1.2
+  role: tester
+  effort: medium
+  commit_group: cg150
+  scope: .
+  checks:
+  - skill-creator iteration-3 eval loop run (with-skill v0.3.1 vs old-skill v0.3.0
+    baseline) across the affected evals (1, 3, 5) and benchmark produced
+  - every with-skill stamped REPO_MAP.md contains zero hot_path_N / fragile_area_N
+    / module_X placeholder stubs and records empty judgment sections as "none"
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - pytest -q passes
+  notes: 'Done. skill-creator iteration-3 ran the three affected evals (1 stale happy
+    path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot)
+    baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill
+    23/24 (95.83%). The single discriminating assertion is exactly the regression:
+    on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2,
+    fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1
+    records Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing
+    written) and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch)
+    are non-discriminating at 100% both, confirming the fix is surgical. Local gates
+    green (194 tests, >95% coverage); validate-plan and render clean. Timing was largely
+    uncaptured this iteration (spawn-error + session-limit disruption); pass-rate
+    from disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored).
+
+    '
+  artifacts_out:
+  - plan/PLAN-current.yaml
+- id: C56.1.4
+  parent: S56.1
+  type: C
+  title: Checkpoint closure -- X56 placeholder-stub remediation
+  actions:
+  - checkpoint
+  - verify
+  status: done
+  depends_on:
+  - T56.1.3
+  role: reviewer
+  effort: low
+  commit_group: cg150
+  scope: .
+  shared_assets:
+    skill: plan-checkpoint-close
+    prompt: checkpoint-closure-review
+    result_protocol: check-result-v1
+  checks:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  artifacts_out:
+  - plan/PLAN-current.yaml
+  - plan/PLAN-index.yaml
+  - plan/archive/PLAN-X56.yaml
+  - PLAN.md
+  - PLAN.dot
+commit_groups:
+- id: cg149
+  title: repo-map-refresh stub-leak -- tracking plan
+  items:
+  - D56.1.1
+  notes: 'Creates X56 active tracking and commit-group boundaries before any non-generated
+    edit, per the tracking-first rule.
+
+    '
+- id: cg150
+  title: repo-map-refresh stub-leak -- fix, re-validate, and closure
+  items:
+  - M56.1.2
+  - T56.1.3
+  - C56.1.4
+  notes: 'Makes Step 5 record "none" for unfilled judgment stubs (symmetric with Step
+    3) so a stamped REPO_MAP.md never contains template placeholders, strengthens
+    the evals.json assertions that missed the leak, bumps the skill to 0.3.1 and syncs
+    shared-assets.yaml, re-validates via skill-creator iteration-3, renders plan views,
+    archives X56 to plan/archive/PLAN-X56.yaml, and updates plan/PLAN-index.yaml with
+    the milestone digest.
+
+    '

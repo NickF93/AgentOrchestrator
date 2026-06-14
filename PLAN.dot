@@ -54,6 +54,8 @@ digraph PLAN {
   "X52" [label="X52 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X53" [label="X53 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X54" [label="X54 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X55" [label="X55 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
+  "X56" [label="X56 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -127,6 +129,9 @@ digraph PLAN {
   "S52.1" [label="S52.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S53.1" [label="S53.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S54.1" [label="S54.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S55.1" [label="S55.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S55.2" [label="S55.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
+  "S56.1" [label="S56.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -1020,6 +1025,38 @@ digraph PLAN {
   "D54.1.4" [label="D54.1.4 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
   "C54.1.5" [label="C54.1.5 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
+  subgraph "cluster_cg146" {
+    style="rounded,dashed";
+    label="cg146: repo-map-refresh skill -- tracking plan";
+  "D55.1.1" [label="D55.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg147" {
+    style="rounded,dashed";
+    label="cg147: repo-map-refresh skill -- author SKILL.md, evals, and propagate discovery";
+  "D55.1.2" [label="D55.1.2 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  "M55.1.3" [label="M55.1.3 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg148" {
+    style="rounded,dashed";
+    label="cg148: repo-map-refresh skill -- evaluation, refinement, and closure";
+  "T55.2.1" [label="T55.2.1 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "M55.2.2" [label="M55.2.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "M55.2.4" [label="M55.2.4 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T55.2.5" [label="T55.2.5 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C55.2.3" [label="C55.2.3 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg149" {
+    style="rounded,dashed";
+    label="cg149: repo-map-refresh stub-leak -- tracking plan";
+  "D56.1.1" [label="D56.1.1 | D | done", shape=note, style="filled,rounded", fillcolor=darkseagreen1];
+  }
+  subgraph "cluster_cg150" {
+    style="rounded,dashed";
+    label="cg150: repo-map-refresh stub-leak -- fix, re-validate, and closure";
+  "M56.1.2" [label="M56.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
+  "T56.1.3" [label="T56.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
+  "C56.1.4" [label="C56.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
+  }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
   "X3" -> "S3.1" [style=dashed];
@@ -1093,6 +1130,9 @@ digraph PLAN {
   "X52" -> "S52.1" [style=dashed];
   "X53" -> "S53.1" [style=dashed];
   "X54" -> "S54.1" [style=dashed];
+  "X55" -> "S55.1" [style=dashed];
+  "X55" -> "S55.2" [style=dashed];
+  "X56" -> "S56.1" [style=dashed];
   "S1.1" -> "C1.1.1" [style=dashed];
   "S1.1" -> "D1.1.1" [style=dashed];
   "S1.1" -> "M1.1.1" [style=dashed];
@@ -1410,6 +1450,18 @@ digraph PLAN {
   "S54.1" -> "T54.1.3" [style=dashed];
   "S54.1" -> "D54.1.4" [style=dashed];
   "S54.1" -> "C54.1.5" [style=dashed];
+  "S55.1" -> "D55.1.1" [style=dashed];
+  "S55.1" -> "D55.1.2" [style=dashed];
+  "S55.1" -> "M55.1.3" [style=dashed];
+  "S55.2" -> "T55.2.1" [style=dashed];
+  "S55.2" -> "M55.2.2" [style=dashed];
+  "S55.2" -> "C55.2.3" [style=dashed];
+  "S55.2" -> "M55.2.4" [style=dashed];
+  "S55.2" -> "T55.2.5" [style=dashed];
+  "S56.1" -> "D56.1.1" [style=dashed];
+  "S56.1" -> "M56.1.2" [style=dashed];
+  "S56.1" -> "T56.1.3" [style=dashed];
+  "S56.1" -> "C56.1.4" [style=dashed];
   "T1.1.1" -> "C1.1.1";
   "T1.1.2" -> "C1.1.1";
   "T1.1.3" -> "C1.1.1";
@@ -1746,4 +1798,14 @@ digraph PLAN {
   "M54.1.2" -> "T54.1.3";
   "T54.1.3" -> "D54.1.4";
   "D54.1.4" -> "C54.1.5";
+  "D55.1.1" -> "D55.1.2";
+  "D55.1.2" -> "M55.1.3";
+  "M55.1.3" -> "T55.2.1";
+  "T55.2.1" -> "M55.2.2";
+  "T55.2.5" -> "C55.2.3";
+  "M55.2.2" -> "M55.2.4";
+  "M55.2.4" -> "T55.2.5";
+  "D56.1.1" -> "M56.1.2";
+  "M56.1.2" -> "T56.1.3";
+  "T56.1.3" -> "C56.1.4";
 }

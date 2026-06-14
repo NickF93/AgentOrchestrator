@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-30
+- Last updated: 2026-06-14
 
 ## Mission
 
@@ -68,6 +68,8 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X52 | X | Stale Tracker Cleanup | done |
 | X53 | X | Archive Digest Summaries | done |
 | X54 | X | Render Path Determinism Remediation | done |
+| X55 | X | repo-map-refresh Skill Packaging | done |
+| X56 | X | repo-map-refresh Placeholder-Stub Remediation | done |
 
 ## Plan
 
@@ -1342,6 +1344,56 @@ Status: done
 | `D54.1.4` | `D` | Align render skill procedures with explicit target outputs | done |  |
 | `C54.1.5` | `C` | Checkpoint closure -- X54 render determinism remediation | done |  |
 
+### X55
+
+- ID: `X55`
+- Title: repo-map-refresh Skill Packaging
+- Status: done
+- Note: Package a procedural repo-map-refresh skill (issue #16) that refreshes a downstream repository's REPO_MAP.md when a freshness trigger fires or the map is stale. The skill wraps the existing freshness contract: it re-derives the objective map sections (Entry Points, Main Modules, Test Map) from the live repository, surfaces proposed deltas for the judgment sections (Hot Paths, Fragile Areas) for operator confirmation, stamps last_validated_on/validated_by, and re-verifies with validate-plan.py --check-freshness. It does not redefine governance, delegates a missing map to repo-bootstrap, and embeds a worked dry-run walkthrough so the dry-run acceptance criterion is satisfied inline. The skill is validated through the skill-creator eval loop before closure.
+
+#### S55.1 Items
+
+Sprint: Sprint 1 -- Authoring and Registration
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D55.1.1` | `D` | Open X55 tracking plan and commit groups | done |  |
+| `D55.1.2` | `D` | Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough | done |  |
+| `M55.1.3` | `M` | Register repo-map-refresh in shared-assets and propagate skill discovery | done |  |
+
+#### S55.2 Items
+
+Sprint: Sprint 2 -- Evaluation and Closure
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `T55.2.1` | `T` | Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end | done |  |
+| `M55.2.2` | `M` | Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional) | done | Applied. The bootstrapped empty-template smoke run surfaced four concrete gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped 0.1.0 -> 0.2.0 and synced in shared-assets.yaml. |
+| `C55.2.3` | `C` | Checkpoint closure -- X55 repo-map-refresh skill | done |  |
+| `M55.2.4` | `M` | Root-cause remediation of eval-review findings in repo-map-refresh | done | Remediates four eval-review findings from the root. (1) Judgment-section deltas (Hot Paths / Fragile Areas) are surfaced in the refresh report only and are never written into REPO_MAP.md; Step 5 stamps last_validated_on only over confirmed content (objective re-derivation + carried-forward or operator-confirmed judgment), removing the impossible "judgment confirmed" precondition and aligning with lifecycle.md and shared-workflow.md. (2) Normalizes objective-section vocabulary: "none" for confirmed-empty, "undetermined" for derivation-failed; eliminates "leave blank". (3) Adds a self-contained bootstrapped-empty-template eval and rewrites evals.json notes to match the committed eval set. (4) Tightens evals 1/3 assertions to enforce that the written map carries no proposed/confirm text. Bumps the skill to 0.3.0 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
+| `T55.2.5` | `T` | Re-validate repo-map-refresh after report-only remediation (iteration-2) | done | Done. skill-creator iteration-2 ran all five evals with-skill and baseline (10 runs). Benchmark: with-skill 100% vs baseline 58.4% pass rate (delta +0.42), consistent with iteration-1 (100% vs 57%) -- no regression. The remediation is confirmed on disk: every with-skill REPO_MAP.md has zero proposed/confirm text, judgment sections are carried forward unchanged or recorded as "none", and the bootstrapped empty-template case records all objective sections as "none" and stamps cleanly (re-verify exit 0). Discriminators held: baseline fabricated a map for the missing-map case (0%) and asserted judgment as fact on the happy path. Local gates green (194 tests, 97.66% coverage). Viewer: review-iteration-2.html (gitignored workspace). |
+
+### X56
+
+- ID: `X56`
+- Title: repo-map-refresh Placeholder-Stub Remediation
+- Status: done
+- Note: Root-cause fix for a defect introduced by the X55 cg148 report-only remediation: the Step 5 rule "carry the prior confirmed values forward unchanged" preserves unfilled judgment template stubs (hot_path_N / fragile_area_N), so a stamped, "validated" REPO_MAP.md can still contain template placeholders. Make Step 5 symmetric with Step 3 (an unfilled stub is the absence of a confirmed value -> record "none"; carry forward only real prior values), and strengthen the evals.json assertions that missed the leak. Bumps the skill to 0.3.1 and re-validates via the skill-creator eval loop. Authority files (lifecycle.md, shared-workflow.md) are not modified.
+
+#### S56.1 Items
+
+Sprint: Sprint 1 -- Stub-Leak Remediation and Closure
+Status: done
+
+| ID | Type | Description | Status | Notes |
+| --- | --- | --- | --- | --- |
+| `D56.1.1` | `D` | Open X56 tracking plan and commit groups | done |  |
+| `M56.1.2` | `M` | Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions | done | Root cause: the X55 Step 5 rule "carry the prior confirmed values forward unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5 symmetric with Step 3: a real prior judgment value is carried forward, but an unfilled stub is the absence of a confirmed value and is recorded as "none". The invariant ("a validated map never contains a placeholder stub; every line is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests note, the worked example, Constraints, and the failure table. Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
+| `T56.1.3` | `T` | Re-validate repo-map-refresh after stub-leak fix (iteration-3) | done | Done. skill-creator iteration-3 ran the three affected evals (1 stale happy path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot) baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill 23/24 (95.83%). The single discriminating assertion is exactly the regression: on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2, fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1 records Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing written) and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch) are non-discriminating at 100% both, confirming the fix is surgical. Local gates green (194 tests, >95% coverage); validate-plan and render clean. Timing was largely uncaptured this iteration (spawn-error + session-limit disruption); pass-rate from disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored). |
+| `C56.1.4` | `C` | Checkpoint closure -- X56 placeholder-stub remediation | done |  |
+
 ## Commit Groups
 
 | ID | Title | Items |
@@ -1490,6 +1542,11 @@ Status: done
 | cg143 | render determinism remediation -- tracking boundary | `D54.1.1` |
 | cg144 | render determinism remediation -- implementation tests | `M54.1.2`, `T54.1.3` |
 | cg145 | render determinism remediation -- docs closure archive | `D54.1.4`, `C54.1.5` |
+| cg146 | repo-map-refresh skill -- tracking plan | `D55.1.1` |
+| cg147 | repo-map-refresh skill -- author SKILL.md, evals, and propagate discovery | `D55.1.2`, `M55.1.3` |
+| cg148 | repo-map-refresh skill -- evaluation, refinement, and closure | `T55.2.1`, `M55.2.2`, `M55.2.4`, `T55.2.5`, `C55.2.3` |
+| cg149 | repo-map-refresh stub-leak -- tracking plan | `D56.1.1` |
+| cg150 | repo-map-refresh stub-leak -- fix, re-validate, and closure | `M56.1.2`, `T56.1.3`, `C56.1.4` |
 
 ## Item Details
 
@@ -4973,4 +5030,146 @@ Status: done
   - render-archive-digest.py produces no drift
   - git diff --check passes
   - targeted renderer and archive tests pass
+  - run-gates.sh passes
+
+### D55.1.1: Open X55 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S55.1`
+- **Actions**: plan, document
+- **Commit group**: `cg146`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### D55.1.2: Author repo-map-refresh SKILL.md and evals with embedded dry-run walkthrough
+
+- **Type**: D | **Status**: done | **Role**: documenter | **Effort**: medium
+- **Sprint**: `S55.1`
+- **Actions**: document
+- **Depends on**: `D55.1.1`
+- **Commit group**: `cg147`
+- **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md, agent-os/skills/repo-map-refresh/evals/evals.json
+
+### M55.1.3: Register repo-map-refresh in shared-assets and propagate skill discovery
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S55.1`
+- **Actions**: implement
+- **Depends on**: `D55.1.2`
+- **Commit group**: `cg147`
+- **Artifacts**: agent-os/registry/shared-assets.yaml, AGENTS.md, agent-os/templates/repo-AGENTS.md.template, TODO.md
+
+### T55.2.1: Run skill-creator eval loop and validate repo-map-refresh packaging end-to-end
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S55.2`
+- **Actions**: test, verify
+- **Depends on**: `M55.1.3`
+- **Commit group**: `cg148`
+- **Artifacts**: plan/PLAN-current.yaml
+- **Checks**:
+  - skill-creator eval loop run (with-skill vs baseline) and benchmark produced
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - pytest -q passes
+  - embedded dry-run walkthrough traces against repo-REPO_MAP.md.template and check_repo_map_freshness
+
+### M55.2.2: Apply refinements from eval feedback to repo-map-refresh SKILL.md (conditional)
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: low
+- **Sprint**: `S55.2`
+- **Actions**: implement
+- **Depends on**: `T55.2.1`
+- **Commit group**: `cg148`
+- **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md, agent-os/registry/shared-assets.yaml
+- **Notes**: Applied. The bootstrapped empty-template smoke run surfaced four concrete gaps, all addressed in SKILL.md v0.2.0: (1) added first-post-bootstrap as a refresh trigger in When to Use; (2) added placeholder-blank vs factual-blank derivation guidance in Step 3; (3) added no-source/no-tests is-a-valid-result note; (4) added zero-churn judgment-proposal handling in Step 4. Version bumped 0.1.0 -> 0.2.0 and synced in shared-assets.yaml.
+
+### C55.2.3: Checkpoint closure -- X55 repo-map-refresh skill
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S55.2`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T55.2.5`
+- **Commit group**: `cg148`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X55.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+
+### M55.2.4: Root-cause remediation of eval-review findings in repo-map-refresh
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S55.2`
+- **Actions**: implement
+- **Depends on**: `M55.2.2`
+- **Commit group**: `cg148`
+- **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md, agent-os/skills/repo-map-refresh/evals/evals.json, agent-os/registry/shared-assets.yaml
+- **Notes**: Remediates four eval-review findings from the root. (1) Judgment-section deltas (Hot Paths / Fragile Areas) are surfaced in the refresh report only and are never written into REPO_MAP.md; Step 5 stamps last_validated_on only over confirmed content (objective re-derivation + carried-forward or operator-confirmed judgment), removing the impossible "judgment confirmed" precondition and aligning with lifecycle.md and shared-workflow.md. (2) Normalizes objective-section vocabulary: "none" for confirmed-empty, "undetermined" for derivation-failed; eliminates "leave blank". (3) Adds a self-contained bootstrapped-empty-template eval and rewrites evals.json notes to match the committed eval set. (4) Tightens evals 1/3 assertions to enforce that the written map carries no proposed/confirm text. Bumps the skill to 0.3.0 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified.
+
+### T55.2.5: Re-validate repo-map-refresh after report-only remediation (iteration-2)
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S55.2`
+- **Actions**: test, verify
+- **Depends on**: `M55.2.4`
+- **Commit group**: `cg148`
+- **Artifacts**: plan/PLAN-current.yaml
+- **Checks**:
+  - skill-creator iteration-2 eval loop run (with-skill vs baseline) across all five evals and benchmark produced
+  - every with-skill run writes a REPO_MAP.md containing no proposed/confirm text, records objective emptiness as "none", and stamps last_validated_on
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - pytest -q passes
+- **Notes**: Done. skill-creator iteration-2 ran all five evals with-skill and baseline (10 runs). Benchmark: with-skill 100% vs baseline 58.4% pass rate (delta +0.42), consistent with iteration-1 (100% vs 57%) -- no regression. The remediation is confirmed on disk: every with-skill REPO_MAP.md has zero proposed/confirm text, judgment sections are carried forward unchanged or recorded as "none", and the bootstrapped empty-template case records all objective sections as "none" and stamps cleanly (re-verify exit 0). Discriminators held: baseline fabricated a map for the missing-map case (0%) and asserted judgment as fact on the happy path. Local gates green (194 tests, 97.66% coverage). Viewer: review-iteration-2.html (gitignored workspace).
+
+### D56.1.1: Open X56 tracking plan and commit groups
+
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
+- **Sprint**: `S56.1`
+- **Actions**: plan, document
+- **Commit group**: `cg149`
+- **Artifacts**: plan/PLAN-current.yaml, PLAN.md, PLAN.dot
+
+### M56.1.2: Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions
+
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
+- **Sprint**: `S56.1`
+- **Actions**: implement
+- **Depends on**: `D56.1.1`
+- **Commit group**: `cg150`
+- **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md, agent-os/skills/repo-map-refresh/evals/evals.json, agent-os/registry/shared-assets.yaml
+- **Notes**: Root cause: the X55 Step 5 rule "carry the prior confirmed values forward unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5 symmetric with Step 3: a real prior judgment value is carried forward, but an unfilled stub is the absence of a confirmed value and is recorded as "none". The invariant ("a validated map never contains a placeholder stub; every line is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests note, the worked example, Constraints, and the failure table. Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified.
+
+### T56.1.3: Re-validate repo-map-refresh after stub-leak fix (iteration-3)
+
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
+- **Sprint**: `S56.1`
+- **Actions**: test, verify
+- **Depends on**: `M56.1.2`
+- **Commit group**: `cg150`
+- **Artifacts**: plan/PLAN-current.yaml
+- **Checks**:
+  - skill-creator iteration-3 eval loop run (with-skill v0.3.1 vs old-skill v0.3.0 baseline) across the affected evals (1, 3, 5) and benchmark produced
+  - every with-skill stamped REPO_MAP.md contains zero hot_path_N / fragile_area_N / module_X placeholder stubs and records empty judgment sections as "none"
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
+  - run-gates.sh passes
+  - pytest -q passes
+- **Notes**: Done. skill-creator iteration-3 ran the three affected evals (1 stale happy path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot) baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill 23/24 (95.83%). The single discriminating assertion is exactly the regression: on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2, fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1 records Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing written) and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch) are non-discriminating at 100% both, confirming the fix is surgical. Local gates green (194 tests, >95% coverage); validate-plan and render clean. Timing was largely uncaptured this iteration (spawn-error + session-limit disruption); pass-rate from disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored).
+
+### C56.1.4: Checkpoint closure -- X56 placeholder-stub remediation
+
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
+- **Sprint**: `S56.1`
+- **Actions**: checkpoint, verify
+- **Depends on**: `T56.1.3`
+- **Commit group**: `cg150`
+- **Shared assets**: skill=plan-checkpoint-close, prompt=checkpoint-closure-review, result_protocol=check-result-v1, context_policy=focused, resolution_mode=workspace
+- **Artifacts**: plan/PLAN-current.yaml, plan/PLAN-index.yaml, plan/archive/PLAN-X56.yaml, PLAN.md, PLAN.dot
+- **Checks**:
+  - validate-plan.py exits 0
+  - render-plan.py produces no drift
   - run-gates.sh passes
