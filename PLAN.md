@@ -5,7 +5,7 @@ AUTO-GENERATED from plan/PLAN-index.yaml. Do not edit manually.
 - Repository: AgentOrchestrator
 - Owner: NickF93
 - Version: 0.1
-- Last updated: 2026-05-31
+- Last updated: 2026-06-14
 
 ## Mission
 
@@ -69,7 +69,7 @@ Build the minimal viable Level-0 central control plane (agent-os/) inside this r
 | X53 | X | Archive Digest Summaries | done |
 | X54 | X | Render Path Determinism Remediation | done |
 | X55 | X | repo-map-refresh Skill Packaging | done |
-| X56 | X | repo-map-refresh Placeholder-Stub Remediation | in_progress |
+| X56 | X | repo-map-refresh Placeholder-Stub Remediation | done |
 
 ## Plan
 
@@ -1379,20 +1379,20 @@ Status: done
 
 - ID: `X56`
 - Title: repo-map-refresh Placeholder-Stub Remediation
-- Status: in_progress
+- Status: done
 - Note: Root-cause fix for a defect introduced by the X55 cg148 report-only remediation: the Step 5 rule "carry the prior confirmed values forward unchanged" preserves unfilled judgment template stubs (hot_path_N / fragile_area_N), so a stamped, "validated" REPO_MAP.md can still contain template placeholders. Make Step 5 symmetric with Step 3 (an unfilled stub is the absence of a confirmed value -> record "none"; carry forward only real prior values), and strengthen the evals.json assertions that missed the leak. Bumps the skill to 0.3.1 and re-validates via the skill-creator eval loop. Authority files (lifecycle.md, shared-workflow.md) are not modified.
 
 #### S56.1 Items
 
 Sprint: Sprint 1 -- Stub-Leak Remediation and Closure
-Status: in_progress
+Status: done
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
 | `D56.1.1` | `D` | Open X56 tracking plan and commit groups | done |  |
 | `M56.1.2` | `M` | Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions | done | Root cause: the X55 Step 5 rule "carry the prior confirmed values forward unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5 symmetric with Step 3: a real prior judgment value is carried forward, but an unfilled stub is the absence of a confirmed value and is recorded as "none". The invariant ("a validated map never contains a placeholder stub; every line is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests note, the worked example, Constraints, and the failure table. Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
 | `T56.1.3` | `T` | Re-validate repo-map-refresh after stub-leak fix (iteration-3) | done | Done. skill-creator iteration-3 ran the three affected evals (1 stale happy path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot) baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill 23/24 (95.83%). The single discriminating assertion is exactly the regression: on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2, fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1 records Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing written) and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch) are non-discriminating at 100% both, confirming the fix is surgical. Local gates green (194 tests, >95% coverage); validate-plan and render clean. Timing was largely uncaptured this iteration (spawn-error + session-limit disruption); pass-rate from disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored). |
-| `C56.1.4` | `C` | Checkpoint closure -- X56 placeholder-stub remediation | planned |  |
+| `C56.1.4` | `C` | Checkpoint closure -- X56 placeholder-stub remediation | done |  |
 
 ## Commit Groups
 
@@ -5162,7 +5162,7 @@ Status: in_progress
 
 ### C56.1.4: Checkpoint closure -- X56 placeholder-stub remediation
 
-- **Type**: C | **Status**: planned | **Role**: reviewer | **Effort**: low
+- **Type**: C | **Status**: done | **Role**: reviewer | **Effort**: low
 - **Sprint**: `S56.1`
 - **Actions**: checkpoint, verify
 - **Depends on**: `T56.1.3`

@@ -6,9 +6,9 @@ This digest is a non-authoritative lookup aid. Canonical history remains in `pla
 
 ## Summary
 
-- Archived milestones: 54
-- Archived items: 325
-- Archived commit groups: 147
+- Archived milestones: 55
+- Archived items: 329
+- Archived commit groups: 149
 
 ## Milestones
 
@@ -68,3 +68,4 @@ This digest is a non-authoritative lookup aid. Canonical history remains in `pla
 | `X53` | Archive Digest Summaries | `archive/PLAN-X53.yaml` | `sha256:41743eed6e67` | 1 | 5 | 3 | C:1, D:2, M:1, T:1 | `.`, `agent-os/scripts/`, `plan/`, `tests/` |
 | `X54` | Render Path Determinism Remediation | `archive/PLAN-X54.yaml` | `sha256:c8ba28a358fc` | 1 | 5 | 3 | C:1, D:2, M:1, T:1 | `.`, `agent-os/scripts/`, `agent-os/skills/`, `plan/`, `tests/` |
 | `X55` | repo-map-refresh Skill Packaging | `archive/PLAN-X55.yaml` | `sha256:dbe0b9b161c2` | 2 | 8 | 3 | C:1, D:2, M:3, T:2 | `.`, `agent-os/skills/repo-map-refresh/`, `plan/` |
+| `X56` | repo-map-refresh Placeholder-Stub Remediation | `archive/PLAN-X56.yaml` | `sha256:53acc47b4be1` | 1 | 4 | 2 | C:1, D:1, M:1, T:1 | `.`, `plan/` |

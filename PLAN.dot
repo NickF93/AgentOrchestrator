@@ -55,7 +55,7 @@ digraph PLAN {
   "X53" [label="X53 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X54" [label="X54 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "X55" [label="X55 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
-  "X56" [label="X56 | X | in_progress", shape=box3d, style="filled,rounded", fillcolor=lightblue];
+  "X56" [label="X56 | X | done", shape=box3d, style="filled,rounded", fillcolor=darkseagreen1];
   "S1.1" [label="S1.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S2.1" [label="S2.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S3.1" [label="S3.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
@@ -131,7 +131,7 @@ digraph PLAN {
   "S54.1" [label="S54.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S55.1" [label="S55.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   "S55.2" [label="S55.2 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
-  "S56.1" [label="S56.1 | S | in_progress", shape=tab, style="filled,rounded", fillcolor=lightblue];
+  "S56.1" [label="S56.1 | S | done", shape=tab, style="filled,rounded", fillcolor=darkseagreen1];
   subgraph "cluster_cg0" {
     style="rounded,dashed";
     label="cg0: Repository bootstrap hygiene";
@@ -1055,7 +1055,7 @@ digraph PLAN {
     label="cg150: repo-map-refresh stub-leak -- fix, re-validate, and closure";
   "M56.1.2" [label="M56.1.2 | M | done", shape=box, style="filled,rounded", fillcolor=darkseagreen1];
   "T56.1.3" [label="T56.1.3 | T | done", shape=ellipse, style="filled,rounded", fillcolor=darkseagreen1];
-  "C56.1.4" [label="C56.1.4 | C | planned", shape=doubleoctagon, style="filled,rounded", fillcolor=lightgray];
+  "C56.1.4" [label="C56.1.4 | C | done", shape=doubleoctagon, style="filled,rounded", fillcolor=darkseagreen1];
   }
   "X1" -> "S1.1" [style=dashed];
   "X2" -> "S2.1" [style=dashed];
