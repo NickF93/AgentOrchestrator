@@ -1391,7 +1391,7 @@ Status: in_progress
 | --- | --- | --- | --- | --- |
 | `D56.1.1` | `D` | Open X56 tracking plan and commit groups | done |  |
 | `M56.1.2` | `M` | Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions | done | Root cause: the X55 Step 5 rule "carry the prior confirmed values forward unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5 symmetric with Step 3: a real prior judgment value is carried forward, but an unfilled stub is the absence of a confirmed value and is recorded as "none". The invariant ("a validated map never contains a placeholder stub; every line is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests note, the worked example, Constraints, and the failure table. Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
-| `T56.1.3` | `T` | Re-validate repo-map-refresh after stub-leak fix (iteration-3) | planned |  |
+| `T56.1.3` | `T` | Re-validate repo-map-refresh after stub-leak fix (iteration-3) | done | Done. skill-creator iteration-3 ran the three affected evals (1 stale happy path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot) baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill 23/24 (95.83%). The single discriminating assertion is exactly the regression: on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2, fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1 records Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing written) and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch) are non-discriminating at 100% both, confirming the fix is surgical. Local gates green (194 tests, >95% coverage); validate-plan and render clean. Timing was largely uncaptured this iteration (spawn-error + session-limit disruption); pass-rate from disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored). |
 | `C56.1.4` | `C` | Checkpoint closure -- X56 placeholder-stub remediation | planned |  |
 
 ## Commit Groups
@@ -5145,7 +5145,7 @@ Status: in_progress
 
 ### T56.1.3: Re-validate repo-map-refresh after stub-leak fix (iteration-3)
 
-- **Type**: T | **Status**: planned | **Role**: tester | **Effort**: medium
+- **Type**: T | **Status**: done | **Role**: tester | **Effort**: medium
 - **Sprint**: `S56.1`
 - **Actions**: test, verify
 - **Depends on**: `M56.1.2`
@@ -5158,6 +5158,7 @@ Status: in_progress
   - render-plan.py produces no drift
   - run-gates.sh passes
   - pytest -q passes
+- **Notes**: Done. skill-creator iteration-3 ran the three affected evals (1 stale happy path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot) baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill 23/24 (95.83%). The single discriminating assertion is exactly the regression: on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2, fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1 records Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing written) and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch) are non-discriminating at 100% both, confirming the fix is surgical. Local gates green (194 tests, >95% coverage); validate-plan and render clean. Timing was largely uncaptured this iteration (spawn-error + session-limit disruption); pass-rate from disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored).
 
 ### C56.1.4: Checkpoint closure -- X56 placeholder-stub remediation
 

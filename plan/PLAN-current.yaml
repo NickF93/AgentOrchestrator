@@ -73,7 +73,7 @@ items:
   actions:
   - test
   - verify
-  status: planned
+  status: done
   depends_on:
   - M56.1.2
   role: tester
@@ -89,6 +89,20 @@ items:
   - render-plan.py produces no drift
   - run-gates.sh passes
   - pytest -q passes
+  notes: 'Done. skill-creator iteration-3 ran the three affected evals (1 stale happy
+    path, 3 dry-run, 5 empty template) with-skill (v0.3.1) and old-skill (v0.3.0 snapshot)
+    baseline. Graded from on-disk ground truth: with_skill 24/24 (100%), old_skill
+    23/24 (95.83%). The single discriminating assertion is exactly the regression:
+    on eval 1 the v0.3.0 baseline carried four unfilled judgment stubs (hot_path_1/2,
+    fragile_area_1/2) into the stamped map (leftover-stub scan = 4), while v0.3.1 records
+    Hot Paths / Fragile Areas as "none" (scan = 0). Eval 3 (dry-run, nothing written)
+    and eval 5 (empty-template, already handled by the v0.3.0 bootstrap branch) are
+    non-discriminating at 100% both, confirming the fix is surgical. Local gates green
+    (194 tests, >95% coverage); validate-plan and render clean. Timing was largely
+    uncaptured this iteration (spawn-error + session-limit disruption); pass-rate from
+    disk is the authoritative signal. Viewer: review-iteration-3.html (gitignored).
+
+    '
   artifacts_out:
   - plan/PLAN-current.yaml
 - id: C56.1.4
