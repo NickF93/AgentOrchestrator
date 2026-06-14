@@ -15,7 +15,7 @@ description: >
   validate-plan.py --check-freshness. It does not redefine the freshness
   policy — it applies it.
 owner: NickF93
-version: "0.3.0"
+version: "0.3.1"
 compatibility:
   - claude
   - codex
@@ -264,8 +264,9 @@ When the signals are absent — a freshly bootstrapped or single-commit repo has
 no churn history, and a structure-only repo has no clear hot paths — do not
 manufacture proposals. Say so in the report ("no basis for a judgment proposal
 yet; populate once the repo accrues history") and leave the map's judgment
-sections at their last confirmed value. An honest empty report is correct; a
-guessed proposal is a liability.
+sections at their last confirmed value — or `none` if nothing was ever confirmed
+(an unfilled template stub is not a confirmed value; see Step 5). An honest empty
+report is correct; a guessed proposal is a liability.
 
 ### Step 5 — Write confirmed content and stamp freshness
 
@@ -274,11 +275,20 @@ The map must only ever contain confirmed content, so write in this order:
 1. **Objective sections** — write the re-derived Entry Points / Main Modules /
    Test Map. These are confirmed *by derivation* from the live repo, so they go
    in directly (record genuine emptiness as `none`; never invent — see Step 3).
-2. **Judgment sections** — write **only operator-confirmed** deltas. If the
-   operator has not confirmed anything in this run (the common autonomous case),
-   **carry the prior confirmed values forward unchanged** — do not overwrite them
-   and do not insert the Step 4 proposals. The proposals live in the report, not
-   the file.
+2. **Judgment sections** — write **only operator-confirmed** content, and treat
+   an unfilled stub exactly as Step 3 treats an empty objective section. Apply any
+   delta the operator confirmed this run. For everything else:
+   - if the section already holds a **real, previously-confirmed value**, carry it
+     forward unchanged — do not overwrite it and do not insert the Step 4
+     proposals (those live in the report, not the file);
+   - if it holds only an **unfilled template stub** (`hot_path_N:` /
+     `fragile_area_N:` with no value), there is nothing confirmed to preserve —
+     record `none`, exactly as Step 3 does for a genuinely empty objective section.
+
+   A validated map never contains a placeholder stub: every judgment line is a
+   confirmed value or `none`. Stamping `last_validated_on` asserts that every line
+   is confirmed; an unfilled stub is the *absence* of a confirmation, so carrying
+   it forward would make the stamp lie.
 3. **Stamp** `last_validated_on: <today>` (ISO `YYYY-MM-DD`) and
    `validated_by: <validated_by input>`. Leave `freshness_window_days` unchanged
    unless the operator explicitly adjusts it.
@@ -286,10 +296,11 @@ The map must only ever contain confirmed content, so write in this order:
 **What the stamp attests.** `last_validated_on` certifies that the map was
 re-verified against the live repo today and that **every line it contains is
 confirmed** — objective sections freshly re-derived, judgment sections holding
-their most recent operator confirmation. Because no unconfirmed proposal is ever
-written, the stamp is honest under `lifecycle.md` ("last confirmed accurate")
-even in a fully autonomous run. The order is load-bearing: stamp last, after the
-content is written.
+their most recent operator confirmation or `none` where nothing was ever
+confirmed (never a leftover stub). Because no unconfirmed proposal and no
+placeholder stub is ever written, the stamp is honest under `lifecycle.md`
+("last confirmed accurate") even in a fully autonomous run. The order is
+load-bearing: stamp last, after the content is written.
 
 If `dry_run` is `true`, **skip all writes**: report the section deltas and the
 exact metadata that *would* be stamped, and set the verdict to `dry-run`.
@@ -374,9 +385,13 @@ fragile_areas: proposed: src/widgets/api/server.py (new, no integration coverage
 ```
 
 These two lines are part of the **report**. A real (non-dry-run) run would write
-the objective re-derivation into `REPO_MAP.md` and **carry the map's existing
-`Hot Paths`/`Fragile Areas` forward unchanged** until the operator confirms these
-proposals — it would not write the `proposed … — confirm` text into the file.
+the objective re-derivation into `REPO_MAP.md` and, because this map's `Hot Paths`/
+`Fragile Areas` are still **unfilled template stubs** (`hot_path_1:` with no
+value), record those sections as **`none`** — there is no prior confirmed value to
+carry forward (Step 5). A map whose judgment sections already held a real
+confirmed value would carry that value forward unchanged instead. Either way it
+would not write the `proposed … — confirm` text, and it would not stamp a
+leftover stub into the file.
 
 **Step 5 — metadata that WOULD be stamped (dry-run, not written):**
 
@@ -413,6 +428,9 @@ would still fail until the operator re-runs without `dry_run`.
   never written into the map speculatively. Record a genuinely empty objective
   section as `none`; report a section you could not resolve as `undetermined`
   rather than guessing.
+- **No placeholder stubs in a validated map**: every section line is a confirmed
+  value or `none` — an unfilled judgment stub (`hot_path_N:`/`fragile_area_N:`)
+  is never carried into a stamped map (see Step 5).
 - **Refuse to invent a missing map**: delegate creation to `repo-bootstrap`.
 - **No auto-commit, no push**: the operator commits `REPO_MAP.md` (Phase A);
   routing to a branch/PR is `gitflow-pr-only`'s job.
@@ -431,7 +449,7 @@ would still fail until the operator re-runs without `dry_run`.
 | Repo genuinely has no entry points / modules / tests      | Record the section as `none` (factual empty); never invent               |
 | Section layout cannot be resolved by inspection           | Report as `undetermined` and ask the operator; do not write a guess      |
 | `validated_by` not provided but a write is requested      | Fail (`blocked`): refuse to stamp an unattributed validation             |
-| Operator declines / does not confirm proposed judgment deltas | Write objective updates, carry judgment sections forward unchanged, stamp; record the proposals in the report only |
+| Operator declines / does not confirm proposed judgment deltas | Write objective updates; carry a real prior judgment value forward unchanged, or record `none` where the section is only an unfilled stub; stamp; record the proposals in the report only |
 | `--check-freshness` still reports stale after refresh     | Fail (`fail`): inspect the written date (likely malformed) and re-stamp  |
 | Map already within window and no trigger supplied          | Stop (`fresh`); report age vs window; no rewrite                         |
 | Target repo has no `plan/PLAN-index.yaml` to re-verify     | Refresh and stamp the map; report the re-verify as `n/a` with the reason |

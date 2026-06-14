@@ -27,7 +27,7 @@ items:
   actions:
   - plan
   - document
-  status: in_progress
+  status: done
   role: orchestrator
   effort: low
   commit_group: cg149
@@ -42,13 +42,26 @@ items:
   title: Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions
   actions:
   - implement
-  status: planned
+  status: done
   depends_on:
   - D56.1.1
   role: implementer
   effort: medium
   commit_group: cg150
   scope: .
+  notes: 'Root cause: the X55 Step 5 rule "carry the prior confirmed values forward
+    unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md
+    could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5
+    symmetric with Step 3: a real prior judgment value is carried forward, but an
+    unfilled stub is the absence of a confirmed value and is recorded as "none".
+    The invariant ("a validated map never contains a placeholder stub; every line
+    is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the
+    stamp-attests note, the worked example, Constraints, and the failure table.
+    Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm
+    text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml.
+    Authority files (lifecycle.md, shared-workflow.md) are not modified.
+
+    '
   artifacts_out:
   - agent-os/skills/repo-map-refresh/SKILL.md
   - agent-os/skills/repo-map-refresh/evals/evals.json

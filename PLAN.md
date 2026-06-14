@@ -1389,8 +1389,8 @@ Status: in_progress
 
 | ID | Type | Description | Status | Notes |
 | --- | --- | --- | --- | --- |
-| `D56.1.1` | `D` | Open X56 tracking plan and commit groups | in_progress |  |
-| `M56.1.2` | `M` | Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions | planned |  |
+| `D56.1.1` | `D` | Open X56 tracking plan and commit groups | done |  |
+| `M56.1.2` | `M` | Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions | done | Root cause: the X55 Step 5 rule "carry the prior confirmed values forward unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5 symmetric with Step 3: a real prior judgment value is carried forward, but an unfilled stub is the absence of a confirmed value and is recorded as "none". The invariant ("a validated map never contains a placeholder stub; every line is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests note, the worked example, Constraints, and the failure table. Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified. |
 | `T56.1.3` | `T` | Re-validate repo-map-refresh after stub-leak fix (iteration-3) | planned |  |
 | `C56.1.4` | `C` | Checkpoint closure -- X56 placeholder-stub remediation | planned |  |
 
@@ -5127,7 +5127,7 @@ Status: in_progress
 
 ### D56.1.1: Open X56 tracking plan and commit groups
 
-- **Type**: D | **Status**: in_progress | **Role**: orchestrator | **Effort**: low
+- **Type**: D | **Status**: done | **Role**: orchestrator | **Effort**: low
 - **Sprint**: `S56.1`
 - **Actions**: plan, document
 - **Commit group**: `cg149`
@@ -5135,12 +5135,13 @@ Status: in_progress
 
 ### M56.1.2: Fix Step 5 stub-vs-confirmed contradiction and strengthen eval assertions
 
-- **Type**: M | **Status**: planned | **Role**: implementer | **Effort**: medium
+- **Type**: M | **Status**: done | **Role**: implementer | **Effort**: medium
 - **Sprint**: `S56.1`
 - **Actions**: implement
 - **Depends on**: `D56.1.1`
 - **Commit group**: `cg150`
 - **Artifacts**: agent-os/skills/repo-map-refresh/SKILL.md, agent-os/skills/repo-map-refresh/evals/evals.json, agent-os/registry/shared-assets.yaml
+- **Notes**: Root cause: the X55 Step 5 rule "carry the prior confirmed values forward unchanged" preserved unfilled judgment template stubs, so a stamped REPO_MAP.md could still contain hot_path_N / fragile_area_N placeholders. Fix makes Step 5 symmetric with Step 3: a real prior judgment value is carried forward, but an unfilled stub is the absence of a confirmed value and is recorded as "none". The invariant ("a validated map never contains a placeholder stub; every line is a confirmed value or none") is stated in Step 5 and echoed in Step 4, the stamp-attests note, the worked example, Constraints, and the failure table. Strengthens the evals 1/5 assertions that previously only grepped proposed/confirm text and missed bare stubs. Bumps the skill to 0.3.1 and syncs shared-assets.yaml. Authority files (lifecycle.md, shared-workflow.md) are not modified.
 
 ### T56.1.3: Re-validate repo-map-refresh after stub-leak fix (iteration-3)
 

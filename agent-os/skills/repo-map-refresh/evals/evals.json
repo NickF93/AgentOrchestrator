@@ -1,7 +1,7 @@
 {
   "skill_name": "repo-map-refresh",
   "schema_version": "skill-creator/evals/v1",
-  "notes": "Test prompts and objective assertions for the repo-map-refresh skill. Prompts reproduce phrasings a real operator would use without naming the skill. All five evals run against self-contained, synthesized throwaway fixtures built fresh per run inside the eval workspace, so they are reproducible by anyone with no external repo dependency. Eval 1 (happy path) and eval 3 (dry-run) use a stale-map fixture with known files so the inferred sections and the stamped date are deterministically checkable. Eval 2 (missing map) is a pure-refusal/delegation case. Eval 4 (fresh no-op) verifies the skill does not rewrite a map still within its window. Eval 5 (bootstrapped empty template) uses a freshly bootstrapped fixture whose REPO_MAP.md is the empty template (blank last_validated_on, stub section labels) and verifies the first-validation-pass behavior. Across evals 1, 3, and 5 the assertions enforce the core contract: judgment-section proposals appear only in the report, never as written content in REPO_MAP.md, and genuinely empty objective sections are recorded as 'none'.",
+  "notes": "Test prompts and objective assertions for the repo-map-refresh skill. Prompts reproduce phrasings a real operator would use without naming the skill. All five evals run against self-contained, synthesized throwaway fixtures built fresh per run inside the eval workspace, so they are reproducible by anyone with no external repo dependency. Eval 1 (happy path) and eval 3 (dry-run) use a stale-map fixture with known files so the inferred sections and the stamped date are deterministically checkable. Eval 2 (missing map) is a pure-refusal/delegation case. Eval 4 (fresh no-op) verifies the skill does not rewrite a map still within its window. Eval 5 (bootstrapped empty template) uses a freshly bootstrapped fixture whose REPO_MAP.md is the empty template (blank last_validated_on, stub section labels) and verifies the first-validation-pass behavior. Across evals 1, 3, and 5 the assertions enforce the core contract: judgment-section proposals appear only in the report, never as written content in REPO_MAP.md, and genuinely empty objective sections are recorded as 'none'. A stamped map carries a confirmed value or 'none' in every section — never a leftover template stub (hot_path_N / fragile_area_N / module_X); evals 1 and 5 assert this explicitly.",
   "evals": [
     {
       "id": 1,
@@ -36,7 +36,7 @@
         },
         {
           "name": "map_has_no_unconfirmed_judgment_text",
-          "text": "The written REPO_MAP.md contains no 'proposed' / '— confirm' placeholder text in its Hot Paths or Fragile Areas sections — proposals stay in the report, and the map's judgment sections are either operator-confirmed or carried forward unchanged."
+          "text": "The written REPO_MAP.md contains no 'proposed' / '— confirm' placeholder text AND no leftover empty template stub — no 'hot_path_N:', 'fragile_area_N:', or 'module_X:' line is left with an empty value. Every judgment line is a confirmed value or 'none': proposals stay in the report, and an unfilled stub is recorded as 'none' rather than carried forward."
         },
         {
           "name": "last_validated_on_stamped_today",
@@ -172,7 +172,7 @@
         },
         {
           "name": "no_fabricated_judgment",
-          "text": "Hot Paths and Fragile Areas are not fabricated; with no churn history the agent reports no basis for a proposal rather than inventing entries, and no 'proposed' / '— confirm' text is written into the map."
+          "text": "Hot Paths and Fragile Areas are not fabricated; with no churn history the agent reports no basis for a proposal rather than inventing entries. The written map contains no 'proposed' / '— confirm' text and no leftover empty stub ('hot_path_N:' / 'fragile_area_N:') — empty judgment sections are recorded as 'none'."
         },
         {
           "name": "freshness_stamped_today",
